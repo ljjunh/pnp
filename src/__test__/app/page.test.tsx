@@ -3,6 +3,6 @@ import Home from "@/app/page";
 
 test("jest 작동 테스트", () => {
   render(<Home />);
-  const welcomeElement = screen.getByText(/started/i);
+  const welcomeElement = screen.getByText(/Hello/i);
   expect(welcomeElement).toBeInTheDocument();
 });
