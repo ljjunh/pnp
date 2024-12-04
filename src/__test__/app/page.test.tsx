@@ -1,8 +1,17 @@
-import { render, screen } from "@testing-library/react";
-import Home from "@/app/page";
+import Home from '@/app/page';
+import { logRoles, render, screen } from '@testing-library/react';
 
-test("jest 작동 테스트", () => {
-  render(<Home />);
-  const welcomeElement = screen.getByText(/Hello/i);
-  expect(welcomeElement).toBeInTheDocument();
+describe('Home Component', () => {
+  test('jest 테스트', () => {
+    render(<Home />);
+    const welcomeElement = screen.getByText(/Hello/i);
+    expect(welcomeElement).toBeInTheDocument();
+  });
+
+  test('msw 테스트', async () => {
+    const { container } = render(<Home />);
+    const messageElement = await screen.findByText('Test message');
+    logRoles(container);
+    expect(messageElement).toBeInTheDocument();
+  });
 });
