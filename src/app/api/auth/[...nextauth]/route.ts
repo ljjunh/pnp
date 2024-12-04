@@ -21,7 +21,7 @@ const handler = NextAuth({
         })
     ],
     callbacks: {
-        async jwt({ token, account, user }) {
+        async jwt({ token }) {
             return token
         },
     }
