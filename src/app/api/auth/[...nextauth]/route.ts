@@ -7,7 +7,8 @@ import {prisma} from "@/lib/client";
 const handler = NextAuth({
     adapter: PrismaAdapter(prisma),
     session: {
-        strategy: "jwt"
+        strategy: "jwt",
+        maxAge: 30 * 24 * 60 * 60
     },
     providers : [
         KakaoProvider({
