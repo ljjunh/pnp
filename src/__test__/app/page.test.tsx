@@ -1,4 +1,4 @@
-import Home from '@/app/page';
+import Home from '@/app/(base)/page';
 import { logRoles, render, screen } from '@testing-library/react';
 
 describe('Home Component', () => {
