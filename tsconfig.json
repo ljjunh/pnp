@@ -29,7 +29,9 @@
     ".next/types/**/*.ts",
     "jest.config.ts",
     "src/lib/test/jest.setup.ts",
-    "src/__test__/app/page.test.tsx"
+    "src/__test__/app/page.test.tsx",
+    "src/ui/PopoverButton",
+    "src/ui/PopoverMenu"
   ],
   "exclude": ["node_modules"]
 }
