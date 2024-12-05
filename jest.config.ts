@@ -8,7 +8,7 @@ const createJestConfig = nextJest({
 
 const customJestConfig: Config = {
   // Jest 실행 전에 먼저 실행될 설정 파일
-  setupFilesAfterEnv: ['<rootDir>/src/libs/test/jest.setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/src/lib/test/jest.setup.ts'],
 
   // 테스트 환경 설정
   testEnvironment: 'jest-fixed-jsdom',
@@ -52,20 +52,11 @@ const customJestConfig: Config = {
   },
 
   // 커버리지를 측정할 파일 경로 설정
-  // src 폴더 내의 모든 js/jsx/ts/tsx 파일 대상
-  // .d.ts, node_modules, layout.tsx 제외
   collectCoverageFrom: [
-    'src/**/*.{js,jsx,ts,tsx}',
-    '!src/**/*.d.ts',
-    '!**/node_modules/**',
-    '!src/app/**/layout.tsx',
-    '!src/app/layout.tsx',
-    '!src/libs/**',
-    '!src/mocks/**',
-    '!src/types/**',
-    '!src/constants/**',
-    '!src/store/**',
-    '!src/__test__/**',
+    'src/features/**/*.{ts,tsx}',
+    'src/apis/**/*.ts',
+    'src/utils/**/*.ts',
+    'src/hooks/**/*.ts',
   ],
 };
 
