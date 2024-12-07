@@ -54,6 +54,7 @@ const customJestConfig: Config = {
   // 커버리지를 측정할 파일 경로 설정
   collectCoverageFrom: [
     'src/components/**/*.{ts,tsx}',
+    '!src/components/**/*.stories.{ts,tsx}',
     'src/app/**/*.{ts,tsx}',
     '!src/app/**/layout.tsx',
     '!src/app/**/page.tsx',
