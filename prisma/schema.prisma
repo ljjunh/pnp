@@ -94,7 +94,7 @@ model Host {
   favoriteSong String?
   liked String?
   interested String?
-  noTelented String?
+  noTalented String?
   bookTitle String?
   hobby String?
   pet String?
