@@ -20,11 +20,13 @@ model User {
   email         String?         @unique
   emailVerified DateTime?
   image         String?
-  accounts      Account[]
-  sessions      Session[]
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  host          Host?
 }
  
 model Account {
@@ -69,4 +71,52 @@ model VerificationToken {
   expires    DateTime
  
   @@unique([identifier, token])
+}
+
+model Host {
+  id Int @id @default(autoincrement())
+  userId String @unique
+  airbnbId String @unique
+  name String
+  profileImage String?
+  isSuperHost Boolean
+  isVerified Boolean
+  about String
+  ratingCount Int
+  ratingAverage Float
+  hostStartedAt DateTime
+
+  school String?
+  job String?
+  address String?
+  language String?
+  birth String?
+  favoriteSong String?
+  liked String?
+  interested String?
+  noTalented String?
+  bookTitle String?
+  hobby String?
+  pet String?
+
+  tags HostTagRelation[]
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+// '응답률 100%' 같은 태그
+model HostTag {
+  id Int @id @default(autoincrement())
+  content String
+
+  host HostTagRelation[]
+}
+
+model HostTagRelation {
+  id Int @id @default(autoincrement())
+  hostId Int
+  tagId Int
+  
+  host Host @relation(fields: [hostId], references: [id])
+  tag HostTag @relation(fields: [tagId], references: [id])
 }
