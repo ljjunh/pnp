@@ -1,0 +1,25 @@
+import UserMenuItem from '@/components/common/Header/UserMenuItem';
+import { LOGGED_IN_MENU_ITEMS, LOGGED_OUT_MENU_ITEMS } from '@/constants/menuItems';
+
+interface UserMenuProps {
+  isLoggedIn: boolean;
+  isOpen: boolean;
+}
+
+export default function UserMenu({ isLoggedIn, isOpen }: UserMenuProps) {
+  if (!isOpen) return null;
+  const menuItems = isLoggedIn ? LOGGED_IN_MENU_ITEMS : LOGGED_OUT_MENU_ITEMS;
+
+  return (
+    <div className="absolute right-0 top-14 z-10 w-[240px] rounded-xl bg-shade-01 text-sm shadow-[0px_0px_15px_rgba(0,0,0,0.1)]">
+      <div className="flex cursor-pointer flex-col">
+        {menuItems.map((item) => (
+          <UserMenuItem
+            key={item.id}
+            {...item}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
