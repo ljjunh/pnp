@@ -12,7 +12,7 @@ export default function UserNav() {
   const [profileImage] = useState<string | undefined>(); // 유저 프로필 이미지로 변경
 
   const toggleOpen = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   };
 
   return (
