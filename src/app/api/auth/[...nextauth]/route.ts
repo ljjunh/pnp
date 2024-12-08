@@ -1,8 +1,8 @@
-import NextAuth from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import KakaoProvider from "next-auth/providers/kakao";
-import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "@/lib/client";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import KakaoProvider from "next-auth/providers/kakao";
 
 const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -11,10 +11,10 @@ const handler = NextAuth({
       maxAge: 30 * 24 * 60 * 60
   },
   providers : [
-      KakaoProvider({
+    KakaoProvider({
           clientId: process.env.KAKAO_CLIENT_ID as string,
           clientSecret: process.env.KAKAO_CLIENT_SECRET as string
-      }),
+    }),
       GoogleProvider({
           clientId: process.env.GOOGLE_CLIENT_ID as string,
           clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
@@ -24,7 +24,7 @@ const handler = NextAuth({
       async jwt({ token }) {
           return token
       },
-  }    
+  }
 });
 
 export { handler as GET, handler as POST };
