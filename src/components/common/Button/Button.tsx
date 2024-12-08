@@ -1,3 +1,12 @@
+interface ButtonProps {
+  variant?: 'primary' | 'secondary' | 'tertiary';
+  size?: 'small' | 'full';
+  isLoading?: boolean;
+  isDisabled?: boolean;
+  children: React.ReactNode;
+  onClick?: () => void;
+}
+
 const variants = {
   primary: 'bg-button-02 hover:bg-button-03 active:bg-button-01 text-shade-01',
   secondary: 'bg-shade-02 text-shade-01',
@@ -8,15 +17,6 @@ const sizes = {
   small: 'px-6 py-4 text-sm rounded-lg',
   full: 'w-full py-3.5 rounded-lg',
 };
-
-interface ButtonProps {
-  variant?: 'primary' | 'secondary' | 'tertiary';
-  size?: 'small' | 'full';
-  isLoading?: boolean;
-  isDisabled?: boolean;
-  children: React.ReactNode;
-  onClick?: () => void;
-}
 
 export default function Button({
   variant = 'primary',
@@ -55,9 +55,9 @@ export default function Button({
           aria-label="Loading"
           className="flex gap-1.5"
         >
-          <span className="bg-neutral-02 h-2 w-2 rounded-full" />
-          <span className="bg-shade-01 h-2 w-2 rounded-full" />
-          <span className="bg-shade-01 h-2 w-2 rounded-full" />
+          <span className="h-2 w-2 rounded-full bg-neutral-02" />
+          <span className="h-2 w-2 rounded-full bg-shade-01" />
+          <span className="h-2 w-2 rounded-full bg-shade-01" />
         </span>
       ) : (
         children

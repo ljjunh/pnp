@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Button from '@/components/common/Button';
+import Button from '@/components/common/Button/Button';
 
 describe('Button 컴포넌트', () => {
   test('기본 버튼이 정상적으로 렌더링된다', () => {
