@@ -13,6 +13,7 @@ export default function UserButton({ isLoggedIn, onClick, profileImage }: UserBu
     <div>
       <button
         onClick={onClick}
+        aria-label="사용자 메뉴 열기"
         className="flex items-center gap-3 rounded-full border border-gray-300 py-2 pl-3.5 pr-2 hover:shadow-md"
       >
         <RxHamburgerMenu size={16} />
