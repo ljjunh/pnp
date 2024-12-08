@@ -14,19 +14,24 @@ datasource db {
 }
 
 model User {
-  id            String          @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  username      String?         @unique
-  email         String?         @unique
+  username      String?   @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
-  accounts      Account[]
-  sessions      Session[]
- 
+
+  accounts Account[]
+  sessions Session[]
+
+  reviews RoomReview[]
+
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("users")
 }
- 
+
 model Account {
   id                       String  @id @default(cuid())
   userId                   String  @unique
@@ -42,31 +47,139 @@ model Account {
   session_state            String?
   refresh_token_expires_in Int?
   user                     User?   @relation(fields: [userId], references: [id])
- 
+
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
- 
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
   @@unique([provider, providerAccountId])
   @@index([userId])
+  @@map("accounts")
 }
- 
+
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id])
- 
+
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
- 
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
   @@index([userId])
+  @@map("sessions")
 }
- 
+
 model VerificationToken {
   identifier String
   token      String
   expires    DateTime
- 
+
   @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Room {
+  id             BigInt  @id @default(autoincrement())
+  airbnbId       String  @unique @map("airbnb_id")
+  airbnbLink     String  @unique @map("airbnb_link")
+  title          String
+  description    String? @db.Text
+  seoTitle       String  @map("seo_title")
+  seoDescription String? @map("seo_description") @db.Text
+  thumbnail      String?
+  location       String
+  price          Int
+  latitute       Decimal
+  longitude      Decimal
+  capacity       Int
+  checkIn        String  @map("check_in")
+  checkOut       String  @map("check_out")
+  checkInType    String  @map("check_in_type")
+
+  images    RoomImage[]
+  reviews   RoomReview[]
+  rules     RoomRule[]
+  amenities RoomAmenity[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("rooms")
+}
+
+model RoomImage {
+  id          BigInt      @id @default(autoincrement())
+  room        Room        @relation(fields: [roomId], references: [id])
+  roomId      BigInt      @map("room_id")
+  caption     String      @db.VarChar(1000)
+  orientation Orientation
+  imageLink   String      @map("image_link")
+
+  @@map("room_images")
+}
+
+model Rule {
+  id       BigInt @id @default(autoincrement())
+  category String
+  title    String
+  icon     String
+
+  rules RoomRule[]
+
+  @@map("rules")
+}
+
+model Amenity {
+  id        BigInt  @id @default(autoincrement())
+  category  String
+  title     String
+  subTitle  String? @map("sub_title")
+  icon      String
+  available Boolean
+
+  amenities RoomAmenity[]
+
+  @@map("amenities")
+}
+
+model RoomRule {
+  id     BigInt @id @default(autoincrement())
+  room   Room   @relation(fields: [roomId], references: [id])
+  roomId BigInt @map("room_id")
+  rule   Rule   @relation(fields: [ruleId], references: [id])
+  ruleId BigInt @map("rule_id")
+
+  @@unique([roomId, ruleId])
+  @@map("room_rules")
+}
+
+model RoomAmenity {
+  id        BigInt  @id @default(autoincrement())
+  room      Room    @relation(fields: [roomId], references: [id])
+  roomId    BigInt  @map("room_id")
+  amenity   Amenity @relation(fields: [amenityId], references: [id])
+  amenityId BigInt  @map("amenity_id")
+
+  @@unique([roomId, amenityId])
+  @@map("room_amenities")
+}
+
+model RoomReview {
+  id        BigInt   @id @default(autoincrement())
+  room      Room     @relation(fields: [roomId], references: [id])
+  roomId    BigInt   @map("room_id")
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  rating    Int
+  review    String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("room_reviews")
+}
+
+enum Orientation {
+  PORTRAIT
+  LANDSCAPE
 }
