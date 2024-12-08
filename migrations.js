@@ -2,15 +2,18 @@
 const fs = require('fs');
 const path = require('path');
 const mysql = require('mysql2/promise');
+require('dotenv').config();
 
 async function runMigrations() {
     const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'pnp',
-        password: 'pnp',
-        database: 'pnp',
+        host: process.env.DB_HOST || 'localhost',
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
         multipleStatements: true,
     });
+
+    
 
     try {
         const sqlDirPath = path.join(__dirname, 'sql');
