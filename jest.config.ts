@@ -55,6 +55,7 @@ const customJestConfig: Config = {
   collectCoverageFrom: [
     'src/components/**/*.{ts,tsx}',
     '!src/components/**/*.stories.{ts,tsx}',
+    '!src/components/common/**',
     'src/app/**/*.{ts,tsx}',
     '!src/app/**/layout.tsx',
     '!src/app/**/page.tsx',
