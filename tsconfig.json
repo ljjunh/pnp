@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["jest", "@testing-library/jest-dom"],
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -21,6 +22,16 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "jest.config.ts",
+    "src/lib/test/jest.setup.ts",
+    "src/__test__/app/page.test.tsx",
+    "src/ui/PopoverButton",
+    "src/ui/PopoverMenu"
+  ],
+  "exclude": ["node_modules", "./cypress.config.ts", "node_modules", "cypress", "**/*.cy.tsx"]
 }

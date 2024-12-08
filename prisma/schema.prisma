@@ -14,17 +14,16 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String       @id @default(cuid())
   name          String?
-  username      String?   @unique
-  email         String?   @unique
+  username      String?      @unique
+  email         String?      @unique
   emailVerified DateTime?
   image         String?
-
-  accounts Account[]
-  sessions Session[]
-
-  reviews RoomReview[]
+  accounts      Account[]
+  sessions      Session[]
+  reviews       RoomReview[]
+  host          Host?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
@@ -33,23 +32,22 @@ model User {
 }
 
 model Account {
-  id                       String  @id @default(cuid())
-  userId                   String  @unique
+  id                       String   @id @default(cuid())
+  userId                   String
   type                     String
   provider                 String
   providerAccountId        String
-  refresh_token            String? @db.Text
-  access_token             String? @db.Text
+  refresh_token            String?  @db.Text
+  access_token             String?  @db.Text
   expires_at               Int?
   token_type               String?
   scope                    String?
-  id_token                 String? @db.Text
+  id_token                 String?  @db.Text
   session_state            String?
   refresh_token_expires_in Int?
-  user                     User?   @relation(fields: [userId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  user                     User?    @relation(fields: [userId], references: [id])
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @default(now()) @updatedAt @map("updated_at")
 
   @@unique([provider, providerAccountId])
   @@index([userId])
@@ -182,4 +180,52 @@ model RoomReview {
 enum Orientation {
   PORTRAIT
   LANDSCAPE
+}
+
+model Host {
+  id            Int      @id @default(autoincrement())
+  userId        String   @unique
+  airbnbId      String   @unique
+  name          String
+  profileImage  String?
+  isSuperHost   Boolean
+  isVerified    Boolean
+  about         String
+  ratingCount   Int
+  ratingAverage Float
+  hostStartedAt DateTime
+
+  school       String?
+  job          String?
+  address      String?
+  language     String?
+  birth        String?
+  favoriteSong String?
+  liked        String?
+  interested   String?
+  noTalented   String?
+  bookTitle    String?
+  hobby        String?
+  pet          String?
+
+  tags HostTagRelation[]
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+// '응답률 100%' 같은 태그
+model HostTag {
+  id      Int    @id @default(autoincrement())
+  content String
+
+  host HostTagRelation[]
+}
+
+model HostTagRelation {
+  id     Int @id @default(autoincrement())
+  hostId Int
+  tagId  Int
+
+  host Host    @relation(fields: [hostId], references: [id])
+  tag  HostTag @relation(fields: [tagId], references: [id])
 }
