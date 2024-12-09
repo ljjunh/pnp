@@ -38,7 +38,7 @@ model Account {
   provider                 String
   providerAccountId        String
   refresh_token            String?  @db.Text
-  access_token             String?  @db.Text
+  accessToken              String?  @map("access_token") @db.Text
   expires_at               Int?
   token_type               String?
   scope                    String?
@@ -88,8 +88,8 @@ model Room {
   thumbnail      String?
   location       String
   price          Int
-  latitude       Decimal
-  longitude      Decimal
+  latitude       Decimal @db.Decimal(10, 6)
+  longitude      Decimal @db.Decimal(10, 6)
   capacity       Int
   checkIn        String  @map("check_in")
   checkOut       String  @map("check_out")
