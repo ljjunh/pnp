@@ -18,14 +18,14 @@ model User {
   name          String?
   username      String?      @unique
   email         String?      @unique
-  emailVerified DateTime?
+  emailVerified DateTime?    @map("email_verified")
   image         String?
   accounts      Account[]
   sessions      Session[]
   reviews       RoomReview[]
   host          Host?
 
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   @@map("users")
@@ -82,6 +82,8 @@ model Room {
   airbnbId       String  @unique @map("airbnb_id")
   airbnbLink     String  @unique @map("airbnb_link")
   title          String
+  hostId         Int     @map("host_id")
+  host           Host    @relation(fields: [hostId], references: [id])
   description    String? @db.Text
   seoTitle       String  @map("seo_title")
   seoDescription String? @map("seo_description") @db.Text
@@ -185,42 +187,43 @@ enum Orientation {
 
 model Host {
   id            Int      @id @default(autoincrement())
-  userId        String   @unique
-  airbnbId      String   @unique
+  userId        String   @unique @map("user_id")
+  airbnbId      String   @unique @map("airbnb_id")
   name          String
-  profileImage  String?
-  isSuperHost   Boolean
-  isVerified    Boolean
-  about         String
-  ratingCount   Int
-  ratingAverage Float
-  hostStartedAt DateTime
+  profileImage  String?  @map("profile_image")
+  isSuperHost   Boolean  @map("is_super_host")
+  isVerified    Boolean  @map("is_verified")
+  about         String   @db.Text
+  ratingCount   Int      @map("rating_count")
+  ratingAverage Float    @map("rating_average")
+  hostStartedAt DateTime @map("host_started_at")
 
   school       String?
   job          String?
   address      String?
   language     String?
   birth        String?
-  favoriteSong String?
+  favoriteSong String? @map("favorite_song")
   liked        String?
   interested   String?
-  noTalented   String?
-  bookTitle    String?
+  noTalented   String? @map("no_talented")
+  bookTitle    String? @map("book_title")
   hobby        String?
   pet          String?
 
   tags HostTag[]
 
-  user User @relation(fields: [userId], references: [id])
+  user User   @relation(fields: [userId], references: [id])
+  Room Room[]
 
   @@map("hosts")
 }
 
 // '응답률 100%' 같은 태그
 model Tag {
-  id      Int      @id @default(autoincrement())
-  content String   @unique @db.VarChar(100)
-  created DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  content   String   @unique @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at")
 
   host HostTag[]
 
@@ -229,8 +232,8 @@ model Tag {
 
 model HostTag {
   id     Int @id @default(autoincrement())
-  hostId Int
-  tagId  Int
+  hostId Int @map("host_id")
+  tagId  Int @map("tag_id")
 
   host Host @relation(fields: [hostId], references: [id])
   tag  Tag  @relation(fields: [tagId], references: [id])
