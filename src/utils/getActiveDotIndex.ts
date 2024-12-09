@@ -1,4 +1,15 @@
 export const getActiveDotIndex = (currentIndex: number, totalLength: number): number => {
+  // 이미지가 없거나 1장일때는 페이지네이션 닷이 필요 없으므로 -1 반환
+  if (totalLength <= 1) {
+    return -1;
+  }
+
+  // 이미지가 5장 이하면 currentIndex 그대로 반환
+  if (totalLength <= 5) {
+    return currentIndex;
+  }
+
+  // 이미지가 5장 초과일때
   // 첫 두 슬라이드
   if (currentIndex <= 1) {
     return currentIndex;

@@ -37,7 +37,7 @@ export default function CardSummary({
       {review && (
         <div>
           <span className="text-neutral-07">게스트 한마디 </span>
-          <span>"{review}"</span>
+          <span>&ldquo;{review}&rdquo;</span>
         </div>
       )}
 

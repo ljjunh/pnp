@@ -17,23 +17,27 @@ export default function CardCarousel({ images, liked = false, onLike }: CardCaro
   const [isHovered, setIsHovered] = useState(false);
 
   const handleNextSlide = () => {
-    setCurrentIndex((prev) => prev + 1);
+    setCurrentIndex((prev) => (prev + 1 >= images.length ? prev : prev + 1));
   };
 
   const handlePrevSlide = () => {
-    setCurrentIndex((prev) => prev - 1);
+    setCurrentIndex((prev) => (prev - 1 < 0 ? prev : prev - 1));
   };
 
   return (
     <div
       className="relative aspect-square overflow-hidden rounded-xl"
+      role="region"
+      aria-label="이미지 캐러셀"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* 메인 이미지 */}
       <Image
         src={images[currentIndex]}
-        alt="Room"
+        alt={`숙소 이미지 ${currentIndex + 1}/${images.length}`}
+        role="img"
+        aria-label={`숙소 이미지 ${currentIndex + 1}/${images.length}`}
         fill
         className="object-cover transition-transform duration-300 ease-in-out"
       />
@@ -86,20 +90,23 @@ export default function CardCarousel({ images, liked = false, onLike }: CardCaro
       )}
 
       {/* 페이지네이션 닷 */}
-      <div className="absolute bottom-2 flex w-full justify-center gap-1">
-        {Array(5)
-          .fill(0)
-          .map((_, index) => (
-            <div
-              key={index}
-              className={`h-1.5 w-1.5 rounded-full ${
-                index === getActiveDotIndex(currentIndex, images.length)
-                  ? 'bg-white'
-                  : 'bg-white/50'
-              }`}
-            />
-          ))}
-      </div>
+      {images.length > 1 && (
+        <div className="absolute bottom-2 flex w-full justify-center gap-1">
+          {Array(Math.min(5, images.length))
+            .fill(0)
+            .map((_, index) => (
+              <div
+                key={index}
+                role="tab"
+                className={`h-1.5 w-1.5 rounded-full ${
+                  index === getActiveDotIndex(currentIndex, images.length)
+                    ? 'bg-white'
+                    : 'bg-white/50'
+                }`}
+              />
+            ))}
+        </div>
+      )}
     </div>
   );
 }
