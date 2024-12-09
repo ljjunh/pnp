@@ -18,7 +18,7 @@ export default function CardSummary({
   review,
 }: CardSummaryProps) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col">
       {/* 주소, 평점 */}
       <div className="flex items-center justify-between">
         <div className="text-shade-02">{location}</div>
