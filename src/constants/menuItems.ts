@@ -13,8 +13,8 @@ export const LOGGED_IN_MENU_ITEMS = [
 ];
 
 export const LOGGED_OUT_MENU_ITEMS = [
-  { id: 'login', label: '로그인' },
-  { id: 'signup', label: '회원 가입', hasDivider: true },
+  { id: 'login', label: '로그인', href: ROUTES.LOGIN},
+  { id: 'signup', label: '회원 가입', href: ROUTES.LOGIN, hasDivider: true },
   { id: 'host-home', label: '당신의 공간을 에어비앤비하세요', href: ROUTES.HOME },
   { id: 'host-experience', label: '체험 호스팅하기', href: ROUTES.HOME },
   { id: 'help', label: '도움말 센터', href: ROUTES.HOME },
