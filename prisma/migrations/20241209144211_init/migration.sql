@@ -1,6 +1,7 @@
 -- CreateTable
 CREATE TABLE `users` (
     `id` VARCHAR(191) NOT NULL,
+    `airbnb_id` VARCHAR(191) NULL,
     `name` VARCHAR(191) NULL,
     `username` VARCHAR(191) NULL,
     `email` VARCHAR(191) NULL,
@@ -9,6 +10,7 @@ CREATE TABLE `users` (
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
+    UNIQUE INDEX `users_airbnb_id_key`(`airbnb_id`),
     UNIQUE INDEX `users_username_key`(`username`),
     UNIQUE INDEX `users_email_key`(`email`),
     PRIMARY KEY (`id`)
@@ -141,16 +143,16 @@ CREATE TABLE `room_amenities` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `room_reviews` (
+CREATE TABLE `reviews` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `room_id` BIGINT NOT NULL,
-    `userId` VARCHAR(191) NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
     `rating` INTEGER NOT NULL,
     `review` VARCHAR(191) NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `room_reviews_room_id_userId_key`(`room_id`, `userId`),
+    UNIQUE INDEX `reviews_room_id_user_id_key`(`room_id`, `user_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -158,7 +160,6 @@ CREATE TABLE `room_reviews` (
 CREATE TABLE `hosts` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` VARCHAR(191) NOT NULL,
-    `airbnb_id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `profile_image` VARCHAR(191) NULL,
     `is_super_host` BOOLEAN NOT NULL,
@@ -181,7 +182,6 @@ CREATE TABLE `hosts` (
     `pet` VARCHAR(191) NULL,
 
     UNIQUE INDEX `hosts_user_id_key`(`user_id`),
-    UNIQUE INDEX `hosts_airbnb_id_key`(`airbnb_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -230,10 +230,10 @@ ALTER TABLE `room_amenities` ADD CONSTRAINT `room_amenities_room_id_fkey` FOREIG
 ALTER TABLE `room_amenities` ADD CONSTRAINT `room_amenities_amenity_id_fkey` FOREIGN KEY (`amenity_id`) REFERENCES `amenities`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `room_reviews` ADD CONSTRAINT `room_reviews_room_id_fkey` FOREIGN KEY (`room_id`) REFERENCES `rooms`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `reviews` ADD CONSTRAINT `reviews_room_id_fkey` FOREIGN KEY (`room_id`) REFERENCES `rooms`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `room_reviews` ADD CONSTRAINT `room_reviews_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `reviews` ADD CONSTRAINT `reviews_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `hosts` ADD CONSTRAINT `hosts_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
