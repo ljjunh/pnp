@@ -3,7 +3,7 @@ START TRANSACTION;
 
 SET FOREIGN_KEY_CHECKS = 0;
 use pnp;
-TRUNCATE TABLE room_reviews;
+TRUNCATE TABLE reviews;
 TRUNCATE TABLE room_amenities;
 TRUNCATE TABLE room_rules;
 TRUNCATE TABLE room_images;

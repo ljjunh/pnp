@@ -147,12 +147,13 @@ CREATE TABLE `reviews` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `room_id` BIGINT NOT NULL,
     `user_id` VARCHAR(191) NOT NULL,
+    `airbnb_id` VARCHAR(191) NULL,
     `rating` INTEGER NOT NULL,
-    `review` VARCHAR(191) NULL,
+    `content` TEXT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `reviews_room_id_user_id_key`(`room_id`, `user_id`),
+    UNIQUE INDEX `reviews_airbnb_id_key`(`airbnb_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

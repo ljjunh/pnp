@@ -39,7 +39,7 @@ model Account {
   provider                 String
   providerAccountId        String
   refresh_token            String?  @db.Text
-  accessToken              String?  @map("access_token") @db.Text
+  access_token             String?  @map("access_token") @db.Text
   expires_at               Int?
   token_type               String?
   scope                    String?
@@ -172,12 +172,12 @@ model Review {
   roomId    BigInt   @map("room_id")
   user      User     @relation(fields: [userId], references: [id])
   userId    String   @map("user_id")
+  airbnbId  String?  @unique @map("airbnb_id")
   rating    Int
-  review    String?
+  content   String?  @db.Text
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  @@unique([roomId, userId])
   @@map("reviews")
 }
 
@@ -189,15 +189,11 @@ enum Orientation {
 model Host {
   id            Int      @id @default(autoincrement())
   userId        String   @unique @map("user_id")
-  name          String
-  profileImage  String?  @map("profile_image")
   isSuperHost   Boolean  @map("is_super_host")
   isVerified    Boolean  @map("is_verified")
-  about         String   @db.Text
-  ratingCount   Int      @map("rating_count")
-  ratingAverage Float    @map("rating_average")
   hostStartedAt DateTime @map("host_started_at")
 
+  about        String? @db.Text
   school       String?
   job          String?
   address      String?
