@@ -1,19 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import CardSummary from '@/components/common/Card/CardSummary';
+import RoomCardSummary from '@/components/common/Card/RoomCardSummary';
 
 const meta = {
   // Storybook 사이드바에서 보여질 경로와 이름
-  title: 'Common/Card/CardSummary',
+  title: 'Common/Card/RoomCardSummary',
   // Story에서 사용할 실제 컴포넌트
-  component: CardSummary,
+  component: RoomCardSummary,
   parameters: {
     layout: 'centered',
   },
-} satisfies Meta<typeof CardSummary>;
+} satisfies Meta<typeof RoomCardSummary>;
 
 export default meta;
 
-type Story = StoryObj<typeof CardSummary>;
+type Story = StoryObj<typeof RoomCardSummary>;
 
 export const Default: Story = {
   args: {

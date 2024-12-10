@@ -1,19 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Card from '@/components/common/Card/Card';
+import RoomCardCarousel from '@/components/common/Card/RoomCardCarousel';
 
 const meta = {
   // Storybook 사이드바에서 보여질 경로와 이름
-  title: 'Common/Card/Card',
+  title: 'Common/Card/RoomCardCarousel',
   // Story에서 사용할 실제 컴포넌트
-  component: Card,
+  component: RoomCardCarousel,
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
   },
-} satisfies Meta<typeof Card>;
+} satisfies Meta<typeof RoomCardCarousel>;
 
 export default meta;
 
-type Story = StoryObj<typeof Card>;
+type Story = StoryObj<typeof RoomCardCarousel>;
 
 const DUMMY_IMAGES = [
   'https://picsum.photos/400/400?random=1',
@@ -26,13 +26,23 @@ const DUMMY_IMAGES = [
 // 기본 상태
 export const Default: Story = {
   args: {
-    id: 1,
     images: DUMMY_IMAGES,
-    location: '한국 Jangam-myeon,Buyeo',
-    distance: '149',
-    dates: '12월 15일 ~ 20일',
-    price: 239647,
-    rating: 4.92,
-    review: '정말정말 잘 쉬다가 갑니다',
+    liked: false,
+  },
+};
+
+// 좋아요 된 상태
+export const Liked: Story = {
+  args: {
+    images: DUMMY_IMAGES,
+    liked: true,
+  },
+};
+
+// 이미지가 한 장일 때
+export const SingleImage: Story = {
+  args: {
+    images: [DUMMY_IMAGES[0]],
+    liked: false,
   },
 };
