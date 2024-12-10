@@ -1,16 +1,12 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { SocialLogin } from '@/app/@modal/login/SocialLogin';
+import { SocialLogin } from '@/app/login/SocialLogin';
 
-export default function LoginModal() {
+export default function LoginPage() {
   const router = useRouter();
 
   return (
-    <div
-    onClick={() => router.back()}
-    className="absolute inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-  >
     <dialog
       onClick={(e) => e.stopPropagation()}
       className="w-full max-w-screen-sm rounded-lg bg-white"
@@ -61,6 +57,5 @@ export default function LoginModal() {
         <SocialLogin />
       </main>
     </dialog>
-    </div>
   );
 }
