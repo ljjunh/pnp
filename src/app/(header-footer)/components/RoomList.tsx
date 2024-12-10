@@ -1,4 +1,4 @@
-import Card from '@/components/common/Card/Card';
+import RoomCard from '@/components/common/Card/RoomCard';
 
 // 임시 더미 데이터 타입
 interface Room {
@@ -105,7 +105,7 @@ export default function RoomList() {
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:gap-8 lg:grid-cols-3 xl:grid-cols-4">
       {DUMMY_ROOMS.map((room) => (
-        <Card
+        <RoomCard
           key={room.id}
           id={room.id}
           images={room.images}
