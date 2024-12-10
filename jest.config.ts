@@ -57,6 +57,8 @@ const customJestConfig: Config = {
     '!src/components/**/*.stories.{ts,tsx}',
     '!src/components/common/**',
     'src/app/**/*.{ts,tsx}',
+    '!src/app/**/*.stories.{ts,tsx}',
+    '!src/app/**/components/**/*.{ts,tsx}',
     '!src/app/**/layout.tsx',
     '!src/app/**/page.tsx',
     '!src/app/**/loading.tsx',
