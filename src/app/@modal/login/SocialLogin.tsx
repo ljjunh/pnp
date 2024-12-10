@@ -27,7 +27,7 @@ export function SocialLogin() {
       <nav className="space-y-3">
         <button
           onClick={() => handleSocialLogin('google')}
-          className="flex w-full items-center justify-between rounded-md border border-gray-300 px-4 py-2 hover:bg-gray-50"
+          className="flex w-full items-center justify-between rounded-md border border-gray-500 px-4 py-2 hover:bg-gray-100"
         >
           <FaGoogle className="size-5" />
           <div>구글로 로그인하기</div>
@@ -37,7 +37,7 @@ export function SocialLogin() {
         {/* 카카오 로그인 */}
         <button
           onClick={() => handleSocialLogin('kakao')}
-          className="flex w-full items-center justify-between rounded-md border border-gray-300 px-4 py-2 hover:bg-gray-50"
+          className="flex w-full items-center justify-between rounded-md border border-gray-500 px-4 py-2 hover:bg-gray-100"
         >
           <SiKakao className="size-6" />
           <div>카카오톡으로 로그인하기</div>
