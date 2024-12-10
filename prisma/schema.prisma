@@ -189,8 +189,12 @@ enum Orientation {
 model Host {
   id            Int      @id @default(autoincrement())
   userId        String   @unique @map("user_id")
-  isSuperHost   Boolean  @map("is_super_host")
-  isVerified    Boolean  @map("is_verified")
+  name          String
+  profileImage  String? @map("profile_image")
+  isSuperHost   Boolean @map("is_super_host")
+  isVerified    Boolean @map("is_verified")
+  ratingCount   Int @map("rating_count")
+  ratingAverage Float @map("rating_average")
   hostStartedAt DateTime @map("host_started_at")
 
   about        String? @db.Text
