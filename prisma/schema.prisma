@@ -98,6 +98,7 @@ model Room {
   checkOut       String  @map("check_out")
   checkInType    String  @map("check_in_type")
 
+  roomTags  RoomTag[]
   images    RoomImage[]
   reviews   Review[]
   rules     RoomRule[]
@@ -189,13 +190,9 @@ enum Orientation {
 model Host {
   id            Int      @id @default(autoincrement())
   userId        String   @unique @map("user_id")
-  name          String
-  profileImage  String? @map("profile_image")
-  isSuperHost   Boolean @map("is_super_host")
-  isVerified    Boolean @map("is_verified")
-  ratingCount   Int @map("rating_count")
-  ratingAverage Float @map("rating_average")
-  hostStartedAt DateTime @map("host_started_at")
+  isSuperHost   Boolean  @default(false) @map("is_super_host")
+  isVerified    Boolean  @default(false) @map("is_verified")
+  hostStartedAt DateTime @default(now()) @map("host_started_at")
 
   about        String? @db.Text
   school       String?
@@ -211,21 +208,20 @@ model Host {
   hobby        String?
   pet          String?
 
-  tags HostTag[]
-
-  user User   @relation(fields: [userId], references: [id])
-  Room Room[]
+  hostTags HostTag[]
+  user     User      @relation(fields: [userId], references: [id])
+  rooms    Room[]
 
   @@map("hosts")
 }
 
-// '응답률 100%' 같은 태그
 model Tag {
   id        Int      @id @default(autoincrement())
   content   String   @unique @db.VarChar(100)
   createdAt DateTime @default(now()) @map("created_at")
 
-  host HostTag[]
+  hostTags HostTag[]
+  roomTags RoomTag[]
 
   @@map("tags")
 }
@@ -240,4 +236,16 @@ model HostTag {
 
   @@unique([hostId, tagId])
   @@map("host_tags")
+}
+
+model RoomTag {
+  id     Int    @id @default(autoincrement())
+  roomId BigInt @map("room_id")
+  tagId  Int    @map("tag_id")
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id])
+
+  @@unique([roomId, tagId])
+  @@map("room_tags")
 }

@@ -161,14 +161,10 @@ CREATE TABLE `reviews` (
 CREATE TABLE `hosts` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` VARCHAR(191) NOT NULL,
-    `name` VARCHAR(191) NOT NULL,
-    `profile_image` VARCHAR(191) NULL,
-    `is_super_host` BOOLEAN NOT NULL,
-    `is_verified` BOOLEAN NOT NULL,
-    `about` TEXT NOT NULL,
-    `rating_count` INTEGER NOT NULL,
-    `rating_average` DOUBLE NOT NULL,
-    `host_started_at` DATETIME(3) NOT NULL,
+    `is_super_host` BOOLEAN NOT NULL DEFAULT false,
+    `is_verified` BOOLEAN NOT NULL DEFAULT false,
+    `host_started_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `about` TEXT NULL,
     `school` VARCHAR(191) NULL,
     `job` VARCHAR(191) NULL,
     `address` VARCHAR(191) NULL,
@@ -203,6 +199,16 @@ CREATE TABLE `host_tags` (
     `tag_id` INTEGER NOT NULL,
 
     UNIQUE INDEX `host_tags_host_id_tag_id_key`(`host_id`, `tag_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `room_tags` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `room_id` BIGINT NOT NULL,
+    `tag_id` INTEGER NOT NULL,
+
+    UNIQUE INDEX `room_tags_room_id_tag_id_key`(`room_id`, `tag_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -244,3 +250,9 @@ ALTER TABLE `host_tags` ADD CONSTRAINT `host_tags_host_id_fkey` FOREIGN KEY (`ho
 
 -- AddForeignKey
 ALTER TABLE `host_tags` ADD CONSTRAINT `host_tags_tag_id_fkey` FOREIGN KEY (`tag_id`) REFERENCES `tags`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `room_tags` ADD CONSTRAINT `room_tags_room_id_fkey` FOREIGN KEY (`room_id`) REFERENCES `rooms`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `room_tags` ADD CONSTRAINT `room_tags_tag_id_fkey` FOREIGN KEY (`tag_id`) REFERENCES `tags`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
