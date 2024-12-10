@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { SocialLogin } from '@/app/login/SocialLogin';
+import { authenticate } from './action';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function LoginPage() {
         <p className="mb-4 font-semibold text-gray-700">에어비앤비에 오신 것을 환영합니다.</p>
 
         {/* 이메일 로그인 */}
-        <form className="flex flex-col gap-4">
+        <form action={authenticate} className="flex flex-col gap-4">
           <input
             name="email"
             type="email"
