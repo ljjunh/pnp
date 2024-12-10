@@ -3,8 +3,7 @@
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { SocialLogin } from '@/app/login/SocialLogin';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { FormEvent, useState } from 'react';
 import * as z from 'zod';
 
 const schema = z.object({
@@ -14,30 +13,39 @@ const schema = z.object({
     .email({ message: '올바른 이메일 형식이 아닙니다' }),
 });
 
-type FormData = z.infer<typeof schema>;
-
 export default function LoginPage() {
   const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
-  });
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccessMessage('');
 
-  const onSubmit = async (data: FormData) => {
     try {
+      // zod로 이메일 유효성 검증
+      schema.parse({ email });
+      
+      setIsSubmitting(true);
       await signIn('email', {
-        email: data.email,
+        email,
         callbackUrl: '/',
         redirect: false,
       });
-      alert('이메일이 전송되었습니다');
+      setSuccessMessage('이메일이 전송되었습니다');
     } catch (error) {
-      console.error('Login error:', error);
-      alert('오류가 발생했습니다');
+      if (error instanceof z.ZodError) {
+        // zod 검증 에러 처리
+        setError(error.errors[0].message);
+      } else {
+        console.error('Login error:', error);
+        setError('오류가 발생했습니다');
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -64,18 +72,20 @@ export default function LoginPage() {
         <p className="mb-4 font-semibold text-gray-700">에어비앤비에 오신 것을 환영합니다.</p>
 
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={onSubmit}
           className="flex flex-col gap-4"
         >
           <div>
             <input
-              {...register('email')}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               type="email"
               placeholder="이메일"
               className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
               disabled={isSubmitting}
             />
-            {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
+            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+            {successMessage && <p className="mt-1 text-sm text-green-600">{successMessage}</p>}
           </div>
           <button
             type="submit"
