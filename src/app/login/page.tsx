@@ -7,13 +7,11 @@ export default function LoginPage() {
   const router = useRouter();
 
   return (
-    <dialog
+    <main
       onClick={(e) => e.stopPropagation()}
       className="w-full max-w-screen-sm rounded-lg bg-white"
-      aria-modal="true"
-      open
     >
-      {/* 모달 헤더 */}
+      {/* 헤더 */}
       <header className="flex items-center justify-between border-b p-4">
         <button
           onClick={() => router.back()}
@@ -25,7 +23,7 @@ export default function LoginPage() {
         <div></div>
       </header>
 
-      <main
+      <section
         className="p-6"
         role="main"
       >
@@ -55,7 +53,7 @@ export default function LoginPage() {
 
         {/* 소셜 로그인 */}
         <SocialLogin />
-      </main>
-    </dialog>
+      </section>
+    </main>
   );
 }
