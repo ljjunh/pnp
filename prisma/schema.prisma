@@ -79,7 +79,7 @@ model VerificationToken {
 }
 
 model Room {
-  id             BigInt  @id @default(autoincrement())
+  id             Int     @id @default(autoincrement())
   airbnbId       String  @unique @map("airbnb_id")
   airbnbLink     String  @unique @map("airbnb_link")
   title          String
@@ -111,9 +111,9 @@ model Room {
 }
 
 model RoomImage {
-  id          BigInt      @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   room        Room        @relation(fields: [roomId], references: [id])
-  roomId      BigInt      @map("room_id")
+  roomId      Int         @map("room_id")
   caption     String      @db.VarChar(1000)
   orientation Orientation
   imageLink   String      @map("image_link")
@@ -122,7 +122,7 @@ model RoomImage {
 }
 
 model Rule {
-  id       BigInt @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   category String
   title    String
   icon     String
@@ -133,7 +133,7 @@ model Rule {
 }
 
 model Amenity {
-  id        BigInt  @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   category  String
   title     String
   subTitle  String? @map("sub_title")
@@ -146,31 +146,31 @@ model Amenity {
 }
 
 model RoomRule {
-  id     BigInt @id @default(autoincrement())
-  room   Room   @relation(fields: [roomId], references: [id])
-  roomId BigInt @map("room_id")
-  rule   Rule   @relation(fields: [ruleId], references: [id])
-  ruleId BigInt @map("rule_id")
+  id     Int  @id @default(autoincrement())
+  room   Room @relation(fields: [roomId], references: [id])
+  roomId Int  @map("room_id")
+  rule   Rule @relation(fields: [ruleId], references: [id])
+  ruleId Int  @map("rule_id")
 
   @@unique([roomId, ruleId])
   @@map("room_rules")
 }
 
 model RoomAmenity {
-  id        BigInt  @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   room      Room    @relation(fields: [roomId], references: [id])
-  roomId    BigInt  @map("room_id")
+  roomId    Int     @map("room_id")
   amenity   Amenity @relation(fields: [amenityId], references: [id])
-  amenityId BigInt  @map("amenity_id")
+  amenityId Int     @map("amenity_id")
 
   @@unique([roomId, amenityId])
   @@map("room_amenities")
 }
 
 model Review {
-  id        BigInt   @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   room      Room     @relation(fields: [roomId], references: [id])
-  roomId    BigInt   @map("room_id")
+  roomId    Int      @map("room_id")
   user      User     @relation(fields: [userId], references: [id])
   userId    String   @map("user_id")
   airbnbId  String?  @unique @map("airbnb_id")
@@ -239,9 +239,9 @@ model HostTag {
 }
 
 model RoomTag {
-  id     Int    @id @default(autoincrement())
-  roomId BigInt @map("room_id")
-  tagId  Int    @map("tag_id")
+  id     Int @id @default(autoincrement())
+  roomId Int @map("room_id")
+  tagId  Int @map("tag_id")
 
   room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
   tag  Tag  @relation(fields: [tagId], references: [id])

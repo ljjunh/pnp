@@ -4,7 +4,7 @@ import EmailProvider from 'next-auth/providers/email';
 import GoogleProvider from 'next-auth/providers/google';
 import KakaoProvider from 'next-auth/providers/kakao';
 import { cookies } from 'next/headers';
-import { prisma } from '@/lib/client';
+import { prisma } from '@/lib/server/client';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import jwt from 'jsonwebtoken';
 
