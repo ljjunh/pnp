@@ -1,4 +1,11 @@
 import { prisma } from './client';
-import { getPaginationMetadata, getPaginationParams, getSkipTake } from './pagination';
+import {
+  PaginationResponse,
+  createPaginationResponse,
+  getPaginationParams,
+  getSkipTake,
+} from './pagination';
+import { ErrorResponse } from './response';
 
-export { getPaginationMetadata, getPaginationParams, getSkipTake, prisma };
+export { createPaginationResponse, getPaginationParams, getSkipTake, prisma };
+export type { ErrorResponse, PaginationResponse };

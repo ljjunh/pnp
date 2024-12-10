@@ -8,13 +8,18 @@ interface PaginationParams {
   limit: number;
 }
 
-export interface PaginationMetadata {
+interface PaginationMetadata {
   currentPage: number;
   pageSize: number;
   totalPages: number;
   totalItems: number;
   hasNextPage: boolean;
   hasPrevPage: boolean;
+}
+
+export interface PaginationResponse<T> {
+  data: T[];
+  page: PaginationMetadata;
 }
 
 export function getPaginationParams(
@@ -31,7 +36,7 @@ export function getPaginationParams(
   };
 }
 
-export function getPaginationMetadata(
+function getPaginationMetadata(
   totalItems: number,
   page: number,
   limit: number,
@@ -45,6 +50,20 @@ export function getPaginationMetadata(
     totalItems,
     hasNextPage: page < totalPages,
     hasPrevPage: page > 1,
+  };
+}
+
+export function createPaginationResponse<T>(
+  data: T[],
+  totalItems: number,
+  page: number,
+  limit: number,
+): PaginationResponse<T> {
+  const metadata = getPaginationMetadata(totalItems, page, limit);
+
+  return {
+    data,
+    page: metadata,
   };
 }
 
