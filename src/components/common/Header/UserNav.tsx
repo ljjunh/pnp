@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import UserButton from '@/components/common/Header/UserButton';
 import UserMenu from '@/components/common/Header/UserMenu';
+import { ROUTES } from '@/constants/routeURL';
 import { BiGlobe } from 'react-icons/bi';
 
 export default function UserNav() {
@@ -18,7 +19,7 @@ export default function UserNav() {
   return (
     <div className="relative flex items-center gap-2">
       <Link
-        href="/"
+        href={ROUTES.HOME}
         className="truncate rounded-full px-4 py-3 text-sm transition hover:bg-neutral-01"
       >
         당신의 공간을 에어비앤비하세요

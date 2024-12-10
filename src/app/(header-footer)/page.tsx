@@ -1,16 +1,5 @@
-import Link from 'next/link';
-import Button from '@/components/common/Button/Button';
+import RoomList from '@/app/(header-footer)/components/RoomList';
 
 export default function Home() {
-  return (
-    <div>
-      <Button
-        variant="tertiary"
-        isLoading
-      >
-        Tertiary Focus Test
-      </Button>
-      <Link href="/test">Test</Link>
-    </div>
-  );
+  return <RoomList />;
 }
