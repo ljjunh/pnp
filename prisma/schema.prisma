@@ -38,7 +38,7 @@ model Account {
   provider                 String
   providerAccountId        String
   refresh_token            String?  @db.Text
-  accessToken              String?  @map("access_token") @db.Text
+  access_token             String?  @db.Text
   expires_at               Int?
   token_type               String?
   scope                    String?
@@ -185,27 +185,27 @@ enum Orientation {
 
 model Host {
   id            Int      @id @default(autoincrement())
-  userId        String   @unique
-  airbnbId      String   @unique
+  userId        String   @unique @map("user_id")
+  airbnbId      String   @unique @map("airbnb_id")
   name          String
-  profileImage  String?
-  isSuperHost   Boolean
-  isVerified    Boolean
+  profileImage  String? @map("profile_image")
+  isSuperHost   Boolean @map("is_super_host")
+  isVerified    Boolean @map("is_verified")
   about         String
-  ratingCount   Int
-  ratingAverage Float
-  hostStartedAt DateTime
+  ratingCount   Int @map("rating_count")
+  ratingAverage Float @map("rating_average")
+  hostStartedAt DateTime @map("host_started_at")
 
   school       String?
   job          String?
   address      String?
   language     String?
   birth        String?
-  favoriteSong String?
+  favoriteSong String? @map("favorite_song")
   liked        String?
   interested   String?
-  noTalented   String?
-  bookTitle    String?
+  noTalented   String? @map("no_talented")
+  bookTitle    String? @map("book_title")
   hobby        String?
   pet          String?
 
@@ -229,8 +229,8 @@ model Tag {
 
 model HostTag {
   id     Int @id @default(autoincrement())
-  hostId Int
-  tagId  Int
+  hostId Int @map("host_id")
+  tagId  Int @map("tag_id")
 
   host Host @relation(fields: [hostId], references: [id])
   tag  Tag  @relation(fields: [tagId], references: [id])
