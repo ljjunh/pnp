@@ -6,13 +6,13 @@ import { getActiveDotIndex } from '@/utils/getActiveDotIndex';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
 
-interface CardCarouselProps {
+interface RoomCardCarouselProps {
   images: string[];
   liked?: boolean;
   onLike?: () => void;
 }
 
-export default function CardCarousel({ images, liked = false, onLike }: CardCarouselProps) {
+export default function RoomCardCarousel({ images, liked = false, onLike }: RoomCardCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 

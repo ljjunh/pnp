@@ -87,12 +87,20 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, isNewUser }) {
       if (user) {
         token.sub = user.id;
         token.email = user.email;
         token.name = user.name;
         token.picture = user.image;
+      }
+
+      if (isNewUser) {
+        await prisma.host.create({
+          data: {
+            userId: user.id,
+          },
+        });
       }
       return token;
     },

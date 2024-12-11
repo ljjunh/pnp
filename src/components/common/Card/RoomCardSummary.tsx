@@ -1,6 +1,6 @@
 import { IoIosStar } from 'react-icons/io';
 
-interface CardSummaryProps {
+interface RoomCardSummaryProps {
   location: string;
   distance: string;
   dates: string;
@@ -9,14 +9,14 @@ interface CardSummaryProps {
   review?: string;
 }
 
-export default function CardSummary({
+export default function RoomCardSummary({
   location,
   distance,
   dates,
   price,
   rating,
   review,
-}: CardSummaryProps) {
+}: RoomCardSummaryProps) {
   return (
     <div className="flex flex-col">
       {/* 주소, 평점 */}
