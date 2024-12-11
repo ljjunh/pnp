@@ -1,18 +1,40 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import LoginPage from '@/app/login/page';
+import { EmailLoginForm } from '@/app/login/EmailLoginForm';
+import { LoginHeader } from '@/app/login/LoginHeader';
+import { SocialLogin } from '@/app/login/SocialLogin';
 
 export default function LoginModal() {
   const router = useRouter();
 
+  // 뒤로 가기
+  const handleBack = () => {
+    router.back();
+  };
+
   return (
     <div
-      onClick={() => router.back()}
+      onClick={handleBack}
       className="absolute inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
     >
-      {/* loing 컴포넌트 나눈 뒤 dialog tag 바꿔주기, aria-modal="true" open 추가 */}
-      <LoginPage />
+      <dialog
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-screen-sm rounded-lg bg-white"
+        aria-modal="true"
+        open
+      >
+        <LoginHeader onBack={handleBack} />
+
+        <section
+          className="p-6"
+          role="main"
+        >
+          <p className="mb-4 font-semibold text-gray-700">에어비앤비에 오신 것을 환영합니다.</p>
+          <EmailLoginForm />
+          <SocialLogin />
+        </section>
+      </dialog>
     </div>
   );
 }
