@@ -3,10 +3,9 @@ import { JWT } from 'next-auth/jwt';
 import EmailProvider from 'next-auth/providers/email';
 import GoogleProvider from 'next-auth/providers/google';
 import KakaoProvider from 'next-auth/providers/kakao';
-import { cookies } from 'next/headers';
+import { createAccessToken, createRefreshToken, verifyToken } from '@/lib/server';
 import { prisma } from '@/lib/server/client';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import jwt from 'jsonwebtoken';
 
 const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -22,35 +21,27 @@ const handler = NextAuth({
       }
 
       const payload = {
-        sub: token.sub,
-        email: token.email,
+        sub: token.sub!,
+        email: token.email!,
       };
 
-      const accessToken = jwt.sign(payload, secret, {
-        algorithm: 'HS256',
-        expiresIn: '1h',
-      });
+      const accessToken = createAccessToken(payload, secret as string);
+      const refreshToken = createRefreshToken(payload, secret as string);
+      // const cookieStore = cookies();
 
-      const refreshToken = jwt.sign(payload, secret, {
-        algorithm: 'HS256',
-        expiresIn: '30d',
-      });
+      // cookieStore.set('accessToken', accessToken, {
+      //   httpOnly: false,
+      //   secure: process.env.NODE_ENV === 'production',
+      //   sameSite: 'lax',
+      //   maxAge: 24 * 60 * 60,
+      // });
 
-      const cookieStore = cookies();
-
-      cookieStore.set('accessToken', accessToken, {
-        httpOnly: false,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 24 * 60 * 60,
-      });
-
-      cookieStore.set('refreshToken', refreshToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 30 * 24 * 60 * 60,
-      });
+      // cookieStore.set('refreshToken', refreshToken, {
+      //   httpOnly: true,
+      //   secure: process.env.NODE_ENV === 'production',
+      //   sameSite: 'lax',
+      //   maxAge: 30 * 24 * 60 * 60,
+      // });
 
       return accessToken;
     },
@@ -60,7 +51,7 @@ const handler = NextAuth({
         throw new Error('token이 없습니다');
       }
 
-      return jwt.verify(token, secret) as JWT;
+      return verifyToken(token, secret as string);
     },
   },
   providers: [
