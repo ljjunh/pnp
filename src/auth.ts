@@ -15,7 +15,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Kakao,
     Resend({
       apiKey: process.env.AUTH_RESEND_KEY,
-      from: 'help@sunsuking.me',
+      from: process.env.AUTH_RESEND_FROM_EMAIL,
     }),
   ],
 });
