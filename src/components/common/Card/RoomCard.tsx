@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import CardCarousel from '@/components/common/Card/CardCarousel';
-import CardSummary from '@/components/common/Card/CardSummary';
+import RoomCardCarousel from '@/components/common/Card/RoomCardCarousel';
+import RoomCardSummary from '@/components/common/Card/RoomCardSummary';
 import { ROUTES } from '@/constants/routeURL';
 
 // Todo: api 연결하면 타입설정 다시하고 apis로 옮겨서 import해서 사용
-interface CardProps {
+interface RoomCardProps {
   id: number;
   images: string[];
   location: string;
@@ -18,7 +18,7 @@ interface CardProps {
   review?: string;
 }
 
-export default function Card({
+export default function RoomCard({
   id,
   images,
   location,
@@ -27,7 +27,7 @@ export default function Card({
   price,
   rating,
   review,
-}: CardProps) {
+}: RoomCardProps) {
   // TODO : 좋아요 로직 작성 예정
   const [isLiked, setIsLiked] = useState(false);
 
@@ -40,12 +40,12 @@ export default function Card({
       href={ROUTES.ROOMS.DETAIL(id)}
       className="flex w-full flex-col gap-3"
     >
-      <CardCarousel
+      <RoomCardCarousel
         images={images}
         liked={isLiked}
         onLike={handleLike}
       />
-      <CardSummary
+      <RoomCardSummary
         location={location}
         distance={distance}
         dates={dates}
