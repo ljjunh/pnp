@@ -1,9 +1,9 @@
 'use client';
 
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { SocialLogin } from '@/app/login/SocialLogin';
 import { FormEvent, useState } from 'react';
+import { signIn } from 'next-auth/react';
+import { LoginHeader } from '@/app/login/LoginHeader';
+import { SocialLogin } from '@/app/login/SocialLogin';
 import * as z from 'zod';
 
 const schema = z.object({
@@ -14,7 +14,6 @@ const schema = z.object({
 });
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -28,7 +27,7 @@ export default function LoginPage() {
     try {
       // zod로 이메일 유효성 검증
       schema.parse({ email });
-      
+
       setIsSubmitting(true);
       await signIn('email', {
         email,
@@ -54,16 +53,7 @@ export default function LoginPage() {
       onClick={(e) => e.stopPropagation()}
       className="w-full max-w-screen-sm rounded-lg bg-white"
     >
-      <header className="flex items-center justify-between border-b p-4">
-        <button
-          onClick={() => router.back()}
-          className="text-gray-500 hover:text-gray-700"
-        >
-          <span className="text-2xl">×</span>
-        </button>
-        <h1 className="text-lg font-bold">로그인 또는 회원가입</h1>
-        <div></div>
-      </header>
+      <LoginHeader />
 
       <section
         className="p-6"
