@@ -24,7 +24,7 @@ export const EmailLoginForm = () => {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full rounded-md bg-button-01 py-3 text-white hover:bg-button-02 disabled:opacity-50"
+        className="w-full rounded-md bg-button-01 py-3 text-white hover:bg-button-02 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isSubmitting ? '처리중...' : '계속'}
       </button>

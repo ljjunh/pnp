@@ -31,7 +31,7 @@ export function SocialLogin() {
         >
           <FaGoogle className="size-5" />
           <div>구글로 로그인하기</div>
-          <div></div>
+          <div/>
         </button>
 
         {/* 카카오 로그인 */}
@@ -41,7 +41,7 @@ export function SocialLogin() {
         >
           <SiKakao className="size-6" />
           <div>카카오톡으로 로그인하기</div>
-          <div></div>
+          <div/>
         </button>
       </nav>
     </>
