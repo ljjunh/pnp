@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 10;
+const MAX_LIMIT = 100;
 
 interface PaginationParams {
   page: number;
@@ -28,7 +29,8 @@ export function getPaginationParams(
 ): PaginationParams {
   const searchParams = request.nextUrl.searchParams;
   const page = Math.max(1, Number(searchParams.get('page')) || DEFAULT_PAGE);
-  const limit = Math.max(1, Number(searchParams.get('limit')) || defaultLimit);
+  // * 무제한 페이지 크기는 서버 리소스 남용으로 이어질 수 있기에 최대 페이지 크기를 제한
+  const limit = Math.min(MAX_LIMIT, Math.max(1, Number(searchParams.get('limit')) || defaultLimit));
 
   return {
     page,
@@ -68,8 +70,10 @@ export function createPaginationResponse<T>(
 }
 
 export function getSkipTake(page: number = DEFAULT_PAGE, limit: number = DEFAULT_LIMIT) {
+  // * page 값이 매우 큰 경우 skip 계산 시 정수 오버플로우가 발생할 수 있어서 안전한 최대값을 설정
+  const skip = page <= 1 ? 0 : Math.min(Number.MAX_SAFE_INTEGER, (page - 1) * limit);
   return {
-    skip: (page - 1) * limit,
+    skip,
     take: limit,
   };
 }

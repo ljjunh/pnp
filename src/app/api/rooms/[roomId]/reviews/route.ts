@@ -7,14 +7,10 @@ import {
   getPaginationParams,
   getSkipTake,
 } from '@/lib/server';
+import { createReviewSchema } from '@/schemas/review';
 import { createReview, getReviews } from '@/services/review';
 import { z } from 'zod';
 import { Review, ReviewParams } from '@/types/review';
-
-const reviewSchema = z.object({
-  rating: z.number().min(1).max(5),
-  content: z.string().min(10).max(500),
-});
 
 export async function GET(
   request: NextRequest,
@@ -47,7 +43,7 @@ export async function POST(
     }
 
     const roomId = +params.roomId;
-    const data = reviewSchema.parse(await request.json());
+    const data = createReviewSchema.parse(await request.json());
 
     await createReview(roomId, session.user.id, data.rating, data.content);
 
