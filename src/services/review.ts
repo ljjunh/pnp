@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/server';
+import { CreateReviewInput, UpdateReviewInput } from '@/schemas/review';
 import { Review } from '@/types/review';
 
 /**
@@ -47,21 +48,19 @@ export async function getReviews(
  *
  * @param {number} roomId 방 아이디
  * @param {string} userId 사용자 아이디
- * @param {number} rating 평점
- * @param {string} content 내용
+ * @param {CreateReviewInput} data 리뷰 생성 데이터
  */
 export async function createReview(
   roomId: number,
   userId: string,
-  rating: number,
-  content: string,
+  data: CreateReviewInput,
 ): Promise<void> {
   await prisma.review.create({
     data: {
       roomId,
-      userId: userId,
-      rating: rating,
-      content: content,
+      userId,
+      rating: data.rating,
+      content: data.content,
     },
   });
 }
@@ -71,23 +70,21 @@ export async function createReview(
  *
  * @param {number} reviewId 리뷰 아이디
  * @param {string} userId 사용자 아이디
- * @param {number} rating 평점
- * @param {string} content 내용
+ * @param {UpdateReviewInput} data 리뷰 수정 데이터
  */
 export async function updateReview(
   reviewId: number,
   userId: string,
-  rating: number,
-  content: string,
+  data: UpdateReviewInput,
 ): Promise<void> {
   await prisma.review.update({
     where: {
       id: reviewId,
-      userId: userId,
+      userId,
     },
     data: {
-      rating: rating,
-      content: content,
+      rating: data.rating,
+      content: data.content,
     },
   });
 }
@@ -102,7 +99,7 @@ export async function deleteReview(reviewId: number, userId: string): Promise<vo
   await prisma.review.delete({
     where: {
       id: reviewId,
-      userId: userId,
+      userId,
     },
   });
 }

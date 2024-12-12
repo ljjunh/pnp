@@ -1,4 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import {
   ErrorResponse,
@@ -9,8 +8,9 @@ import {
 } from '@/lib/server';
 import { createReviewSchema } from '@/schemas/review';
 import { createReview, getReviews } from '@/services/review';
-import { z } from 'zod';
 import { Review, ReviewParams } from '@/types/review';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
 export async function GET(
   request: NextRequest,
@@ -45,7 +45,7 @@ export async function POST(
     const roomId = +params.roomId;
     const data = createReviewSchema.parse(await request.json());
 
-    await createReview(roomId, session.user.id, data.rating, data.content);
+    await createReview(roomId, session.user.id, data);
 
     return NextResponse.json(
       {
