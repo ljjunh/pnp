@@ -16,7 +16,10 @@ export function SocialLogin() {
   return (
     <>
       {/* 구분선 */}
-      <div role='separator' className="relative my-6 text-center">
+      <div
+        role="separator"
+        className="relative my-6 text-center"
+      >
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-gray-300"></div>
         </div>
@@ -31,7 +34,7 @@ export function SocialLogin() {
         >
           <FaGoogle className="size-5" />
           <div>구글로 로그인하기</div>
-          <div/>
+          <div />
         </button>
 
         {/* 카카오 로그인 */}
@@ -41,7 +44,7 @@ export function SocialLogin() {
         >
           <SiKakao className="size-6" />
           <div>카카오톡으로 로그인하기</div>
-          <div/>
+          <div />
         </button>
       </nav>
     </>
