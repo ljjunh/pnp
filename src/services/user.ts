@@ -1,7 +1,7 @@
-import { NotFoundError } from "@/errors";
-import { prisma } from "@/lib/server";
-import { UpdateUserInput } from "@/schemas/user";
-import { User } from "@/types/user";
+import { NotFoundError } from '@/errors';
+import { prisma } from '@/lib/server';
+import { UpdateUserInput } from '@/schemas/user';
+import { User } from '@/types/user';
 
 /**
  * 유저 정보 조회
@@ -39,11 +39,11 @@ export async function getUser(userId: string): Promise<User> {
             select: {
               tag: {
                 select: {
-                  content: true
+                  content: true,
                 },
-              }
-            }
-          }
+              },
+            },
+          },
         },
       },
     },

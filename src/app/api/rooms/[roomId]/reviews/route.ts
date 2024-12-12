@@ -1,7 +1,8 @@
+import { NextRequest } from 'next/server';
 import { auth } from '@/auth';
 import { CustomError, UnAuthorizedError } from '@/errors';
 import {
-  ErrorResponse,
+  CustomResponse,
   PaginationResponse,
   createPaginationResponse,
   getPaginationParams,
@@ -9,14 +10,13 @@ import {
 } from '@/lib/server';
 import { createReviewSchema } from '@/schemas/review';
 import { createReview, getReviews } from '@/services/review';
-import { Review, ReviewParams } from '@/types/review';
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { Review, ReviewParams } from '@/types/review';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: ReviewParams },
-): Promise<NextResponse<PaginationResponse<Review> | ErrorResponse>> {
+): Promise<CustomResponse<PaginationResponse<Review> | undefined>> {
   try {
     const roomId = +params.roomId;
     const { page, limit } = getPaginationParams(request);
@@ -24,18 +24,15 @@ export async function GET(
 
     const [reviews, total] = await getReviews(roomId, skip, take);
 
-    return NextResponse.json({
-      ...createPaginationResponse<Review>(reviews, total, page, limit),
-    });
+    return CustomResponse.ok(createPaginationResponse(reviews, total, page, limit));
   } catch (error) {
-    return NextResponse.json({ error: '리뷰 목록을 가져오는데 실패했습니다.' }, { status: 500 });
+    console.error(error);
+
+    return CustomResponse.errors();
   }
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: ReviewParams },
-): Promise<NextResponse> {
+export async function POST(request: NextRequest, { params }: { params: ReviewParams }) {
   try {
     const session = await auth();
 
@@ -47,26 +44,16 @@ export async function POST(
     const data = createReviewSchema.parse(await request.json());
 
     await createReview(roomId, session.user.id, data);
-
-    return NextResponse.json(
-      {
-        success: true,
-        message: '리뷰가 성공적으로 생성되었습니다.',
-      },
-      { status: 201 },
-    );
+    return CustomResponse.created();
   } catch (error) {
     console.error(error);
 
     if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: '잘못된 요청 데이터입니다.', errors: error.errors },
-        { status: 400 },
-      );
+      return CustomResponse.zod('잘못된 요청 데이터입니다.', 400, error.errors);
     } else if (error instanceof CustomError) {
-      return NextResponse.json({ error: error.message }, { status: error.statusCode });
+      return CustomResponse.errors(error.message, error.statusCode);
     }
 
-    return NextResponse.json({ error: '리뷰 생성에 실패했습니다.' }, { status: 500 });
+    return CustomResponse.errors();
   }
 }

@@ -1,15 +1,19 @@
+import { NextRequest } from 'next/server';
 import { auth } from '@/auth';
 import { CustomError, UnAuthorizedError } from '@/errors';
+import { CustomResponse } from '@/lib/server';
 import { updateReviewSchema } from '@/schemas/review';
 import { deleteReview, updateReview } from '@/services/review';
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 interface Params {
   reviewId: string;
 }
 
-export async function PATCH(request: NextRequest, { params }: { params: Params }) {
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Params },
+): Promise<CustomResponse<undefined>> {
   try {
     const session = await auth();
 
@@ -25,21 +29,21 @@ export async function PATCH(request: NextRequest, { params }: { params: Params }
     // TODO: 만약, reviewId에 해당하는 리뷰는 있지만, 현재 로그인한 사용자가 작성한 리뷰가 아니라면 403 에러를 반환 처리해야할까?
     await updateReview(reviewId, session.user.id, data);
 
-    return NextResponse.json({}, { status: 200 });
+    return CustomResponse.empty();
   } catch (error) {
     console.error(error);
 
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: '잘못된 요청 데이터입니다.', errors: error.errors }, { status: 400 });
+      return CustomResponse.zod('잘못된 요청 데이터입니다.', 400, error.errors);
     } else if (error instanceof CustomError) {
-      return NextResponse.json({ error: error.message }, { status: error.statusCode });
+      return CustomResponse.errors(error.message, error.statusCode);
     }
 
-    return NextResponse.json({ error: '리뷰 수정 실패' }, { status: 500 });
+    return CustomResponse.errors();
   }
 }
 
-export async function DELETE({ params }: { params: Params }) {
+export async function DELETE({ params }: { params: Params }): Promise<CustomResponse<undefined>> {
   try {
     const session = await auth();
 
@@ -50,14 +54,14 @@ export async function DELETE({ params }: { params: Params }) {
     const reviewId = +params.reviewId;
     await deleteReview(reviewId, session.user.id);
 
-    return NextResponse.json({}, { status: 204 });
+    return CustomResponse.deleted();
   } catch (error) {
     console.error(error);
 
     if (error instanceof CustomError) {
-      return NextResponse.json({ error: error.message }, { status: error.statusCode });
+      return CustomResponse.errors(error.message, error.statusCode);
     }
 
-    return NextResponse.json({ error: '리뷰 삭제 실패' }, { status: 500 });
+    return CustomResponse.errors();
   }
 }
