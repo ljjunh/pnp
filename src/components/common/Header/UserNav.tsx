@@ -4,12 +4,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import UserButton from '@/components/common/Header/UserButton';
 import UserMenu from '@/components/common/Header/UserMenu';
+import { useAuth } from '@/hooks/useAuth';
 import { ROUTES } from '@/constants/routeURL';
 import { BiGlobe } from 'react-icons/bi';
 
 export default function UserNav() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn] = useState(false); // 로그인 상태 관리 로직으로 수정
+  const { isLoggedIn } = useAuth();
   const [profileImage] = useState<string | undefined>(); // 유저 프로필 이미지로 변경
 
   const toggleOpen = () => {
