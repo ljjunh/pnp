@@ -72,6 +72,7 @@ export function createPaginationResponse<T>(
 export function getSkipTake(page: number = DEFAULT_PAGE, limit: number = DEFAULT_LIMIT) {
   // * page 값이 매우 큰 경우 skip 계산 시 정수 오버플로우가 발생할 수 있어서 안전한 최대값을 설정
   const skip = page <= 1 ? 0 : Math.min(Number.MAX_SAFE_INTEGER, (page - 1) * limit);
+
   return {
     skip,
     take: limit,
