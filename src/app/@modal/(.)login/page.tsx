@@ -22,6 +22,8 @@ export default function LoginModal() {
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-screen-sm rounded-lg bg-white"
         aria-modal="true"
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
         open
       >
         <LoginHeader onBack={handleBack} />

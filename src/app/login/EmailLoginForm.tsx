@@ -17,14 +17,35 @@ export const EmailLoginForm = () => {
           placeholder="이메일"
           className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
           disabled={isSubmitting}
+          required
+          aria-invalid={!!error}
+          aria-describedby={
+            error ? 'error-message' : successMessage ? 'success-message' : undefined
+          }
         />
-        {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
-        {successMessage && <p className="mt-1 text-sm text-green-600">{successMessage}</p>}
+        {error && (
+          <p
+            id="error-message"
+            role="alert"
+            className="mt-1 text-sm text-red-500"
+          >
+            {error}
+          </p>
+        )}
+        {successMessage && (
+          <p
+            id="success-message"
+            role="status"
+            className="mt-1 text-sm text-green-600"
+          >
+            {successMessage}
+          </p>
+        )}
       </div>
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full rounded-md bg-button-01 py-3 text-white hover:bg-button-02 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full rounded-md bg-button-01 py-3 text-white hover:bg-button-02 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isSubmitting ? '처리중...' : '계속'}
       </button>
