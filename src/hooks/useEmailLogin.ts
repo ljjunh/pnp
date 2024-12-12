@@ -28,7 +28,7 @@ export const useEmailLogin = () => {
       schema.parse({ email });
       setIsSubmitting(true);
 
-      await signIn('email', {
+      await signIn('resend', {
         email,
         callbackUrl: '/',
         redirect: false,
