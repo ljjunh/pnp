@@ -15,14 +15,17 @@ const loadState = () => {
 
 export const makeStore = () => {
   const store = configureStore({
-    reducer: {
-    },
+    reducer: {},
     preloadedState: loadState(),
   });
 
   store.subscribe(() => {
     if (typeof window !== 'undefined') {
-      sessionStorage.setItem('reduxState', JSON.stringify(store.getState()));
+      try {
+        sessionStorage.setItem('reduxState', JSON.stringify(store.getState()));
+      } catch (error) {
+        console.error('상태 저장 중 오류 발생:', error);
+      }
     }
   });
 
