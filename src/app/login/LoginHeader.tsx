@@ -9,6 +9,7 @@ export function LoginHeader({ onBack }: LoginHeaderProps) {
         <button
           onClick={onBack}
           className="text-gray-500 hover:text-gray-700"
+          aria-label="뒤로 가기"
         >
           <span className="text-2xl">×</span>
         </button>
