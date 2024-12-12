@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { signOut } from 'next-auth/react';
 
 interface UserMenuItemProps {
   id: string;
@@ -10,17 +11,9 @@ interface UserMenuItemProps {
 export default function UserMenuItem({ id, label, hasDivider, href }: UserMenuItemProps) {
   const handleClick = () => {
     switch (id) {
-      case 'login':
-        // 로그인 모달 열기
-        console.log('로그인 모달 열기');
-        break;
-      case 'signup':
-        // 회원가입 모달 열기
-        console.log('회원가입 모달 열기');
-        break;
       case 'logout':
         // 로그아웃 처리
-        console.log('로그아웃 처리');
+        signOut()
         break;
     }
   };
