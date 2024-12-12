@@ -1,5 +1,5 @@
 import RoomList from '@/app/(header-footer)/components/RoomList';
 
-export default function Home() {
+export default async function Home() {
   return <RoomList />;
 }
