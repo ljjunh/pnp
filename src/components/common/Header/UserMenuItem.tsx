@@ -1,3 +1,4 @@
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 
 interface UserMenuItemProps {
@@ -8,19 +9,15 @@ interface UserMenuItemProps {
 }
 
 export default function UserMenuItem({ id, label, hasDivider, href }: UserMenuItemProps) {
-  const handleClick = () => {
+  const handleClick = async () => {
     switch (id) {
-      case 'login':
-        // 로그인 모달 열기
-        console.log('로그인 모달 열기');
-        break;
-      case 'signup':
-        // 회원가입 모달 열기
-        console.log('회원가입 모달 열기');
-        break;
       case 'logout':
         // 로그아웃 처리
-        console.log('로그아웃 처리');
+        try {
+          await signOut();
+        } catch (error) {
+          console.error('로그아웃 중 오류가 발생했습니다:', error);
+        }
         break;
     }
   };
