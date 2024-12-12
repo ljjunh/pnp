@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { signOut } from 'next-auth/react';
+import Link from 'next/link';
 
 interface UserMenuItemProps {
   id: string;
@@ -9,11 +9,15 @@ interface UserMenuItemProps {
 }
 
 export default function UserMenuItem({ id, label, hasDivider, href }: UserMenuItemProps) {
-  const handleClick = () => {
+  const handleClick = async () => {
     switch (id) {
       case 'logout':
         // 로그아웃 처리
-        signOut()
+        try {
+          await signOut();
+        } catch (error) {
+          console.error('로그아웃 중 오류가 발생했습니다:', error);
+        }
         break;
     }
   };
