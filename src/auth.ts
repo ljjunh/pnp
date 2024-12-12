@@ -18,4 +18,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       from: process.env.AUTH_RESEND_FROM_EMAIL,
     }),
   ],
+  callbacks: {
+    async jwt({ token, user, session }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.id = token.id as string;
+      return session;
+    },
+  },
 });
