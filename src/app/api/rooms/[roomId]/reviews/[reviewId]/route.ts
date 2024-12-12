@@ -1,4 +1,5 @@
 import { auth } from '@/auth';
+import { CustomError, UnAuthorizedError } from '@/errors';
 import { updateReviewSchema } from '@/schemas/review';
 import { deleteReview, updateReview } from '@/services/review';
 import { NextRequest, NextResponse } from 'next/server';
@@ -12,7 +13,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Params }
     const session = await auth();
 
     if (!session) {
-      return NextResponse.json({ error: '로그인이 필요합니다.' }, { status: 401 });
+      throw new UnAuthorizedError();
     }
 
     const data = updateReviewSchema.parse(await request.json());
@@ -26,6 +27,11 @@ export async function PATCH(request: NextRequest, { params }: { params: Params }
     return NextResponse.json({}, { status: 200 });
   } catch (error) {
     console.error(error);
+
+    if (error instanceof CustomError) {
+      return NextResponse.json({ error: error.message }, { status: error.statusCode });
+    }
+
     return NextResponse.json({ error: '리뷰 수정 실패' }, { status: 500 });
   }
 }
@@ -35,7 +41,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Params 
     const session = await auth();
 
     if (!session) {
-      return NextResponse.json({ error: '로그인이 필요합니다.' }, { status: 401 });
+      throw new UnAuthorizedError();
     }
 
     const reviewId = +params.reviewId;
@@ -44,6 +50,11 @@ export async function DELETE(request: NextRequest, { params }: { params: Params 
     return NextResponse.json({}, { status: 204 });
   } catch (error) {
     console.error(error);
+
+    if (error instanceof CustomError) {
+      return NextResponse.json({ error: error.message }, { status: error.statusCode });
+    }
+
     return NextResponse.json({ error: '리뷰 삭제 실패' }, { status: 500 });
   }
 }

@@ -1,3 +1,4 @@
+import { NotFoundError } from "@/errors";
 import { prisma } from "@/lib/server";
 import { UpdateUserInput } from "@/schemas/user";
 import { User } from "@/types/user";
@@ -8,7 +9,7 @@ import { User } from "@/types/user";
  * @param {string} userId 유저 아이디
  * @returns {Promise<User | null>} 유저 정보
  */
-export async function getUser(userId: string): Promise<User | null> {
+export async function getUser(userId: string): Promise<User> {
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: {
@@ -48,12 +49,11 @@ export async function getUser(userId: string): Promise<User | null> {
     },
   });
 
-  if (!user || !user.host) return null;
+  if (!user || !user.host) {
+    throw new NotFoundError();
+  }
 
-  return {
-    ...user,
-    host: user.host,
-  };
+  return user as User;
 }
 
 /**

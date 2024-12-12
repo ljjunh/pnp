@@ -25,9 +25,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       // * 만약, 신규 유저인 경우에는 호스트 정보를 생성합니다.
       if (isNewUser) {
-        await prisma.host.create({
-          data: { userId: user.id as string },
-        });
+        try {
+          await prisma.host.create({
+            data: { userId: user.id as string },
+          });
+        } catch (error) {
+          console.error(error);
+        }
       }
       return token;
     },

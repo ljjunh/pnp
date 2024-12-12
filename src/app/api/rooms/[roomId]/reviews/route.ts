@@ -1,4 +1,5 @@
 import { auth } from '@/auth';
+import { CustomError, UnAuthorizedError } from '@/errors';
 import {
   ErrorResponse,
   PaginationResponse,
@@ -39,7 +40,7 @@ export async function POST(
     const session = await auth();
 
     if (!session) {
-      return NextResponse.json({ error: '로그인이 필요합니다.' }, { status: 401 });
+      throw new UnAuthorizedError();
     }
 
     const roomId = +params.roomId;
@@ -56,11 +57,14 @@ export async function POST(
     );
   } catch (error) {
     console.error(error);
+
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: '잘못된 요청 데이터입니다.', details: error.errors },
+        { error: '잘못된 요청 데이터입니다.', errors: error.errors },
         { status: 400 },
       );
+    } else if (error instanceof CustomError) {
+      return NextResponse.json({ error: error.message }, { status: error.statusCode });
     }
 
     return NextResponse.json({ error: '리뷰 생성에 실패했습니다.' }, { status: 500 });
