@@ -8,9 +8,8 @@ import { z } from 'zod';
 import { User } from '@/types/user';
 
 export async function GET(): Promise<CustomResponse<User | undefined>> {
+  const session = await auth();
   try {
-    const session = await auth();
-
     if (!session) {
       throw new UnAuthorizedError();
     }
@@ -21,7 +20,10 @@ export async function GET(): Promise<CustomResponse<User | undefined>> {
 
     return CustomResponse.ok<User>(user);
   } catch (error) {
-    console.error(error);
+    console.error('유저 정보 조회 중 에러 발생: ', {
+      userId: session?.user.id,
+      error: error,
+    });
 
     if (error instanceof CustomError) {
       return CustomResponse.errors(error.message, error.statusCode);
@@ -32,9 +34,8 @@ export async function GET(): Promise<CustomResponse<User | undefined>> {
 }
 
 export async function PATCH(request: NextRequest): Promise<CustomResponse<undefined>> {
+  const session = await auth();
   try {
-    const session = await auth();
-
     if (!session) {
       throw new UnAuthorizedError();
     }
@@ -44,9 +45,19 @@ export async function PATCH(request: NextRequest): Promise<CustomResponse<undefi
 
     await updateUser(userId, data);
 
+    console.info('사용자 정보 업데이트:', {
+      userId,
+      updatedFields: Object.keys(data),
+      timestamp: new Date().toISOString(),
+    });
+
     return CustomResponse.empty();
   } catch (error) {
-    console.error(error);
+    console.error('사용자 정보 업데이트 중 에러 발생: ', {
+      userId: session?.user.id,
+      data: await request.json(),
+      error: error,
+    });
 
     if (error instanceof z.ZodError) {
       return CustomResponse.zod('잘못된 요청 데이터입니다.', 400, error.errors);

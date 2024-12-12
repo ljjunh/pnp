@@ -14,9 +14,8 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: Params },
 ): Promise<CustomResponse<undefined>> {
+  const session = await auth();
   try {
-    const session = await auth();
-
     if (!session) {
       throw new UnAuthorizedError();
     }
@@ -31,7 +30,12 @@ export async function PATCH(
 
     return CustomResponse.empty();
   } catch (error) {
-    console.error(error);
+    console.error('리뷰 수정 중 에러 발생: ', {
+      reviewId: params.reviewId,
+      userId: session?.user.id,
+      data: await request.json(),
+      error: error,
+    });
 
     if (error instanceof z.ZodError) {
       return CustomResponse.zod('잘못된 요청 데이터입니다.', 400, error.errors);
@@ -44,9 +48,8 @@ export async function PATCH(
 }
 
 export async function DELETE({ params }: { params: Params }): Promise<CustomResponse<undefined>> {
+  const session = await auth();
   try {
-    const session = await auth();
-
     if (!session) {
       throw new UnAuthorizedError();
     }
@@ -56,7 +59,11 @@ export async function DELETE({ params }: { params: Params }): Promise<CustomResp
 
     return CustomResponse.deleted();
   } catch (error) {
-    console.error(error);
+    console.error('리뷰 삭제 중 에러 발생: ', {
+      reviewId: params.reviewId,
+      userId: session?.user.id,
+      error: error,
+    });
 
     if (error instanceof CustomError) {
       return CustomResponse.errors(error.message, error.statusCode);
