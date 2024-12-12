@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
+import { SessionProvider } from 'next-auth/react';
 import localFont from 'next/font/local';
-import { AuthSync } from '@/components/AuthSync';
 import StoreProvider from './StoreProvider';
 import './globals.css';
 
@@ -30,11 +30,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <StoreProvider>
-          <AuthSync />
-          {children}
-          {modal}
-        </StoreProvider>
+        <SessionProvider>
+          <StoreProvider>
+            {children}
+            {modal}
+          </StoreProvider>
+        </SessionProvider>
       </body>
     </html>
   );
