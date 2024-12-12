@@ -1,16 +1,15 @@
 import { NextResponse } from 'next/server';
+import { ZodIssue } from 'zod';
 
 export interface BaseResponse<T> {
   success: boolean;
   status: number;
-  data?: T;
   message: string;
-  errors?: {
-    [key: string]: string;
-  }[];
+  data?: T;
+  errors?: ZodIssue[];
 }
 
-export class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T>> {
+class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T>> {
   constructor(body?: BodyInit | null, init?: ResponseInit) {
     super(body, init);
   }
@@ -29,21 +28,31 @@ export class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T>> {
     );
   }
 
-  static created<T>(data: T): CustomResponse<T> {
+  static empty(message: string = 'OK', statusCode: number = 200): CustomResponse<undefined> {
     return this.json(
       {
         success: true,
-        status: 201,
-        data,
-        message: 'created',
+        status: statusCode,
+        message: message,
       },
       {
-        status: 201,
+        status: statusCode,
       },
     );
   }
 
-  static errors<T>(message: string = '서버 에러 입니다.', status: number = 500): CustomResponse<T> {
+  static created(): CustomResponse<undefined> {
+    return this.empty('CREATED', 201);
+  }
+
+  static deleted(): CustomResponse<undefined> {
+    return this.empty('DELETED', 204);
+  }
+
+  static errors(
+    message: string = '서버 에러 입니다.',
+    status: number = 500,
+  ): CustomResponse<undefined> {
     return this.json(
       {
         success: false,
@@ -55,4 +64,24 @@ export class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T>> {
       },
     );
   }
+
+  static zod<T>(
+    message: string = '잘못된 요청입니다.',
+    status: number = 400,
+    errors: ZodIssue[],
+  ): CustomResponse<T> {
+    return this.json(
+      {
+        success: false,
+        status,
+        message,
+        errors: errors,
+      },
+      {
+        status,
+      },
+    );
+  }
 }
+
+export default CustomResponse;
