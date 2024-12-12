@@ -3,11 +3,12 @@
 import { useState } from 'react';
 import RoomBookingCalendar from '@/app/(header-footer)/rooms/[id]/components/booking/RoomBookingCalendar';
 import RoomBookingDropdown from '@/app/(header-footer)/rooms/[id]/components/booking/RoomBookingDropdown';
+import { addDays } from 'date-fns';
 import Button from '@/components/common/Button/Button';
 
 export default function RoomBookingCard() {
-  const [checkIn, setCheckIn] = useState<Date>(new Date('2025-01-05'));
-  const [checkOut, setCheckOut] = useState<Date>(new Date('2025-01-10'));
+  const [checkIn, setCheckIn] = useState<Date>(new Date());
+  const [checkOut, setCheckOut] = useState<Date>(addDays(new Date(), 1));
   const [showCalendar, setShowCalendar] = useState(false);
   const [showGuestDropdown, setShowGuestDropdown] = useState(false);
   const [guests, setGuests] = useState({
@@ -29,6 +30,16 @@ export default function RoomBookingCard() {
     setCheckOut(endDate);
   };
 
+  const handleCalendarToggle = () => {
+    setShowGuestDropdown(false);
+    setShowCalendar((prev) => !prev);
+  };
+
+  const handleGuestDropdownToggle = () => {
+    setShowCalendar(false);
+    setShowGuestDropdown((prev) => !prev);
+  };
+
   const pricePerNight = 55000;
   const serviceFeePercentage = 10;
 
@@ -45,25 +56,16 @@ export default function RoomBookingCard() {
       </div>
 
       <div className="mb-4 grid grid-cols-2 rounded-lg border border-neutral-05">
-        {/* <button className="border-b border-r border-neutral-05 px-3 py-2.5 text-left">
-          <div className="text-[10px]">체크인</div>
-          <div className="text-sm">{checkIn}</div>
-        </button>
-        <button className="border-b border-neutral-05 px-3 py-2.5 text-left">
-          <div className="text-[10px]">체크아웃</div>
-          <div className="text-sm">{checkOut}</div>
-        </button> */}
-
         <RoomBookingCalendar
           isOpen={showCalendar}
-          onToggle={() => setShowCalendar((prev) => !prev)}
+          onToggle={handleCalendarToggle}
           startDate={checkIn}
           endDate={checkOut}
           onDateChange={handleDateChange}
         />
         <RoomBookingDropdown
           isOpen={showGuestDropdown}
-          onToggle={() => setShowGuestDropdown((prev) => !prev)}
+          onToggle={handleGuestDropdownToggle}
           guestCounts={guests}
           onGuestChange={handleGuestChange}
         />
