@@ -45,7 +45,19 @@ export async function POST(
     const roomId = +params.roomId;
     const data = createReviewSchema.parse(await request.json());
 
+<<<<<<< Updated upstream
     await createReview(roomId, session.user.id, data.rating, data.content);
+=======
+    await createReview(roomId, session.user.id, data);
+    return CustomResponse.created();
+  } catch (error) {
+    console.error('리뷰 생성 중 에러 발생: ', {
+      roomId: params.roomId,
+      userId: session?.user.id,
+      data: await request.json(),
+      error: error,
+    });
+>>>>>>> Stashed changes
 
     return NextResponse.json(
       {

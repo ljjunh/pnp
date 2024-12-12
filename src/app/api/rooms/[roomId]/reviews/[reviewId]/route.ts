@@ -23,8 +23,25 @@ export async function PATCH(request: NextRequest, { params }: { params: Params }
     // TODO: 만약, reviewId에 해당하는 리뷰는 있지만, 현재 로그인한 사용자가 작성한 리뷰가 아니라면 403 에러를 반환 처리해야할까?
     await updateReview(reviewId, session.user.id, data.rating, data.content);
   } catch (error) {
+<<<<<<< Updated upstream
     console.error(error);
     return NextResponse.json({ error: '리뷰 수정 실패' }, { status: 500 });
+=======
+    console.error('리뷰 수정 중 에러 발생: ', {
+      reviewId: params.reviewId,
+      userId: session?.user.id,
+      data: await request.json(),
+      error: error,
+    });
+
+    if (error instanceof z.ZodError) {
+      return CustomResponse.zod('잘못된 요청 데이터입니다.', 400, error.errors);
+    } else if (error instanceof CustomError) {
+      return CustomResponse.errors(error.message, error.statusCode);
+    }
+
+    return CustomResponse.errors();
+>>>>>>> Stashed changes
   }
 }
 
