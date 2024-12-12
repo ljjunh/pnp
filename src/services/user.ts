@@ -63,8 +63,15 @@ export async function getUser(userId: string): Promise<User> {
  * @param {UpdateUserInput} data 유저 업데이트 데이터
  */
 export async function updateUser(userId: string, data: UpdateUserInput) {
-  await prisma.user.update({
+  const user = await prisma.user.update({
     where: { id: userId },
     data,
+    select: {
+      id: true,
+    },
   });
+
+  if (!user) {
+    throw new NotFoundError();
+  }
 }
