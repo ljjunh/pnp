@@ -17,6 +17,8 @@ export default function LoginModal() {
     <div
       onClick={handleBack}
       className="absolute inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      role='presentation'
+      aria-hidden='true'
     >
       <dialog
         onClick={(e) => e.stopPropagation()}
@@ -25,6 +27,11 @@ export default function LoginModal() {
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
         open
+        onKeyDown={(e) => {
+          if (e.key === 'Escape') {
+            handleBack();
+          }
+        }}
       >
         <LoginHeader onBack={handleBack} />
 

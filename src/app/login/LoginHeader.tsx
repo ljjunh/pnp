@@ -4,20 +4,34 @@ interface LoginHeaderProps {
 
 export function LoginHeader({ onBack }: LoginHeaderProps) {
   return (
-    <header className="flex items-center justify-between border-b p-4">
+    <header
+      className="flex items-center justify-between border-b p-4"
+      role="banner"
+    >
       {onBack ? (
         <button
           onClick={onBack}
           className="text-gray-500 hover:text-gray-700"
           aria-label="뒤로 가기"
+          type="button"
         >
-          <span className="text-2xl">×</span>
+          <span
+            className="text-2xl"
+            aria-hidden="true"
+          >
+            ×
+          </span>
         </button>
       ) : (
-        <div />
+        <div aria-hidden="true" />
       )}
-      <h1 className="text-lg font-bold">로그인 또는 회원가입</h1>
-      <div />
+      <h1
+        className="text-lg font-bold"
+        id="login-header"
+      >
+        로그인 또는 회원가입
+      </h1>
+      <div aria-hidden="true" />
     </header>
   );
 }
