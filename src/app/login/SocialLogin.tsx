@@ -10,6 +10,7 @@ export function SocialLogin() {
       });
     } catch (error) {
       console.error(`${provider} login failed:`, error);
+      alert(`${provider} 로그인 중 문제가 발생했습니다. 다시 시도해 주세요.`);
     }
   };
 
