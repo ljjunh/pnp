@@ -34,6 +34,7 @@ export default function RootLayout({
           <StoreProvider>
             {children}
             {modal}
+            <div id="modal-root"></div>
           </StoreProvider>
         </SessionProvider>
       </body>
