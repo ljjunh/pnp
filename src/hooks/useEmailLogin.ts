@@ -6,7 +6,13 @@ const schema = z.object({
   email: z
     .string()
     .min(1, { message: '이메일은 필수입니다' })
-    .email({ message: '올바른 이메일 형식이 아닙니다' }),
+    .max(255, { message: '이메일이 너무 깁니다' })
+    .trim()
+    .toLowerCase()
+    .email({ message: '올바른 이메일 형식이 아닙니다' })
+    .refine((email) => !email.includes('..'), {
+      message: '올바르지 않은 이메일 형식입니다',
+    }),
 });
 
 export const useEmailLogin = () => {
