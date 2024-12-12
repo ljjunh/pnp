@@ -10,12 +10,8 @@ export interface BaseResponse<T> {
 }
 
 class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T>> {
-  constructor(body?: BodyInit | null, init?: ResponseInit) {
-    super(body, init);
-  }
-
   static ok<T>(data: T): CustomResponse<T> {
-    return this.json(
+    return CustomResponse.json(
       {
         success: true,
         status: 200,
@@ -29,7 +25,7 @@ class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T>> {
   }
 
   static empty(message: string = 'OK', statusCode: number = 200): CustomResponse<undefined> {
-    return this.json(
+    return CustomResponse.json(
       {
         success: true,
         status: statusCode,
@@ -42,18 +38,18 @@ class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T>> {
   }
 
   static created(): CustomResponse<undefined> {
-    return this.empty('CREATED', 201);
+    return CustomResponse.empty('CREATED', 201);
   }
 
   static deleted(): CustomResponse<undefined> {
-    return this.empty('DELETED', 204);
+    return CustomResponse.empty('DELETED', 204);
   }
 
   static errors(
     message: string = '서버 에러 입니다.',
     status: number = 500,
   ): CustomResponse<undefined> {
-    return this.json(
+    return CustomResponse.json(
       {
         success: false,
         status,
@@ -70,7 +66,7 @@ class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T>> {
     status: number = 400,
     errors: ZodIssue[],
   ): CustomResponse<T> {
-    return this.json(
+    return CustomResponse.json(
       {
         success: false,
         status,

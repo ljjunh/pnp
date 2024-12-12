@@ -26,16 +26,18 @@ export async function GET(
 
     return CustomResponse.ok(createPaginationResponse(reviews, total, page, limit));
   } catch (error) {
-    console.error(error);
+    console.error('리뷰 목록 조회 중 에러 발생: ', {
+      roomId: params.roomId,
+      error: error,
+    });
 
     return CustomResponse.errors();
   }
 }
 
 export async function POST(request: NextRequest, { params }: { params: ReviewParams }) {
+  const session = await auth();
   try {
-    const session = await auth();
-
     if (!session) {
       throw new UnAuthorizedError();
     }
@@ -46,7 +48,11 @@ export async function POST(request: NextRequest, { params }: { params: ReviewPar
     await createReview(roomId, session.user.id, data);
     return CustomResponse.created();
   } catch (error) {
-    console.error(error);
+    console.error('리뷰 생성 중 에러 발생: ', {
+      roomId: params.roomId,
+      userId: session?.user.id,
+      error: error,
+    });
 
     if (error instanceof z.ZodError) {
       return CustomResponse.zod('잘못된 요청 데이터입니다.', 400, error.errors);

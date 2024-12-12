@@ -44,6 +44,12 @@ export async function PATCH(request: NextRequest): Promise<CustomResponse<undefi
 
     await updateUser(userId, data);
 
+    console.info('사용자 정보 업데이트:', {
+      userId,
+      updatedFields: Object.keys(data),
+      timestamp: new Date().toISOString(),
+    });
+
     return CustomResponse.empty();
   } catch (error) {
     console.error(error);
