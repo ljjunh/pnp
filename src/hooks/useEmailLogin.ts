@@ -46,7 +46,15 @@ export const useEmailLogin = () => {
         setError(error.errors[0].message);
       } else {
         console.error('Login error:', error);
-        setError('오류가 발생했습니다');
+        if (error instanceof Error) {
+          if (error.message.includes('rate-limit')) {
+            setError('너무 많은 시도가 있었습니다. 잠시 후 다시 시도해주세요.');
+          } else {
+            setError('로그인 중 문제가 발생했습니다. 다시 시도해주세요.');
+          }
+        } else {
+          setError('알 수 없는 오류가 발생했습니다.');
+        }
       }
     } finally {
       setIsSubmitting(false);
