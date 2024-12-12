@@ -2,6 +2,7 @@ import RoomBookingCard from '@/app/(header-footer)/rooms/[id]/components/booking
 import RoomGallery from '@/app/(header-footer)/rooms/[id]/components/header/RoomGallery';
 import RoomHeader from '@/app/(header-footer)/rooms/[id]/components/header/RoomHeader';
 import RoomDescription from '@/app/(header-footer)/rooms/[id]/components/information/RoomDescription';
+import RoomHost from '@/app/(header-footer)/rooms/[id]/components/information/RoomHost';
 import RoomRules from '@/app/(header-footer)/rooms/[id]/components/information/RoomRules';
 import RoomReviewList from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewList';
 import RoomReviewSummary from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewSummary';
@@ -21,10 +22,11 @@ export default function RoomDetailPage({ params }: { params: { id: number } }) {
           </div>
         </div>
       </section>
-      <section className="my-12">
+      <section className="py-12">
         <RoomReviewSummary />
         <RoomReviewList />
       </section>
+      <RoomHost />
       <RoomRules id={params.id} />
     </div>
   );

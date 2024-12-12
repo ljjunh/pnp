@@ -76,7 +76,7 @@ export default function RoomReviewList() {
   };
 
   return (
-    <div className="mt-10 border-b pb-10">
+    <div className="mt-10 border-b">
       <div className="grid grid-cols-2 grid-rows-3 gap-10">
         {DUMMY_REVIEWS.map((review) => (
           <div key={review.id}>
@@ -100,7 +100,7 @@ export default function RoomReviewList() {
           </div>
         ))}
       </div>
-      <div>
+      <div className="py-10">
         <Button variant="tertiary">후기 293개 모두 보기</Button>
       </div>
     </div>
