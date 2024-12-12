@@ -47,7 +47,10 @@ export async function PATCH(
   }
 }
 
-export async function DELETE({ params }: { params: Params }): Promise<CustomResponse<undefined>> {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Params },
+): Promise<CustomResponse<undefined>> {
   const session = await auth();
   try {
     if (!session) {

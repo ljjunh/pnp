@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import { CustomError } from '@/errors';
 import { CustomResponse } from '@/lib/server';
 import { getRoom } from '@/services/room';
 import { Room, RoomParams } from '@/types/room';
@@ -22,8 +23,10 @@ export async function GET(
 
     return CustomResponse.ok<Room>(roomData);
   } catch (error) {
-    if (error instanceof Error) {
-      return CustomResponse.errors<undefined>(error.message, 404);
+    if (error instanceof CustomError) {
+      return CustomResponse.errors(error.message, error.statusCode);
     }
+
+    return CustomResponse.errors();
   }
 }

@@ -1,13 +1,17 @@
+import { NextRequest } from 'next/server';
 import { BadRequestError, CustomError } from '@/errors';
 import { CustomResponse } from '@/lib/server';
 import { getUser } from '@/services/user';
 import { User, UserParams } from '@/types/user';
 
-export async function GET({
-  params,
-}: {
-  params: UserParams;
-}): Promise<CustomResponse<User | undefined>> {
+export async function GET(
+  request: NextRequest,
+  {
+    params,
+  }: {
+    params: UserParams;
+  },
+): Promise<CustomResponse<User | undefined>> {
   try {
     const userId = params.userId;
     if (!userId) {

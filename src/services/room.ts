@@ -1,6 +1,5 @@
+import { NotFoundError } from '@/errors';
 import { prisma } from '@/lib/server';
-import { Room } from '@/types/room';
-
 /**
  * 숙소 정보를 조회한다
  *
@@ -10,6 +9,7 @@ import { Room } from '@/types/room';
  */
 export async function getRoom(roomId: number) {
   const room = await prisma.room.findUnique({
+    relationLoadStrategy: 'join',
     where: { id: roomId },
     select: {
       id: true,
@@ -59,7 +59,7 @@ export async function getRoom(roomId: number) {
   });
 
   if (!room) {
-    throw new Error('존재하지 않는 방입니다.');
+    throw new NotFoundError();
   }
 
   return room;
