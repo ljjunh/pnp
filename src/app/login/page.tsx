@@ -1,6 +1,4 @@
-'use client';
-
-import { EmailLoginForm } from '@/app/login/EmailLoginForm';
+// import { EmailLoginForm } from '@/app/login/EmailLoginForm';
 import { LoginHeader } from '@/app/login/LoginHeader';
 import { SocialLogin } from '@/app/login/SocialLogin';
 
@@ -15,7 +13,7 @@ export default function LoginPage() {
           role="main"
         >
           <p className="mb-4 font-semibold text-gray-700">에어비앤비에 오신 것을 환영합니다.</p>
-          <EmailLoginForm />
+          {/* <EmailLoginForm /> */}
           <SocialLogin />
         </section>
       </main>

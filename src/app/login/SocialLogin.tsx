@@ -1,18 +1,21 @@
-import { signIn } from 'next-auth/react';
-import { FaGoogle } from 'react-icons/fa';
-import { SiKakao } from 'react-icons/si';
+'use server'
 
-export function SocialLogin() {
-  const handleSocialLogin = async (provider: string) => {
-    try {
-      await signIn(provider, {
-        callbackUrl: '/',
-      });
-    } catch (error) {
-      console.error(`${provider} login failed:`, error);
-      alert(`${provider} 로그인 중 문제가 발생했습니다. 다시 시도해 주세요.`);
-    }
-  };
+import { signIn } from '@/auth';
+
+// import { FaGoogle } from 'react-icons/fa';
+// import { SiKakao } from 'react-icons/si';
+
+export async function SocialLogin() {
+  // const handleSocialLogin = async (provider: string) => {
+  //   try {
+  //     await signIn(provider, {
+  //       callbackUrl: '/',
+  //     });
+  //   } catch (error) {
+  //     console.error(`${provider} login failed:`, error);
+  //     alert(`${provider} 로그인 중 문제가 발생했습니다. 다시 시도해 주세요.`);
+  //   }
+  // };
 
   return (
     <>
@@ -29,24 +32,40 @@ export function SocialLogin() {
 
       {/* 구글 로그인 */}
       <nav className="space-y-3">
-        <button
-          onClick={() => handleSocialLogin('google')}
-          className="flex w-full items-center justify-between rounded-md border border-gray-500 px-4 py-2 hover:bg-gray-100"
+        <form
+          action={async () => {
+            'use server';
+            await signIn('google', { redirectTo: '/' });
+          }}
         >
-          <FaGoogle className="size-5" />
-          <div>구글로 로그인하기</div>
-          <div />
-        </button>
-
+          <button
+            // onClick={() => handleSocialLogin('google')}
+            type="submit"
+            className="flex w-full items-center justify-between rounded-md border border-gray-500 px-4 py-2 hover:bg-gray-100"
+          >
+            {/* <FaGoogle className="size-5" /> */}
+            <div />
+            <div>구글로 로그인하기</div>
+            <div />
+          </button>
+        </form>
         {/* 카카오 로그인 */}
-        <button
-          onClick={() => handleSocialLogin('kakao')}
-          className="flex w-full items-center justify-between rounded-md border border-gray-500 px-4 py-2 hover:bg-gray-100"
+        <form
+          action={async () => {
+            'use server';
+            await signIn('kakao', { redirectTo: '/' });
+          }}
         >
-          <SiKakao className="size-6" />
-          <div>카카오톡으로 로그인하기</div>
-          <div />
-        </button>
+          <button
+            // onClick={() => handleSocialLogin('kakao')}
+            className="flex w-full items-center justify-between rounded-md border border-gray-500 px-4 py-2 hover:bg-gray-100"
+          >
+            {/* <SiKakao className="size-6" /> */}
+            <div />
+            <div>카카오톡으로 로그인하기</div>
+            <div />
+          </button>
+        </form>
       </nav>
     </>
   );
