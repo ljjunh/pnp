@@ -3,6 +3,7 @@ import { CustomError, UnAuthorizedError } from '@/errors';
 import { updateReviewSchema } from '@/schemas/review';
 import { deleteReview, updateReview } from '@/services/review';
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
 interface Params {
   reviewId: string;
@@ -28,7 +29,9 @@ export async function PATCH(request: NextRequest, { params }: { params: Params }
   } catch (error) {
     console.error(error);
 
-    if (error instanceof CustomError) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: '잘못된 요청 데이터입니다.', errors: error.errors }, { status: 400 });
+    } else if (error instanceof CustomError) {
       return NextResponse.json({ error: error.message }, { status: error.statusCode });
     }
 
@@ -36,7 +39,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Params }
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: Params }) {
+export async function DELETE({ params }: { params: Params }) {
   try {
     const session = await auth();
 
