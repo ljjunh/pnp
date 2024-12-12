@@ -1,56 +1,29 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/server';
+import { NextRequest } from 'next/server';
+import { CustomResponse } from '@/lib/server';
+import { getRoom } from '@/services/room';
+import { Room, RoomParams } from '@/types/room';
 
-interface Params {
-  roomId: string;
-}
+export async function GET(
+  request: NextRequest,
+  { params }: { params: RoomParams },
+): Promise<CustomResponse<Room | undefined>> {
+  try {
+    const roomId = +params.roomId;
 
-export async function GET(request: NextRequest, { params }: { params: Params }) {
-  const roomId = Number(params.roomId);
+    const room = await getRoom(roomId);
 
-  const room = await prisma.room.findUnique({
-    where: { id: roomId },
-    include: {
-      roomTags: {
-        select: {
-          tag: {
-            select: {
-              id: true,
-              content: true,
-            },
-          },
-        },
-      },
-      images: {
-        select: {
-          id: true,
-          imageLink: true,
-          orientation: true,
-        },
-      },
-      rules: {
-        select: {
-          rule: true,
-        },
-      },
-      amenities: {
-        select: {
-          amenity: true,
-        },
-      },
-    },
-  });
+    const roomData = {
+      ...room,
+      roomTags: room.roomTags.map((tag) => tag.tag),
+      images: room.images,
+      rules: room.rules.map((rule) => rule.rule),
+      amenities: room.amenities.map((amenity) => amenity.amenity),
+    };
 
-  if (!room) {
-    return NextResponse.json({ error: 'Room not found' }, { status: 404 });
+    return CustomResponse.ok<Room>(roomData);
+  } catch (error) {
+    if (error instanceof Error) {
+      return CustomResponse.errors<undefined>(error.message, 404);
+    }
   }
-
-  const roomData = {
-    ...room,
-    roomTags: room.roomTags.map((tag) => tag.tag),
-    roomRules: room.rules.map((rule) => rule.rule),
-    roomAmenities: room.amenities.map((amenity) => amenity.amenity),
-  };
-
-  return NextResponse.json(roomData);
 }

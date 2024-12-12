@@ -8,8 +8,4 @@ export const prisma =
     log: ['query', 'info', 'warn', 'error'],
   });
 
-prisma.$on('query', (e) => {
-  console.log('Duration: ' + e.duration + 'ms');
-});
-
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
