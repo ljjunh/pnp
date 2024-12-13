@@ -1,9 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { EmailLoginForm } from '@/app/temp/EmailLoginForm';
-import { LoginHeader } from '@/app/temp/LoginHeader';
-import { SocialLogin } from '@/app/temp/SocialLogin';
+import { EmailLoginForm } from '@/app/signin/EmailLoginForm';
+import { LoginHeader } from '@/app/signin/LoginHeader';
+import { SocialLogin } from '@/app/signin/SocialLogin';
 
 export default function LoginModal() {
   const router = useRouter();
