@@ -42,7 +42,7 @@ class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T>> {
   }
 
   static deleted(): CustomResponse<undefined> {
-    return CustomResponse.empty('DELETED', 204);
+    return CustomResponse.empty('DELETED', 200);
   }
 
   static errors(
