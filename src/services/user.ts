@@ -75,3 +75,16 @@ export async function updateUser(userId: string, data: UpdateUserInput) {
     throw new NotFoundError();
   }
 }
+
+/**
+ * 유저 프로필 이미지 정보 업데이트
+ *
+ * @param {string} userId 유저 아이디
+ * @param {string} image 이미지 경로
+ */
+export async function updateUserImage(userId: string, image: string) {
+  await prisma.user.update({
+    where: { id: userId },
+    data: { image },
+  });
+}
