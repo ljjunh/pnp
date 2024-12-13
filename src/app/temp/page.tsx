@@ -1,6 +1,6 @@
-import { EmailLoginForm } from '@/app/signIn/EmailLoginForm';
-import { LoginHeader } from '@/app/signIn/LoginHeader';
-import { SocialLogin } from '@/app/signIn/SocialLogin';
+import { EmailLoginForm } from '@/app/temp/EmailLoginForm';
+import { LoginHeader } from '@/app/temp/LoginHeader';
+import { SocialLogin } from '@/app/temp/SocialLogin';
 
 export default function LoginPage() {
   return (
