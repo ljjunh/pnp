@@ -1,8 +1,8 @@
 import { NextRequest } from 'next/server';
-import { auth, update } from '@/auth';
+import { auth } from '@/auth';
 import { BadRequestError, CustomError, UnAuthorizedError } from '@/errors';
 import { CustomResponse } from '@/lib/server';
-import { remove, upload } from '@/lib/server/s3';
+import { ALLOWED_IMAGE_TYPES, MAX_FILE_SIZE, upload } from '@/lib/server/s3';
 import { updateUserImage } from '@/services/user';
 
 export async function POST(request: NextRequest) {
@@ -19,18 +19,17 @@ export async function POST(request: NextRequest) {
       throw new BadRequestError('이미지가 업로드 되지 않았습니다.');
     }
 
-    if (session.user.image?.startsWith('users')) {
-      await remove(session.user.image);
+    if (image.size > MAX_FILE_SIZE) {
+      throw new BadRequestError('이미지 크기는 5MB를 초과할 수 없습니다.');
     }
 
-    const key = await upload(image, 'users');
-    update({
-      user: {
-        image: key,
-      },
-    });
+    if (!ALLOWED_IMAGE_TYPES.includes(image.type)) {
+      throw new BadRequestError('지원되지 않는 이미지 형식입니다.');
+    }
 
-    await updateUserImage(session.user.id, key);
+    const newImageKey = await upload(image, 'users');
+
+    await updateUserImage(session.user, newImageKey);
 
     return CustomResponse.empty();
   } catch (error) {

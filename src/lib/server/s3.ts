@@ -6,6 +6,9 @@ import {
 } from '@aws-sdk/client-s3';
 import { v4 as uuidv4 } from 'uuid';
 
+export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+export const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
+
 const BUCKET_NAME = process.env.BUCKET_NAME;
 const REGION = process.env.AWS_REGION;
 const client = new S3Client({ region: REGION });
@@ -68,14 +71,27 @@ export const uploadBulk = async (files: File[], directory: string): Promise<stri
  *
  * @param {string} key 파일 키
  */
-export const remove = async (key: string) => {
-  console.debug('remove Key:', key);
-  await client.send(
-    new DeleteObjectCommand({
-      Bucket: BUCKET_NAME,
-      Key: key,
-    }),
-  );
+export const remove = async (key: string, retries: number = 1) => {
+  if (!key) {
+    return;
+  }
+
+  try {
+    await client.send(
+      new DeleteObjectCommand({
+        Bucket: BUCKET_NAME,
+        Key: key,
+      }),
+    );
+  } catch (error) {
+    if (retries > 0) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await remove(key, retries - 1);
+    } else {
+      // TODO: 별도의 커스텀 에러를 만들어준다.
+      throw error;
+    }
+  }
 };
 
 /**

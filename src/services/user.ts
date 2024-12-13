@@ -1,7 +1,8 @@
+import { User } from 'next-auth';
 import { NotFoundError } from '@/errors';
 import { prisma } from '@/lib/server';
+import { remove } from '@/lib/server/s3';
 import { UpdateUserInput } from '@/schemas/user';
-import { User } from '@/types/user';
 
 /**
  * 유저 정보 조회
@@ -79,12 +80,22 @@ export async function updateUser(userId: string, data: UpdateUserInput) {
 /**
  * 유저 프로필 이미지 정보 업데이트
  *
- * @param {string} userId 유저 아이디
+ * @param {User} user
  * @param {string} image 이미지 경로
  */
-export async function updateUserImage(userId: string, image: string) {
-  await prisma.user.update({
-    where: { id: userId },
-    data: { image },
+export async function updateUserImage(user: User, image: string) {
+  await prisma.$transaction(async (prisma) => {
+    prisma.user.update({
+      where: { id: user.id },
+      data: { image },
+    });
+
+    if (user.image?.startsWith('users')) {
+      try {
+        await remove(user.image);
+      } catch (error) {
+        console.error('이전 이미지 삭제 실패:', error);
+      }
+    }
   });
 }
