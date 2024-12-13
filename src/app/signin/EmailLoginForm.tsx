@@ -1,17 +1,9 @@
-'use server';
-
-import { redirect } from 'next/navigation';
-import { signIn } from '@/auth';
+import { handleEmailLogin } from "./action";
 
 export const EmailLoginForm = () => {
   return (
     <form
-      action={async (formData) => {
-        'use server';
-        const email = formData.get('email');
-        await signIn('resend', { email, redirect: false });
-        redirect('/signIn?status=verify');
-      }}
+      action={handleEmailLogin}
       className="flex flex-col gap-4"
     >
       <div>

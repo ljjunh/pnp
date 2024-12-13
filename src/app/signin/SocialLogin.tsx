@@ -1,27 +1,6 @@
-'use server';
-
-import { signIn } from '@/auth';
-
-type Provider = 'google' | 'kakao';
-
-// 각 provider별 서버 액션 함수를 명시적으로 'use server' 지시문과 함께 선언
-async function handleSocialLogin(provider: Provider) {
-  'use server';
-  await signIn(provider, { redirectTo: '/' });
-}
+import { googleLogin, kakaoLogin } from "./action";
 
 export async function SocialLogin() {
-  // provider별 액션 함수를 미리 선언
-  const googleLogin = async () => {
-    'use server';
-    await handleSocialLogin('google');
-  };
-
-  const kakaoLogin = async () => {
-    'use server';
-    await handleSocialLogin('kakao');
-  };
-
   return (
     <>
       {/* 구분선 */}
