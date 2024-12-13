@@ -1,9 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { EmailLoginForm } from '@/app/login/EmailLoginForm';
-import { LoginHeader } from '@/app/login/LoginHeader';
-import { SocialLogin } from '@/app/login/SocialLogin';
+import { EmailLoginForm } from '@/app/signIn/EmailLoginForm';
+import { LoginHeader } from '@/app/signIn/LoginHeader';
+import { SocialLogin } from '@/app/signIn/SocialLogin';
 
 export default function LoginModal() {
   const router = useRouter();
@@ -17,8 +17,8 @@ export default function LoginModal() {
     <div
       onClick={handleBack}
       className="absolute inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-      role='presentation'
-      aria-hidden='true'
+      role="presentation"
+      aria-hidden="true"
     >
       <dialog
         onClick={(e) => e.stopPropagation()}

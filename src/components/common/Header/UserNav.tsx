@@ -10,8 +10,7 @@ import { BiGlobe } from 'react-icons/bi';
 
 export default function UserNav() {
   const [isOpen, setIsOpen] = useState(false);
-  const [profileImage] = useState<string | undefined>(); // 유저 프로필 이미지로 변경
-  const { status } = useSession();
+  const { status, data: session } = useSession();
 
   const toggleOpen = () => {
     setIsOpen((prev) => !prev);
@@ -36,7 +35,7 @@ export default function UserNav() {
       <UserButton
         isLoggedIn={status === 'authenticated'}
         onClick={toggleOpen}
-        profileImage={profileImage}
+        profileImage={session?.user?.image || undefined}
       />
       <UserMenu
         isLoggedIn={status === 'authenticated'}

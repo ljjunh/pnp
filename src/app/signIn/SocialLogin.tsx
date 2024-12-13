@@ -50,7 +50,7 @@ export async function SocialLogin() {
 
         <form action={kakaoLogin}>
           <button
-            type="submit" 
+            type="submit"
             className="flex w-full items-center justify-between rounded-md border border-gray-500 px-4 py-2 hover:bg-gray-100"
           >
             <div />

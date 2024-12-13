@@ -1,5 +1,6 @@
 'use server';
 
+import { redirect } from 'next/navigation';
 import { signIn } from '@/auth';
 
 export const EmailLoginForm = () => {
@@ -9,6 +10,7 @@ export const EmailLoginForm = () => {
         'use server';
         const email = formData.get('email');
         await signIn('resend', { email, redirect: false });
+        redirect('/signIn?status=verify');
       }}
       className="flex flex-col gap-4"
     >
