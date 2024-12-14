@@ -4,7 +4,9 @@ import { useFormStatus } from 'react-dom';
 import { FaGoogle } from 'react-icons/fa';
 import { SiKakao } from 'react-icons/si';
 
-export function SocialLoginFormBtn({ text }: { text: string }) {
+type SocialLoginType = '구글로 로그인하기' | '카카오로 로그인하기';
+
+export function SocialLoginFormBtn({ text }: { text: SocialLoginType }) {
   const { pending } = useFormStatus();
 
   const getIcon = () => {
@@ -14,7 +16,7 @@ export function SocialLoginFormBtn({ text }: { text: string }) {
       case '카카오로 로그인하기':
         return <SiKakao className="size-6" />;
       default:
-        return <div/>;
+        return <div />;
     }
   };
 
