@@ -1,7 +1,7 @@
-import { User } from 'next-auth';
 import { NotFoundError } from '@/errors';
 import { prisma, remove } from '@/lib/server';
 import { UpdateUserInput } from '@/schemas/user';
+import { User } from '@/types/user';
 
 /**
  * 유저 정보 조회

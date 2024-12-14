@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { auth } from '@/auth';
-import { CustomError, UnAuthorizedError } from '@/errors';
+import { CustomError, UnAuthorizedError, ZodError } from '@/errors';
 import {
   CustomResponse,
   PaginationResponse,
@@ -10,7 +10,6 @@ import {
 } from '@/lib/server';
 import { createReviewSchema } from '@/schemas/review';
 import { createReview, getReviews } from '@/services/review';
-import { z } from 'zod';
 import { Review, ReviewParams } from '@/types/review';
 
 export async function GET(
@@ -55,7 +54,7 @@ export async function POST(request: NextRequest, { params }: { params: ReviewPar
       error: error,
     });
 
-    if (error instanceof z.ZodError) {
+    if (error instanceof ZodError) {
       return CustomResponse.zod('잘못된 요청 데이터입니다.', 400, error.errors);
     } else if (error instanceof CustomError) {
       return CustomResponse.errors(error.message, error.statusCode);
