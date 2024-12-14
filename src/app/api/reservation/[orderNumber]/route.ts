@@ -55,7 +55,6 @@ export async function POST(
   } catch (error) {
     console.error('예약 생성 중 에러 발생: ', {
       userId: session?.user.id,
-      data: await request.json(),
       error: error,
     });
 

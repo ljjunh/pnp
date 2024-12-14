@@ -24,4 +24,4 @@ export const checkOut = z.coerce
     required_error: '체크아웃 날짜는 필수 입력입니다',
     invalid_type_error: '올바른 날짜 형식이 아닙니다',
   })
-  .refine((date) => date.getTime() > Date.now(), '오늘 이후 날짜만 예약할 수 있습니다');
+  .refine((date: Date) => date.getTime() > Date.now(), '오늘 이후 날짜만 예약할 수 있습니다');
