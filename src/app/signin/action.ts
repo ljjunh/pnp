@@ -3,28 +3,31 @@
 import { signIn } from '@/auth';
 import { z } from 'zod';
 
-// 이메일 로그인
+// 이메일 로그인 관련 타입
 type FormState = {
   errors?: {
     email?: string[];
     server?: string[];
   };
   success?: boolean;
-  email?: string; // 성공 시 이메일 주소 저장
+  email?: string;
 };
 
-// 소셜 로그인
+// 소셜 로그인 관련 타입
 type Provider = 'google' | 'kakao';
 
+// zod 유효성 검사
 const formSchema = z.object({
   email: z.string().email('유효한 이메일 주소를 입력해주세요.').toLowerCase(),
 });
 
+// 이메일 로그인 서버액션
 export async function handleEmailLogin(prevState: FormState | null, formData: FormData): Promise<FormState> {
   try {
     const data = { email: formData.get('email') as string };
     const result = formSchema.safeParse(data);
 
+    // 이메일 포맷 에러
     if (!result.success) {
       return {
         errors: {
@@ -44,6 +47,7 @@ export async function handleEmailLogin(prevState: FormState | null, formData: Fo
       email: result.data.email // 성공 시 이메일 저장
     };
 
+  // 서버 에러
   } catch (error) {
     return {
       errors: {
@@ -53,6 +57,7 @@ export async function handleEmailLogin(prevState: FormState | null, formData: Fo
   }
 }
 
+// 소셜 로그인 서버액션
 async function handleSocialLogin(provider: Provider) {
   'use server';
   await signIn(provider, { redirectTo: '/' });

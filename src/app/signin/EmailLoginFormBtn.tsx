@@ -2,7 +2,7 @@
 
 import { useFormStatus } from 'react-dom';
 
-export function EmailFormBtn() {
+export function EmailLoginFormBtn() {
   const { pending } = useFormStatus();
 
   return (
