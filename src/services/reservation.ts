@@ -232,7 +232,6 @@ export async function confirmReservation(orderNumber: string, userId: string) {
 /**
  * 예약 가능 여부를 확인한다.
  *
- * @param {number} roomId 숙소 ID
  * @param {ReservationAvailableInput} data 예약 가능 여부 확인 데이터
  */
 export async function checkReservation(data: ReservationAvailableInput): Promise<boolean> {
@@ -242,27 +241,16 @@ export async function checkReservation(data: ReservationAvailableInput): Promise
       status: {
         in: ['PAYMENT', 'CONFIRMED', 'PENDING'],
       },
-      guestNumber: {
-        lte: data.guestNumber,
+      checkIn: {
+        lte: data.checkIn,
       },
-      OR: [
-        {
-          AND: [
-            { checkIn: { lte: new Date(data.checkIn) } },
-            { checkOut: { gt: new Date(data.checkIn) } },
-          ],
-        },
-        {
-          AND: [
-            { checkIn: { lt: new Date(data.checkOut) } },
-            { checkOut: { gte: new Date(data.checkOut) } },
-          ],
-        },
-      ],
+      checkOut: {
+        gte: data.checkOut,
+      },
     },
   });
 
-  return !!reservation;
+  return !reservation;
 }
 
 /**

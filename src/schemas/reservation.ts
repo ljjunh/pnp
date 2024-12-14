@@ -18,7 +18,6 @@ export const reservationAvailableSchema = z
     roomId: z.number().int().positive(),
     checkIn: schemaType.checkIn,
     checkOut: schemaType.checkOut,
-    guestNumber: z.number().int().positive(),
   })
   .refine(schemaType.dateRefinement.refinement, schemaType.dateRefinement.options);
 

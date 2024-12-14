@@ -16,16 +16,14 @@ export async function GET(
 
     const checkInParam = searchParams.get('checkIn');
     const checkOutParam = searchParams.get('checkOut');
-    const guestNumberParam = searchParams.get('guestNumber');
-    if (!checkInParam || !checkOutParam || !guestNumberParam) {
-      throw new BadRequestError('체크인 날짜와 체크아웃 날짜, 인원 수는 필수 입력입니다');
+    if (!checkInParam || !checkOutParam) {
+      throw new BadRequestError('체크인 날짜와 체크아웃 날짜는 필수 입력입니다');
     }
 
     const data = reservationAvailableSchema.parse({
       roomId,
       checkIn: new Date(checkInParam),
       checkOut: new Date(checkOutParam),
-      guestNumber: +guestNumberParam,
     });
 
     const available = await checkReservation(data);
