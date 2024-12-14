@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <header
       role="banner"
-      className="fixed top-0 z-10 w-full border-b bg-shade-01 px-20 py-4"
+      className="px-30 fixed top-0 z-10 w-full border-b bg-shade-01 py-4 lg:px-60"
     >
       <div
         aria-label="사이트 헤더"

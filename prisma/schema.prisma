@@ -25,6 +25,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   reviews       Review[]
+  roomScraps    RoomScrap[]
   host          Host?
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -104,6 +105,7 @@ model Room {
   reviews   Review[]
   rules     RoomRule[]
   amenities RoomAmenity[]
+  scraps    RoomScrap[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
@@ -249,4 +251,16 @@ model RoomTag {
 
   @@unique([roomId, tagId])
   @@map("room_tags")
+}
+
+model RoomScrap {
+  id        Int      @id @default(autoincrement())
+  userId    String   @map("user_id")
+  roomId    Int      @map("room_id")
+
+  user User @relation(fields: [userId], references: [id])
+  room Room @relation(fields: [roomId], references: [id])
+
+  @@unique([userId, roomId])
+  @@map("room_scraps")
 }
