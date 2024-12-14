@@ -9,20 +9,17 @@ export const createReservationSchema = z
     checkIn: schemaType.checkIn,
     checkOut: schemaType.checkOut,
   })
-  .refine((data) => data.checkOut.getTime() > data.checkIn.getTime(), {
-    message: '체크아웃 날짜는 체크인 날짜 이후여야 합니다',
-    path: ['checkOut'],
-  });
+  .refine(schemaType.dateRefinement.refinement, schemaType.dateRefinement.options);
+
+export type CreateReservationInput = z.infer<typeof createReservationSchema>;
 
 export const reservationAvailableSchema = z
   .object({
     roomId: z.number().int().positive(),
     checkIn: schemaType.checkIn,
     checkOut: schemaType.checkOut,
+    guestNumber: z.number().int().positive(),
   })
-  .refine((data) => data.checkOut.getTime() > data.checkIn.getTime(), {
-    message: '체크아웃 날짜는 체크인 날짜 이후여야 합니다',
-    path: ['checkOut'],
-  });
+  .refine(schemaType.dateRefinement.refinement, schemaType.dateRefinement.options);
 
-export type CreateReservationInput = z.infer<typeof createReservationSchema>;
+export type ReservationAvailableInput = z.infer<typeof reservationAvailableSchema>;

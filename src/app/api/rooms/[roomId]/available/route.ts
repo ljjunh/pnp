@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { CustomError, ZodError } from '@/errors';
+import { BadRequestError, CustomError, ZodError } from '@/errors';
 import { CustomResponse } from '@/lib/server';
 import { reservationAvailableSchema } from '@/schemas';
 import { checkReservation } from '@/services/reservation';
@@ -14,13 +14,21 @@ export async function GET(
     const { searchParams } = new URL(request.url);
     const roomId = +params.roomId;
 
+    const checkInParam = searchParams.get('checkIn');
+    const checkOutParam = searchParams.get('checkOut');
+    const guestNumberParam = searchParams.get('guestNumber');
+    if (!checkInParam || !checkOutParam || !guestNumberParam) {
+      throw new BadRequestError('체크인 날짜와 체크아웃 날짜, 인원 수는 필수 입력입니다');
+    }
+
     const data = reservationAvailableSchema.parse({
       roomId,
-      checkIn: new Date(searchParams.get('checkIn')!),
-      checkOut: new Date(searchParams.get('checkOut')!),
+      checkIn: new Date(checkInParam),
+      checkOut: new Date(checkOutParam),
+      guestNumber: +guestNumberParam,
     });
 
-    const available = await checkReservation(data.roomId, data.checkIn, data.checkOut);
+    const available = await checkReservation(data);
 
     return CustomResponse.ok({
       available: available,

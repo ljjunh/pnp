@@ -1,5 +1,13 @@
 import { z } from 'zod';
 
+export type Refinement = {
+  refinement: (data: { checkIn: Date; checkOut: Date }) => boolean;
+  options: {
+    message: string;
+    path: string[];
+  };
+};
+
 export const rating = z
   .number({
     required_error: '평점은 필수 입력입니다',
@@ -25,3 +33,12 @@ export const checkOut = z.coerce
     invalid_type_error: '올바른 날짜 형식이 아닙니다',
   })
   .refine((date: Date) => date.getTime() > Date.now(), '오늘 이후 날짜만 예약할 수 있습니다');
+
+export const dateRefinement: Refinement = {
+  refinement: (data: { checkIn: Date; checkOut: Date }) =>
+    data.checkOut.getTime() > data.checkIn.getTime(),
+  options: {
+    message: '체크아웃 날짜는 체크인 날짜 이후여야 합니다',
+    path: ['checkOut'],
+  },
+};

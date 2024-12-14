@@ -1,7 +1,7 @@
 import { BadRequestError, NotFoundError } from '@/errors';
 import { ForbiddenError } from '@/errors/errors';
 import { prisma } from '@/lib/server';
-import { CreateReservationInput } from '@/schemas';
+import { CreateReservationInput, ReservationAvailableInput } from '@/schemas';
 import { Reservation } from '@/types/reservation';
 
 /**
@@ -18,8 +18,14 @@ export async function createReservation(userId: string, data: CreateReservationI
     },
   });
 
+  // * 존재하지 않는 숙소인 경우
   if (!room) {
     throw new NotFoundError();
+  }
+
+  // * 숙소의 인원 수를 넘은 경우
+  if (room.capacity < data.guestNumber) {
+    throw new BadRequestError('숙소의 최대 인원 수를 초과하였습니다.');
   }
 
   // * 이미 예약이 되어있는지 확인
@@ -41,7 +47,7 @@ export async function createReservation(userId: string, data: CreateReservationI
 
   // * 예약한 숙박 일수를 계산
   const differenceInTime = data.checkOut.getTime() - data.checkIn.getTime();
-  const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+  const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
   const price = room.price * differenceInDays;
 
   // * 주문 번호 생성
@@ -187,6 +193,7 @@ export async function confirmReservation(orderNumber: string, userId: string) {
       orderNumber: orderNumber,
     },
     select: {
+      status: true,
       room: {
         select: {
           host: {
@@ -207,6 +214,11 @@ export async function confirmReservation(orderNumber: string, userId: string) {
     throw new ForbiddenError('해당 예약 정보에 접근할 권한이 없습니다.');
   }
 
+  // * PENDING 상태인 예약만 확정 가능
+  if (reservation.status !== 'PENDING') {
+    throw new BadRequestError('확정할 수 없는 예약입니다.');
+  }
+
   await prisma.reservation.update({
     where: {
       orderNumber: orderNumber,
@@ -221,27 +233,30 @@ export async function confirmReservation(orderNumber: string, userId: string) {
  * 예약 가능 여부를 확인한다.
  *
  * @param {number} roomId 숙소 ID
- * @param {Date} checkIn 체크인 날짜
- * @param {Date} checkOut 체크아웃 날짜
- * @returns {boolean} 예약 가능 여부
+ * @param {ReservationAvailableInput} data 예약 가능 여부 확인 데이터
  */
-export async function checkReservation(
-  roomId: number,
-  checkIn: Date,
-  checkOut: Date,
-): Promise<boolean> {
+export async function checkReservation(data: ReservationAvailableInput): Promise<boolean> {
   const reservation = await prisma.reservation.findFirst({
     where: {
-      roomId,
+      roomId: data.roomId,
       status: {
         in: ['PAYMENT', 'CONFIRMED', 'PENDING'],
       },
+      guestNumber: {
+        lte: data.guestNumber,
+      },
       OR: [
         {
-          AND: [{ checkIn: { lte: new Date(checkIn) } }, { checkOut: { gt: new Date(checkIn) } }],
+          AND: [
+            { checkIn: { lte: new Date(data.checkIn) } },
+            { checkOut: { gt: new Date(data.checkIn) } },
+          ],
         },
         {
-          AND: [{ checkIn: { lt: new Date(checkOut) } }, { checkOut: { gte: new Date(checkOut) } }],
+          AND: [
+            { checkIn: { lt: new Date(data.checkOut) } },
+            { checkOut: { gte: new Date(data.checkOut) } },
+          ],
         },
       ],
     },
