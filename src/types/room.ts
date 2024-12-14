@@ -1,8 +1,8 @@
 import { Amenity, Room as PrismaRoom, RoomImage, Rule, Tag } from '@prisma/client';
 
-export interface RoomParams {
-  roomId: number;
-}
+export type RoomParams = {
+  roomId: string;
+};
 
 export type Room = Pick<
   PrismaRoom,

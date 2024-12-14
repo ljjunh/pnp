@@ -4,14 +4,11 @@ import { CustomError, UnAuthorizedError, ZodError } from '@/errors';
 import { CustomResponse } from '@/lib/server';
 import { updateReviewSchema } from '@/schemas/review';
 import { deleteReview, updateReview } from '@/services/review';
-
-interface Params {
-  reviewId: string;
-}
+import { ReviewParams } from '@/types/review';
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Params },
+  { params }: { params: ReviewParams },
 ): Promise<CustomResponse<undefined>> {
   const session = await auth();
   try {
@@ -48,7 +45,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Params },
+  { params }: { params: ReviewParams },
 ): Promise<CustomResponse<undefined>> {
   const session = await auth();
   try {
