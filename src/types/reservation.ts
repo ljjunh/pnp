@@ -25,3 +25,10 @@ export type Reservation = Pick<
     };
   };
 };
+
+export type ReservationAvailable = {
+  available: boolean;
+  roomId: number;
+  checkIn: Date;
+  checkOut: Date;
+};

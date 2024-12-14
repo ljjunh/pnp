@@ -148,6 +148,18 @@ export async function cancelReservation(orderNumber: string, userId: string) {
     throw new NotFoundError('존재하지 않는 예약 정보입니다.');
   }
 
+  if (reservation.status === 'CANCELED') {
+    throw new BadRequestError('이미 취소된 예약입니다.');
+  }
+
+  // * 체크인 24시간 전까지 취소할 수 있음
+  const checkInDate = new Date(reservation.checkIn);
+  const now = new Date();
+  const hoursUntilCheckIn = (checkInDate.getTime() - now.getTime()) / (1000 * 3600);
+  if (hoursUntilCheckIn < 24) {
+    throw new BadRequestError('체크인 24시간 전까지 취소할 수 있습니다.');
+  }
+
   if (reservation.userId !== userId) {
     throw new ForbiddenError('해당 예약 정보에 접근할 권한이 없습니다.');
   }
@@ -203,6 +215,39 @@ export async function confirmReservation(orderNumber: string, userId: string) {
       status: 'CONFIRMED',
     },
   });
+}
+
+/**
+ * 예약 가능 여부를 확인한다.
+ *
+ * @param {number} roomId 숙소 ID
+ * @param {Date} checkIn 체크인 날짜
+ * @param {Date} checkOut 체크아웃 날짜
+ * @returns {boolean} 예약 가능 여부
+ */
+export async function checkReservation(
+  roomId: number,
+  checkIn: Date,
+  checkOut: Date,
+): Promise<boolean> {
+  const reservation = await prisma.reservation.findFirst({
+    where: {
+      roomId,
+      status: {
+        in: ['PAYMENT', 'CONFIRMED', 'PENDING'],
+      },
+      OR: [
+        {
+          AND: [{ checkIn: { lte: new Date(checkIn) } }, { checkOut: { gt: new Date(checkIn) } }],
+        },
+        {
+          AND: [{ checkIn: { lt: new Date(checkOut) } }, { checkOut: { gte: new Date(checkOut) } }],
+        },
+      ],
+    },
+  });
+
+  return !!reservation;
 }
 
 /**
