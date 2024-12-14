@@ -1,6 +1,12 @@
-import { handleEmailLogin } from "./action";
+// 'use client'
+
+// import { useFormState } from "react-dom";
+import { EmailFormBtn } from './EmailFormBtn';
+import { handleEmailLogin } from './action';
 
 export const EmailLoginForm = () => {
+  // const [state, dispatch] = useFormState(handleEmailLogin, null)
+
   return (
     <form
       action={handleEmailLogin}
@@ -15,12 +21,7 @@ export const EmailLoginForm = () => {
           required
         />
       </div>
-      <button
-        type="submit"
-        className="w-full rounded-md bg-button-01 py-3 text-white hover:bg-button-02 disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        계속
-      </button>
+      <EmailFormBtn />
     </form>
   );
 };

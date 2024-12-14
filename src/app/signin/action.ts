@@ -1,16 +1,22 @@
-'use server'
+'use server';
 
 import { signIn } from '@/auth';
+import { z } from 'zod';
+
+const formSchema = z.object({
+  email: z.string().email().toLowerCase(),
+});
 
 export async function handleEmailLogin(formData: FormData) {
   'use server';
-  const email = formData.get('email');
-  await signIn('resend', { email, redirectTo: '/', redirect: false });
+  const data = { email: formData.get('email') };
+  const result = formSchema.safeParse(data);
+
+  await signIn('resend', { email: result.data?.email, redirectTo: '/', redirect: false });
 }
 
 type Provider = 'google' | 'kakao';
 
-// 각 provider별 서버 액션 함수를 명시적으로 'use server' 지시문과 함께 선언
 async function handleSocialLogin(provider: Provider) {
   'use server';
   await signIn(provider, { redirectTo: '/' });

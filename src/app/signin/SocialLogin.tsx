@@ -1,4 +1,5 @@
-import { googleLogin, kakaoLogin } from "./action";
+import { FormBtn } from './FormBtn';
+import { googleLogin, kakaoLogin } from './action';
 
 export async function SocialLogin() {
   return (
@@ -17,25 +18,11 @@ export async function SocialLogin() {
       {/* 소셜 로그인 버튼들 */}
       <nav className="space-y-3">
         <form action={googleLogin}>
-          <button
-            type="submit"
-            className="flex w-full items-center justify-between rounded-md border border-gray-500 px-4 py-2 hover:bg-gray-100"
-          >
-            <div />
-            <div>구글로 로그인하기</div>
-            <div />
-          </button>
+          <FormBtn text="구글로 로그인하기" />
         </form>
 
         <form action={kakaoLogin}>
-          <button
-            type="submit"
-            className="flex w-full items-center justify-between rounded-md border border-gray-500 px-4 py-2 hover:bg-gray-100"
-          >
-            <div />
-            <div>카카오톡으로 로그인하기</div>
-            <div />
-          </button>
+          <FormBtn text="카카오로 로그인하기" />
         </form>
       </nav>
     </>
