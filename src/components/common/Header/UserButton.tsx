@@ -25,6 +25,8 @@ export default function UserButton({ isLoggedIn, onClick, profileImage }: UserBu
               width={32}
               height={32}
               className="object-cover"
+              priority={false}
+              loading='lazy'
             />
           ) : (
             <FaUserCircle
