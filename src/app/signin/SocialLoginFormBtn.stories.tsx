@@ -20,12 +20,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof SocialLoginFormBtn>;
 
-export const Default: Story = {
-  args: {
-    text: 'default',
-  },
-};
-
 export const Google: Story = {
   args: {
     text: '구글로 로그인하기',
