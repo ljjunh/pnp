@@ -2,29 +2,30 @@ import { NextRequest } from 'next/server';
 import { auth } from '@/auth';
 import { CustomError, UnAuthorizedError } from '@/errors';
 import { CustomResponse } from '@/lib/server';
-import { createRoomScrap, deleteRoomScrap, isScrap } from '@/services/room';
-import { RoomParams } from '@/types/room';
+import {
+  cancelReservation,
+  confirmReservation,
+  getReservationByOrderNumber,
+} from '@/services/reservation';
+import { Reservation, ReservationParams } from '@/types/reservation';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: RoomParams },
-): Promise<CustomResponse> {
+  { params }: { params: ReservationParams },
+): Promise<CustomResponse<Reservation | undefined>> {
   const session = await auth();
-
   try {
     if (!session) {
-      return CustomResponse.ok(false);
+      throw new UnAuthorizedError();
     }
 
-    const roomId = +params.roomId;
+    const reservation = await getReservationByOrderNumber(session.user.id, params.orderNumber);
 
-    const scrap = await isScrap(roomId, session.user.id);
-
-    return CustomResponse.ok(scrap);
+    return CustomResponse.ok(reservation);
   } catch (error) {
-    console.error('스크랩 조회 중 에러 발생: ', {
-      roomId: params.roomId,
-      uesrId: session?.user.id,
+    console.error('예약 목록 조회 중 에러 발생: ', {
+      userId: session?.user.id,
+      orderNumber: params.orderNumber,
       error: error,
     });
 
@@ -38,23 +39,22 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: RoomParams },
-): Promise<CustomResponse> {
+  { params }: { params: ReservationParams },
+): Promise<CustomResponse<undefined>> {
   const session = await auth();
   try {
     if (!session) {
       throw new UnAuthorizedError();
     }
 
-    const roomId = +params.roomId;
+    await confirmReservation(session.user.id, params.orderNumber);
 
-    await createRoomScrap(roomId, session.user.id);
+    // TODO: 예약 확정 후, 예약 확정 메일 혹은 알림을 보내야할까?
 
-    return CustomResponse.created();
+    return CustomResponse.empty();
   } catch (error) {
-    console.error('스크랩 생성 중 에러 발생: ', {
-      roomId: params.roomId,
-      uesrId: session?.user.id,
+    console.error('예약 생성 중 에러 발생: ', {
+      userId: session?.user.id,
       error: error,
     });
 
@@ -68,24 +68,20 @@ export async function POST(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: RoomParams },
-): Promise<CustomResponse> {
+  { params }: { params: ReservationParams },
+): Promise<CustomResponse<undefined>> {
   const session = await auth();
-
   try {
     if (!session) {
       throw new UnAuthorizedError();
     }
 
-    const roomId = +params.roomId;
-
-    await deleteRoomScrap(roomId, session.user.id);
-
+    await cancelReservation(session.user.id, params.orderNumber);
     return CustomResponse.deleted();
   } catch (error) {
-    console.error('스크랩 삭제 중 에러 발생: ', {
-      roomId: params.roomId,
-      uesrId: session?.user.id,
+    console.error('예약 취소 중 에러 발생: ', {
+      userId: session?.user.id,
+      orderNumber: params.orderNumber,
       error: error,
     });
 

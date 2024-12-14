@@ -1,5 +1,6 @@
 import { BadRequestError, NotFoundError } from '@/errors';
 import { prisma } from '@/lib/server';
+
 /**
  * 숙소 정보를 조회한다
  *

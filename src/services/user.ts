@@ -1,7 +1,8 @@
-import { User } from 'next-auth';
+import { User as SessionUser } from 'next-auth';
 import { NotFoundError } from '@/errors';
 import { prisma, remove } from '@/lib/server';
 import { UpdateUserInput } from '@/schemas/user';
+import { User } from '@/types/user';
 
 /**
  * 유저 정보 조회
@@ -79,10 +80,10 @@ export async function updateUser(userId: string, data: UpdateUserInput) {
 /**
  * 유저 프로필 이미지 정보 업데이트
  *
- * @param {User} user
+ * @param {SessionUser} user
  * @param {string} image 이미지 경로
  */
-export async function updateUserImage(user: User, image: string) {
+export async function updateUserImage(user: SessionUser, image: string) {
   const updated = await prisma.$transaction(async (prisma) => {
     const update = await prisma.user.update({
       where: { id: user.id },
