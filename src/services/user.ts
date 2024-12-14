@@ -1,7 +1,6 @@
 import { User } from 'next-auth';
 import { NotFoundError } from '@/errors';
-import { prisma } from '@/lib/server';
-import { remove } from '@/lib/server/s3';
+import { prisma, remove } from '@/lib/server';
 import { UpdateUserInput } from '@/schemas/user';
 
 /**
@@ -84,10 +83,13 @@ export async function updateUser(userId: string, data: UpdateUserInput) {
  * @param {string} image 이미지 경로
  */
 export async function updateUserImage(user: User, image: string) {
-  await prisma.$transaction(async (prisma) => {
-    prisma.user.update({
+  const updated = await prisma.$transaction(async (prisma) => {
+    const update = await prisma.user.update({
       where: { id: user.id },
       data: { image },
+      select: {
+        id: true,
+      },
     });
 
     if (user.image?.startsWith('users')) {
@@ -97,5 +99,11 @@ export async function updateUserImage(user: User, image: string) {
         console.error('이전 이미지 삭제 실패:', error);
       }
     }
+
+    return update.id === user.id;
   });
+
+  if (!updated) {
+    throw new NotFoundError();
+  }
 }

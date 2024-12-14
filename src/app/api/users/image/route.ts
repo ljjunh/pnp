@@ -1,8 +1,8 @@
 import { NextRequest } from 'next/server';
 import { auth } from '@/auth';
 import { BadRequestError, CustomError, UnAuthorizedError } from '@/errors';
-import { CustomResponse } from '@/lib/server';
-import { ALLOWED_IMAGE_TYPES, MAX_FILE_SIZE, upload } from '@/lib/server/s3';
+import { CustomResponse, upload } from '@/lib/server';
+import { ALLOWED_IMAGE_TYPES, MAX_FILE_SIZE } from '@/lib/server/s3';
 import { updateUserImage } from '@/services/user';
 
 export async function POST(request: NextRequest) {
