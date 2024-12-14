@@ -8,6 +8,7 @@ export function LoginHeader({ onBack }: LoginHeaderProps) {
       className="flex items-center justify-between border-b p-4"
       role="banner"
     >
+      {/* 모달일 경우 뒤로가기 버튼 렌더링 */}
       {onBack ? (
         <button
           onClick={onBack}
