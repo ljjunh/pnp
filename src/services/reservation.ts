@@ -1,7 +1,16 @@
 import { BadRequestError, NotFoundError } from '@/errors';
+import { ForbiddenError } from '@/errors/errors';
 import { prisma } from '@/lib/server';
 import { CreateReservationInput } from '@/schemas';
+import { Reservation } from '@/types/reservation';
 
+/**
+ * 새롭게 숙소를 예약한다.
+ *
+ * @param {string} userId 사용자 ID
+ * @param {CreateReservationInput} data 예약 생성 데이터
+ * @returns
+ */
 export async function createReservation(userId: string, data: CreateReservationInput) {
   const room = await prisma.room.findUnique({
     where: {
@@ -52,6 +61,148 @@ export async function createReservation(userId: string, data: CreateReservationI
   });
 
   return reservation;
+}
+
+/**
+ * 주문 번호를 기반으로 예약 정보를 가져온다.
+ *
+ * @param {string} orderNumber 주문 번호
+ * @param {string} userId 사용자 ID
+ *
+ * @returns {Promise<Reservation>} 예약 정보
+ */
+export async function getReservationByOrderNumber(
+  orderNumber: string,
+  userId: string,
+): Promise<Reservation> {
+  const reservation = await prisma.reservation.findUnique({
+    relationLoadStrategy: 'join',
+    where: {
+      orderNumber: orderNumber,
+    },
+    select: {
+      userId: true,
+      roomId: true,
+      orderNumber: true,
+      checkIn: true,
+      checkOut: true,
+      message: true,
+      guestNumber: true,
+      // * 숙소 정보 한번에 조회
+      room: {
+        select: {
+          title: true,
+          thumbnail: true,
+          images: true,
+          // * 숙소의 규칙 조회
+          rules: {
+            select: {
+              rule: true,
+            },
+          },
+          // * 숙소의 호스트 정보
+          host: {
+            select: {
+              id: true,
+              isSuperHost: true,
+              isVerified: true,
+              user: {
+                select: {
+                  id: true,
+                  name: true,
+                  image: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!reservation) {
+    throw new NotFoundError('존재하지 않는 예약 정보입니다.');
+  }
+
+  if (reservation.userId !== userId) {
+    throw new ForbiddenError('해당 예약 정보에 접근할 권한이 없습니다.');
+  }
+
+  return reservation as Reservation;
+}
+
+/**
+ * 주문 번호를 기반으로 예약을 취소한다.
+ *
+ * @param {string} orderNumber 주문 번호
+ * @param {string} userId 사용자 ID
+ */
+export async function cancelReservation(orderNumber: string, userId: string) {
+  const reservation = await prisma.reservation.findUnique({
+    where: {
+      orderNumber: orderNumber,
+    },
+  });
+
+  if (!reservation) {
+    throw new NotFoundError('존재하지 않는 예약 정보입니다.');
+  }
+
+  if (reservation.userId !== userId) {
+    throw new ForbiddenError('해당 예약 정보에 접근할 권한이 없습니다.');
+  }
+
+  await prisma.reservation.update({
+    where: {
+      orderNumber: orderNumber,
+    },
+    data: {
+      status: 'CANCELED',
+    },
+  });
+}
+
+/**
+ * 주문 번호를 기반으로 예약을 확정짓는다.
+ *
+ * @param {string} orderNumber 주문 번호
+ * @param {string} userId 사용자 ID (호스트)
+ */
+export async function confirmReservation(orderNumber: string, userId: string) {
+  const reservation = await prisma.reservation.findUnique({
+    relationLoadStrategy: 'join',
+    where: {
+      orderNumber: orderNumber,
+    },
+    select: {
+      room: {
+        select: {
+          host: {
+            select: {
+              userId: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!reservation) {
+    throw new NotFoundError('존재하지 않는 예약 정보입니다.');
+  }
+
+  if (reservation.room.host.userId !== userId) {
+    throw new ForbiddenError('해당 예약 정보에 접근할 권한이 없습니다.');
+  }
+
+  await prisma.reservation.update({
+    where: {
+      orderNumber: orderNumber,
+    },
+    data: {
+      status: 'CONFIRMED',
+    },
+  });
 }
 
 /**
