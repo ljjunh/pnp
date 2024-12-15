@@ -83,8 +83,8 @@ model VerificationToken {
 
 model Room {
   id             Int     @id @default(autoincrement())
-  airbnbId       String  @unique @map("airbnb_id")
-  airbnbLink     String  @unique @map("airbnb_link")
+  airbnbId       String? @unique @map("airbnb_id")
+  airbnbLink     String? @unique @map("airbnb_link")
   title          String
   hostId         Int     @map("host_id")
   host           Host    @relation(fields: [hostId], references: [id])

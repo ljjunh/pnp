@@ -65,8 +65,8 @@ CREATE TABLE `verification_tokens` (
 -- CreateTable
 CREATE TABLE `rooms` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `airbnb_id` VARCHAR(191) NOT NULL,
-    `airbnb_link` VARCHAR(191) NOT NULL,
+    `airbnb_id` VARCHAR(191) NULL,
+    `airbnb_link` VARCHAR(191) NULL,
     `title` VARCHAR(191) NOT NULL,
     `host_id` INTEGER NOT NULL,
     `description` TEXT NULL,

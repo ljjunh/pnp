@@ -1,15 +1,16 @@
 import nextJest from 'next/jest';
 import type { Config } from 'jest';
+import { resolve } from 'path';
 
 const createJestConfig = nextJest({
   // next.config.js와 .env 파일을 로드하기 위한 Next.js 앱의 경로
-  dir: './',
+  dir: resolve(__dirname, '../'),
 });
 
 const customJestConfig: Config = {
+  rootDir: resolve(__dirname, '../'),
   // Jest 실행 전에 먼저 실행될 설정 파일
-  setupFilesAfterEnv: ['<rootDir>/src/lib/test/jest.setup.ts'],
-
+  setupFilesAfterEnv: ['<rootDir>/jest/frontend.setup.ts'],
   // 테스트 환경 설정
   testEnvironment: 'jest-fixed-jsdom',
   testEnvironmentOptions: {
@@ -26,7 +27,7 @@ const customJestConfig: Config = {
   // 테스트 파일 위치 설정
   // __tests__ 폴더 내의 모든 ts/tsx 파일
   // 파일명이 .test.ts/tsx 또는 .spec.ts/tsx로 끝나는 파일
-  testMatch: ['**/__tests__/**/*.ts?(x)', '**/?(*.)+(spec|test).ts?(x)'],
+  testMatch: ['**/?(*.)+(spec|test).ts?(x)'],
 
   // 테스트 제외 경로(.next, nodo_modules 폴더 제외)
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],

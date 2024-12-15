@@ -27,7 +27,7 @@ export async function GET(
   } catch (error) {
     console.error('리뷰 목록 조회 중 에러 발생: ', {
       roomId: params.roomId,
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
 
     return CustomResponse.errors();
@@ -50,12 +50,11 @@ export async function POST(request: NextRequest, { params }: { params: ReviewPar
     console.error('리뷰 생성 중 에러 발생: ', {
       roomId: params.roomId,
       userId: session?.user.id,
-      data: await request.json(),
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
 
     if (error instanceof ZodError) {
-      return CustomResponse.zod('잘못된 요청 데이터입니다.', 400, error.errors);
+      return CustomResponse.zod(400, error.errors);
     } else if (error instanceof CustomError) {
       return CustomResponse.errors(error.message, error.statusCode);
     }

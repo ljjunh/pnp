@@ -26,7 +26,7 @@ export async function GET(
     console.error('예약 목록 조회 중 에러 발생: ', {
       userId: session?.user.id,
       orderNumber: params.orderNumber,
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
 
     if (error instanceof CustomError) {
@@ -55,7 +55,7 @@ export async function POST(
   } catch (error) {
     console.error('예약 생성 중 에러 발생: ', {
       userId: session?.user.id,
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
 
     if (error instanceof CustomError) {
@@ -82,7 +82,7 @@ export async function DELETE(
     console.error('예약 취소 중 에러 발생: ', {
       userId: session?.user.id,
       orderNumber: params.orderNumber,
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
 
     if (error instanceof CustomError) {

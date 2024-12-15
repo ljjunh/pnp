@@ -10,7 +10,6 @@ export type Room = Pick<
   | 'id'
   | 'airbnbLink'
   | 'title'
-  | 'hostId'
   | 'description'
   | 'seoTitle'
   | 'seoDescription'

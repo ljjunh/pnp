@@ -38,11 +38,11 @@ export async function GET(
     console.error('예약 가능 여부 확인 중 에러 발생: ', {
       roomId: params.roomId,
       params: request.nextUrl.searchParams,
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
 
     if (error instanceof ZodError) {
-      return CustomResponse.zod('입력한 값에 오류가 있습니다.', 400, error.errors);
+      return CustomResponse.zod(400, error.errors);
     } else if (error instanceof CustomError) {
       return CustomResponse.errors(error.message, error.statusCode);
     }

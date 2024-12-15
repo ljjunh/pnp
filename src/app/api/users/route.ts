@@ -21,7 +21,7 @@ export async function GET(): Promise<CustomResponse<User | undefined>> {
   } catch (error) {
     console.error('유저 정보 조회 중 에러 발생: ', {
       userId: session?.user.id,
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
 
     if (error instanceof CustomError) {
@@ -54,12 +54,11 @@ export async function PATCH(request: NextRequest): Promise<CustomResponse<undefi
   } catch (error) {
     console.error('사용자 정보 업데이트 중 에러 발생: ', {
       userId: session?.user.id,
-      data: await request.json(),
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
 
     if (error instanceof ZodError) {
-      return CustomResponse.zod('잘못된 요청 데이터입니다.', 400, error.errors);
+      return CustomResponse.zod(400, error.errors);
     } else if (error instanceof CustomError) {
       return CustomResponse.errors(error.message, error.statusCode);
     }
