@@ -24,7 +24,7 @@ export const mockRoom: Room = {
     id: 1,
     isSuperHost: true,
     isVerified: true,
-    hostStartedAt: new Date(),
+    hostStartedAt: new Date('2024-01-01T00:00:00Z'),
     user: {
       id: 'userId',
       email: 'test@test.com',

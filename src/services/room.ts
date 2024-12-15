@@ -114,8 +114,8 @@ export async function getRoom(roomId: number): Promise<RoomWithReview> {
       },
       hostTags: extractProperty(room.host.hostTags, 'tag'),
     },
-    count: aggregate._count.id,
-    average: aggregate._avg.rating,
+    count: aggregate._count.id ?? 0,
+    average: aggregate._avg.rating ?? 0,
   };
 
   return parseRoom as RoomWithReview;

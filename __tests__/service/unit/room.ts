@@ -71,6 +71,25 @@ describe('숙소 서비스 테스트', () => {
         expect(error).toBeInstanceOf(NotFoundError);
       }
     });
+
+    it('만약, 리뷰 집계 함수에서 문제가 발생한 경우, 0으로 초기화해야합니다.', async () => {
+      const roomId = 1;
+      const room = mockRoom;
+
+      (prisma.room.findUnique as jest.Mock).mockResolvedValue(mockRoom);
+      (prisma.review.aggregate as jest.Mock).mockResolvedValue({
+        _count: { id: undefined },
+        _avg: { rating: undefined },
+      });
+
+      const findRoom = await getRoom(roomId);
+
+      expect(findRoom).toEqual({
+        ...room,
+        count: 0,
+        average: 0,
+      });
+    });
   });
 
   describe('isScrap', () => {
