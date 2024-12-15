@@ -29,12 +29,11 @@ export async function PATCH(
     console.error('리뷰 수정 중 에러 발생: ', {
       reviewId: params.reviewId,
       userId: session?.user.id,
-      data: await request.json(),
       error: error instanceof Error ? error.message : error,
     });
 
     if (error instanceof ZodError) {
-      return CustomResponse.zod('잘못된 요청 데이터입니다.', 400, error.errors);
+      return CustomResponse.zod(400, error.errors);
     } else if (error instanceof CustomError) {
       return CustomResponse.errors(error.message, error.statusCode);
     }

@@ -22,7 +22,7 @@ export async function POST(request: NextRequest): Promise<CustomResponse<undefin
     });
 
     if (error instanceof ZodError) {
-      return CustomResponse.zod(error.message, 400, error.errors);
+      return CustomResponse.zod(400, error.errors);
     } else if (error instanceof CustomError) {
       return CustomResponse.errors(error.message, error.statusCode);
     }

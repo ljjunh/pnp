@@ -42,7 +42,7 @@ export async function GET(
     });
 
     if (error instanceof ZodError) {
-      return CustomResponse.zod('입력한 값에 오류가 있습니다.', 400, error.errors);
+      return CustomResponse.zod(400, error.errors);
     } else if (error instanceof CustomError) {
       return CustomResponse.errors(error.message, error.statusCode);
     }

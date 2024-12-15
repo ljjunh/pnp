@@ -61,16 +61,12 @@ class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T> | object>
     );
   }
 
-  static zod<T>(
-    message: string = '잘못된 요청입니다.',
-    status: number = 400,
-    errors: ZodIssue[],
-  ): CustomResponse<T> {
+  static zod<T>(status: number = 400, errors: ZodIssue[]): CustomResponse<T> {
     return CustomResponse.json(
       {
         success: false,
         status,
-        message,
+        message: '잘못된 요청 데이터 입니다.',
         errors: errors,
       },
       {
