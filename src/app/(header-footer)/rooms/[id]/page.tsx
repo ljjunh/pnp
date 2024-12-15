@@ -22,6 +22,7 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
             location={room.location}
             roomTags={room.roomTags}
             description={room.description}
+            host={room.host}
           />
         </div>
         <div className="relative col-span-2">
@@ -34,9 +35,9 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
         <RoomReviewSummary />
         <RoomReviewList />
       </section>
-      <RoomHost />
+      <RoomHost host={room.host} />
       <RoomRules
-        id={params.id}
+        id={Number(params.id)}
         checkIn={room.checkIn}
         checkOut={room.checkOut}
         rules={room.rules}

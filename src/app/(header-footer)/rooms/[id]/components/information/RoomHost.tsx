@@ -1,10 +1,17 @@
+import Image from 'next/image';
 import Link from 'next/link';
+import { Room } from '@/types/room';
 import Button from '@/components/common/Button/Button';
+import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { ROUTES } from '@/constants/routeURL';
 import { IoIosArrowForward, IoIosStar } from 'react-icons/io';
 import { IoEarthOutline } from 'react-icons/io5';
 
-export default function RoomHost() {
+interface RoomHostProps {
+  host: Room['host'];
+}
+
+export default function RoomHost({ host }: RoomHostProps) {
   return (
     <div className="border-b pb-12">
       <h2 className="mb-6 text-2xl">호스트 소개</h2>
@@ -15,9 +22,18 @@ export default function RoomHost() {
             className="flex items-center gap-20 rounded-3xl py-4 pl-12 pr-8 shadow-2xl"
           >
             <div>
-              <div className="h-24 w-24 rounded-full bg-black"></div>
+              <div className="relative h-24 w-24 rounded-full bg-black">
+                {host.user.image && (
+                  <Image
+                    src={host.user.image}
+                    fill
+                    alt={'호스트 프로필 이미지'}
+                    className="rounded-full object-cover"
+                  />
+                )}
+              </div>
               <div className="mt-2 flex flex-col text-center">
-                <div className="text-2xl font-semibold">John</div>
+                <div className="text-2xl font-semibold">{host.user.name}</div>
                 <div className="text-sm">호스트</div>
               </div>
             </div>
@@ -40,9 +56,8 @@ export default function RoomHost() {
               <hr />
               <div className="flex flex-col py-2 pr-20">
                 <div className="text-xs">호스팅 경력</div>
-                <div className="flex items-baseline">
-                  <div className="text-xl font-semibold">4</div>
-                  <div className="text-[10px]">년</div>
+                <div className="text-xl font-semibold">
+                  {formatElapsedTime(new Date(host.hostStartedAt))}
                 </div>
               </div>
             </div>
@@ -63,9 +78,15 @@ export default function RoomHost() {
         </div>
         <div>
           <div className="border-b">
-            <div className="text-lg font-semibold">호스트 상세 정보</div>
-            <div className="mt-2 text-shade-02">응답률: 100%</div>
-            <div className="text-shade-02">1시간 이내에 응답</div>
+            <div className="mb-2 text-lg font-semibold">호스트 상세 정보</div>
+            {host.hostTags.map((tag) => (
+              <div
+                key={tag.content}
+                className="text-shade-02"
+              >
+                {tag.content}
+              </div>
+            ))}
             <div className="my-8">
               <Button variant="secondary">호스트에게 메시지 보내기</Button>
             </div>
