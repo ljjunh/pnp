@@ -64,7 +64,7 @@ CREATE TABLE `verification_tokens` (
 
 -- CreateTable
 CREATE TABLE `rooms` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `airbnb_id` VARCHAR(191) NOT NULL,
     `airbnb_link` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
@@ -91,8 +91,8 @@ CREATE TABLE `rooms` (
 
 -- CreateTable
 CREATE TABLE `room_images` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
-    `room_id` BIGINT NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `room_id` INTEGER NOT NULL,
     `caption` VARCHAR(1000) NOT NULL,
     `orientation` ENUM('PORTRAIT', 'LANDSCAPE') NOT NULL,
     `image_link` VARCHAR(191) NOT NULL,
@@ -102,7 +102,7 @@ CREATE TABLE `room_images` (
 
 -- CreateTable
 CREATE TABLE `rules` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `category` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
     `icon` VARCHAR(191) NOT NULL,
@@ -112,7 +112,7 @@ CREATE TABLE `rules` (
 
 -- CreateTable
 CREATE TABLE `amenities` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `category` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
     `sub_title` VARCHAR(191) NULL,
@@ -124,9 +124,9 @@ CREATE TABLE `amenities` (
 
 -- CreateTable
 CREATE TABLE `room_rules` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
-    `room_id` BIGINT NOT NULL,
-    `rule_id` BIGINT NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `room_id` INTEGER NOT NULL,
+    `rule_id` INTEGER NOT NULL,
 
     UNIQUE INDEX `room_rules_room_id_rule_id_key`(`room_id`, `rule_id`),
     PRIMARY KEY (`id`)
@@ -134,9 +134,9 @@ CREATE TABLE `room_rules` (
 
 -- CreateTable
 CREATE TABLE `room_amenities` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
-    `room_id` BIGINT NOT NULL,
-    `amenity_id` BIGINT NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `room_id` INTEGER NOT NULL,
+    `amenity_id` INTEGER NOT NULL,
 
     UNIQUE INDEX `room_amenities_room_id_amenity_id_key`(`room_id`, `amenity_id`),
     PRIMARY KEY (`id`)
@@ -144,8 +144,8 @@ CREATE TABLE `room_amenities` (
 
 -- CreateTable
 CREATE TABLE `reviews` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
-    `room_id` BIGINT NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `room_id` INTEGER NOT NULL,
     `user_id` VARCHAR(191) NOT NULL,
     `airbnb_id` VARCHAR(191) NULL,
     `rating` INTEGER NOT NULL,
@@ -205,10 +205,39 @@ CREATE TABLE `host_tags` (
 -- CreateTable
 CREATE TABLE `room_tags` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `room_id` BIGINT NOT NULL,
+    `room_id` INTEGER NOT NULL,
     `tag_id` INTEGER NOT NULL,
 
     UNIQUE INDEX `room_tags_room_id_tag_id_key`(`room_id`, `tag_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `room_scraps` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `user_id` VARCHAR(191) NOT NULL,
+    `room_id` INTEGER NOT NULL,
+
+    UNIQUE INDEX `room_scraps_user_id_room_id_key`(`user_id`, `room_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `reservations` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `user_id` VARCHAR(191) NOT NULL,
+    `room_id` INTEGER NOT NULL,
+    `order_number` VARCHAR(191) NOT NULL,
+    `check_in` DATETIME(3) NOT NULL,
+    `check_out` DATETIME(3) NOT NULL,
+    `guest_number` INTEGER NOT NULL,
+    `total_price` INTEGER NOT NULL,
+    `status` ENUM('PENDING', 'PAYMENT', 'CONFIRMED', 'CANCELED', 'COMPLETED') NOT NULL DEFAULT 'PENDING',
+    `message` VARCHAR(191) NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    UNIQUE INDEX `reservations_order_number_key`(`order_number`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -256,3 +285,15 @@ ALTER TABLE `room_tags` ADD CONSTRAINT `room_tags_room_id_fkey` FOREIGN KEY (`ro
 
 -- AddForeignKey
 ALTER TABLE `room_tags` ADD CONSTRAINT `room_tags_tag_id_fkey` FOREIGN KEY (`tag_id`) REFERENCES `tags`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `room_scraps` ADD CONSTRAINT `room_scraps_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `room_scraps` ADD CONSTRAINT `room_scraps_room_id_fkey` FOREIGN KEY (`room_id`) REFERENCES `rooms`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `reservations` ADD CONSTRAINT `reservations_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `reservations` ADD CONSTRAINT `reservations_room_id_fkey` FOREIGN KEY (`room_id`) REFERENCES `rooms`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

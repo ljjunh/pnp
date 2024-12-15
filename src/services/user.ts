@@ -1,5 +1,6 @@
+import { User as SessionUser } from 'next-auth';
 import { NotFoundError } from '@/errors';
-import { prisma } from '@/lib/server';
+import { prisma, remove } from '@/lib/server';
 import { UpdateUserInput } from '@/schemas/user';
 import { User } from '@/types/user';
 
@@ -72,6 +73,38 @@ export async function updateUser(userId: string, data: UpdateUserInput) {
   });
 
   if (!user) {
+    throw new NotFoundError();
+  }
+}
+
+/**
+ * 유저 프로필 이미지 정보 업데이트
+ *
+ * @param {SessionUser} user
+ * @param {string} image 이미지 경로
+ */
+export async function updateUserImage(user: SessionUser, image: string) {
+  const updated = await prisma.$transaction(async (prisma) => {
+    const update = await prisma.user.update({
+      where: { id: user.id },
+      data: { image },
+      select: {
+        id: true,
+      },
+    });
+
+    if (user.image?.startsWith('users')) {
+      try {
+        await remove(user.image);
+      } catch (error) {
+        console.error('이전 이미지 삭제 실패:', error);
+      }
+    }
+
+    return update.id === user.id;
+  });
+
+  if (!updated) {
     throw new NotFoundError();
   }
 }

@@ -15,12 +15,12 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  airbnbId      String?   @unique @map("airbnb_id")
+  id            String      @id @default(cuid())
+  airbnbId      String?     @unique @map("airbnb_id")
   name          String?
-  username      String?   @unique
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
+  username      String?     @unique
+  email         String?     @unique
+  emailVerified DateTime?   @map("email_verified")
   image         String?
   accounts      Account[]
   sessions      Session[]
@@ -28,8 +28,9 @@ model User {
   roomScraps    RoomScrap[]
   host          Host?
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @default(now()) @updatedAt @map("updated_at")
+  Reservation Reservation[]
 
   @@map("users")
 }
@@ -107,8 +108,9 @@ model Room {
   amenities RoomAmenity[]
   scraps    RoomScrap[]
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @default(now()) @updatedAt @map("updated_at")
+  Reservation Reservation[]
 
   @@map("rooms")
 }
@@ -254,13 +256,41 @@ model RoomTag {
 }
 
 model RoomScrap {
-  id        Int      @id @default(autoincrement())
-  userId    String   @map("user_id")
-  roomId    Int      @map("room_id")
+  id     Int    @id @default(autoincrement())
+  userId String @map("user_id")
+  roomId Int    @map("room_id")
 
   user User @relation(fields: [userId], references: [id])
   room Room @relation(fields: [roomId], references: [id])
 
   @@unique([userId, roomId])
   @@map("room_scraps")
+}
+
+model Reservation {
+  id          Int               @id @default(autoincrement())
+  userId      String            @map("user_id")
+  roomId      Int               @map("room_id")
+  orderNumber String            @unique @map("order_number")
+  checkIn     DateTime          @map("check_in")
+  checkOut    DateTime          @map("check_out")
+  guestNumber Int               @map("guest_number")
+  totalPrice  Int               @map("total_price")
+  status      ReservationStatus @default(PENDING)
+  message     String?
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @default(now()) @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+  room Room @relation(fields: [roomId], references: [id])
+
+  @@map("reservations")
+}
+
+enum ReservationStatus {
+  PENDING
+  PAYMENT
+  CONFIRMED
+  CANCELED
+  COMPLETED
 }

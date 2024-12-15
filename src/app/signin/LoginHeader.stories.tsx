@@ -20,10 +20,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof LoginHeader>;
 
+// 기본
 export const Default: Story = {
   args: {},
 };
 
+// 모달, 뒤로가기 버튼 렌더링
 export const WithBackButton: Story = {
   args: {
     onBack: () => alert('Back button clicked'),

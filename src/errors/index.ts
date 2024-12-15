@@ -1,4 +1,7 @@
-import { CustomError } from "@/errors/custom-error";
-import { BadRequestError, NotFoundError, UnAuthorizedError } from "@/errors/errors";
+import { CustomError } from '@/errors/custom-error';
+import { BadRequestError, NotFoundError, UnAuthorizedError } from '@/errors/errors';
+import { z } from 'zod';
 
-export { BadRequestError, CustomError, NotFoundError, UnAuthorizedError };
+const ZodError = z.ZodError;
+
+export { BadRequestError, CustomError, NotFoundError, UnAuthorizedError, ZodError };

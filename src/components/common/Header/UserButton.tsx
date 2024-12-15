@@ -17,14 +17,16 @@ export default function UserButton({ isLoggedIn, onClick, profileImage }: UserBu
         className="flex items-center gap-3 rounded-full border border-gray-300 py-2 pl-3.5 pr-2 hover:shadow-md"
       >
         <RxHamburgerMenu size={16} />
-        <div className="ml-1 rounded-full">
+        <div className="ml-1 *:rounded-full">
           {isLoggedIn && profileImage ? (
             <Image
               src={profileImage}
               alt="Profile"
-              fill
+              width={32}
+              height={32}
               className="object-cover"
-              sizes="32px"
+              priority={false}
+              loading='lazy'
             />
           ) : (
             <FaUserCircle

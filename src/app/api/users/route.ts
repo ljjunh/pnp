@@ -1,10 +1,9 @@
 import { NextRequest } from 'next/server';
 import { auth } from '@/auth';
-import { CustomError, UnAuthorizedError } from '@/errors';
+import { CustomError, UnAuthorizedError, ZodError } from '@/errors';
 import { CustomResponse } from '@/lib/server';
 import { updateUserSchema } from '@/schemas/user';
 import { getUser, updateUser } from '@/services/user';
-import { z } from 'zod';
 import { User } from '@/types/user';
 
 export async function GET(): Promise<CustomResponse<User | undefined>> {
@@ -18,7 +17,7 @@ export async function GET(): Promise<CustomResponse<User | undefined>> {
 
     const user = await getUser(userId);
 
-    return CustomResponse.ok<User>(user);
+    return CustomResponse.ok(user);
   } catch (error) {
     console.error('유저 정보 조회 중 에러 발생: ', {
       userId: session?.user.id,
@@ -59,7 +58,7 @@ export async function PATCH(request: NextRequest): Promise<CustomResponse<undefi
       error: error,
     });
 
-    if (error instanceof z.ZodError) {
+    if (error instanceof ZodError) {
       return CustomResponse.zod('잘못된 요청 데이터입니다.', 400, error.errors);
     } else if (error instanceof CustomError) {
       return CustomResponse.errors(error.message, error.statusCode);

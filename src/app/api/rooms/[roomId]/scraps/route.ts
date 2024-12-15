@@ -3,14 +3,11 @@ import { auth } from '@/auth';
 import { CustomError, UnAuthorizedError } from '@/errors';
 import { CustomResponse } from '@/lib/server';
 import { createRoomScrap, deleteRoomScrap, isScrap } from '@/services/room';
-
-interface Params {
-  roomId: string;
-}
+import { RoomParams } from '@/types/room';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Params },
+  { params }: { params: RoomParams },
 ): Promise<CustomResponse> {
   const session = await auth();
 
@@ -41,7 +38,7 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: Params },
+  { params }: { params: RoomParams },
 ): Promise<CustomResponse> {
   const session = await auth();
   try {
@@ -71,7 +68,7 @@ export async function POST(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Params },
+  { params }: { params: RoomParams },
 ): Promise<CustomResponse> {
   const session = await auth();
 

@@ -4,9 +4,14 @@ import { useState } from 'react';
 import RoomBookingCalendar from '@/app/(header-footer)/rooms/[id]/components/booking/RoomBookingCalendar';
 import RoomBookingDropdown from '@/app/(header-footer)/rooms/[id]/components/booking/RoomBookingDropdown';
 import { addDays } from 'date-fns';
+import { Room } from '@/types/room';
 import Button from '@/components/common/Button/Button';
 
-export default function RoomBookingCard() {
+interface RoomBookingCardProps {
+  price: Room['price'];
+}
+
+export default function RoomBookingCard({ price }: RoomBookingCardProps) {
   const [checkIn, setCheckIn] = useState<Date>(new Date());
   const [checkOut, setCheckOut] = useState<Date>(addDays(new Date(), 1));
   const [showCalendar, setShowCalendar] = useState(false);
@@ -40,7 +45,7 @@ export default function RoomBookingCard() {
     setShowGuestDropdown((prev) => !prev);
   };
 
-  const pricePerNight = 55000;
+  const pricePerNight = price;
   const serviceFeePercentage = 10;
 
   const nights = Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24));
