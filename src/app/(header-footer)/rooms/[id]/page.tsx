@@ -6,19 +6,27 @@ import RoomHost from '@/app/(header-footer)/rooms/[id]/components/information/Ro
 import RoomRules from '@/app/(header-footer)/rooms/[id]/components/information/RoomRules';
 import RoomReviewList from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewList';
 import RoomReviewSummary from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewSummary';
+import { Room } from '@/types/room';
+import { getRoom } from '@/apis/rooms/queries';
 
-export default function RoomDetailPage({ params }: { params: { id: number } }) {
+export default async function RoomDetailPage({ params }: { params: { id: number } }) {
+  const room: Room = await getRoom(params.id);
+
   return (
     <div className="pt-6">
-      <RoomHeader title={'한옥독채/거실겸큰방1/작은방1/설악해변도보3분/낙산사/설악산'} />
-      <RoomGallery />
+      <RoomHeader title={room.title} />
+      <RoomGallery images={room.images.slice(0, 5)} />
       <section className="grid grid-cols-5 gap-28">
         <div className="col-span-3">
-          <RoomDescription />
+          <RoomDescription
+            location={room.location}
+            roomTags={room.roomTags}
+            description={room.description}
+          />
         </div>
         <div className="relative col-span-2">
           <div className="sticky top-28">
-            <RoomBookingCard />
+            <RoomBookingCard price={room.price} />
           </div>
         </div>
       </section>
@@ -27,7 +35,12 @@ export default function RoomDetailPage({ params }: { params: { id: number } }) {
         <RoomReviewList />
       </section>
       <RoomHost />
-      <RoomRules id={params.id} />
+      <RoomRules
+        id={params.id}
+        checkIn={room.checkIn}
+        checkOut={room.checkOut}
+        rules={room.rules}
+      />
     </div>
   );
 }

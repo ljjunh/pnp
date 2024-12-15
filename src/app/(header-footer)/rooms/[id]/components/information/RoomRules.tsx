@@ -1,21 +1,25 @@
 import Link from 'next/link';
+import { Room } from '@/types/room';
 import { ROUTES } from '@/constants/routeURL';
 import { IoIosArrowForward } from 'react-icons/io';
 
 interface RoomRulesProps {
   id: number;
+  checkIn: Room['checkIn'];
+  checkOut: Room['checkOut'];
+  rules: Room['rules'];
 }
 
-export default function RoomRules({ id }: RoomRulesProps) {
+export default function RoomRules({ id, checkIn, checkOut, rules }: RoomRulesProps) {
   return (
     <div className="py-12">
       <h2 className="pb-6 text-2xl">알아두어야 할 사항</h2>
       <div className="grid grid-cols-3">
         <div className="col-span-1 flex flex-col">
           <span className="pb-3">숙소 이용 규칙</span>
-          <span className="pb-4 text-shade-02">체크인 가능 시간: 오후 2:00 이후</span>
-          <span className="pb-4 text-shade-02">체크아웃 시간: 오전 11:00 전까지</span>
-          <span className="pb-4 text-shade-02">게스트 정원 3명</span>
+          <span className="pb-4 text-shade-02">체크인 가능 시간: {checkIn} 이후</span>
+          <span className="pb-4 text-shade-02">체크아웃 시간: {checkOut} 전까지</span>
+          <span className="pb-4 text-shade-02">{rules[0].title}</span>
           <Link
             href={ROUTES.ROOMS.HOUSE_RULES(id)}
             className="flex items-center text-shade-02 underline hover:text-black"
