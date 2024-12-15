@@ -19,4 +19,4 @@ const meta = {
 export default meta;
 
 // 기본 상태
-export const Default: StoryFn = () => <RoomBookingCard />;
+export const Default: StoryFn = () => <RoomBookingCard price={60000} />;

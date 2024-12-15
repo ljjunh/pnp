@@ -13,4 +13,17 @@ export default meta;
 
 type Story = StoryObj<typeof RoomRules>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    checkIn: '15:00',
+    checkOut: '11:00',
+    rules: [
+      {
+        id: 1,
+        category: '숙박 중',
+        title: '게스트 정원 2명',
+        icon: 'SYSTEM_FAMILY',
+      },
+    ],
+  },
+};
