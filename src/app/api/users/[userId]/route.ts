@@ -22,7 +22,12 @@ export async function GET(
 
     return CustomResponse.ok(user);
   } catch (error) {
-    console.error(error);
+    console.error('유저 정보 조회 중 에러 발생: ', {
+      userId: params.userId,
+      error: error instanceof Error ? error.message : error,
+    });
+
+    console.log('error', error);
 
     if (error instanceof CustomError) {
       return CustomResponse.errors(error.message, error.statusCode);

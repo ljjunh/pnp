@@ -30,7 +30,7 @@ export async function PATCH(
       reviewId: params.reviewId,
       userId: session?.user.id,
       data: await request.json(),
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
 
     if (error instanceof ZodError) {
@@ -61,7 +61,7 @@ export async function DELETE(
     console.error('리뷰 삭제 중 에러 발생: ', {
       reviewId: params.reviewId,
       userId: session?.user.id,
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
 
     if (error instanceof CustomError) {

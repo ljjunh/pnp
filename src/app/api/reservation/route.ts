@@ -18,8 +18,7 @@ export async function POST(request: NextRequest): Promise<CustomResponse<undefin
   } catch (error) {
     console.error('예약 생성 중 에러 발생: ', {
       userId: session?.user.id,
-      data: await request.json(),
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
 
     if (error instanceof ZodError) {

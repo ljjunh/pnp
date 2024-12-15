@@ -25,7 +25,7 @@ export async function GET(
     console.error('스크랩 조회 중 에러 발생: ', {
       roomId: params.roomId,
       uesrId: session?.user.id,
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
 
     if (error instanceof CustomError) {
@@ -55,7 +55,7 @@ export async function POST(
     console.error('스크랩 생성 중 에러 발생: ', {
       roomId: params.roomId,
       uesrId: session?.user.id,
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
 
     if (error instanceof CustomError) {
@@ -86,7 +86,7 @@ export async function DELETE(
     console.error('스크랩 삭제 중 에러 발생: ', {
       roomId: params.roomId,
       uesrId: session?.user.id,
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
 
     if (error instanceof CustomError) {
