@@ -1,15 +1,15 @@
 import { BadRequestError, NotFoundError } from '@/errors';
 import { prisma } from '@/lib/server';
-import { Room, RoomWithReview } from '@/types/room';
+import { RoomWithReview } from '@/types/room';
 
 /**
  * 숙소 정보를 조회한다
  *
  * @param {number} roomId 방 아이디
  *
- * @returns {Promise<Room>} 방 정보
+ * @returns {Promise<RoomWithReview>} 방 정보
  */
-export async function getRoom(roomId: number): Promise<Room> {
+export async function getRoom(roomId: number): Promise<RoomWithReview> {
   const room = await prisma.room.findUnique({
     relationLoadStrategy: 'join',
     where: { id: roomId },
