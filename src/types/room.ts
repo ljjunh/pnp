@@ -29,3 +29,8 @@ export type Room = Pick<
   host: Host;
   amenities: Amenity[];
 };
+
+export type RoomWithReview = Room & {
+  count: number;
+  average: number;
+};

@@ -1,6 +1,6 @@
 import { BadRequestError, NotFoundError } from '@/errors';
 import { prisma } from '@/lib/server';
-import { Room } from '@/types/room';
+import { Room, RoomWithReview } from '@/types/room';
 
 /**
  * 숙소 정보를 조회한다
@@ -89,6 +89,18 @@ export async function getRoom(roomId: number): Promise<Room> {
     throw new NotFoundError();
   }
 
+  const aggregate = await prisma.review.aggregate({
+    where: {
+      roomId: roomId,
+    },
+    _avg: {
+      rating: true,
+    },
+    _count: {
+      id: true,
+    },
+  });
+
   const parseRoom = {
     ...room,
     roomTags: room.roomTags.map((tag) => tag.tag),
@@ -101,9 +113,11 @@ export async function getRoom(roomId: number): Promise<Room> {
       },
       hostTags: room.host.hostTags.map((tag) => tag.tag),
     },
+    count: aggregate._count.id || 0,
+    average: aggregate._avg.rating || 0,
   };
 
-  return parseRoom as Room;
+  return parseRoom as RoomWithReview;
 }
 
 /**
