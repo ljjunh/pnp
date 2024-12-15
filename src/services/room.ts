@@ -1,6 +1,7 @@
 import { BadRequestError, NotFoundError } from '@/errors';
 import { prisma } from '@/lib/server';
 import { RoomWithReview } from '@/types/room';
+import { extractProperty } from '@/utils/convertor';
 
 /**
  * 숙소 정보를 조회한다
@@ -103,15 +104,15 @@ export async function getRoom(roomId: number): Promise<RoomWithReview> {
 
   const parseRoom = {
     ...room,
-    roomTags: room.roomTags.map((tag) => tag.tag),
-    rules: room.rules.map((rule) => rule.rule),
-    amenities: room.amenities.map((amenity) => amenity.amenity),
+    roomTags: extractProperty(room.roomTags, 'tag'),
+    rules: extractProperty(room.rules, 'rule'),
+    amenities: extractProperty(room.amenities, 'amenity'),
     host: {
       ...room.host,
       user: {
         ...room.host.user,
       },
-      hostTags: room.host.hostTags.map((tag) => tag.tag),
+      hostTags: extractProperty(room.host.hostTags, 'tag'),
     },
     count: aggregate._count.id || 0,
     average: aggregate._avg.rating || 0,
