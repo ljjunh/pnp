@@ -1,17 +1,18 @@
-import { Host as PrismaHost, User as PrismaUser } from '@prisma/client';
+import { Host as PrismaHost, Tag as PrismaTag, User as PrismaUser } from '@prisma/client';
 
 export interface UserParams {
   userId: string;
 }
 
-interface Tag {
-  tag: {
-    content: string;
-  };
-}
+export type Tag = Pick<PrismaTag, 'content'>;
+export type User = Pick<PrismaUser, 'id' | 'email' | 'image' | 'name'>;
+export type Host = Pick<PrismaHost, 'id' | 'isSuperHost' | 'isVerified' | 'hostStartedAt'> & {
+  hostTags: Tag[];
+  user: User;
+};
 
-interface Host
-  extends Pick<
+export type UserWithHost = User & {
+  host: Pick<
     PrismaHost,
     | 'isSuperHost'
     | 'isVerified'
@@ -29,10 +30,7 @@ interface Host
     | 'bookTitle'
     | 'hobby'
     | 'pet'
-  > {
-  hostTags: Tag[];
-}
-
-export type User = Pick<PrismaUser, 'id' | 'email' | 'image' | 'name'> & {
-  host: Host;
+  > & {
+    hostTags: Tag[];
+  };
 };

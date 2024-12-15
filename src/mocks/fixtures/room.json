@@ -1,0 +1,468 @@
+{
+  "id": 3,
+  "airbnbLink": "https://www.airbnb.com/rooms/764884121437376695?locale=ko-KR&currency=KRW&check_in=2024-12-11&check_out=2024-12-12",
+  "title": "히든힐호텔-애월바다위의 호텔(디럭스더블오션뷰)",
+  "hostId": 3,
+  "description": "제주에서 가장 아름다운 해안길, 애월해안도로 언덕위에 위치하여 전객실에서 애월바다가 통창으로 펼쳐지며 노을과 달이 떨어지는 모습이 더 없이 아름다운 히든힐 호텔입니다. 나를 쉬고 싶을 때 더 없이 좋은  쉼의 공간이자 편안한 힐링를 선사할 것입니다.",
+  "seoTitle": "히든힐호텔-애월바다위의 호텔(디럭스더블오션뷰) - 애월읍, 제주시의 호텔에서 살아보기, 제주도, 한국 - 에어비앤비",
+  "seoDescription": "2024년 12월 3일 - ₩90000의 호텔의 객실 제주에서 가장 아름다운 해안길, 애월해안도로 언덕위에 위치하여 전객실에서 애월바다가 통창으로 펼쳐지며 노을과 달이 떨어지는 모습이 더 없이 아름다운 히든힐 호텔입니다. 나를 쉬고 싶을 때 더 없이 좋은  쉼의 공간이자 편안한 힐링를 선사할 것입니다.  제주에서 가...",
+  "thumbnail": "https://a0.muscache.com/pictures/miso/Hosting-764884121437376695/original/997b9211-d69f-4529-8ac1-7022eae62b0c.jpeg",
+  "location": "애월읍, 제주시",
+  "price": 93666,
+  "latitude": "33.4721",
+  "longitude": "126.3456",
+  "capacity": 2,
+  "checkIn": "15:00",
+  "checkOut": "11:00",
+  "checkInType": "안내 직원",
+  "roomTags": [
+    {
+      "id": 33,
+      "content": "최대 인원 2명"
+    },
+    {
+      "id": 34,
+      "content": "침실 1개"
+    },
+    {
+      "id": 37,
+      "content": "침대 1개"
+    },
+    {
+      "id": 39,
+      "content": "단독 사용 욕실 1개"
+    }
+  ],
+  "images": [
+    {
+      "id": 75,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/997b9211-d69f-4529-8ac1-7022eae62b0c.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 76,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/991cf792-0881-432c-b42a-fb998340688c.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 77,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/66edab4f-3381-418d-9f8e-e3f6657c37f6.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 78,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/6cac87c2-5282-42ba-8da1-1df7145b3552.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 79,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/2c613767-7c03-4533-aa42-57912d4fbe20.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 80,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/b500fd46-0f46-4b88-8dbb-5f991ff09bac.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 81,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/b4f04f47-f215-4000-8435-e4913adb4e1d.jpeg",
+      "orientation": "PORTRAIT"
+    },
+    {
+      "id": 82,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/db37e96d-aef3-4ba7-9bdc-e32dc393f73e.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 83,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/ec3f10ca-492b-41f9-962d-2ed5faad3402.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/69452857-b568-42c4-945c-bc0171f721db.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 85,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/789ceb91-daab-4132-995c-339519be7726.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 86,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/0fd836bf-14f9-4156-aa4b-9ebac11e42d8.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 87,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/d047316c-9fa3-451d-bf06-c42776fcdf79.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 88,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/4fc1dd55-64f5-4066-8fdc-1fad0be6bc55.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 89,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/0dc5e6be-9163-4291-84c2-88bad1824cb1.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 90,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/889e7ed2-656e-4b34-883b-f43b865da861.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 91,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/f91ebcd0-0ecc-4198-a98b-3ad1cee4df17.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 92,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/a7f57e06-a056-4e10-b81e-2e47a24082fd.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 93,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/25dc29f6-0ec7-416e-9bac-ed173d324b87.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 94,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/10067252-2bb7-4c5e-9484-1816ef2674db.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 95,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/3df3f112-a0a6-4ffa-a66e-11f45e9797b4.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 96,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/2c8d1958-7176-49f0-983d-d760df8c3f53.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84663,
+      "imageLink": "https://a0.muscache.com/im/ml/photo_enhancement/pictures/miso/Hosting-764884121437376695/original/997b9211-d69f-4529-8ac1-7022eae62b0c.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84664,
+      "imageLink": "https://a0.muscache.com/im/ml/photo_enhancement/pictures/miso/Hosting-764884121437376695/original/991cf792-0881-432c-b42a-fb998340688c.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84665,
+      "imageLink": "https://a0.muscache.com/im/ml/photo_enhancement/pictures/miso/Hosting-764884121437376695/original/66edab4f-3381-418d-9f8e-e3f6657c37f6.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84666,
+      "imageLink": "https://a0.muscache.com/im/ml/photo_enhancement/pictures/miso/Hosting-764884121437376695/original/6cac87c2-5282-42ba-8da1-1df7145b3552.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84667,
+      "imageLink": "https://a0.muscache.com/im/ml/photo_enhancement/pictures/miso/Hosting-764884121437376695/original/2c613767-7c03-4533-aa42-57912d4fbe20.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84668,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/b500fd46-0f46-4b88-8dbb-5f991ff09bac.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84669,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/b4f04f47-f215-4000-8435-e4913adb4e1d.jpeg",
+      "orientation": "PORTRAIT"
+    },
+    {
+      "id": 84670,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/db37e96d-aef3-4ba7-9bdc-e32dc393f73e.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84671,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/ec3f10ca-492b-41f9-962d-2ed5faad3402.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84672,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/69452857-b568-42c4-945c-bc0171f721db.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84673,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/789ceb91-daab-4132-995c-339519be7726.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84674,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/0fd836bf-14f9-4156-aa4b-9ebac11e42d8.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84675,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/d047316c-9fa3-451d-bf06-c42776fcdf79.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84676,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/4fc1dd55-64f5-4066-8fdc-1fad0be6bc55.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84677,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/0dc5e6be-9163-4291-84c2-88bad1824cb1.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84678,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/889e7ed2-656e-4b34-883b-f43b865da861.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84679,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/f91ebcd0-0ecc-4198-a98b-3ad1cee4df17.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84680,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/a7f57e06-a056-4e10-b81e-2e47a24082fd.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84681,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/25dc29f6-0ec7-416e-9bac-ed173d324b87.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84682,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/10067252-2bb7-4c5e-9484-1816ef2674db.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84683,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/3df3f112-a0a6-4ffa-a66e-11f45e9797b4.jpeg",
+      "orientation": "LANDSCAPE"
+    },
+    {
+      "id": 84684,
+      "imageLink": "https://a0.muscache.com/im/pictures/miso/Hosting-764884121437376695/original/2c8d1958-7176-49f0-983d-d760df8c3f53.jpeg",
+      "orientation": "LANDSCAPE"
+    }
+  ],
+  "rules": [
+    {
+      "id": 1,
+      "category": "숙박 중",
+      "title": "게스트 정원 2명",
+      "icon": "SYSTEM_FAMILY"
+    }
+  ],
+  "amenities": [
+    {
+      "id": 1,
+      "category": "욕실",
+      "title": "헤어드라이어",
+      "subTitle": null,
+      "icon": "SYSTEM_HAIRDRYER",
+      "available": true
+    },
+    {
+      "id": 4,
+      "category": "욕실",
+      "title": "온수",
+      "subTitle": null,
+      "icon": "SYSTEM_HOT_WATER",
+      "available": true
+    },
+    {
+      "id": 6,
+      "category": "엔터테인먼트",
+      "title": "TV",
+      "subTitle": null,
+      "icon": "SYSTEM_TV",
+      "available": true
+    },
+    {
+      "id": 7,
+      "category": "냉난방",
+      "title": "에어컨",
+      "subTitle": null,
+      "icon": "SYSTEM_SNOWFLAKE",
+      "available": true
+    },
+    {
+      "id": 14,
+      "category": "인터넷 및 업무 공간",
+      "title": "와이파이",
+      "subTitle": null,
+      "icon": "SYSTEM_WI_FI",
+      "available": true
+    },
+    {
+      "id": 20,
+      "category": "위치 특성",
+      "title": "해변으로 연결 - 해변 바로 앞",
+      "subTitle": null,
+      "icon": "SYSTEM_BEACH",
+      "available": true
+    },
+    {
+      "id": 23,
+      "category": "주차장 및 기타 시설",
+      "title": "건물 내 무료 주차",
+      "subTitle": null,
+      "icon": "SYSTEM_MAPS_CAR_RENTAL",
+      "available": true
+    },
+    {
+      "id": 25,
+      "category": "숙소에 없는 시설",
+      "title": "주방",
+      "subTitle": null,
+      "icon": "SYSTEM_NO_KITCHEN",
+      "available": false
+    },
+    {
+      "id": 26,
+      "category": "숙소에 없는 시설",
+      "title": "세탁기",
+      "subTitle": null,
+      "icon": "SYSTEM_NO_WASHER",
+      "available": false
+    },
+    {
+      "id": 27,
+      "category": "숙소에 없는 시설",
+      "title": "건조기",
+      "subTitle": null,
+      "icon": "SYSTEM_NO_DRYER",
+      "available": false
+    },
+    {
+      "id": 28,
+      "category": "숙소에 없는 시설",
+      "title": "필수용품",
+      "subTitle": null,
+      "icon": "SYSTEM_NO_ESSENTIALS",
+      "available": false
+    },
+    {
+      "id": 29,
+      "category": "아름다운 전망",
+      "title": "해변 전망",
+      "subTitle": null,
+      "icon": "SYSTEM_BEACH",
+      "available": true
+    },
+    {
+      "id": 30,
+      "category": "아름다운 전망",
+      "title": "바다 전망",
+      "subTitle": null,
+      "icon": "SYSTEM_VIEW_OCEAN",
+      "available": true
+    },
+    {
+      "id": 33,
+      "category": "침실 및 세탁 시설",
+      "title": "옷걸이",
+      "subTitle": null,
+      "icon": "SYSTEM_HANGERS",
+      "available": true
+    },
+    {
+      "id": 35,
+      "category": "침실 및 세탁 시설",
+      "title": "암막 커튼",
+      "subTitle": null,
+      "icon": "SYSTEM_BLACKOUT_SHADES",
+      "available": true
+    },
+    {
+      "id": 38,
+      "category": "숙소 안전",
+      "title": "화재경보기",
+      "subTitle": null,
+      "icon": "SYSTEM_DETECTOR_SMOKE",
+      "available": true
+    },
+    {
+      "id": 40,
+      "category": "숙소 안전",
+      "title": "소화기",
+      "subTitle": null,
+      "icon": "SYSTEM_FIRE_EXTINGUISHER",
+      "available": true
+    },
+    {
+      "id": 41,
+      "category": "숙소 안전",
+      "title": "구급 상자",
+      "subTitle": null,
+      "icon": "SYSTEM_FIRST_AID_KIT",
+      "available": true
+    },
+    {
+      "id": 50,
+      "category": "서비스",
+      "title": "셀프 체크인",
+      "subTitle": null,
+      "icon": "SYSTEM_KEY",
+      "available": true
+    },
+    {
+      "id": 52,
+      "category": "숙소에 없는 시설",
+      "title": "숙소 내 실외 보안 카메라",
+      "subTitle": null,
+      "icon": "SYSTEM_NO_SURVEILLANCE",
+      "available": false
+    },
+    {
+      "id": 54,
+      "category": "야외",
+      "title": "파티오 또는 발코니",
+      "subTitle": null,
+      "icon": "SYSTEM_PATIO_BALCONY",
+      "available": true
+    },
+    {
+      "id": 55,
+      "category": "주차장 및 기타 시설",
+      "title": "대형 욕조",
+      "subTitle": null,
+      "icon": "SYSTEM_JACUZZI",
+      "available": true
+    },
+    {
+      "id": 56,
+      "category": "서비스",
+      "title": "안내 직원",
+      "subTitle": null,
+      "icon": "SYSTEM_DOORMAN",
+      "available": true
+    },
+    {
+      "id": 57,
+      "category": "숙소에 없는 시설",
+      "title": "일산화탄소 경보기",
+      "subTitle": null,
+      "icon": "SYSTEM_NO_DETECTOR_CO2",
+      "available": false
+    },
+    {
+      "id": 58,
+      "category": "숙소에 없는 시설",
+      "title": "난방",
+      "subTitle": null,
+      "icon": "SYSTEM_NO_HEATER",
+      "available": false
+    }
+  ]
+}

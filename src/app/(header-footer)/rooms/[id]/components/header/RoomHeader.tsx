@@ -1,8 +1,9 @@
+import { Room } from '@/types/room';
 import { IoIosHeartEmpty } from 'react-icons/io';
 import { LuShare } from 'react-icons/lu';
 
 interface RoomHeaderProps {
-  title: string;
+  title: Room['title'];
 }
 
 export default function RoomHeader({ title }: RoomHeaderProps) {

@@ -1,21 +1,17 @@
 import Image from 'next/image';
+import { Room } from '@/types/room';
 import { CgMenuGridO } from 'react-icons/cg';
 
-const DUMMY_DATA = [
-  '/images/03.avif',
-  '/images/02.avif',
-  '/images/01.avif',
-  '/images/04.avif',
-  '/images/06.avif',
-  '/images/05.avif',
-];
+interface RoomGalleryProps {
+  images: Room['images'];
+}
 
-export default function RoomGallery() {
+export default function RoomGallery({ images }: RoomGalleryProps) {
   return (
     <div className="grid-row-2 relative grid w-full grid-cols-4 gap-[0.7vw] pt-6">
       <div className="relative col-span-2 row-span-2 aspect-[4/3] overflow-hidden rounded-l-xl">
         <Image
-          src={DUMMY_DATA[0]}
+          src={images[0].imageLink}
           alt="숙소이미지"
           fill
           className="object-cover transition-opacity duration-200 hover:brightness-[0.80]"
@@ -24,7 +20,7 @@ export default function RoomGallery() {
 
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
-          src={DUMMY_DATA[1]}
+          src={images[1].imageLink}
           alt="숙소 이미지"
           fill
           className="object-cover transition-opacity duration-200 hover:brightness-[0.80]"
@@ -32,7 +28,7 @@ export default function RoomGallery() {
       </div>
       <div className="relative aspect-[4/3] overflow-hidden rounded-tr-lg">
         <Image
-          src={DUMMY_DATA[2]}
+          src={images[2].imageLink}
           alt="숙소 이미지"
           fill
           className="object-cover transition-opacity duration-200 hover:brightness-[0.80]"
@@ -40,7 +36,7 @@ export default function RoomGallery() {
       </div>
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
-          src={DUMMY_DATA[3]}
+          src={images[3].imageLink}
           alt="숙소 이미지"
           fill
           className="object-cover transition-opacity duration-200 hover:brightness-[0.80]"
@@ -48,7 +44,7 @@ export default function RoomGallery() {
       </div>
       <div className="relative aspect-[4/3] overflow-hidden rounded-br-xl">
         <Image
-          src={DUMMY_DATA[4]}
+          src={images[4].imageLink}
           alt="숙소 이미지"
           fill
           className="object-cover transition-opacity duration-200 hover:brightness-[0.80]"
