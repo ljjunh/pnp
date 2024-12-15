@@ -9,9 +9,8 @@ import RoomReviewSummary from '@/app/(header-footer)/rooms/[id]/components/revie
 import { Room } from '@/types/room';
 import { getRoom } from '@/apis/rooms/queries';
 
-export default async function RoomDetailPage({ params }: { params: { id: number } }) {
-  const room: Room = await getRoom(params.id);
-
+export default async function RoomDetailPage({ params }: { params: { id: string } }) {
+  const room: Room = await getRoom(Number(params.id));
   return (
     <div className="pt-6">
       <RoomHeader title={room.title} />
