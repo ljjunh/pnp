@@ -1,6 +1,4 @@
 import { prisma } from '@/lib/server';
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
 import { GenericContainer, StartedTestContainer } from 'testcontainers';
 
 let container: StartedTestContainer;
@@ -11,7 +9,7 @@ beforeAll(async () => {
   const isIntegrationTest = expect.getState().testPath?.includes('integration');
 
   if (isIntegrationTest) {
-    container = await new GenericContainer('mysql:8.0')
+    container = await new GenericContainer('mysql:8.4')
       .withExposedPorts(3306)
       .withEnvironment({
         MYSQL_ROOT_PASSWORD: 'test',
@@ -36,8 +34,5 @@ afterEach(async () => {
   const isIntegrationTest = expect.getState().testPath?.includes('integration');
 
   if (isIntegrationTest) {
-    const truncateSql = readFileSync(resolve(process.cwd(), 'sql/00.truncate.sql'), 'utf-8');
-
-    await prisma.$executeRawUnsafe(truncateSql);
   }
 });

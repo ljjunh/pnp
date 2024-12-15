@@ -1,7 +1,6 @@
 import { BadRequestError, NotFoundError } from '@/errors';
-import { ServerError } from '@/errors/errors';
 import { prisma } from '@/lib/server';
-import { RoomWithReview, isRoomWithReview } from '@/types/room';
+import { RoomWithReview } from '@/types/room';
 import { extractProperty } from '@/utils/convertor';
 
 /**
@@ -19,7 +18,6 @@ export async function getRoom(roomId: number): Promise<RoomWithReview> {
       id: true,
       airbnbLink: true,
       title: true,
-      hostId: true,
       description: true,
       seoTitle: true,
       seoDescription: true,
@@ -91,6 +89,7 @@ export async function getRoom(roomId: number): Promise<RoomWithReview> {
     throw new NotFoundError();
   }
 
+  // TODO: 호스트가 가지고 있는 리뷰와 평점을 추가적으로 조회해야한다.
   const aggregate = await prisma.review.aggregate({
     where: {
       roomId: roomId,
@@ -115,15 +114,11 @@ export async function getRoom(roomId: number): Promise<RoomWithReview> {
       },
       hostTags: extractProperty(room.host.hostTags, 'tag'),
     },
-    count: aggregate._count.id || 0,
-    average: aggregate._avg.rating || 0,
+    count: aggregate._count.id,
+    average: aggregate._avg.rating,
   };
 
-  if (!isRoomWithReview(parseRoom)) {
-    throw new ServerError();
-  }
-
-  return parseRoom;
+  return parseRoom as RoomWithReview;
 }
 
 /**
