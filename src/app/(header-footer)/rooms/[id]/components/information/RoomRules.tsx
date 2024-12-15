@@ -4,7 +4,7 @@ import { ROUTES } from '@/constants/routeURL';
 import { IoIosArrowForward } from 'react-icons/io';
 
 interface RoomRulesProps {
-  id: number;
+  id: string;
   checkIn: Room['checkIn'];
   checkOut: Room['checkOut'];
   rules: Room['rules'];
