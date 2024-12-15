@@ -11,6 +11,7 @@ import { getRoom } from '@/apis/rooms/queries';
 
 export default async function RoomDetailPage({ params }: { params: { id: string } }) {
   const room: Room = await getRoom(Number(params.id));
+
   return (
     <div className="pt-6">
       <RoomHeader title={room.title} />
