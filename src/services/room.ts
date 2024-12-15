@@ -1,14 +1,17 @@
 import { BadRequestError, NotFoundError } from '@/errors';
+import { ServerError } from '@/errors/errors';
 import { prisma } from '@/lib/server';
+import { RoomWithReview, isRoomWithReview } from '@/types/room';
+import { extractProperty } from '@/utils/convertor';
 
 /**
  * 숙소 정보를 조회한다
  *
  * @param {number} roomId 방 아이디
  *
- * @returns {Promise<Room>} 방 정보
+ * @returns {Promise<RoomWithReview>} 방 정보
  */
-export async function getRoom(roomId: number) {
+export async function getRoom(roomId: number): Promise<RoomWithReview> {
   const room = await prisma.room.findUnique({
     relationLoadStrategy: 'join',
     where: { id: roomId },
@@ -56,6 +59,31 @@ export async function getRoom(roomId: number) {
           amenity: true,
         },
       },
+      host: {
+        select: {
+          id: true,
+          isSuperHost: true,
+          isVerified: true,
+          hostStartedAt: true,
+          hostTags: {
+            select: {
+              tag: {
+                select: {
+                  content: true,
+                },
+              },
+            },
+          },
+          user: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+              email: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -63,7 +91,39 @@ export async function getRoom(roomId: number) {
     throw new NotFoundError();
   }
 
-  return room;
+  const aggregate = await prisma.review.aggregate({
+    where: {
+      roomId: roomId,
+    },
+    _avg: {
+      rating: true,
+    },
+    _count: {
+      id: true,
+    },
+  });
+
+  const parseRoom = {
+    ...room,
+    roomTags: extractProperty(room.roomTags, 'tag'),
+    rules: extractProperty(room.rules, 'rule'),
+    amenities: extractProperty(room.amenities, 'amenity'),
+    host: {
+      ...room.host,
+      user: {
+        ...room.host.user,
+      },
+      hostTags: extractProperty(room.host.hostTags, 'tag'),
+    },
+    count: aggregate._count.id || 0,
+    average: aggregate._avg.rating || 0,
+  };
+
+  if (!isRoomWithReview(parseRoom)) {
+    throw new ServerError();
+  }
+
+  return parseRoom;
 }
 
 /**
