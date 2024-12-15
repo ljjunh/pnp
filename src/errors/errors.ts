@@ -23,3 +23,9 @@ export class NotFoundError extends CustomError {
     super(message, 404);
   }
 }
+
+export class ServerError extends CustomError {
+  constructor(message: string = '서버 에러입니다') {
+    super(message, 500);
+  }
+}

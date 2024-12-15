@@ -1,6 +1,7 @@
 import { BadRequestError, NotFoundError } from '@/errors';
+import { ServerError } from '@/errors/errors';
 import { prisma } from '@/lib/server';
-import { RoomWithReview } from '@/types/room';
+import { RoomWithReview, isRoomWithReview } from '@/types/room';
 import { extractProperty } from '@/utils/convertor';
 
 /**
@@ -118,7 +119,11 @@ export async function getRoom(roomId: number): Promise<RoomWithReview> {
     average: aggregate._avg.rating || 0,
   };
 
-  return parseRoom as RoomWithReview;
+  if (!isRoomWithReview(parseRoom)) {
+    throw new ServerError();
+  }
+
+  return parseRoom;
 }
 
 /**

@@ -34,3 +34,9 @@ export type RoomWithReview = Room & {
   count: number;
   average: number;
 };
+
+export function isRoomWithReview(room: unknown): room is RoomWithReview {
+  const r = room as Partial<RoomWithReview>;
+
+  return typeof r.count === 'number' && typeof r.average === 'number' && typeof r.id === 'number';
+}
