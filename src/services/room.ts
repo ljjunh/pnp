@@ -1,5 +1,6 @@
 import { BadRequestError, NotFoundError } from '@/errors';
 import { prisma } from '@/lib/server';
+import { Room } from '@/types/room';
 
 /**
  * 숙소 정보를 조회한다
@@ -8,7 +9,7 @@ import { prisma } from '@/lib/server';
  *
  * @returns {Promise<Room>} 방 정보
  */
-export async function getRoom(roomId: number) {
+export async function getRoom(roomId: number): Promise<Room> {
   const room = await prisma.room.findUnique({
     relationLoadStrategy: 'join',
     where: { id: roomId },
@@ -56,6 +57,31 @@ export async function getRoom(roomId: number) {
           amenity: true,
         },
       },
+      host: {
+        select: {
+          id: true,
+          isSuperHost: true,
+          isVerified: true,
+          hostStartedAt: true,
+          hostTags: {
+            select: {
+              tag: {
+                select: {
+                  content: true,
+                },
+              },
+            },
+          },
+          user: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+              email: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -63,7 +89,21 @@ export async function getRoom(roomId: number) {
     throw new NotFoundError();
   }
 
-  return room;
+  const parseRoom = {
+    ...room,
+    roomTags: room.roomTags.map((tag) => tag.tag),
+    rules: room.rules.map((rule) => rule.rule),
+    amenities: room.amenities.map((amenity) => amenity.amenity),
+    host: {
+      ...room.host,
+      user: {
+        ...room.host.user,
+      },
+      hostTags: room.host.hostTags.map((tag) => tag.tag),
+    },
+  };
+
+  return parseRoom as Room;
 }
 
 /**

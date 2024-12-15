@@ -13,15 +13,7 @@ export async function GET(
 
     const room = await getRoom(roomId);
 
-    const roomData = {
-      ...room,
-      roomTags: room.roomTags.map((tag) => tag.tag),
-      images: room.images,
-      rules: room.rules.map((rule) => rule.rule),
-      amenities: room.amenities.map((amenity) => amenity.amenity),
-    };
-
-    return CustomResponse.ok<Room>(roomData);
+    return CustomResponse.ok<Room>(room);
   } catch (error) {
     if (error instanceof CustomError) {
       return CustomResponse.errors(error.message, error.statusCode);
