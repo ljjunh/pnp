@@ -5,7 +5,7 @@ export interface BaseResponse<T> {
   success: boolean;
   status: number;
   message: string;
-  data?: T;
+  data: T;
   errors?: ZodIssue[];
 }
 
@@ -29,6 +29,7 @@ class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T> | object>
       {
         success: true,
         status: statusCode,
+        data: null,
         message: message,
       },
       {
@@ -53,6 +54,7 @@ class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T> | object>
       {
         success: false,
         status,
+        data: null,
         message,
       },
       {
@@ -67,6 +69,7 @@ class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T> | object>
         success: false,
         status,
         message: '잘못된 요청 데이터 입니다.',
+        data: null,
         errors: errors,
       },
       {
