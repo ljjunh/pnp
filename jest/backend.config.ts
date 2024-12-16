@@ -33,6 +33,7 @@ const config: Config = {
     '!src/apis/**/*.ts',
     '!src/utils/**/*.ts',
     '!src/hooks/**/*.ts',
+    'src/app/api/**/*.ts',
     'src/lib/server/**/*.ts',
     'src/services/**/*.ts',
     'src/schemas/**/*.ts',

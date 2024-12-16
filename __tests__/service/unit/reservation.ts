@@ -87,11 +87,7 @@ describe('예약 서비스 테스트', () => {
     it('존재하지 않는 숙소인 경우 에러를 반환해야합니다.', async () => {
       (prisma.room.findUnique as jest.Mock).mockResolvedValue(null);
 
-      try {
-        await createReservation(userId, data);
-      } catch (error) {
-        expect(error).toBeInstanceOf(NotFoundError);
-      }
+      await expect(createReservation(userId, data)).rejects.toThrow(NotFoundError);
     });
 
     it('만약, 숙소의 인원수를 초과한 경우 에러를 반환해야합니다.', async () => {
@@ -99,24 +95,18 @@ describe('예약 서비스 테스트', () => {
 
       (prisma.room.findUnique as jest.Mock).mockResolvedValue(room);
 
-      try {
-        await createReservation(userId, { ...data, guestNumber: 10 });
-      } catch (error) {
-        expect(error).toBeInstanceOf(BadRequestError);
-        expect((error as Error).message).toBe('숙소의 최대 인원 수를 초과하였습니다.');
-      }
+      await expect(createReservation(userId, { ...data, guestNumber: 10 })).rejects.toThrow(
+        new BadRequestError('숙소의 최대 인원 수를 초과하였습니다.'),
+      );
     });
 
     it('이미 예약이 되어있는 경우 에러를 반환해야합니다.', async () => {
       (prisma.room.findUnique as jest.Mock).mockResolvedValue(mockRoom);
       (prisma.reservation.findFirst as jest.Mock).mockResolvedValue({});
 
-      try {
-        await createReservation(userId, data);
-      } catch (error) {
-        expect(error).toBeInstanceOf(BadRequestError);
-        expect((error as Error).message).toBe('이미 예약이 되어있습니다.');
-      }
+      await expect(createReservation(userId, data)).rejects.toThrow(
+        new BadRequestError('이미 예약이 되어있습니다.'),
+      );
     });
   });
 
@@ -139,21 +129,17 @@ describe('예약 서비스 테스트', () => {
     it('만약, 주문 번호에 해당하는 예약 정보가 없을 경우 에러를 반환해야합니다.', async () => {
       (prisma.reservation.findUnique as jest.Mock).mockResolvedValue(null);
 
-      try {
-        await getReservationByOrderNumber('wrong orderNumber', userId);
-      } catch (error) {
-        expect(error).toBeInstanceOf(NotFoundError);
-      }
+      await expect(getReservationByOrderNumber('wrong orderNumber', userId)).rejects.toBeInstanceOf(
+        NotFoundError,
+      );
     });
 
     it('만약, 주문 번호에 해당하는 예약 정보가 다른 유저의 것일 경우 에러를 반환해야합니다.', async () => {
       (prisma.reservation.findUnique as jest.Mock).mockResolvedValue({ userId: 'otherUser' });
 
-      try {
-        await getReservationByOrderNumber(orderNumber, userId);
-      } catch (error) {
-        expect(error).toBeInstanceOf(ForbiddenError);
-      }
+      await expect(getReservationByOrderNumber(orderNumber, userId)).rejects.toBeInstanceOf(
+        ForbiddenError,
+      );
     });
   });
 
@@ -175,12 +161,9 @@ describe('예약 서비스 테스트', () => {
     it('만약, 주문 번호에 해당하는 예약 정보가 이미 취소된 경우 에러를 반환해야합니다.', async () => {
       (prisma.reservation.findUnique as jest.Mock).mockResolvedValue({ status: 'CANCELED' });
 
-      try {
-        await cancelReservation(orderNumber, userId);
-      } catch (error) {
-        expect(error).toBeInstanceOf(BadRequestError);
-        expect((error as Error).message).toBe('이미 취소된 예약입니다.');
-      }
+      await expect(cancelReservation(orderNumber, userId)).rejects.toThrow(
+        new BadRequestError('이미 취소된 예약입니다.'),
+      );
     });
 
     it('만약, 주문 번호에 해당하는 예약정보가 24시간 이내에 체크인인 경우 취소가 불가능하기에 에러를 반환해야합니다.', async () => {
@@ -189,12 +172,9 @@ describe('예약 서비스 테스트', () => {
         checkIn: new Date(),
       });
 
-      try {
-        await cancelReservation(orderNumber, userId);
-      } catch (error) {
-        expect(error).toBeInstanceOf(BadRequestError);
-        expect((error as Error).message).toBe('체크인 24시간 전까지 취소할 수 있습니다.');
-      }
+      await expect(cancelReservation(orderNumber, userId)).rejects.toThrow(
+        new BadRequestError('체크인 24시간 전까지 취소할 수 있습니다.'),
+      );
     });
 
     it('만약, 주문 번호에 해당하는 예약 정보가 없을 경우 에러를 반환해야합니다.', async () => {
@@ -210,11 +190,7 @@ describe('예약 서비스 테스트', () => {
     it('만약, 주문 번호에 해당하는 예약 정보가 다른 유저의 것일 경우 에러를 반환해야합니다.', async () => {
       (prisma.reservation.findUnique as jest.Mock).mockResolvedValue({ userId: 'otherUser' });
 
-      try {
-        await cancelReservation('orderNumber', userId);
-      } catch (error) {
-        expect(error).toBeInstanceOf(ForbiddenError);
-      }
+      await expect(cancelReservation(orderNumber, userId)).rejects.toBeInstanceOf(ForbiddenError);
     });
   });
 
@@ -239,24 +215,18 @@ describe('예약 서비스 테스트', () => {
       const orderNumber = 'wrong orderNumber';
       (prisma.reservation.findUnique as jest.Mock).mockResolvedValue(null);
 
-      try {
-        await confirmReservation(orderNumber, hostId);
-      } catch (error) {
-        expect(error).toBeInstanceOf(NotFoundError);
-        expect((error as Error).message).toBe('존재하지 않는 예약 정보입니다.');
-      }
+      await expect(confirmReservation(orderNumber, hostId)).rejects.toThrow(
+        new NotFoundError('존재하지 않는 예약 정보입니다.'),
+      );
     });
 
     it('만약, 주문번호에 해당하는 예약 정보의 호스트 ID가 다를 경우 에러를 반환해야합니다.', async () => {
       const hostId = 'wrong hostId';
       (prisma.reservation.findUnique as jest.Mock).mockResolvedValue(mockConfirmReservation);
 
-      try {
-        await confirmReservation(orderNumber, hostId);
-      } catch (error) {
-        expect(error).toBeInstanceOf(ForbiddenError);
-        expect((error as Error).message).toBe('해당 예약 정보에 접근할 권한이 없습니다.');
-      }
+      await expect(confirmReservation(orderNumber, hostId)).rejects.toThrow(
+        new ForbiddenError('해당 예약 정보에 접근할 권한이 없습니다.'),
+      );
     });
 
     it('만약, 주문번호에 해당하는 예약 정보가 이미 확정된 경우 에러를 반환해야합니다.', async () => {
@@ -265,12 +235,9 @@ describe('예약 서비스 테스트', () => {
         status: 'CONFIRMED',
       });
 
-      try {
-        await confirmReservation(orderNumber, hostId);
-      } catch (error) {
-        expect(error).toBeInstanceOf(BadRequestError);
-        expect((error as Error).message).toBe('확정할 수 없는 예약입니다.');
-      }
+      await expect(confirmReservation(orderNumber, hostId)).rejects.toThrow(
+        new BadRequestError('확정할 수 없는 예약입니다.'),
+      );
     });
 
     it('만약, 주문번호에 해당하는 예약 정보가 이미 취소된 경우 에러를 반환해야합니다.', async () => {
@@ -279,12 +246,9 @@ describe('예약 서비스 테스트', () => {
         status: 'CANCELLED',
       });
 
-      try {
-        await confirmReservation(orderNumber, hostId);
-      } catch (error) {
-        expect(error).toBeInstanceOf(BadRequestError);
-        expect((error as Error).message).toBe('확정할 수 없는 예약입니다.');
-      }
+      await expect(confirmReservation(orderNumber, hostId)).rejects.toThrow(
+        new BadRequestError('확정할 수 없는 예약입니다.'),
+      );
     });
   });
 
