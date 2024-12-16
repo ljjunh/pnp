@@ -13,4 +13,8 @@ export default meta;
 
 type Story = StoryObj<typeof RoomReviewList>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    id: 1,
+  },
+};

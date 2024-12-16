@@ -33,7 +33,7 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
       </section>
       <section className="py-12">
         <RoomReviewSummary />
-        <RoomReviewList />
+        <RoomReviewList id={Number(params.id)} />
       </section>
       <RoomHost host={room.host} />
       <RoomRules

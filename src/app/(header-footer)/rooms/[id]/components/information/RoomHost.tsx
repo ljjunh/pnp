@@ -5,7 +5,6 @@ import Button from '@/components/common/Button/Button';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { ROUTES } from '@/constants/routeURL';
 import { IoIosArrowForward, IoIosStar } from 'react-icons/io';
-import { IoEarthOutline } from 'react-icons/io5';
 
 interface RoomHostProps {
   host: Room['host'];
@@ -63,10 +62,6 @@ export default function RoomHost({ host }: RoomHostProps) {
             </div>
           </Link>
           <div className="pt-8">
-            <div className="flex items-center gap-3">
-              <IoEarthOutline size={22} />
-              거주지: Lipa, 필리핀
-            </div>
             <Link
               href={ROUTES.HOME}
               className="mt-2 flex items-center text-shade-02 underline hover:text-black"
