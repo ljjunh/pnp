@@ -31,6 +31,12 @@ export async function getReviews(
             id: true,
             image: true,
             name: true,
+            host: {
+              select: {
+                hostStartedAt: true,
+                isSuperHost: true,
+              },
+            },
           },
         },
       },
@@ -40,7 +46,20 @@ export async function getReviews(
     }),
   ]);
 
-  return [reviews, total];
+  // 만약, 호스트 정보가 없다면 호스트 정보를 추가한다.
+  const enrichedReviews = reviews.map((review) => ({
+    ...review,
+    user: {
+      ...review.user,
+      host: {
+        hostStartedAt: new Date(),
+        isSuperHost: false,
+        ...review.user.host,
+      },
+    },
+  }));
+
+  return [enrichedReviews, total];
 }
 
 /**

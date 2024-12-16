@@ -1,4 +1,4 @@
-import { Review as PrismaReview, User } from '@prisma/client';
+import { Host, Review as PrismaReview, User } from '@prisma/client';
 
 export type ReviewParams = {
   roomId: string;
@@ -6,5 +6,7 @@ export type ReviewParams = {
 };
 
 export type Review = Pick<PrismaReview, 'id' | 'rating' | 'content' | 'createdAt'> & {
-  user: Pick<User, 'id' | 'image' | 'name'>;
+  user: Pick<User, 'id' | 'image' | 'name'> & {
+    host: Pick<Host, 'hostStartedAt' | 'isSuperHost'>;
+  };
 };
