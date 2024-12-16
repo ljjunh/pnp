@@ -20,12 +20,16 @@ export const mockRoom: Room = {
   roomTags: [],
   images: [],
   rules: [],
+  reviewsCount: 1,
+  reviewsAverage: 5,
   amenities: [],
   host: {
     id: 1,
     isSuperHost: true,
     isVerified: true,
     hostStartedAt: new Date('2024-01-01T00:00:00Z'),
+    reviewsAverage: 5,
+    reviewsCount: 1,
     user: {
       id: 'userId',
       email: 'test@test.com',

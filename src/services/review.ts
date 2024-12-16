@@ -273,16 +273,24 @@ export async function deleteReview(reviewId: number, userId: string): Promise<vo
   });
 }
 
+interface ReviewCreate {
+  accuracy: number;
+  communication: number;
+  cleanliness: number;
+  location: number;
+  checkIn: number;
+  value: number;
+}
+
 /**
  * 리뷰 평균을 계산한다.
  *
  * @param {object} data 리뷰 데이터
  * @returns {number} 리뷰 평균
  */
-const averageReview = (data: object): number => {
-  return (
-    Object.values(data)
-      .filter((value) => typeof value === 'number')
-      .reduce((sum, value) => sum + value, 0) / 6
-  );
+const averageReview = (data: ReviewCreate): number => {
+  const { accuracy, communication, cleanliness, location, checkIn, value } = data;
+  const sum = accuracy + communication + cleanliness + location + checkIn + value;
+
+  return sum / 6;
 };
