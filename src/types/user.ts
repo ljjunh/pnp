@@ -6,8 +6,14 @@ export interface UserParams {
 
 export type Tag = Pick<PrismaTag, 'content'>;
 export type User = Pick<PrismaUser, 'id' | 'email' | 'image' | 'name'>;
-export type Host = Pick<PrismaHost, 'id' | 'isSuperHost' | 'isVerified' | 'hostStartedAt'> & {
+export type Host = Pick<
+  PrismaHost,
+  'id' | 'isSuperHost' | 'isVerified' | 'hostStartedAt' | 'reviewsAverage' | 'reviewsCount'
+> & {
   hostTags: Tag[];
+};
+
+export type HostWithUser = Host & {
   user: User;
 };
 

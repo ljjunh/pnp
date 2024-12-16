@@ -21,3 +21,14 @@ export type Review = Pick<
     host: Pick<Host, 'hostStartedAt' | 'isSuperHost'>;
   };
 };
+
+export type ReviewSummarize = {
+  reviews: Review[];
+  count: number;
+  accuracy: number;
+  communication: number;
+  cleanliness: number;
+  location: number;
+  checkIn: number;
+  value: number;
+};

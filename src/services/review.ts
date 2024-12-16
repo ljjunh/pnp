@@ -2,7 +2,7 @@ import { NotFoundError } from '@/errors';
 import { ForbiddenError } from '@/errors/errors';
 import { prisma } from '@/lib/server';
 import { CreateReviewInput, UpdateReviewInput } from '@/schemas/review';
-import { Review } from '@/types/review';
+import { ReviewSummarize } from '@/types/review';
 
 /**
  * 전체 리뷰를 조회한다.
@@ -17,8 +17,8 @@ export async function getReviews(
   roomId: number,
   skip: number,
   take: number,
-): Promise<[Review[], number]> {
-  const [reviews, total] = await Promise.all([
+): Promise<[ReviewSummarize, number]> {
+  const [reviews, aggregate] = await Promise.all([
     prisma.review.findMany({
       where: { roomId },
       orderBy: { createdAt: 'desc' },
@@ -48,25 +48,43 @@ export async function getReviews(
         },
       },
     }),
-    prisma.review.count({
+    prisma.review.aggregate({
       where: { roomId },
+      _count: true,
+      _avg: {
+        accuracy: true,
+        communication: true,
+        cleanliness: true,
+        location: true,
+        checkIn: true,
+        value: true,
+      },
     }),
   ]);
 
   // 만약, 호스트 정보가 없다면 호스트 정보를 추가한다.
-  const enrichedReviews = reviews.map((review) => ({
-    ...review,
-    user: {
-      ...review.user,
-      host: {
-        hostStartedAt: new Date(),
-        isSuperHost: false,
-        ...review.user.host,
+  const summarize: ReviewSummarize = {
+    reviews: reviews.map((review) => ({
+      ...review,
+      user: {
+        ...review.user,
+        host: {
+          hostStartedAt: new Date(),
+          isSuperHost: false,
+          ...review.user.host,
+        },
       },
-    },
-  }));
+    })),
+    count: aggregate._count,
+    accuracy: aggregate._avg.accuracy || 0,
+    communication: aggregate._avg.communication || 0,
+    cleanliness: aggregate._avg.cleanliness || 0,
+    location: aggregate._avg.location || 0,
+    checkIn: aggregate._avg.checkIn || 0,
+    value: aggregate._avg.value || 0,
+  };
 
-  return [enrichedReviews, total];
+  return [summarize, aggregate._count];
 }
 
 /**

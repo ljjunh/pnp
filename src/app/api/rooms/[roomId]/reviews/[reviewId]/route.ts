@@ -18,9 +18,10 @@ export async function PATCH(
 
     const data = updateReviewSchema.parse(await request.json());
 
+    const roomId = +params.roomId;
     const reviewId = +params.reviewId;
 
-    await updateReview(reviewId, session.user.id, data);
+    await updateReview(roomId, reviewId, session.user.id, data);
 
     return CustomResponse.empty();
   } catch (error) {

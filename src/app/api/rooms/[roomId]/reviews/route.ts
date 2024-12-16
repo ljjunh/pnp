@@ -10,12 +10,12 @@ import {
 } from '@/lib/server';
 import { createReviewSchema } from '@/schemas/review';
 import { createReview, getReviews } from '@/services/review';
-import { Review, ReviewParams } from '@/types/review';
+import { ReviewParams, ReviewSummarize } from '@/types/review';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: ReviewParams },
-): Promise<CustomResponse<PaginationResponse<Review> | undefined>> {
+): Promise<CustomResponse<PaginationResponse<ReviewSummarize> | undefined>> {
   try {
     const roomId = +params.roomId;
     const { page, limit } = getPaginationParams(request);
