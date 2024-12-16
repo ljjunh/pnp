@@ -143,8 +143,10 @@ export async function createReview(
         reviewsCount: {
           increment: 1,
         },
-        reviewsAverage:
-          (room.reviewsAverage * room.reviewsCount + average) / (room.reviewsCount + 1),
+        reviewsAverage: refinedAverage(
+          room.reviewsAverage * room.reviewsCount + average,
+          room.reviewsCount + 1,
+        ),
       },
     });
 
@@ -155,9 +157,10 @@ export async function createReview(
         reviewsCount: {
           increment: 1,
         },
-        reviewsAverage:
-          (room.host.reviewsAverage * room.host.reviewsCount + average) /
-          (room.host.reviewsCount + 1),
+        reviewsAverage: refinedAverage(
+          room.host.reviewsAverage * room.host.reviewsCount + average,
+          room.host.reviewsCount + 1,
+        ),
       },
     });
   });
@@ -241,8 +244,10 @@ export async function updateReview(
     await prisma.room.update({
       where: { id: roomId },
       data: {
-        reviewsAverage:
-          (room.reviewsAverage * room.reviewsCount - prevAverage + average) / room.reviewsCount,
+        reviewsAverage: refinedAverage(
+          room.reviewsAverage * room.reviewsCount - prevAverage + average,
+          room.reviewsCount,
+        ),
       },
     });
 
@@ -250,9 +255,10 @@ export async function updateReview(
     await prisma.host.update({
       where: { id: room.host.id },
       data: {
-        reviewsAverage:
-          (room.host.reviewsAverage * room.host.reviewsCount - prevAverage + average) /
+        reviewsAverage: refinedAverage(
+          room.host.reviewsAverage * room.host.reviewsCount - prevAverage + average,
           room.host.reviewsCount,
+        ),
       },
     });
   });
@@ -273,16 +279,28 @@ export async function deleteReview(reviewId: number, userId: string): Promise<vo
   });
 }
 
+interface ReviewCreate {
+  accuracy: number;
+  communication: number;
+  cleanliness: number;
+  location: number;
+  checkIn: number;
+  value: number;
+}
+
 /**
  * 리뷰 평균을 계산한다.
  *
  * @param {object} data 리뷰 데이터
  * @returns {number} 리뷰 평균
  */
-const averageReview = (data: object): number => {
-  return (
-    Object.values(data)
-      .filter((value) => typeof value === 'number')
-      .reduce((sum, value) => sum + value, 0) / 6
-  );
+const averageReview = (data: ReviewCreate): number => {
+  const { accuracy, communication, cleanliness, location, checkIn, value } = data;
+  const sum = accuracy + communication + cleanliness + location + checkIn + value;
+
+  return refinedAverage(sum, 6);
+};
+
+export const refinedAverage = (sum: number, count: number): number => {
+  return Number((sum / count).toFixed(1));
 };

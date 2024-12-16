@@ -18,6 +18,7 @@ export type Room = Pick<
   | 'reviewsAverage'
   | 'location'
   | 'price'
+  | 'capacity'
   | 'latitude'
   | 'longitude'
   | 'checkIn'

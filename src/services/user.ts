@@ -18,40 +18,11 @@ export async function getUser(userId: string): Promise<User> {
       email: true,
       image: true,
       name: true,
-      host: {
-        select: {
-          isSuperHost: true,
-          isVerified: true,
-          hostStartedAt: true,
-          about: true,
-          school: true,
-          job: true,
-          address: true,
-          language: true,
-          birth: true,
-          favoriteSong: true,
-          liked: true,
-          interested: true,
-          noTalented: true,
-          bookTitle: true,
-          hobby: true,
-          pet: true,
-          hostTags: {
-            select: {
-              tag: {
-                select: {
-                  content: true,
-                },
-              },
-            },
-          },
-        },
-      },
     },
   });
 
-  if (!user || !user.host) {
-    throw new NotFoundError();
+  if (!user) {
+    throw new NotFoundError(`유저 정보를 찾을 수 없습니다. (ID: ${userId})`);
   }
 
   return user as User;
@@ -73,7 +44,7 @@ export async function updateUser(userId: string, data: UpdateUserInput) {
   });
 
   if (!user) {
-    throw new NotFoundError();
+    throw new NotFoundError(`유저 정보를 찾을 수 없습니다. (ID: ${userId})`);
   }
 }
 
@@ -97,7 +68,7 @@ export async function updateUserImage(user: SessionUser, image: string) {
       try {
         await remove(user.image);
       } catch (error) {
-        console.error('이전 이미지 삭제 실패:', error);
+        console.error('이전 이미지 삭제 실패:', (error as Error).message);
       }
     }
 
@@ -105,6 +76,6 @@ export async function updateUserImage(user: SessionUser, image: string) {
   });
 
   if (!updated) {
-    throw new NotFoundError();
+    throw new NotFoundError(`유저 정보를 찾을 수 없습니다. (ID: ${user.id})`);
   }
 }
