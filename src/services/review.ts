@@ -1,3 +1,5 @@
+import { NotFoundError } from '@/errors';
+import { ForbiddenError } from '@/errors/errors';
 import { prisma } from '@/lib/server';
 import { CreateReviewInput, UpdateReviewInput } from '@/schemas/review';
 import { Review } from '@/types/review';
@@ -23,7 +25,12 @@ export async function getReviews(
       ...{ skip, take },
       select: {
         id: true,
-        rating: true,
+        accuracy: true,
+        communication: true,
+        cleanliness: true,
+        location: true,
+        checkIn: true,
+        value: true,
         content: true,
         createdAt: true,
         user: {
@@ -74,37 +81,170 @@ export async function createReview(
   userId: string,
   data: CreateReviewInput,
 ): Promise<void> {
-  await prisma.review.create({
-    data: {
-      roomId,
-      userId,
-      rating: data.rating,
-      content: data.content,
+  // * 숙소 정보 조회
+  const room = await prisma.room.findUnique({
+    where: { id: roomId },
+    select: {
+      reviewsAverage: true,
+      reviewsCount: true,
+      hostId: true,
     },
+  });
+
+  if (!room) {
+    throw new NotFoundError(`존재하지 않는 숙소입니다. (roomId: ${roomId})`);
+  }
+
+  // * 리뷰 생성 시 트랜잭션을 통해 숙소의 리뷰 정보와 호스트의 리뷰 정보를 업데이트 한다.
+  await prisma.$transaction(async (prisma) => {
+    await prisma.review.create({
+      data: {
+        roomId,
+        userId,
+        accuracy: data.accuracy,
+        communication: data.communication,
+        cleanliness: data.cleanliness,
+        location: data.location,
+        checkIn: data.checkIn,
+        value: data.value,
+        content: data.content,
+      },
+    });
+
+    const average =
+      (data.accuracy +
+        data.communication +
+        data.cleanliness +
+        data.location +
+        data.checkIn +
+        data.value) /
+      6;
+
+    // * 숙소의 리뷰 정보 업데이트
+    await prisma.room.update({
+      where: { id: roomId },
+      data: {
+        reviewsCount: {
+          increment: 1,
+        },
+        reviewsAverage:
+          (room.reviewsAverage * (room.reviewsCount - 1) + average) / room.reviewsCount,
+      },
+    });
+
+    // * 호스트의 리뷰 정보 업데이트
+    await prisma.host.update({
+      where: { id: room.hostId },
+      data: {
+        reviewsCount: {
+          increment: 1,
+        },
+        reviewsAverage:
+          (room.reviewsAverage * (room.reviewsCount - 1) + average) / room.reviewsCount,
+      },
+    });
   });
 }
 
 /**
  * 리뷰를 수정한다.
  *
+ * @param {number} roomId 방 아이디
  * @param {number} reviewId 리뷰 아이디
  * @param {string} userId 사용자 아이디
  * @param {UpdateReviewInput} data 리뷰 수정 데이터
  */
 export async function updateReview(
+  roomId: number,
   reviewId: number,
   userId: string,
   data: UpdateReviewInput,
 ): Promise<void> {
-  await prisma.review.update({
-    where: {
-      id: reviewId,
-      userId,
+  const room = await prisma.room.findUnique({
+    where: { id: roomId },
+    select: {
+      reviewsAverage: true,
+      reviewsCount: true,
+      hostId: true,
     },
-    data: {
-      rating: data.rating,
-      content: data.content,
+  });
+
+  if (!room) {
+    throw new NotFoundError(`존재하지 않는 숙소입니다. (roomId: ${roomId})`);
+  }
+
+  const review = await prisma.review.findUnique({
+    where: { id: reviewId },
+    select: {
+      userId: true,
+      accuracy: true,
+      communication: true,
+      cleanliness: true,
+      location: true,
+      checkIn: true,
+      value: true,
     },
+  });
+
+  if (!review) {
+    throw new NotFoundError(`존재하지 않는 리뷰입니다. (reviewId: ${reviewId})`);
+  }
+
+  if (review.userId !== userId) {
+    throw new ForbiddenError('해당 리뷰에 접근할 권한이 없습니다.');
+  }
+
+  await prisma.$transaction(async (prisma) => {
+    const prevAverage =
+      (review.accuracy +
+        review.communication +
+        review.cleanliness +
+        review.location +
+        review.checkIn +
+        review.value) /
+      6;
+    const average =
+      (data.accuracy +
+        data.communication +
+        data.cleanliness +
+        data.location +
+        data.checkIn +
+        data.value) /
+      6;
+
+    await prisma.review.update({
+      where: {
+        id: reviewId,
+        userId,
+      },
+      data: {
+        accuracy: data.accuracy,
+        communication: data.communication,
+        cleanliness: data.cleanliness,
+        location: data.location,
+        checkIn: data.checkIn,
+        value: data.value,
+        content: data.content,
+      },
+    });
+
+    // * 숙소의 리뷰 정보 업데이트
+    await prisma.room.update({
+      where: { id: roomId },
+      data: {
+        reviewsAverage:
+          (room.reviewsAverage * room.reviewsCount - prevAverage + average) / room.reviewsCount,
+      },
+    });
+
+    // * 호스트의 리뷰 정보 업데이트
+    await prisma.host.update({
+      where: { id: room.hostId },
+      data: {
+        reviewsAverage:
+          (room.reviewsAverage * room.reviewsCount - prevAverage + average) / room.reviewsCount,
+      },
+    });
   });
 }
 

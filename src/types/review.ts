@@ -5,7 +5,18 @@ export type ReviewParams = {
   reviewId: string;
 };
 
-export type Review = Pick<PrismaReview, 'id' | 'rating' | 'content' | 'createdAt'> & {
+export type Review = Pick<
+  PrismaReview,
+  | 'id'
+  | 'accuracy'
+  | 'checkIn'
+  | 'cleanliness'
+  | 'communication'
+  | 'location'
+  | 'value'
+  | 'content'
+  | 'createdAt'
+> & {
   user: Pick<User, 'id' | 'image' | 'name'> & {
     host: Pick<Host, 'hostStartedAt' | 'isSuperHost'>;
   };
