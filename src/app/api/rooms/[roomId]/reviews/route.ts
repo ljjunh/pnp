@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { auth } from '@/auth';
-import { CustomError, UnAuthorizedError, ZodError } from '@/errors';
+import { BadRequestError, CustomError, UnAuthorizedError, ZodError } from '@/errors';
 import {
   CustomResponse,
   PaginationResponse,
@@ -10,14 +10,19 @@ import {
 } from '@/lib/server';
 import { createReviewSchema } from '@/schemas/review';
 import { createReview, getReviews } from '@/services/review';
-import { Review, ReviewParams } from '@/types/review';
+import { ReviewParams, ReviewSummarize } from '@/types/review';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: ReviewParams },
-): Promise<CustomResponse<PaginationResponse<Review> | undefined>> {
+): Promise<CustomResponse<PaginationResponse<ReviewSummarize> | undefined>> {
   try {
-    const roomId = +params.roomId;
+    const roomId = Number(params.roomId);
+
+    if (isNaN(roomId)) {
+      throw new BadRequestError('유효하지 않은 ID 형식입니다.');
+    }
+
     const { page, limit } = getPaginationParams(request);
     const { skip, take } = getSkipTake(page, limit);
 
@@ -41,7 +46,12 @@ export async function POST(request: NextRequest, { params }: { params: ReviewPar
       throw new UnAuthorizedError();
     }
 
-    const roomId = +params.roomId;
+    const roomId = Number(params.roomId);
+
+    if (isNaN(roomId)) {
+      throw new BadRequestError('유효하지 않은 ID 형식입니다.');
+    }
+
     const data = createReviewSchema.parse(await request.json());
 
     await createReview(roomId, session.user.id, data);

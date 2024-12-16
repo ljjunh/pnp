@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { auth } from '@/auth';
-import { CustomError, UnAuthorizedError, ZodError } from '@/errors';
+import { BadRequestError, CustomError, UnAuthorizedError, ZodError } from '@/errors';
 import { CustomResponse } from '@/lib/server';
 import { updateReviewSchema } from '@/schemas/review';
 import { deleteReview, updateReview } from '@/services/review';
@@ -18,11 +18,14 @@ export async function PATCH(
 
     const data = updateReviewSchema.parse(await request.json());
 
-    const reviewId = +params.reviewId;
+    const roomId = Number(params.roomId);
+    const reviewId = Number(params.reviewId);
 
-    // TODO: 만약, reviewId에 해당하는 리뷰가 없다면 404 에러를 번환 처리해야할까?
-    // TODO: 만약, reviewId에 해당하는 리뷰는 있지만, 현재 로그인한 사용자가 작성한 리뷰가 아니라면 403 에러를 반환 처리해야할까?
-    await updateReview(reviewId, session.user.id, data);
+    if (isNaN(roomId) || isNaN(reviewId)) {
+      throw new BadRequestError('유효하지 않은 ID 형식입니다.');
+    }
+
+    await updateReview(roomId, reviewId, session.user.id, data);
 
     return CustomResponse.empty();
   } catch (error) {
@@ -52,7 +55,7 @@ export async function DELETE(
       throw new UnAuthorizedError();
     }
 
-    const reviewId = +params.reviewId;
+    const reviewId = Number(params.reviewId);
     await deleteReview(reviewId, session.user.id);
 
     return CustomResponse.deleted();
