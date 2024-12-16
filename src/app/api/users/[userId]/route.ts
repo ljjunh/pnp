@@ -28,8 +28,6 @@ export async function GET(
       error: error instanceof Error ? error.message : error,
     });
 
-    console.log('error', error);
-
     if (error instanceof CustomError) {
       return CustomResponse.errors(error.message, error.statusCode);
     }

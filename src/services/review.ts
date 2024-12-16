@@ -69,9 +69,8 @@ export async function getReviews(
       user: {
         ...review.user,
         host: {
-          hostStartedAt: new Date(),
-          isSuperHost: false,
-          ...review.user.host,
+          hostStartedAt: review.user.host?.hostStartedAt ?? new Date(),
+          isSuperHost: review.user.host?.isSuperHost ?? false,
         },
       },
     })),
@@ -135,14 +134,7 @@ export async function createReview(
       },
     });
 
-    const average =
-      (data.accuracy +
-        data.communication +
-        data.cleanliness +
-        data.location +
-        data.checkIn +
-        data.value) /
-      6;
+    const average = averageReview(data);
 
     // * 숙소의 리뷰 정보 업데이트
     await prisma.room.update({
@@ -226,22 +218,8 @@ export async function updateReview(
   }
 
   await prisma.$transaction(async (prisma) => {
-    const prevAverage =
-      (review.accuracy +
-        review.communication +
-        review.cleanliness +
-        review.location +
-        review.checkIn +
-        review.value) /
-      6;
-    const average =
-      (data.accuracy +
-        data.communication +
-        data.cleanliness +
-        data.location +
-        data.checkIn +
-        data.value) /
-      6;
+    const prevAverage = averageReview(review);
+    const average = averageReview(data);
 
     await prisma.review.update({
       where: {
@@ -294,3 +272,17 @@ export async function deleteReview(reviewId: number, userId: string): Promise<vo
     },
   });
 }
+
+/**
+ * 리뷰 평균을 계산한다.
+ *
+ * @param {object} data 리뷰 데이터
+ * @returns {number} 리뷰 평균
+ */
+const averageReview = (data: object): number => {
+  return (
+    Object.values(data)
+      .filter((value) => typeof value === 'number')
+      .reduce((sum, value) => sum + value, 0) / 6
+  );
+};

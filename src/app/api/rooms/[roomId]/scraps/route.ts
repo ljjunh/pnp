@@ -97,7 +97,7 @@ export async function DELETE(
   } catch (error) {
     console.error('스크랩 삭제 중 에러 발생: ', {
       roomId: params.roomId,
-      uesrId: session?.user.id,
+      userId: session?.user.id,
       error: error instanceof Error ? error.message : error,
     });
 
