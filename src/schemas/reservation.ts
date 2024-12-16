@@ -4,7 +4,7 @@ import { schemaType } from '.';
 export const createReservationSchema = z
   .object({
     roomId: z.number().int().positive(),
-    guestNumber: z.number().int().positive(),
+    guestNumber: z.number().int().positive('게스트 수는 1명 이상이어야 합니다.'),
     message: z.string().max(1000).optional(),
     checkIn: schemaType.checkIn,
     checkOut: schemaType.checkOut,

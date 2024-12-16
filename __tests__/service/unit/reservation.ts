@@ -243,7 +243,7 @@ describe('예약 서비스 테스트', () => {
     it('만약, 주문번호에 해당하는 예약 정보가 이미 취소된 경우 에러를 반환해야합니다.', async () => {
       (prisma.reservation.findUnique as jest.Mock).mockResolvedValue({
         ...mockConfirmReservation,
-        status: 'CANCELLED',
+        status: 'CANCELED',
       });
 
       await expect(confirmReservation(orderNumber, hostId)).rejects.toThrow(

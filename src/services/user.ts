@@ -22,7 +22,7 @@ export async function getUser(userId: string): Promise<User> {
   });
 
   if (!user) {
-    throw new NotFoundError();
+    throw new NotFoundError(`유저 정보를 찾을 수 없습니다. (ID: ${userId})`);
   }
 
   return user as User;
@@ -44,7 +44,7 @@ export async function updateUser(userId: string, data: UpdateUserInput) {
   });
 
   if (!user) {
-    throw new NotFoundError();
+    throw new NotFoundError(`유저 정보를 찾을 수 없습니다. (ID: ${userId})`);
   }
 }
 
@@ -76,6 +76,6 @@ export async function updateUserImage(user: SessionUser, image: string) {
   });
 
   if (!updated) {
-    throw new NotFoundError();
+    throw new NotFoundError(`유저 정보를 찾을 수 없습니다. (ID: ${user.id})`);
   }
 }

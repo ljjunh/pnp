@@ -212,7 +212,7 @@ export async function confirmReservation(orderNumber: string, userId: string) {
     throw new ForbiddenError('해당 예약 정보에 접근할 권한이 없습니다.');
   }
 
-  // * PENDING 상태인 예약만 확정 가능
+  // * 이미 확정된 예약이거나 취소된 예약인 경우는 확정할 수 없음
   if (reservation.status === 'CANCELED' || reservation.status === 'CONFIRMED') {
     throw new BadRequestError('확정할 수 없는 예약입니다.');
   }

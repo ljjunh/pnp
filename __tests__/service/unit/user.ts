@@ -38,11 +38,9 @@ describe('유저 서비스 테스트', () => {
       const userId = 'Not Found';
       (prisma.user.findUnique as jest.Mock).mockResolvedValue(null);
 
-      try {
-        await getUser(userId);
-      } catch (error) {
-        expect(error).toBeInstanceOf(NotFoundError);
-      }
+      await expect(getUser(userId)).rejects.toThrow(
+        new NotFoundError(`유저 정보를 찾을 수 없습니다. (ID: ${userId})`),
+      );
     });
   });
 
@@ -67,11 +65,9 @@ describe('유저 서비스 테스트', () => {
       const userId = 'Not Found';
       (prisma.user.update as jest.Mock).mockResolvedValue(null);
 
-      try {
-        await updateUser(userId, data);
-      } catch (error) {
-        expect(error).toBeInstanceOf(NotFoundError);
-      }
+      await expect(updateUser(userId, data)).rejects.toThrow(
+        new NotFoundError(`유저 정보를 찾을 수 없습니다. (ID: ${userId})`),
+      );
     });
   });
 
@@ -105,11 +101,9 @@ describe('유저 서비스 테스트', () => {
       });
       (prisma.user.update as jest.Mock).mockResolvedValue(mockUser);
 
-      try {
-        await updateUserImage(user, image);
-      } catch (error) {
-        expect(error).toBeInstanceOf(NotFoundError);
-      }
+      await expect(updateUserImage(user, image)).rejects.toThrow(
+        new NotFoundError(`유저 정보를 찾을 수 없습니다. (ID: ${user.id})`),
+      );
     });
 
     it('만약, 프로필 이미지가 업데이트 되어야 한다면 기존 이미지를 삭제해야합니다.', async () => {

@@ -10,7 +10,7 @@ const config: Config = {
   rootDir: resolve(__dirname, '../'),
   testEnvironment: 'node',
   setupFilesAfterEnv: ['<rootDir>/jest/backend.setup.ts'],
-  testMatch: ['<rootDir>/__tests__/service/**/*.ts'],
+  testMatch: ['<rootDir>/__tests__/service/**/*.ts', '<rootDir>/__tests__/schema/**/*.ts'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
@@ -27,7 +27,7 @@ const config: Config = {
     },
   },
   collectCoverageFrom: [
-    '!src/app/**/*.{ts,tsx}',
+    '!src/app/!(api)/**/*.{ts,tsx}',
     '!src/components/**/*.{ts,tsx}',
     '!src/app/**/*.{ts,tsx}',
     '!src/apis/**/*.ts',
