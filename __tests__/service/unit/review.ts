@@ -182,7 +182,7 @@ describe('리뷰 서비스 테스트', () => {
       const prevAverage = 5;
       const prevCount = 1;
       const average = (accuracy + communication + cleanliness + location + checkIn + value) / 6;
-      const sumAverage = (prevAverage * prevCount + average) / (prevCount + 1);
+      const sumAverage = Number(((prevAverage * prevCount + average) / (prevCount + 1)).toFixed(1));
 
       (prisma.room.findUnique as jest.Mock).mockResolvedValue(mockRoom);
       (prisma.review.create as jest.Mock).mockResolvedValue(mockReview);
@@ -243,12 +243,30 @@ describe('리뷰 서비스 테스트', () => {
       const userId = 'user1';
       const roomId = 1;
 
+      jest.spyOn(prisma, '$transaction').mockImplementation(async (callback) => {
+        await callback(prisma);
+      });
       (prisma.room.findUnique as jest.Mock).mockResolvedValue(null);
 
       await expect(createReview(roomId, userId, mockReviewCreate)).rejects.toThrow(
         new Error(`존재하지 않는 숙소입니다. (roomId: ${roomId})`),
       );
     });
+
+    // it('리뷰 생성 중 오류 발생시 트랜잭션이 롤백되어야 합니다', async () => {
+    //   const userId = 'user1';
+    //   const roomId = 1;
+
+    //   (prisma.room.findUnique as jest.Mock).mockResolvedValue(mockRoom);
+    //   (prisma.review.create as jest.Mock).mockResolvedValue(mockReview);
+    //   (prisma.room.update as jest.Mock).mockRejectedValue(new Error('DB Error'));
+    //   jest.spyOn(prisma, '$transaction').mockImplementation(async (callback) => {
+    //     await callback(prisma);
+    //   });
+
+    //   await expect(createReview(roomId, userId, mockReviewCreate)).rejects.toThrow('DB Error');
+    //   expect(prisma.review.create).not.toHaveBeenCalled();
+    // });
   });
 
   describe('updateReview', () => {
@@ -257,7 +275,9 @@ describe('리뷰 서비스 테스트', () => {
       const reviewId = 1;
       const roomId = 1;
       const { accuracy, communication, cleanliness, location, checkIn, value } = mockReviewCreate;
-      const average = (accuracy + communication + cleanliness + location + checkIn + value) / 6;
+      const average = Number(
+        ((accuracy + communication + cleanliness + location + checkIn + value) / 6).toFixed(1),
+      );
 
       (prisma.room.findUnique as jest.Mock).mockResolvedValue(mockRoom);
       (prisma.review.findUnique as jest.Mock).mockResolvedValue({
@@ -347,6 +367,28 @@ describe('리뷰 서비스 테스트', () => {
       await expect(updateReview(roomId, reviewId, userId, mockReviewCreate)).rejects.toThrow(
         new Error(`해당 리뷰에 접근할 권한이 없습니다.`),
       );
+    });
+
+    it('업데이트 중 오류 발생시 트랜잭션이 롤백되어야 합니다', async () => {
+      const userId = 'user1';
+      const reviewId = 1;
+      const roomId = 1;
+
+      (prisma.room.findUnique as jest.Mock).mockResolvedValue(mockRoom);
+      (prisma.review.findUnique as jest.Mock).mockResolvedValue({
+        ...mockReview,
+        userId: userId,
+      });
+
+      (prisma.review.update as jest.Mock).mockRejectedValue(new Error('DB Error'));
+
+      await expect(updateReview(roomId, reviewId, userId, mockReviewCreate)).rejects.toThrow(
+        'DB Error',
+      );
+
+      // verify no changes were committed
+      expect(prisma.room.update).not.toHaveBeenCalled();
+      expect(prisma.host.update).not.toHaveBeenCalled();
     });
   });
 

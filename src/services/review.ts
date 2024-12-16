@@ -143,8 +143,10 @@ export async function createReview(
         reviewsCount: {
           increment: 1,
         },
-        reviewsAverage:
-          (room.reviewsAverage * room.reviewsCount + average) / (room.reviewsCount + 1),
+        reviewsAverage: refinedAverage(
+          room.reviewsAverage * room.reviewsCount + average,
+          room.reviewsCount + 1,
+        ),
       },
     });
 
@@ -155,9 +157,10 @@ export async function createReview(
         reviewsCount: {
           increment: 1,
         },
-        reviewsAverage:
-          (room.host.reviewsAverage * room.host.reviewsCount + average) /
-          (room.host.reviewsCount + 1),
+        reviewsAverage: refinedAverage(
+          room.host.reviewsAverage * room.host.reviewsCount + average,
+          room.host.reviewsCount + 1,
+        ),
       },
     });
   });
@@ -241,8 +244,10 @@ export async function updateReview(
     await prisma.room.update({
       where: { id: roomId },
       data: {
-        reviewsAverage:
-          (room.reviewsAverage * room.reviewsCount - prevAverage + average) / room.reviewsCount,
+        reviewsAverage: refinedAverage(
+          room.reviewsAverage * room.reviewsCount - prevAverage + average,
+          room.reviewsCount,
+        ),
       },
     });
 
@@ -250,9 +255,10 @@ export async function updateReview(
     await prisma.host.update({
       where: { id: room.host.id },
       data: {
-        reviewsAverage:
-          (room.host.reviewsAverage * room.host.reviewsCount - prevAverage + average) /
+        reviewsAverage: refinedAverage(
+          room.host.reviewsAverage * room.host.reviewsCount - prevAverage + average,
           room.host.reviewsCount,
+        ),
       },
     });
   });
@@ -292,5 +298,9 @@ const averageReview = (data: ReviewCreate): number => {
   const { accuracy, communication, cleanliness, location, checkIn, value } = data;
   const sum = accuracy + communication + cleanliness + location + checkIn + value;
 
-  return sum / 6;
+  return refinedAverage(sum, 6);
+};
+
+export const refinedAverage = (sum: number, count: number): number => {
+  return Number((sum / count).toFixed(1));
 };
