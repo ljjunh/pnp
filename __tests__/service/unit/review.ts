@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/server';
 import { createReview, deleteReview, getReviews, updateReview } from '@/services/review';
+import { mockReview } from '@mocks/review';
 
 jest.mock('@/lib/server', () => ({
   prisma: {
@@ -20,19 +21,7 @@ describe('리뷰 서비스 테스트', () => {
 
   describe('getReviews', () => {
     it('리뷰 목록과 전체 개수를 반환해야 합니다', async () => {
-      const mockReviews = [
-        {
-          id: 1,
-          rating: 5,
-          content: '좋은 숙소였습니다',
-          createdAt: new Date(),
-          user: {
-            id: 'user1',
-            image: 'image.jpg',
-            name: '테스트 유저',
-          },
-        },
-      ];
+      const mockReviews = [mockReview];
 
       (prisma.review.findMany as jest.Mock).mockResolvedValue(mockReviews);
       (prisma.review.count as jest.Mock).mockResolvedValue(1);
