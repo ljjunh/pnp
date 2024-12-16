@@ -54,7 +54,7 @@ const TagList: TagListType = {
   },
   library: {
     icon: <MdOutlineTableRestaurant size={24} />,
-    name: '서재',
+    name: '업무 전용 공간',
   },
   tv: {
     icon: <IoMdTv size={24} />,

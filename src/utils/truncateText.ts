@@ -22,6 +22,7 @@ const findLastSpace = (text: string, maxLength: number): number => {
  */
 const getTruncateIndex = (text: string, maxLength: number): number => {
   const lastSpaceIndex = findLastSpace(text, maxLength);
+
   return lastSpaceIndex > 0 ? lastSpaceIndex : maxLength;
 };
 
@@ -34,5 +35,6 @@ export const truncateText = (
   }
 
   const truncateIndex = getTruncateIndex(text, maxLength);
+  
   return `${text.slice(0, truncateIndex)}${suffix}`;
 };

@@ -13,6 +13,8 @@ export default meta;
 
 type Story = StoryObj<typeof Tag>;
 
+// TODO: 전체 태그 스토리북
+
 export const Default: Story = {
   args: {
     tag: 'wifi',

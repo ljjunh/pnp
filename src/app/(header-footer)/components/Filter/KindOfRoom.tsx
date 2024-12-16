@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';
 
 export default function KindOfRoom() {
   const [kindRoom, setKindRoom] = useState<string>('');
@@ -18,19 +19,31 @@ export default function KindOfRoom() {
       <div className="h-12 w-full">
         <div className="grid h-full grid-cols-3 rounded-xl border border-neutral-03 p-1">
           <div
-            className={`${hoverStyle} flex cursor-pointer items-center justify-center border-r border-neutral-03 ${kindRoom === '모든 유형' && selectStyle}`}
+            className={cn(
+              'flex cursor-pointer items-center justify-center border-r border-neutral-03',
+              hoverStyle,
+              kindRoom === '모든 유형' && selectStyle,
+            )}
             onClick={() => setKindRoom('모든 유형')}
           >
             <span className="text-sm">모든 유형</span>
           </div>
           <div
-            className={`${hoverStyle} flex cursor-pointer items-center justify-center border-r border-neutral-03 ${kindRoom === '방' && selectStyle}`}
+            className={cn(
+              'flex cursor-pointer items-center justify-center border-r border-neutral-03',
+              hoverStyle,
+              kindRoom === '방' && selectStyle,
+            )}
             onClick={() => setKindRoom('방')}
           >
             <span className="text-sm">방</span>
           </div>
           <div
-            className={`${hoverStyle} flex cursor-pointer items-center justify-center ${kindRoom === '집 전체' && selectStyle}`}
+            className={cn(
+              'flex cursor-pointer items-center justify-center',
+              hoverStyle,
+              kindRoom === '집 전체' && selectStyle,
+            )}
             onClick={() => setKindRoom('집 전체')}
           >
             <span className="text-sm">집 전체</span>

@@ -12,6 +12,7 @@ export default function BuildingOption() {
       <div
         className="flex cursor-pointer items-center justify-between pb-4"
         onClick={() => setOpen(!open)}
+        data-testid="building-option"
       >
         <span className="text-lg font-semibold">건물 유형</span>
         {open ? <IoIosArrowUp size={24} /> : <IoIosArrowDown size={24} />}

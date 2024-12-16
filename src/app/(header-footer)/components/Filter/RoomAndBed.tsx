@@ -27,6 +27,7 @@ export default function RoomAndBed() {
                   return Number(prev) - 1;
                 });
               }}
+              data-testid="bedroom-minus-button"
             />
             <p className="px-4">{bedRoom}</p>
             <CiCirclePlus
@@ -41,6 +42,7 @@ export default function RoomAndBed() {
                   return Number(prev) + 1;
                 });
               }}
+              data-testid="bedroom-plus-button"
             />
           </div>
         </div>
@@ -59,6 +61,7 @@ export default function RoomAndBed() {
                   return Number(prev) - 1;
                 });
               }}
+              data-testid="bed-minus-button"
             />
             <p className="px-4">{bed}</p>
             <CiCirclePlus
@@ -73,6 +76,7 @@ export default function RoomAndBed() {
                   return Number(prev) + 1;
                 });
               }}
+              data-testid="bed-plus-button"
             />
           </div>
         </div>
@@ -91,6 +95,7 @@ export default function RoomAndBed() {
                   return Number(prev) - 1;
                 });
               }}
+              data-testid="bathroom-minus-button"
             />
             <p className="px-4">{bathRoom}</p>
             <CiCirclePlus
@@ -105,6 +110,7 @@ export default function RoomAndBed() {
                   return Number(prev) + 1;
                 });
               }}
+              data-testid="bathroom-plus-button"
             />
           </div>
         </div>

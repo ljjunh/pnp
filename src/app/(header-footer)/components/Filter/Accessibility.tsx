@@ -10,6 +10,7 @@ export default function Accessibility() {
       <div
         className="flex cursor-pointer items-center justify-between pb-4"
         onClick={() => setOpen(!open)}
+        data-testid="accessibility"
       >
         <span className="text-lg font-semibold">접근성 편의</span>
         {open ? <IoIosArrowUp size={24} /> : <IoIosArrowDown size={24} />}
