@@ -13,6 +13,9 @@ export async function GET(
   try {
     const { searchParams } = new URL(request.url);
     const roomId = +params.roomId;
+    if (isNaN(roomId)) {
+      throw new BadRequestError('유효하지 않은 ID 형식입니다.');
+    }
 
     const checkInParam = searchParams.get('checkIn');
     const checkOutParam = searchParams.get('checkOut');

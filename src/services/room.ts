@@ -8,7 +8,7 @@ import { extractProperty } from '@/utils/convertor';
  *
  * @param {number} roomId 방 아이디
  *
- * @returns {Promise<RoomWithReview>} 방 정보
+ * @returns {Promise<Room>} 방 정보
  */
 export async function getRoom(roomId: number): Promise<Room> {
   const room = await prisma.room.findUnique({

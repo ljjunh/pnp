@@ -105,7 +105,13 @@ export async function createReview(
     select: {
       reviewsAverage: true,
       reviewsCount: true,
-      hostId: true,
+      host: {
+        select: {
+          id: true,
+          reviewsAverage: true,
+          reviewsCount: true,
+        },
+      },
     },
   });
 
@@ -146,19 +152,20 @@ export async function createReview(
           increment: 1,
         },
         reviewsAverage:
-          (room.reviewsAverage * (room.reviewsCount - 1) + average) / room.reviewsCount,
+          (room.reviewsAverage * room.reviewsCount + average) / (room.reviewsCount + 1),
       },
     });
 
     // * 호스트의 리뷰 정보 업데이트
     await prisma.host.update({
-      where: { id: room.hostId },
+      where: { id: room.host.id },
       data: {
         reviewsCount: {
           increment: 1,
         },
         reviewsAverage:
-          (room.reviewsAverage * (room.reviewsCount - 1) + average) / room.reviewsCount,
+          (room.host.reviewsAverage * room.host.reviewsCount + average) / room.host.reviewsCount +
+          1,
       },
     });
   });
@@ -183,7 +190,13 @@ export async function updateReview(
     select: {
       reviewsAverage: true,
       reviewsCount: true,
-      hostId: true,
+      host: {
+        select: {
+          id: true,
+          reviewsCount: true,
+          reviewsAverage: true,
+        },
+      },
     },
   });
 
@@ -257,10 +270,11 @@ export async function updateReview(
 
     // * 호스트의 리뷰 정보 업데이트
     await prisma.host.update({
-      where: { id: room.hostId },
+      where: { id: room.host.id },
       data: {
         reviewsAverage:
-          (room.reviewsAverage * room.reviewsCount - prevAverage + average) / room.reviewsCount,
+          (room.host.reviewsAverage * room.host.reviewsCount - prevAverage + average) /
+          room.host.reviewsCount,
       },
     });
   });

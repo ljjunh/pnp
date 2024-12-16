@@ -14,6 +14,7 @@ export async function GET(
 ): Promise<CustomResponse<User | undefined>> {
   try {
     const userId = params.userId;
+
     if (!userId) {
       throw new BadRequestError();
     }

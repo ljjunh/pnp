@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { auth } from '@/auth';
-import { CustomError, UnAuthorizedError, ZodError } from '@/errors';
+import { BadRequestError, CustomError, UnAuthorizedError, ZodError } from '@/errors';
 import { CustomResponse } from '@/lib/server';
 import { updateReviewSchema } from '@/schemas/review';
 import { deleteReview, updateReview } from '@/services/review';
@@ -20,6 +20,10 @@ export async function PATCH(
 
     const roomId = +params.roomId;
     const reviewId = +params.reviewId;
+
+    if (isNaN(roomId) || isNaN(reviewId)) {
+      throw new BadRequestError('유효하지 않은 ID 형식입니다.');
+    }
 
     await updateReview(roomId, reviewId, session.user.id, data);
 
