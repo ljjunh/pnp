@@ -18,39 +18,10 @@ export async function getUser(userId: string): Promise<User> {
       email: true,
       image: true,
       name: true,
-      host: {
-        select: {
-          isSuperHost: true,
-          isVerified: true,
-          hostStartedAt: true,
-          about: true,
-          school: true,
-          job: true,
-          address: true,
-          language: true,
-          birth: true,
-          favoriteSong: true,
-          liked: true,
-          interested: true,
-          noTalented: true,
-          bookTitle: true,
-          hobby: true,
-          pet: true,
-          hostTags: {
-            select: {
-              tag: {
-                select: {
-                  content: true,
-                },
-              },
-            },
-          },
-        },
-      },
     },
   });
 
-  if (!user || !user.host) {
+  if (!user) {
     throw new NotFoundError();
   }
 
@@ -97,7 +68,7 @@ export async function updateUserImage(user: SessionUser, image: string) {
       try {
         await remove(user.image);
       } catch (error) {
-        console.error('이전 이미지 삭제 실패:', error);
+        console.error('이전 이미지 삭제 실패:', (error as Error).message);
       }
     }
 

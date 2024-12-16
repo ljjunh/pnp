@@ -1,7 +1,7 @@
 import { BadRequestError, NotFoundError } from '@/errors';
 import { prisma } from '@/lib/server';
 import { createRoomScrap, deleteRoomScrap, getRoom, isScrap } from '@/services/room';
-import { mockRoom } from '../../mock/room';
+import { mockRoom } from '@mocks/room';
 
 jest.mock('@/lib/server', () => ({
   prisma: {
