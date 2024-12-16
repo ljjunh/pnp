@@ -81,6 +81,8 @@ CREATE TABLE `rooms` (
     `check_in` VARCHAR(191) NOT NULL,
     `check_out` VARCHAR(191) NOT NULL,
     `check_in_type` VARCHAR(191) NOT NULL,
+    `reviews_count` INTEGER NOT NULL DEFAULT 0,
+    `reviews_average` DOUBLE NOT NULL DEFAULT 0,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -149,6 +151,12 @@ CREATE TABLE `reviews` (
     `user_id` VARCHAR(191) NOT NULL,
     `airbnb_id` VARCHAR(191) NULL,
     `rating` INTEGER NOT NULL,
+    `accuracy` INTEGER NOT NULL DEFAULT 0,
+    `check_in` INTEGER NOT NULL DEFAULT 0,
+    `cleanliness` INTEGER NOT NULL DEFAULT 0,
+    `communication` INTEGER NOT NULL DEFAULT 0,
+    `location` INTEGER NOT NULL DEFAULT 0,
+    `value` INTEGER NOT NULL DEFAULT 0,
     `content` TEXT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -177,6 +185,8 @@ CREATE TABLE `hosts` (
     `book_title` VARCHAR(191) NULL,
     `hobby` VARCHAR(191) NULL,
     `pet` VARCHAR(191) NULL,
+    `reviews_count` INTEGER NOT NULL DEFAULT 0,
+    `reviews_average` DOUBLE NOT NULL DEFAULT 0,
 
     UNIQUE INDEX `hosts_user_id_key`(`user_id`),
     PRIMARY KEY (`id`)
