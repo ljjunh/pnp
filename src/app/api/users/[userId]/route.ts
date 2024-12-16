@@ -16,7 +16,7 @@ export async function GET(
     const userId = params.userId;
 
     if (!userId) {
-      throw new BadRequestError();
+      throw new BadRequestError('유효하지 않은 사용자 ID 입니다.');
     }
 
     const user = await getUser(userId);

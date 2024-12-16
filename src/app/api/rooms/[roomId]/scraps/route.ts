@@ -16,7 +16,7 @@ export async function GET(
       return CustomResponse.ok(false);
     }
 
-    const roomId = +params.roomId;
+    const roomId = Number(params.roomId);
 
     if (isNaN(roomId)) {
       throw new BadRequestError('유효하지 않은 ID 형식입니다.');
@@ -50,7 +50,7 @@ export async function POST(
       throw new UnAuthorizedError();
     }
 
-    const roomId = +params.roomId;
+    const roomId = Number(params.roomId);
 
     if (isNaN(roomId)) {
       throw new BadRequestError('유효하지 않은 ID 형식입니다.');
@@ -85,7 +85,7 @@ export async function DELETE(
       throw new UnAuthorizedError();
     }
 
-    const roomId = +params.roomId;
+    const roomId = Number(params.roomId);
 
     if (isNaN(roomId)) {
       throw new BadRequestError('유효하지 않은 ID 형식입니다.');

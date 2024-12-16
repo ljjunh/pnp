@@ -9,7 +9,7 @@ export async function GET(
   { params }: { params: RoomParams },
 ): Promise<CustomResponse<Room | undefined>> {
   try {
-    const roomId = +params.roomId;
+    const roomId = Number(params.roomId);
 
     if (isNaN(roomId)) {
       throw new BadRequestError('유효하지 않은 ID 형식입니다.');

@@ -17,7 +17,7 @@ export async function GET(
   { params }: { params: ReviewParams },
 ): Promise<CustomResponse<PaginationResponse<ReviewSummarize> | undefined>> {
   try {
-    const roomId = +params.roomId;
+    const roomId = Number(params.roomId);
 
     if (isNaN(roomId)) {
       throw new BadRequestError('유효하지 않은 ID 형식입니다.');
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest, { params }: { params: ReviewPar
       throw new UnAuthorizedError();
     }
 
-    const roomId = +params.roomId;
+    const roomId = Number(params.roomId);
 
     if (isNaN(roomId)) {
       throw new BadRequestError('유효하지 않은 ID 형식입니다.');

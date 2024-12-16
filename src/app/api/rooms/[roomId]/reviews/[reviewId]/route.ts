@@ -18,8 +18,8 @@ export async function PATCH(
 
     const data = updateReviewSchema.parse(await request.json());
 
-    const roomId = +params.roomId;
-    const reviewId = +params.reviewId;
+    const roomId = Number(params.roomId);
+    const reviewId = Number(params.reviewId);
 
     if (isNaN(roomId) || isNaN(reviewId)) {
       throw new BadRequestError('유효하지 않은 ID 형식입니다.');
@@ -55,7 +55,7 @@ export async function DELETE(
       throw new UnAuthorizedError();
     }
 
-    const reviewId = +params.reviewId;
+    const reviewId = Number(params.reviewId);
     await deleteReview(reviewId, session.user.id);
 
     return CustomResponse.deleted();

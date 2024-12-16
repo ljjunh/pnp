@@ -164,8 +164,8 @@ export async function createReview(
           increment: 1,
         },
         reviewsAverage:
-          (room.host.reviewsAverage * room.host.reviewsCount + average) / room.host.reviewsCount +
-          1,
+          (room.host.reviewsAverage * room.host.reviewsCount + average) /
+          (room.host.reviewsCount + 1),
       },
     });
   });
