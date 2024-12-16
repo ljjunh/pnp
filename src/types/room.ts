@@ -1,5 +1,5 @@
 import { Amenity, Room as PrismaRoom, RoomImage, Rule, Tag } from '@prisma/client';
-import { Host } from './user';
+import { HostWithUser } from './user';
 
 export type RoomParams = {
   roomId: string;
@@ -14,6 +14,8 @@ export type Room = Pick<
   | 'seoTitle'
   | 'seoDescription'
   | 'thumbnail'
+  | 'reviewsCount'
+  | 'reviewsAverage'
   | 'location'
   | 'price'
   | 'capacity'
@@ -26,17 +28,6 @@ export type Room = Pick<
   roomTags: Pick<Tag, 'id' | 'content'>[];
   images: Pick<RoomImage, 'id' | 'imageLink' | 'orientation'>[];
   rules: Rule[];
-  host: Host;
+  host: HostWithUser;
   amenities: Amenity[];
 };
-
-export type RoomWithReview = Room & {
-  count: number;
-  average: number;
-};
-
-export function isRoomWithReview(room: unknown): room is RoomWithReview {
-  const r = room as Partial<RoomWithReview>;
-
-  return typeof r.count === 'number' && typeof r.average === 'number' && typeof r.id === 'number';
-}

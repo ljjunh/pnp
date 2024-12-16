@@ -5,7 +5,7 @@ export const formatElapsedTime = (startDate: Date): string => {
 
   // 시작일이 현재보다 미래인 경우 예외 처리
   if (isBefore(currentDate, startDate)) {
-    return '0달';
+    return '0개월';
   }
 
   // 전체 월 수 계산
@@ -17,5 +17,5 @@ export const formatElapsedTime = (startDate: Date): string => {
     return `${yearsDiff}년`;
   }
   // 1달 미만이어도 1달로 표시
-  return `${monthsDiff === 0 ? 1 : monthsDiff}달`;
+  return `${monthsDiff === 0 ? 1 : monthsDiff}개월`;
 };

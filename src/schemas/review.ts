@@ -11,14 +11,24 @@ const contentType = z
   .max(1000);
 
 export const updateReviewSchema = z.object({
-  rating: schemaType.rating,
+  accuracy: schemaType.rating,
+  checkIn: schemaType.rating,
+  cleanliness: schemaType.rating,
+  communication: schemaType.rating,
+  location: schemaType.rating,
+  value: schemaType.rating,
   content: contentType,
 });
 
 export type UpdateReviewInput = z.infer<typeof updateReviewSchema>;
 
 export const createReviewSchema = z.object({
-  rating: schemaType.rating,
+  accuracy: schemaType.rating,
+  checkIn: schemaType.rating,
+  cleanliness: schemaType.rating,
+  communication: schemaType.rating,
+  location: schemaType.rating,
+  value: schemaType.rating,
   content: contentType,
 });
 

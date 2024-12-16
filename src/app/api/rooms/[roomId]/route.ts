@@ -1,15 +1,19 @@
 import { NextRequest } from 'next/server';
-import { CustomError } from '@/errors';
+import { BadRequestError, CustomError } from '@/errors';
 import { CustomResponse } from '@/lib/server';
 import { getRoom } from '@/services/room';
-import { RoomParams, RoomWithReview } from '@/types/room';
+import { Room, RoomParams } from '@/types/room';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: RoomParams },
-): Promise<CustomResponse<RoomWithReview | undefined>> {
+): Promise<CustomResponse<Room | undefined>> {
   try {
-    const roomId = +params.roomId;
+    const roomId = Number(params.roomId);
+
+    if (isNaN(roomId)) {
+      throw new BadRequestError('유효하지 않은 ID 형식입니다.');
+    }
 
     const room = await getRoom(roomId);
 

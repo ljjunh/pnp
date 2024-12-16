@@ -14,8 +14,9 @@ export async function GET(
 ): Promise<CustomResponse<User | undefined>> {
   try {
     const userId = params.userId;
+
     if (!userId) {
-      throw new BadRequestError();
+      throw new BadRequestError('유효하지 않은 사용자 ID 입니다.');
     }
 
     const user = await getUser(userId);
@@ -26,8 +27,6 @@ export async function GET(
       userId: params.userId,
       error: error instanceof Error ? error.message : error,
     });
-
-    console.log('error', error);
 
     if (error instanceof CustomError) {
       return CustomResponse.errors(error.message, error.statusCode);
