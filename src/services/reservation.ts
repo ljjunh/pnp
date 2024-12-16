@@ -53,7 +53,7 @@ export async function createReservation(userId: string, data: CreateReservationI
   // * 주문 번호 생성
   const orderNumber = generateOrderNumber(data.roomId);
 
-  const reservation = await prisma.reservation.create({
+  await prisma.reservation.create({
     data: {
       userId: userId,
       roomId: data.roomId,
@@ -65,8 +65,6 @@ export async function createReservation(userId: string, data: CreateReservationI
       message: data.message,
     },
   });
-
-  return reservation;
 }
 
 /**
@@ -215,7 +213,7 @@ export async function confirmReservation(orderNumber: string, userId: string) {
   }
 
   // * PENDING 상태인 예약만 확정 가능
-  if (reservation.status !== 'PENDING') {
+  if (reservation.status === 'CANCELED' || reservation.status === 'CONFIRMED') {
     throw new BadRequestError('확정할 수 없는 예약입니다.');
   }
 

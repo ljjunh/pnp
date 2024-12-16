@@ -13,6 +13,7 @@ export const mockRoom: Room = {
   longitude: new Decimal(126.1234),
   airbnbLink: 'https://www.airbnb.co.kr/',
   thumbnail: 'test.jpg',
+  capacity: 2,
   checkIn: '15:00',
   checkOut: '11:00',
   checkInType: 'self',

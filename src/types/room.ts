@@ -16,6 +16,7 @@ export type Room = Pick<
   | 'thumbnail'
   | 'location'
   | 'price'
+  | 'capacity'
   | 'latitude'
   | 'longitude'
   | 'checkIn'
