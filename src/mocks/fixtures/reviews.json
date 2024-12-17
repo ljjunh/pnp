@@ -1,0 +1,223 @@
+{
+  "data": {
+    "data": {
+      "reviews": [
+        {
+          "id": 985,
+          "accuracy": 5,
+          "communication": 5,
+          "cleanliness": 5,
+          "location": 5,
+          "checkIn": 5,
+          "value": 5,
+          "content": "“달” 이라는 강아지가 너무 귀엽습니다. <br/>담에 또 올게 달 아 건강해",
+          "createdAt": "2024-11-24T05:28:59.000Z",
+          "user": {
+            "id": "0f6f5982-fd57-49ac-a472-933808a48297",
+            "image": "https://a0.muscache.com/im/pictures/user/User/original/904cfa12-d9b0-418b-9e38-eb51bc97c2b1.jpeg",
+            "name": "진섭",
+            "host": {
+              "hostStartedAt": "2024-12-10T02:12:51.458Z",
+              "isSuperHost": false
+            }
+          }
+        },
+        {
+          "id": 986,
+          "accuracy": 5,
+          "communication": 5,
+          "cleanliness": 5,
+          "location": 5,
+          "checkIn": 5,
+          "value": 5,
+          "content": "여태까지 가본 숙소중에 가장 최고 였습니다. 들어갔을때 조명과 히터가 켜져있어서 따뜻하고 아늑한 분위기였구요. 디테일있는 소품들과 임테리어가 기분좋게 합니다. 엄청 청결하구 조은냄새가 납니다. 재방문 의사 너무나무 있습니다!! 잘 쉬다 갑니다",
+          "createdAt": "2024-11-23T06:50:37.000Z",
+          "user": {
+            "id": "b4e02c2e-b1d0-41cb-878c-b55e407ed403",
+            "image": "https://a0.muscache.com/im/pictures/user/User-427758195/original/9644e4dd-8cfb-44bc-aff7-56aba18d3cfe.jpeg",
+            "name": "경선",
+            "host": {
+              "hostStartedAt": "2024-12-10T02:12:51.465Z",
+              "isSuperHost": false
+            }
+          }
+        },
+        {
+          "id": 987,
+          "accuracy": 5,
+          "communication": 5,
+          "cleanliness": 5,
+          "location": 5,
+          "checkIn": 5,
+          "value": 5,
+          "content": "정말친절하셨고 위치나 숙소 상태 너무다 좋았습니다 다음에 또 함덕으로 온다몬 또 가고싶었습닞다🙏🏻🙏🏻",
+          "createdAt": "2024-11-19T04:32:26.000Z",
+          "user": {
+            "id": "573393f6-a8e3-4566-a2a2-237496d0f87b",
+            "image": "https://a0.muscache.com/im/users/38447721/profile_pic/1437126415/original.jpg",
+            "name": "아린",
+            "host": {
+              "hostStartedAt": "2024-12-10T02:12:51.469Z",
+              "isSuperHost": false
+            }
+          }
+        },
+        {
+          "id": 988,
+          "accuracy": 5,
+          "communication": 5,
+          "cleanliness": 5,
+          "location": 5,
+          "checkIn": 5,
+          "value": 5,
+          "content": "👍🏻",
+          "createdAt": "2024-10-13T04:38:31.000Z",
+          "user": {
+            "id": "acc25a36-d437-4bc7-a256-52b29d17bf61",
+            "image": "https://a0.muscache.com/im/pictures/user/User-300910093/original/4fa5e373-c8bb-4889-99b4-b2be33224d86.jpeg",
+            "name": "채나",
+            "host": {
+              "hostStartedAt": "2024-12-10T02:12:51.474Z",
+              "isSuperHost": false
+            }
+          }
+        },
+        {
+          "id": 989,
+          "accuracy": 5,
+          "communication": 5,
+          "cleanliness": 5,
+          "location": 5,
+          "checkIn": 5,
+          "value": 5,
+          "content": "아늑하고 좋았습니다 호스트님과의 소통도 정말 빨랐어요",
+          "createdAt": "2024-10-08T07:01:33.000Z",
+          "user": {
+            "id": "3cb69b0c-9c99-4647-aa68-a2fd761aba4e",
+            "image": "https://a0.muscache.com/im/pictures/user/User-447500949/original/3ea7eded-529e-49f3-b907-d2a53ee90bf8.jpeg",
+            "name": "예진",
+            "host": {
+              "hostStartedAt": "2024-12-10T02:12:51.478Z",
+              "isSuperHost": false
+            }
+          }
+        },
+        {
+          "id": 990,
+          "accuracy": 5,
+          "communication": 5,
+          "cleanliness": 5,
+          "location": 5,
+          "checkIn": 5,
+          "value": 5,
+          "content": "아늑하고 예뻐서 저희집이었음 좋겠다 싶었어요 ㅎㅎ 화장대도 있고 침대 옆에서 작업하거나 뭐 먹기 좋게 조그만 공간이 있어서 더 좋았네요",
+          "createdAt": "2024-10-06T06:56:08.000Z",
+          "user": {
+            "id": "3e779577-9da6-4526-b438-0ba444f5bde6",
+            "image": "https://a0.muscache.com/im/pictures/user/ad0f9673-4bed-4173-b606-e9c82782c9a8.jpg",
+            "name": "지영",
+            "host": {
+              "hostStartedAt": "2024-12-10T02:12:51.482Z",
+              "isSuperHost": false
+            }
+          }
+        },
+        {
+          "id": 991,
+          "accuracy": 4,
+          "communication": 4,
+          "cleanliness": 4,
+          "location": 4,
+          "checkIn": 4,
+          "value": 4,
+          "content": "멋진 전망과 주변 환경이 예쁜 매우 예쁜 방. 해변에서 도보로 약 30분, 다음 편의점까지 약 10분 거리에 있어 조금 아쉽지만, 그거 빼고는 아주 좋았어요",
+          "createdAt": "2024-09-26T05:08:51.000Z",
+          "user": {
+            "id": "6881e8ba-c282-4d98-b206-478e52e0004d",
+            "image": "https://a0.muscache.com/im/pictures/user/4866a3e5-cb6b-4ec7-a0b8-cb4f31c96935.jpg",
+            "name": "Lilly",
+            "host": {
+              "hostStartedAt": "2024-12-10T02:12:51.487Z",
+              "isSuperHost": false
+            }
+          }
+        },
+        {
+          "id": 992,
+          "accuracy": 5,
+          "communication": 5,
+          "cleanliness": 5,
+          "location": 5,
+          "checkIn": 5,
+          "value": 5,
+          "content": "좋아요",
+          "createdAt": "2024-09-20T05:45:29.000Z",
+          "user": {
+            "id": "02e2315c-3fe2-4c06-8b4f-142fc1283dd0",
+            "image": "https://a0.muscache.com/im/Portrait/Avatars/messaging/b3e03835-ade9-4eb7-a0bb-2466ab9a534d.jpg?im_policy=medq_w_text&im_t=승&im_w=240&im_f=apple-sd-gothic-medium.ttf&im_c=ffffff",
+            "name": "승옥",
+            "host": {
+              "hostStartedAt": "2023-07-09T23:47:37.093Z",
+              "isSuperHost": true
+            }
+          }
+        },
+        {
+          "id": 993,
+          "accuracy": 5,
+          "communication": 5,
+          "cleanliness": 5,
+          "location": 5,
+          "checkIn": 5,
+          "value": 5,
+          "content": "방도 너무 예쁘고 주차하기도 편해서 아주 만족했습니다!<br/>함덕 해변이랑도 가까워서 여행 다니기 아주 좋은 위치에요~",
+          "createdAt": "2024-09-09T04:09:39.000Z",
+          "user": {
+            "id": "f67984ac-1fa0-4278-8fe1-f24c0fdeba89",
+            "image": "https://a0.muscache.com/im/pictures/user/8dedfd3c-d0d2-4612-9b28-44aef72afae7.jpg",
+            "name": "Kyungryul",
+            "host": {
+              "hostStartedAt": "2024-12-10T02:12:51.502Z",
+              "isSuperHost": false
+            }
+          }
+        },
+        {
+          "id": 994,
+          "accuracy": 5,
+          "communication": 5,
+          "cleanliness": 5,
+          "location": 5,
+          "checkIn": 5,
+          "value": 5,
+          "content": "아늑하고 따뜻한 숙소였어요 에어컨 빵빵하고 달이도 너무 귀엽고 다음에 또 온다면 예약할거같아요 가까운곳에 바다수영도 할 수 있어서 두번이나했네요 대만족입니다 !!!",
+          "createdAt": "2024-09-07T04:55:55.000Z",
+          "user": {
+            "id": "3ed6cd0b-cba4-41b3-a423-1ac1fbb0429a",
+            "image": "https://a0.muscache.com/im/pictures/user/c4ef6020-830f-4c88-b9bc-98c16c1bd59f.jpg",
+            "name": "예나",
+            "host": {
+              "hostStartedAt": "2024-12-10T02:12:51.508Z",
+              "isSuperHost": false
+            }
+          }
+        }
+      ],
+      "count": 60,
+      "accuracy": 4.8167,
+      "communication": 4.8167,
+      "cleanliness": 4.8167,
+      "location": 4.8167,
+      "checkIn": 4.8167,
+      "value": 4.8167
+    },
+    "page": {
+      "currentPage": 1,
+      "pageSize": 10,
+      "totalPages": 6,
+      "totalItems": 60,
+      "hasNextPage": true,
+      "hasPrevPage": false
+    }
+  }
+}

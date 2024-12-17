@@ -25,59 +25,57 @@ export default function RoomReviewSummary({
   location,
   value,
 }: RoomReviewSummaryProps) {
-  console.log(cleanliness, '왜왜왜');
-
   return (
     <div className="border-b pb-10">
-      <div className="flex items-center pb-10 text-2xl">
-        <span className="mr-2">
-          <IoIosStar />
-        </span>
-        <span className="font-semibold">
-          {reviewsAverage ? reviewsAverage.toFixed(2) : 0} · 후기 {reviewsCount ? reviewsCount : 0}
-          개
-        </span>
+      <div className="flex items-center pb-10 text-2xl font-semibold">
+        {reviewsAverage > 0 && (
+          <span className="mr-2 flex items-center gap-1">
+            <IoIosStar />
+            <span>{reviewsAverage.toFixed(2)} ·</span>
+          </span>
+        )}
+        <span> 후기 {reviewsCount ? reviewsCount : 0}개</span>
       </div>
       <div className="grid grid-cols-6">
         <div className="flex flex-col gap-5 px-6">
           <div>
             <div className="text-sm">청결도</div>
-            <div className="text-lg font-semibold">{cleanliness.toFixed(2)}</div>
+            <div className="text-lg font-semibold">{cleanliness.toFixed(1)}</div>
           </div>
           <PiSprayBottle size={32} />
         </div>
         <div className="flex flex-col gap-5 border-l px-6">
           <div>
             <div className="text-sm">정확도</div>
-            <div className="text-lg font-semibold">{accuracy.toFixed(2)}</div>
+            <div className="text-lg font-semibold">{accuracy.toFixed(1)}</div>
           </div>
           <PiCheckCircle size={32} />
         </div>
         <div className="flex flex-col gap-5 border-l px-6">
           <div>
             <div className="text-sm">체크인</div>
-            <div className="text-lg font-semibold">{checkIn.toFixed(2)}</div>
+            <div className="text-lg font-semibold">{checkIn.toFixed(1)}</div>
           </div>
           <PiKey size={32} />
         </div>
         <div className="flex flex-col gap-5 border-l px-6">
           <div>
             <div className="text-sm">의사소통</div>
-            <div className="text-lg font-semibold">{communication.toFixed(2)}</div>
+            <div className="text-lg font-semibold">{communication.toFixed(1)}</div>
           </div>
           <GoComment size={32} />
         </div>
         <div className="flex flex-col gap-5 border-l px-6">
           <div>
             <div className="text-sm">위치</div>
-            <div className="text-lg font-semibold">{location.toFixed(2)}</div>
+            <div className="text-lg font-semibold">{location.toFixed(1)}</div>
           </div>
           <PiMapTrifold size={32} />
         </div>
         <div className="flex flex-col gap-5 border-l px-6">
           <div>
             <div className="text-sm">가격 대비 만족도</div>
-            <div className="text-lg font-semibold">{value.toFixed(2)}</div>
+            <div className="text-lg font-semibold">{value.toFixed(1)}</div>
           </div>
           <PiTag size={32} />
         </div>

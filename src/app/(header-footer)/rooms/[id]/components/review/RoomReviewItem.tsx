@@ -1,21 +1,38 @@
 import React from 'react';
+import { Review } from '@/types/review';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { formatRelativeDate } from '@/utils/formatRelativeDate';
 import { IoIosStar } from 'react-icons/io';
 
 interface RoomReviewItemProps {
-  rating: number;
-  content: string;
-  createdAt: string;
-  user: {
-    id: string;
-    image: string;
-    name: string;
-    startedAt: string;
-  };
+  accuracy: Review['accuracy'];
+  communication: Review['communication'];
+  cleanliness: Review['cleanliness'];
+  location: Review['location'];
+  checkIn: Review['checkIn'];
+  value: Review['value'];
+  content: Review['content'];
+  createdAt: Review['createdAt'];
+  user: Review['user'];
 }
 
-export default function RoomReviewItem({ rating, content, createdAt, user }: RoomReviewItemProps) {
+export default function RoomReviewItem({
+  accuracy,
+  communication,
+  cleanliness,
+  location,
+  checkIn,
+  value,
+  content,
+  createdAt,
+  user,
+}: RoomReviewItemProps) {
+  const rating =
+    [accuracy, communication, cleanliness, location, checkIn, value].reduce(
+      (sum, score) => sum + score,
+      0,
+    ) / 6;
+
   const StarRating = ({ rating }: { rating: number }) => {
     return (
       <div className="flex">
@@ -39,7 +56,7 @@ export default function RoomReviewItem({ rating, content, createdAt, user }: Roo
           <div>
             <div className="font-semibold">{user.name}</div>
             <div className="text-sm text-shade-02">
-              에어비앤비 가입 기간 {formatElapsedTime(new Date(user.startedAt))}
+              에어비앤비 가입 기간 {formatElapsedTime(new Date(user.host.hostStartedAt))}
             </div>
           </div>
         </div>

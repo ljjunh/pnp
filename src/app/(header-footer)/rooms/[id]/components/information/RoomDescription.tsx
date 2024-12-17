@@ -36,11 +36,13 @@ export default function RoomDescription({
           ))}
         </span>
         <span className="flex gap-1 text-base">
-          <span className="flex items-center gap-1 text-[17px]">
-            <IoIosStar />
-            {reviewsAverage ? reviewsAverage.toFixed(2) : 0}
-          </span>
-          <span>·</span>
+          {reviewsAverage > 0 && (
+            <span className="flex items-center gap-1 text-[17px]">
+              <IoIosStar />
+              {reviewsAverage.toFixed(2)}
+              <span>·</span>
+            </span>
+          )}
           <span className="underline">후기 {reviewsCount ? reviewsCount : 0}개</span>
         </span>
       </section>
