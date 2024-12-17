@@ -44,7 +44,11 @@ export const EmailLoginForm = () => {
 
           {/* 이메일 포맷 관련 에러 문구 */}
           {errors.email.length > 0 && (
-            <div className="space-y-1">
+            <div
+              className="flex flex-col gap-1"
+              role="alert"
+              aria-live="polite"
+            >
               {errors.email.map((error, index) => (
                 <p
                   key={index}
@@ -59,7 +63,11 @@ export const EmailLoginForm = () => {
 
         {/* 서버 관련 에러 문구 */}
         {errors.server.length > 0 && (
-          <div className="rounded-md bg-red-50 px-2 py-4">
+          <div
+            className="rounded-md bg-red-50 px-2 py-4"
+            role="alert"
+            aria-live="polite"
+          >
             <p className="text-sm text-red-500">{errors.server[0]}</p>
           </div>
         )}
