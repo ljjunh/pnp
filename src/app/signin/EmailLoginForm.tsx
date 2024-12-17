@@ -3,17 +3,25 @@
 import { useFormState } from 'react-dom';
 import Link from 'next/link';
 import { EmailLoginFormBtn } from '@/app/signin/EmailLoginFormBtn';
-import { handleEmailLogin } from '@/app/signin/action';
+import { FormState, handleEmailLogin } from '@/app/signin/action';
 import { getWebmailUrl } from '@/utils/email';
 
+const initialState: FormState = {
+  success: false,
+  errors: {
+    email: [],
+    server: [],
+  },
+  email: '',
+};
+
 export const EmailLoginForm = () => {
-  const [state, dispatch] = useFormState(handleEmailLogin, null);
+  const [state, dispatch] = useFormState(handleEmailLogin, initialState);
 
   return (
     <div className="space-y-4">
-      
       {/* 이메일 전송 완료 후 안내 문구 */}
-      {state?.success && state.email && (
+      {state.success && state.email && (
         <div className="rounded-md bg-green-50 px-2 py-4">
           <div className="flex items-end gap-4">
             <p className="text-sm text-green-700">이메일로 전송된 로그인 링크를 확인하세요</p>
@@ -44,11 +52,13 @@ export const EmailLoginForm = () => {
           />
 
           {/* 이메일 포맷 관련 에러 문구 */}
-          {state?.errors?.email && <p className="text-sm text-red-500">{state.errors.email[0]}</p>}
+          {state.errors.email.length > 0 && (
+            <p className="text-sm text-red-500">{state.errors.email[0]}</p>
+          )}
         </div>
 
         {/* 서버 관련 에러 문구 */}
-        {state?.errors?.server && (
+        {state.errors.server.length > 0 && (
           <div className="rounded-md bg-red-50 px-2 py-4">
             <p className="text-sm text-red-500">{state.errors.server[0]}</p>
           </div>

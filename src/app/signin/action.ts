@@ -4,13 +4,13 @@ import { signIn } from '@/auth';
 import { z } from 'zod';
 
 // 이메일 로그인 관련 타입
-type FormState = {
-  errors?: {
-    email?: string[];
-    server?: string[];
+export type FormState = {
+  success: boolean;
+  errors: {
+    email: string[];
+    server: string[];
   };
-  success?: boolean;
-  email?: string;
+  email: string;
 };
 
 // 소셜 로그인 관련 타입
@@ -22,7 +22,10 @@ const formSchema = z.object({
 });
 
 // 이메일 로그인 서버액션
-export async function handleEmailLogin(prevState: FormState | null, formData: FormData): Promise<FormState> {
+export async function handleEmailLogin(
+  prevState: FormState,
+  formData: FormData,
+): Promise<FormState> {
   try {
     const data = { email: formData.get('email') as string };
     const result = formSchema.safeParse(data);
@@ -30,29 +33,39 @@ export async function handleEmailLogin(prevState: FormState | null, formData: Fo
     // 이메일 포맷 에러
     if (!result.success) {
       return {
+        success: false,
         errors: {
-          email: result.error.issues.map(issue => issue.message),
-        }
+          email: result.error.issues.map((issue) => issue.message),
+          server: [],
+        },
+        email: '',
       };
     }
 
-    await signIn('resend', { 
-      email: result.data.email, 
-      redirectTo: '/', 
-      redirect: false 
+    await signIn('resend', {
+      email: result.data.email,
+      redirectTo: '/',
+      redirect: false,
     });
 
     return {
       success: true,
-      email: result.data.email // 성공 시 이메일 저장
+      errors: {
+        email: [],
+        server: [],
+      },
+      email: result.data.email, // 성공 시 이메일 저장
     };
 
-  // 서버 에러
+    // 서버 에러
   } catch (error) {
     return {
+      success: false,
       errors: {
-        server: ['로그인 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.']
-      }
+        email: [],
+        server: ['로그인 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'],
+      },
+      email: '',
     };
   }
 }
