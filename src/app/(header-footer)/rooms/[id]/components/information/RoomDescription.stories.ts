@@ -41,6 +41,8 @@ export const Default: Story = {
       isSuperHost: true,
       isVerified: true,
       hostStartedAt: new Date('2022-12-09T23:50:36.464Z'),
+      reviewsAverage: 4.788990825,
+      reviewsCount: 109,
       hostTags: [
         {
           content: '응답률: 100%',
@@ -56,5 +58,7 @@ export const Default: Story = {
         email: 'hwangmijeong@live.com',
       },
     },
+    reviewsCount: 23,
+    reviewsAverage: 4.67788,
   },
 };

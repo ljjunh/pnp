@@ -5,7 +5,6 @@ import RoomDescription from '@/app/(header-footer)/rooms/[id]/components/informa
 import RoomHost from '@/app/(header-footer)/rooms/[id]/components/information/RoomHost';
 import RoomRules from '@/app/(header-footer)/rooms/[id]/components/information/RoomRules';
 import RoomReviewList from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewList';
-import RoomReviewSummary from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewSummary';
 import { Room } from '@/types/room';
 import { getRoom } from '@/apis/rooms/queries';
 
@@ -23,6 +22,8 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
             roomTags={room.roomTags}
             description={room.description}
             host={room.host}
+            reviewsCount={room.reviewsCount}
+            reviewsAverage={room.reviewsAverage}
           />
         </div>
         <div className="relative col-span-2">
@@ -31,10 +32,11 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
           </div>
         </div>
       </section>
-      <section className="py-12">
-        <RoomReviewSummary />
-        <RoomReviewList id={Number(params.id)} />
-      </section>
+      <RoomReviewList
+        id={Number(params.id)}
+        reviewsCount={room.reviewsCount}
+        reviewsAverage={room.reviewsAverage}
+      />
       <RoomHost host={room.host} />
       <RoomRules
         id={Number(params.id)}
