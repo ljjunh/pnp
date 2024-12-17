@@ -9,8 +9,11 @@ export const MESSAGES = {
 };
 
 export const ERROR_MESSAGES = {
-  INVALID_EMAIL: '유효한 이메일 주소를 입력해주세요.',
-  SERVER_ERROR: '로그인 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+  REQUIRED_EMAIL: '이메일을 입력해주세요.',
+  INVALID_EMAIL: '올바른 이메일 형식이 아닙니다.',
+  MIN_LENGTH_EMAIL: '이메일은 최소 5자 이상이어야 합니다.',
+  MAX_LENGTH_EMAIL: '이메일은 최대 254자까지 가능합니다.',
+  SERVER_ERROR: '서버 오류가 발생했습니다.',
 };
 
 export const SOCIAL_LOGIN_BUTTON = {

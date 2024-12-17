@@ -7,7 +7,16 @@ import { ERROR_MESSAGES, GOOGLE, KAKAO } from '@/constants/login';
 
 // zod 유효성 검사
 const formSchema = z.object({
-  email: z.string().email(ERROR_MESSAGES.INVALID_EMAIL).toLowerCase(),
+  email: z
+    .string({
+      required_error: ERROR_MESSAGES.REQUIRED_EMAIL,
+      invalid_type_error: ERROR_MESSAGES.INVALID_EMAIL,
+    })
+    .trim()
+    .min(5, ERROR_MESSAGES.MIN_LENGTH_EMAIL)
+    .max(254, ERROR_MESSAGES.MAX_LENGTH_EMAIL) // RFC 5321
+    .email(ERROR_MESSAGES.INVALID_EMAIL)
+    .toLowerCase()
 });
 
 // 이메일 로그인 서버액션

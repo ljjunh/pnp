@@ -42,7 +42,15 @@ export const EmailLoginForm = () => {
           />
 
           {/* 이메일 포맷 관련 에러 문구 */}
-          {errors.email.length > 0 && <p className="text-sm text-red-500">{errors.email[0]}</p>}
+          {errors.email.length > 0 && (
+            <div className="space-y-1">
+              {errors.email.map((error, index) => (
+                <p key={index} className="text-sm text-red-500">
+                  {error}
+                </p>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* 서버 관련 에러 문구 */}
