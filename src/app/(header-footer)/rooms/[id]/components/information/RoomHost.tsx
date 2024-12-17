@@ -73,9 +73,9 @@ export default function RoomHost({ host }: RoomHostProps) {
                 </div>
               </div>
               <hr />
-              <div className="flex flex-col py-2 pr-20">
+              <div className="flex flex-col truncate py-2 pr-20">
                 <div className="text-xs">호스팅 경력</div>
-                <div className="text-xl font-semibold">
+                <div className="truncate text-xl font-semibold">
                   {formatElapsedTime(new Date(host.hostStartedAt))}
                 </div>
               </div>
