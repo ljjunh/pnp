@@ -1,22 +1,26 @@
 import { useReducer } from 'react';
 import { CiCircleMinus, CiCirclePlus } from 'react-icons/ci';
 
+type RoomValue = '상관없음' | '8+' | number;
+const ROOM_DEFAULT = '상관없음' as const;
+const ROOM_MAX = '8+' as const;
+
 const initialState = {
-  bedRoom: '상관없음',
-  bed: '상관없음',
-  bathRoom: '상관없음',
+  bedRoom: ROOM_DEFAULT,
+  bed: ROOM_DEFAULT,
+  bathRoom: ROOM_DEFAULT,
 };
 
 interface State {
-  bedRoom: string | number;
-  bed: string | number;
-  bathRoom: string | number;
+  bedRoom: RoomValue;
+  bed: RoomValue;
+  bathRoom: RoomValue;
 }
 
 type Action =
-  | { type: 'BEDROOM'; payload: string | number }
-  | { type: 'BED'; payload: string | number }
-  | { type: 'BATHROOM'; payload: string | number };
+  | { type: 'BEDROOM'; payload: RoomValue }
+  | { type: 'BED'; payload: RoomValue }
+  | { type: 'BATHROOM'; payload: RoomValue };
 
 export default function RoomAndBed() {
   function roomReducer(state: State, action: Action) {

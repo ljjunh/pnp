@@ -15,5 +15,20 @@ describe('HostLanguage 컴포넌트 테스트', () => {
     fireEvent.click(openButton);
 
     expect(screen.queryByText('중국어')).toBeInTheDocument();
+
+    // 다시 클릭 시 아코디언 닫힘 테스트
+    fireEvent.click(openButton);
+    expect(screen.queryByText('중국어')).not.toBeInTheDocument();
+  });
+
+  test('언어 체크박스 선택/해제 동작 테스트', () => {
+    render(<HostLanguage />);
+
+    fireEvent.click(screen.getByTestId('host-language'));
+
+    const chineseCheckbox = screen.getByText('중국어');
+    fireEvent.click(chineseCheckbox);
+
+    expect(screen.getByTestId('check')).toBeInTheDocument();
   });
 });
