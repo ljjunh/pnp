@@ -1,10 +1,73 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 import { CiCircleMinus, CiCirclePlus } from 'react-icons/ci';
 
+type RoomValue = '상관없음' | '8+' | number;
+const ROOM_DEFAULT = '상관없음' as const;
+const ROOM_MAX = '8+' as const;
+
+const initialState = {
+  bedRoom: ROOM_DEFAULT,
+  bed: ROOM_DEFAULT,
+  bathRoom: ROOM_DEFAULT,
+};
+
+interface State {
+  bedRoom: RoomValue;
+  bed: RoomValue;
+  bathRoom: RoomValue;
+}
+
+type Action =
+  | { type: 'BEDROOM'; payload: RoomValue }
+  | { type: 'BED'; payload: RoomValue }
+  | { type: 'BATHROOM'; payload: RoomValue };
+
 export default function RoomAndBed() {
-  const [bedRoom, setBedRoom] = useState<string | number>('상관없음');
-  const [bed, setBed] = useState<string | number>('상관없음');
-  const [bathRoom, setBathRoom] = useState<string | number>('상관없음');
+  function roomReducer(state: State, action: Action) {
+    switch (action.type) {
+      case 'BEDROOM':
+        return { ...state, bedRoom: action.payload };
+      case 'BED':
+        return { ...state, bed: action.payload };
+      case 'BATHROOM':
+        return { ...state, bathRoom: action.payload };
+      default:
+        return state;
+    }
+  }
+
+  const [state, dispatch] = useReducer(roomReducer, initialState);
+
+  const handleRoomChange = (type: keyof State, isIncrement: boolean) => {
+    const nowValue = state[type];
+
+    const changeValue = () => {
+      if (nowValue === '상관없음') {
+        return isIncrement ? 1 : '상관없음';
+      }
+
+      if (nowValue === 1 && !isIncrement) {
+        return '상관없음';
+      }
+
+      if (nowValue === 7 && isIncrement) {
+        return ROOM_MAX;
+      }
+
+      if (nowValue === ROOM_MAX) {
+        return isIncrement ? ROOM_MAX : 7;
+      }
+
+      return isIncrement ? Number(nowValue) + 1 : Number(nowValue) - 1;
+    };
+
+    const newValue = changeValue();
+
+    dispatch({
+      type: type.toUpperCase() as Action['type'],
+      payload: newValue,
+    });
+  };
 
   return (
     <div className="px-6 py-8">
@@ -17,30 +80,22 @@ export default function RoomAndBed() {
           <div className="flex w-40 flex-row items-center justify-between">
             <CiCircleMinus
               size={36}
-              color={bedRoom === '상관없음' ? 'LightGray' : 'Gray'}
+              color={state.bedRoom === '상관없음' ? 'LightGray' : 'Gray'}
               className="cursor-pointer"
               onClick={() => {
-                setBedRoom((prev) => {
-                  if (prev === '상관없음') return prev;
-                  if (prev === 1) return '상관없음';
-                  if (prev === '8+') return 7;
-                  return Number(prev) - 1;
-                });
+                handleRoomChange('bedRoom', false);
               }}
+              data-testid="bedroom-minus-button"
             />
-            <p className="px-4">{bedRoom}</p>
+            <p className="px-4">{state.bedRoom}</p>
             <CiCirclePlus
               size={36}
-              color={bedRoom === '8+' ? 'LightGray' : 'Gray'}
+              color={state.bedRoom === '8+' ? 'LightGray' : 'Gray'}
               className="cursor-pointer"
               onClick={() => {
-                setBedRoom((prev) => {
-                  if (prev === '상관없음') return 1;
-                  if (prev === 7) return '8+';
-                  if (prev === '8+') return prev;
-                  return Number(prev) + 1;
-                });
+                handleRoomChange('bedRoom', true);
               }}
+              data-testid="bedroom-plus-button"
             />
           </div>
         </div>
@@ -49,30 +104,22 @@ export default function RoomAndBed() {
           <div className="flex w-40 flex-row items-center justify-between">
             <CiCircleMinus
               size={36}
-              color={bed === '상관없음' ? 'LightGray' : 'Gray'}
+              color={state.bed === '상관없음' ? 'LightGray' : 'Gray'}
               className="cursor-pointer"
               onClick={() => {
-                setBed((prev) => {
-                  if (prev === '상관없음') return prev;
-                  if (prev === 1) return '상관없음';
-                  if (prev === '8+') return 7;
-                  return Number(prev) - 1;
-                });
+                handleRoomChange('bed', false);
               }}
+              data-testid="bed-minus-button"
             />
-            <p className="px-4">{bed}</p>
+            <p className="px-4">{state.bed}</p>
             <CiCirclePlus
               size={36}
-              color={bed === '8+' ? 'LightGray' : 'Gray'}
+              color={state.bed === '8+' ? 'LightGray' : 'Gray'}
               className="cursor-pointer"
               onClick={() => {
-                setBed((prev) => {
-                  if (prev === '상관없음') return 1;
-                  if (prev === 7) return '8+';
-                  if (prev === '8+') return prev;
-                  return Number(prev) + 1;
-                });
+                handleRoomChange('bed', true);
               }}
+              data-testid="bed-plus-button"
             />
           </div>
         </div>
@@ -81,30 +128,22 @@ export default function RoomAndBed() {
           <div className="flex w-40 flex-row items-center justify-between">
             <CiCircleMinus
               size={36}
-              color={bathRoom === '상관없음' ? 'LightGray' : 'Gray'}
+              color={state.bathRoom === '상관없음' ? 'LightGray' : 'Gray'}
               className="cursor-pointer"
               onClick={() => {
-                setBathRoom((prev) => {
-                  if (prev === '상관없음') return prev;
-                  if (prev === 1) return '상관없음';
-                  if (prev === '8+') return 7;
-                  return Number(prev) - 1;
-                });
+                handleRoomChange('bathRoom', false);
               }}
+              data-testid="bathroom-minus-button"
             />
-            <p className="px-4">{bathRoom}</p>
+            <p className="px-4">{state.bathRoom}</p>
             <CiCirclePlus
               size={36}
-              color={bathRoom === '8+' ? 'LightGray' : 'Gray'}
+              color={state.bathRoom === '8+' ? 'LightGray' : 'Gray'}
               className="cursor-pointer"
               onClick={() => {
-                setBathRoom((prev) => {
-                  if (prev === '상관없음') return 1;
-                  if (prev === 7) return '8+';
-                  if (prev === '8+') return prev;
-                  return Number(prev) + 1;
-                });
+                handleRoomChange('bathRoom', true);
               }}
+              data-testid="bathroom-plus-button"
             />
           </div>
         </div>
