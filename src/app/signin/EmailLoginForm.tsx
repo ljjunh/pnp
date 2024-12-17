@@ -3,7 +3,8 @@
 import { useFormState } from 'react-dom';
 import Link from 'next/link';
 import { EmailLoginFormBtn } from '@/app/signin/EmailLoginFormBtn';
-import { FormState, handleEmailLogin } from '@/app/signin/action';
+import { handleEmailLogin } from '@/app/signin/action';
+import { FormState } from '@/types/login';
 import { getWebmailUrl } from '@/utils/email';
 
 const initialState: FormState = {

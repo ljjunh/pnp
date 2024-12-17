@@ -2,23 +2,12 @@
 
 import { signIn } from '@/auth';
 import { z } from 'zod';
-
-// 이메일 로그인 관련 타입
-export type FormState = {
-  success: boolean;
-  errors: {
-    email: string[];
-    server: string[];
-  };
-  email: string;
-};
-
-// 소셜 로그인 관련 타입
-type Provider = 'google' | 'kakao';
+import { FormState, Provider } from '@/types/login';
+import { ERROR_MESSAGES, GOOGLE, KAKAO } from '@/constants/login';
 
 // zod 유효성 검사
 const formSchema = z.object({
-  email: z.string().email('유효한 이메일 주소를 입력해주세요.').toLowerCase(),
+  email: z.string().email(ERROR_MESSAGES.INVALID_EMAIL).toLowerCase(),
 });
 
 // 이메일 로그인 서버액션
@@ -63,7 +52,7 @@ export async function handleEmailLogin(
       success: false,
       errors: {
         email: [],
-        server: ['로그인 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'],
+        server: [ERROR_MESSAGES.SERVER_ERROR],
       },
       email: '',
     };
@@ -78,10 +67,10 @@ async function handleSocialLogin(provider: Provider) {
 
 export const googleLogin = async () => {
   'use server';
-  await handleSocialLogin('google');
+  await handleSocialLogin(GOOGLE);
 };
 
 export const kakaoLogin = async () => {
   'use server';
-  await handleSocialLogin('kakao');
+  await handleSocialLogin(KAKAO);
 };

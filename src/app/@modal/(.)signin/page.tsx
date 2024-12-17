@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { EmailLoginForm } from '@/app/signin/EmailLoginForm';
 import { LoginHeader } from '@/app/signin/LoginHeader';
 import { SocialLogin } from '@/app/signin/SocialLogin';
+import { MESSAGES } from '@/constants/login';
 
 export default function LoginModal() {
   const router = useRouter();
@@ -39,7 +40,7 @@ export default function LoginModal() {
           className="p-6"
           role="main"
         >
-          <p className="mb-4 font-semibold text-gray-700">에어비앤비에 오신 것을 환영합니다.</p>
+          <p className="mb-4 font-semibold text-gray-700">{MESSAGES.WELCOME}</p>
           <EmailLoginForm />
           <SocialLogin />
         </section>

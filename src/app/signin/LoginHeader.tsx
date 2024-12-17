@@ -1,3 +1,5 @@
+import { MESSAGES } from '@/constants/login';
+
 interface LoginHeaderProps {
   onBack?: () => void;
 }
@@ -30,7 +32,7 @@ export function LoginHeader({ onBack }: LoginHeaderProps) {
         className="text-lg font-bold"
         id="login-header"
       >
-        로그인 또는 회원가입
+        {MESSAGES.SIGNIN_OR_SIGNUP}
       </h1>
       <div aria-hidden="true" />
     </header>

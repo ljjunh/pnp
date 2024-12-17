@@ -1,19 +1,19 @@
 'use client';
 
 import { useFormStatus } from 'react-dom';
+import { SocialLoginType } from '@/types/login';
+import { SOCIAL_LOGIN_BUTTON } from '@/constants/login';
 import { FaGoogle } from 'react-icons/fa';
 import { SiKakao } from 'react-icons/si';
-
-type SocialLoginType = '구글로 로그인하기' | '카카오로 로그인하기';
 
 export function SocialLoginFormBtn({ text }: { text: SocialLoginType }) {
   const { pending } = useFormStatus();
 
   const getIcon = () => {
     switch (text) {
-      case '구글로 로그인하기':
+      case SOCIAL_LOGIN_BUTTON.GOOGLE:
         return <FaGoogle className="size-5" />;
-      case '카카오로 로그인하기':
+      case SOCIAL_LOGIN_BUTTON.KAKAO:
         return <SiKakao className="size-6" />;
       default:
         return <div />;
