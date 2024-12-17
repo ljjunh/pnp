@@ -1,7 +1,7 @@
 import { SocialLoginFormBtn } from '@/app/signin/SocialLoginFormBtn';
 import { googleLogin, kakaoLogin } from '@/app/signin/action';
 
-export async function SocialLogin() {
+export function SocialLogin() {
   return (
     <>
       {/* 구분선 */}
