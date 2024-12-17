@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { auth } from '@/auth';
-import { CustomError, UnAuthorizedError } from '@/errors';
+import { BadRequestError, CustomError, UnAuthorizedError } from '@/errors';
 import { CustomResponse } from '@/lib/server';
 import { createRoomScrap, deleteRoomScrap, isScrap } from '@/services/room';
 import { RoomParams } from '@/types/room';
@@ -16,7 +16,11 @@ export async function GET(
       return CustomResponse.ok(false);
     }
 
-    const roomId = +params.roomId;
+    const roomId = Number(params.roomId);
+
+    if (isNaN(roomId)) {
+      throw new BadRequestError('유효하지 않은 ID 형식입니다.');
+    }
 
     const scrap = await isScrap(roomId, session.user.id);
 
@@ -46,7 +50,11 @@ export async function POST(
       throw new UnAuthorizedError();
     }
 
-    const roomId = +params.roomId;
+    const roomId = Number(params.roomId);
+
+    if (isNaN(roomId)) {
+      throw new BadRequestError('유효하지 않은 ID 형식입니다.');
+    }
 
     await createRoomScrap(roomId, session.user.id);
 
@@ -77,7 +85,11 @@ export async function DELETE(
       throw new UnAuthorizedError();
     }
 
-    const roomId = +params.roomId;
+    const roomId = Number(params.roomId);
+
+    if (isNaN(roomId)) {
+      throw new BadRequestError('유효하지 않은 ID 형식입니다.');
+    }
 
     await deleteRoomScrap(roomId, session.user.id);
 
@@ -85,7 +97,7 @@ export async function DELETE(
   } catch (error) {
     console.error('스크랩 삭제 중 에러 발생: ', {
       roomId: params.roomId,
-      uesrId: session?.user.id,
+      userId: session?.user.id,
       error: error instanceof Error ? error.message : error,
     });
 

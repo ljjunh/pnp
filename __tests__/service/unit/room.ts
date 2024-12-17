@@ -1,7 +1,7 @@
 import { BadRequestError, NotFoundError } from '@/errors';
 import { prisma } from '@/lib/server';
 import { createRoomScrap, deleteRoomScrap, getRoom, isScrap } from '@/services/room';
-import { mockRoom } from '../../mock/room';
+import { mockRoom } from '@mocks/room';
 
 jest.mock('@/lib/server', () => ({
   prisma: {
@@ -33,31 +33,15 @@ describe('숙소 서비스 테스트', () => {
   describe('getRoom', () => {
     it('ID 값에 맞는 숙소 정보를 반환해야합니다.', async () => {
       const roomId = 1;
-      const count = 1;
-      const average = 5;
-      const room = mockRoom;
 
       (prisma.room.findUnique as jest.Mock).mockResolvedValue(mockRoom);
-      (prisma.review.aggregate as jest.Mock).mockResolvedValue({
-        _count: { id: count },
-        _avg: { rating: average },
-      });
 
-      const findRoom = await getRoom(1);
+      const room = await getRoom(1);
 
-      expect(findRoom).toEqual({
-        ...room,
-        count,
-        average,
-      });
+      expect(room).toEqual(mockRoom);
       expect(prisma.room.findUnique).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { id: roomId },
-        }),
-      );
-      expect(prisma.review.aggregate).toHaveBeenCalledWith(
-        expect.objectContaining({
-          where: { roomId: roomId },
         }),
       );
     });
@@ -70,25 +54,6 @@ describe('숙소 서비스 테스트', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(NotFoundError);
       }
-    });
-
-    it('만약, 리뷰 집계 함수에서 문제가 발생한 경우, 0으로 초기화해야합니다.', async () => {
-      const roomId = 1;
-      const room = mockRoom;
-
-      (prisma.room.findUnique as jest.Mock).mockResolvedValue(mockRoom);
-      (prisma.review.aggregate as jest.Mock).mockResolvedValue({
-        _count: { id: undefined },
-        _avg: { rating: undefined },
-      });
-
-      const findRoom = await getRoom(roomId);
-
-      expect(findRoom).toEqual({
-        ...room,
-        count: 0,
-        average: 0,
-      });
     });
   });
 

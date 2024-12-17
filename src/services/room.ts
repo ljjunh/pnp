@@ -1,6 +1,6 @@
 import { BadRequestError, NotFoundError } from '@/errors';
 import { prisma } from '@/lib/server';
-import { RoomWithReview } from '@/types/room';
+import { Room } from '@/types/room';
 import { extractProperty } from '@/utils/convertor';
 
 /**
@@ -8,9 +8,9 @@ import { extractProperty } from '@/utils/convertor';
  *
  * @param {number} roomId 방 아이디
  *
- * @returns {Promise<RoomWithReview>} 방 정보
+ * @returns {Promise<Room>} 방 정보
  */
-export async function getRoom(roomId: number): Promise<RoomWithReview> {
+export async function getRoom(roomId: number): Promise<Room> {
   const room = await prisma.room.findUnique({
     relationLoadStrategy: 'join',
     where: { id: roomId },
@@ -30,6 +30,8 @@ export async function getRoom(roomId: number): Promise<RoomWithReview> {
       checkIn: true,
       checkOut: true,
       checkInType: true,
+      reviewsCount: true,
+      reviewsAverage: true,
       roomTags: {
         select: {
           tag: {
@@ -63,6 +65,8 @@ export async function getRoom(roomId: number): Promise<RoomWithReview> {
           isSuperHost: true,
           isVerified: true,
           hostStartedAt: true,
+          reviewsAverage: true,
+          reviewsCount: true,
           hostTags: {
             select: {
               tag: {
@@ -89,19 +93,6 @@ export async function getRoom(roomId: number): Promise<RoomWithReview> {
     throw new NotFoundError();
   }
 
-  // TODO: 호스트가 가지고 있는 리뷰와 평점을 추가적으로 조회해야한다.
-  const aggregate = await prisma.review.aggregate({
-    where: {
-      roomId: roomId,
-    },
-    _avg: {
-      rating: true,
-    },
-    _count: {
-      id: true,
-    },
-  });
-
   const parseRoom = {
     ...room,
     roomTags: extractProperty(room.roomTags, 'tag'),
@@ -114,11 +105,9 @@ export async function getRoom(roomId: number): Promise<RoomWithReview> {
       },
       hostTags: extractProperty(room.host.hostTags, 'tag'),
     },
-    count: aggregate._count.id ?? 0,
-    average: aggregate._avg.rating ?? 0,
   };
 
-  return parseRoom as RoomWithReview;
+  return parseRoom;
 }
 
 /**

@@ -4,7 +4,7 @@ const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 10;
 const MAX_LIMIT = 100;
 
-interface PaginationParams {
+export interface PaginationParams {
   page: number;
   limit: number;
 }
@@ -19,7 +19,7 @@ interface PaginationMetadata {
 }
 
 export interface PaginationResponse<T> {
-  data: T[];
+  data: T;
   page: PaginationMetadata;
 }
 
@@ -56,7 +56,7 @@ function getPaginationMetadata(
 }
 
 export function createPaginationResponse<T>(
-  data: T[],
+  data: T,
   totalItems: number,
   page: number,
   limit: number,

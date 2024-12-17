@@ -13,8 +13,12 @@ export const rating = z
     required_error: '평점은 필수 입력입니다',
     invalid_type_error: '평점은 숫자여야 합니다',
   })
-  .min(1)
-  .max(5);
+  .min(1, {
+    message: '평점은 1에서 5 사이여야 합니다',
+  })
+  .max(5, {
+    message: '평점은 1에서 5 사이여야 합니다',
+  });
 
 export const orderNumber = z.string().nonempty({
   message: '주문번호는 필수 입력입니다',
