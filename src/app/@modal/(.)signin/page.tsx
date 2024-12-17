@@ -1,9 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { EmailLoginForm } from '@/app/signin/EmailLoginForm';
-import { LoginHeader } from '@/app/signin/LoginHeader';
-import { SocialLogin } from '@/app/signin/SocialLogin';
+import { EmailLoginForm } from '@/app/signin/components/EmailLoginForm';
+import { LoginHeader } from '@/app/signin/components/LoginHeader';
+import { SocialLogin } from '@/app/signin/components/SocialLogin';
 import { MESSAGES } from '@/constants/login';
 
 export default function LoginModal() {

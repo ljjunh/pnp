@@ -1,5 +1,5 @@
-import { SocialLoginFormBtn } from '@/app/signin/SocialLoginFormBtn';
 import { googleLogin, kakaoLogin } from '@/app/signin/action';
+import { SocialLoginFormBtn } from '@/app/signin/components/SocialLoginFormBtn';
 import { MESSAGES, SOCIAL_LOGIN_BUTTON } from '@/constants/login';
 
 export function SocialLogin() {
