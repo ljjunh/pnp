@@ -3,6 +3,7 @@ import { CiCircleMinus, CiCirclePlus } from 'react-icons/ci';
 
 type RoomValue = '상관없음' | '8+' | number;
 const ROOM_DEFAULT = '상관없음' as const;
+const ROOM_MAX = '8+' as const;
 
 const initialState = {
   bedRoom: ROOM_DEFAULT,
@@ -50,11 +51,11 @@ export default function RoomAndBed() {
       }
 
       if (nowValue === 7 && isIncrement) {
-        return '8+';
+        return ROOM_MAX;
       }
 
-      if (nowValue === '8+') {
-        return isIncrement ? '8+' : 7;
+      if (nowValue === ROOM_MAX) {
+        return isIncrement ? ROOM_MAX : 7;
       }
 
       return isIncrement ? Number(nowValue) + 1 : Number(nowValue) - 1;
