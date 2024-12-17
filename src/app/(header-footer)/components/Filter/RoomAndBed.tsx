@@ -3,7 +3,6 @@ import { CiCircleMinus, CiCirclePlus } from 'react-icons/ci';
 
 type RoomValue = '상관없음' | '8+' | number;
 const ROOM_DEFAULT = '상관없음' as const;
-const ROOM_MAX = '8+' as const;
 
 const initialState = {
   bedRoom: ROOM_DEFAULT,

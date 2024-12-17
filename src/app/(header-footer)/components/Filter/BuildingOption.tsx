@@ -14,9 +14,6 @@ export default function BuildingOption() {
         onClick={() => setOpen(!open)}
         data-testid="building-option"
         role="button"
-        aria-expended={open}
-        aria-controls="building-option"
-        tabIndex={0}
       >
         <span className="text-lg font-semibold">건물 유형</span>
         {open ? <IoIosArrowUp size={24} /> : <IoIosArrowDown size={24} />}
