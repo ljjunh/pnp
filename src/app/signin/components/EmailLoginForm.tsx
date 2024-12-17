@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { EmailLoginFormBtn } from '@/app/signin/components/EmailLoginFormBtn';
 import { useEmailLoginForm } from '@/hooks/useEmailLoginForm';
 import { getWebmailUrl } from '@/utils/email';
+import { MESSAGES } from '@/constants/login';
 
 export const EmailLoginForm = () => {
   const { dispatch, email, success, errors } = useEmailLoginForm();
@@ -14,14 +15,14 @@ export const EmailLoginForm = () => {
       {success && email && (
         <div className="rounded-md bg-green-50 px-2 py-4">
           <div className="flex items-end gap-4">
-            <p className="text-sm text-green-700">이메일로 전송된 로그인 링크를 확인하세요</p>
+            <p className="text-sm text-green-700">{MESSAGES.CHECK_EMAIL}</p>
             <Link
               href={getWebmailUrl(email)}
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-green-700 underline hover:text-green-800"
             >
-              메일로 이동하기
+              {MESSAGES.MOVE_TO_MAIL}
             </Link>
           </div>
         </div>
@@ -45,7 +46,10 @@ export const EmailLoginForm = () => {
           {errors.email.length > 0 && (
             <div className="space-y-1">
               {errors.email.map((error, index) => (
-                <p key={index} className="text-sm text-red-500">
+                <p
+                  key={index}
+                  className="text-sm text-red-500"
+                >
                   {error}
                 </p>
               ))}

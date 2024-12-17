@@ -6,6 +6,11 @@ export const MESSAGES = {
   WELCOME: '에어비앤비에 오신 것을 환영합니다.',
   OR: '또는',
   SIGNIN_OR_SIGNUP: '로그인 또는 회원가입',
+  LOGIN_LOADING: '로그인 중...',
+  SENDING_EMAIL: '이메일 전송 중...',
+  CONTINUE: '계속',
+  CHECK_EMAIL: '이메일로 전송된 로그인 링크를 확인하세요',
+  MOVE_TO_MAIL: '메일로 이동하기'
 };
 
 export const ERROR_MESSAGES = {
