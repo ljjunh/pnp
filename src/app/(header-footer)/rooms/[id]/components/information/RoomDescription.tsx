@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Room } from '@/types/room';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateText } from '@/utils/truncateText';
+import { ImTrophy } from 'react-icons/im';
 import { IoIosArrowForward, IoIosStar } from 'react-icons/io';
 
 interface RoomDescriptionProps {
@@ -10,6 +11,8 @@ interface RoomDescriptionProps {
   roomTags: Room['roomTags'];
   description: Room['description'];
   host: Room['host'];
+  reviewsCount: Room['reviewsCount'];
+  reviewsAverage: Room['reviewsAverage'];
 }
 
 export default function RoomDescription({
@@ -17,6 +20,8 @@ export default function RoomDescription({
   roomTags,
   description,
   host,
+  reviewsCount,
+  reviewsAverage,
 }: RoomDescriptionProps) {
   return (
     <>
@@ -33,10 +38,10 @@ export default function RoomDescription({
         <span className="flex gap-1 text-base">
           <span className="flex items-center gap-1 text-[17px]">
             <IoIosStar />
-            4.87
+            {reviewsAverage ? reviewsAverage.toFixed(2) : 0}
           </span>
-          –<span>·</span>
-          <span className="underline">후기 221개</span>
+          <span>·</span>
+          <span className="underline">후기 {reviewsCount ? reviewsCount : 0}개</span>
         </span>
       </section>
       <section className="flex items-center gap-5 border-b border-neutral-04 py-6">
@@ -46,9 +51,10 @@ export default function RoomDescription({
               src={host.user.image}
               fill
               alt="호스트 프로필 이미지"
-              className="rounded-full object-cover"
+              className="relative rounded-full object-cover"
             />
           )}
+          {host.isSuperHost && <ImTrophy className="absolute bottom-0 right-0 text-primary-02" />}
         </div>
 
         <div className="flex flex-col">

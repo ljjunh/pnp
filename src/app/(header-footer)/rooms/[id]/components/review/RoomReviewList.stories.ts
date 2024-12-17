@@ -16,5 +16,7 @@ type Story = StoryObj<typeof RoomReviewList>;
 export const Default: Story = {
   args: {
     id: 1,
+    reviewsCount: 60,
+    reviewsAverage: 4.677,
   },
 };
