@@ -1,7 +1,6 @@
-
-import { handleEmailLogin, googleLogin, kakaoLogin } from './action';
 import { signIn } from '@/auth';
 import { ERROR_MESSAGES, GOOGLE, KAKAO } from '@/constants/login';
+import { googleLogin, handleEmailLogin, kakaoLogin } from './action';
 
 // signIn 모킹
 jest.mock('@/auth', () => ({
@@ -83,7 +82,6 @@ describe('이메일 로그인 처리 (handleEmailLogin)', () => {
       });
       expect(signIn).not.toHaveBeenCalled();
     });
-
   });
 
   describe('로그인 프로세스', () => {
@@ -197,6 +195,12 @@ describe('소셜 로그인 (Social Login)', () => {
       // then
       expect(signIn).toHaveBeenCalledWith(GOOGLE, { redirectTo: '/' });
     });
+
+    it('구글 로그인 실패 시 적절한 에러 처리가 되어야 함', async () => {
+      (signIn as jest.Mock).mockRejectedValueOnce(new Error('Authentication failed'));
+
+      await expect(googleLogin()).rejects.toThrow('Authentication failed');
+    });
   });
 
   describe('카카오 로그인', () => {
@@ -206,6 +210,12 @@ describe('소셜 로그인 (Social Login)', () => {
 
       // then
       expect(signIn).toHaveBeenCalledWith(KAKAO, { redirectTo: '/' });
+    });
+
+    it('카카오 로그인 실패 시 적절한 에러 처리가 되어야 함', async () => {
+      (signIn as jest.Mock).mockRejectedValueOnce(new Error('Authentication failed'));
+
+      await expect(kakaoLogin()).rejects.toThrow('Authentication failed');
     });
   });
 });
