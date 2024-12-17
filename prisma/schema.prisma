@@ -101,6 +101,9 @@ model Room {
   checkOut       String  @map("check_out")
   checkInType    String  @map("check_in_type")
 
+  propertyType String @map("property_type")
+  roomType     String @map("room_type")
+
   reviewsCount   Int   @default(0) @map("reviews_count")
   reviewsAverage Float @default(0) @map("reviews_average")
 
