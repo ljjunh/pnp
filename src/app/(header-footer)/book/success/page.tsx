@@ -8,13 +8,11 @@ export default function SuccessPage() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const paymentType = searchParams.get('paymentType');
     const orderId = searchParams.get('orderId');
     const paymentKey = searchParams.get('paymentKey');
     const amount = searchParams.get('amount');
 
     httpClient.post('/api/payment', {
-      paymentType,
       orderId,
       paymentKey,
       amount: Number(amount),

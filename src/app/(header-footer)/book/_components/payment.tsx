@@ -20,7 +20,13 @@ const Payment = () => {
       <button
         disabled={!isReady}
         className="mt-6 w-full rounded-lg bg-[#FF385C] py-3 text-white"
-        onClick={() => requestPayment({ orderId: '1234123123', orderName: 'Room Payment' })}
+        onClick={() =>
+          requestPayment({
+            orderId: '123123lknsajdkfnuiasdfniu2ni3nasd123',
+            orderName: 'Room Payment',
+            amount: 50000,
+          })
+        }
       >
         확인 및 결제
       </button>

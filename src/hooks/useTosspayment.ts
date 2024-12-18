@@ -5,6 +5,7 @@ import { TossPaymentsInstance, loadTossPayments } from '@tosspayments/payment-sd
 interface RequestPaymentProps {
   orderId: string;
   orderName: string;
+  amount: number;
 }
 
 const useTossPayment = () => {
@@ -13,14 +14,14 @@ const useTossPayment = () => {
   const [isReady, setIsReady] = useState(false);
 
   const requestPayment = useCallback(
-    async ({ orderId, orderName }: RequestPaymentProps) => {
+    async ({ orderId, orderName, amount }: RequestPaymentProps) => {
       if (!payment) return;
 
       try {
         await payment.requestPayment('TOSSPAY', {
           orderId: orderId,
           orderName: orderName,
-          amount: 50000,
+          amount: amount,
           successUrl: process.env.NEXT_PUBLIC_BASE_URL + '/book/success',
           failUrl: process.env.NEXT_PUBLIC_BASE_URL + '/book/fail',
         });
@@ -36,9 +37,9 @@ const useTossPayment = () => {
     async function initToss() {
       if (!clientKey) return;
       try {
-        setIsReady(true);
         const payment = await loadTossPayments(clientKey);
         setPayment(payment);
+        setIsReady(true);
       } catch (error) {
         console.error('토스페이먼츠 결제 연동에 실패하였습니다.', error);
         setIsReady(false);
