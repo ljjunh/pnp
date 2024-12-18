@@ -1,6 +1,6 @@
 // components/BookingPage.tsx
 import Image from 'next/image';
-import Payment from './components/payment';
+import Payment from './_components/payment';
 
 export default async function BookingPage() {
   return (
@@ -106,18 +106,6 @@ export default async function BookingPage() {
         <h2 className="mb-4 font-medium">결제 수단</h2>
         <Payment />
       </div>
-
-      {/* Rules */}
-      <div className="mt-6">
-        <h2 className="mb-4 font-medium">환불 정책</h2>
-        <p className="text-sm text-gray-600">
-          결제하신 금액이 환불되지 않습니다.
-          <button className="ml-2 text-sm underline">자세히 알아보기</button>
-        </p>
-      </div>
-
-      {/* Submit Button */}
-      <button className="mt-6 w-full rounded-lg bg-[#FF385C] py-3 text-white">확인 및 결제</button>
     </div>
   );
 }
