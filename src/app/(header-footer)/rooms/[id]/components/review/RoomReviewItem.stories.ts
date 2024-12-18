@@ -21,7 +21,7 @@ export const Default: Story = {
     location: 4.8167,
     checkIn: 4.8167,
     value: 4.8167,
-    content: '“달” 이라는 강아지가 너무 귀엽습니다. <br/>담에 또 올게 달 아 건강해',
+    content: '“달” 이라는 강아지가 너무 귀엽습니다. 담에 또 올게 달 아 건강해',
     createdAt: new Date('2024-11-24T05:28:59.000Z'),
     user: {
       id: '0f6f5982-fd57-49ac-a472-933808a48297',

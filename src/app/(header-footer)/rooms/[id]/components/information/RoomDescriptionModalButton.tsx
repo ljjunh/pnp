@@ -32,6 +32,7 @@ export default function RoomDescriptionModalButton({
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-title"
+          aria-describedby="modal-description"
           className="relative max-h-[80vh] w-[780px] px-6 pb-8 pt-4"
         >
           <div className="mb-4 mt-2 inline-block rounded-full p-2 hover:bg-neutral-01">
@@ -39,6 +40,8 @@ export default function RoomDescriptionModalButton({
               onClick={handleCloseModal}
               aria-label="모달 닫기"
               className="cursor-pointer"
+              role="button"
+              tabIndex={0}
             />
           </div>
           <h2
@@ -47,7 +50,12 @@ export default function RoomDescriptionModalButton({
           >
             숙소 설명
           </h2>
-          <div className="leading-10">{description}</div>
+          <div
+            id="modal-description"
+            className="leading-10"
+          >
+            {description}
+          </div>
         </div>
       </ModalProvider>
     </>

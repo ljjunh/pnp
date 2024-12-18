@@ -1,8 +1,11 @@
 import { closeModal, openModal } from '@/lib/features/modal/modalSlice';
 import { RootState } from '@/lib/store';
 import { useDispatch, useSelector } from 'react-redux';
+import { MODAL_ID } from '@/constants/modal';
 
-export const useModal = (modalId: string) => {
+type ModalIdType = (typeof MODAL_ID)[keyof typeof MODAL_ID];
+
+export const useModal = (modalId: ModalIdType) => {
   const dispatch = useDispatch();
 
   const isOpen = useSelector(

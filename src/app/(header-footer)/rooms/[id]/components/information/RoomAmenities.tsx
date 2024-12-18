@@ -18,7 +18,7 @@ export default function RoomAmenities({ amenities }: RoomAmenitiesProps) {
           </div>
         ))}
       </div>
-      <RoomAmenitiesModalButton amenities={amenities} />
+      {amenities.length > 10 && <RoomAmenitiesModalButton amenities={amenities} />}
     </section>
   );
 }

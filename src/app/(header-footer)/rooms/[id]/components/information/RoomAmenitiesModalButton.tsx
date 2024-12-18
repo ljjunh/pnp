@@ -12,13 +12,15 @@ interface RoomAmenitiesModalButtonProps {
 }
 
 export default function RoomAmenitiesModalButton({ amenities }: RoomAmenitiesModalButtonProps) {
-  const { handleOpenModal, handleCloseModal } = useModal(MODAL_ID.ROOM_AMENITIES);
+  const { modalState, handleOpenModal, handleCloseModal } = useModal(MODAL_ID.ROOM_AMENITIES);
 
   return (
     <>
       <Button
         variant="tertiary"
         onClick={handleOpenModal}
+        aria-expanded={modalState}
+        aria-controls={MODAL_ID.ROOM_AMENITIES}
       >
         편의시설 {amenities.length}개 모두 보기
       </Button>
