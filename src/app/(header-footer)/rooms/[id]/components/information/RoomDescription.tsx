@@ -68,7 +68,7 @@ export default function RoomDescription({
           </span>
         </div>
       </section>
-      <section className="border-b border-neutral-04 py-12">
+      <section className="py-12">
         {description && (
           <>
             <div>{truncateText(description)}</div>
