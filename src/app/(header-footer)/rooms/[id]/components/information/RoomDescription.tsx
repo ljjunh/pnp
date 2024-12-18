@@ -1,10 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
+import RoomDescriptionButton from '@/app/(header-footer)/rooms/[id]/components/information/RoomDescriptionButton';
 import { Room } from '@/types/room';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateText } from '@/utils/truncateText';
 import { ImTrophy } from 'react-icons/im';
-import { IoIosArrowForward, IoIosStar } from 'react-icons/io';
+import { IoIosStar } from 'react-icons/io';
 
 interface RoomDescriptionProps {
   location: Room['location'];
@@ -72,13 +73,7 @@ export default function RoomDescription({
         {description && (
           <>
             <div>{truncateText(description)}</div>
-            <button
-              type="button"
-              className="mt-4 flex items-center"
-            >
-              <span className="underline">더 보기</span>
-              <IoIosArrowForward size={19} />
-            </button>
+            <RoomDescriptionButton description={description} />
           </>
         )}
       </section>
