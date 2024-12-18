@@ -3,15 +3,18 @@
 import { Room } from '@/types/room';
 import ModalProvider from '@/components/common/ModalProvider/ModalProvider';
 import { useModal } from '@/hooks/useModal';
+import { MODAL_ID } from '@/constants/modal';
 import { IoIosArrowForward } from 'react-icons/io';
 import { RxCross2 } from 'react-icons/rx';
 
-interface RoomDescriptionButtonProps {
+interface RoomDescriptionModalButtonProps {
   description: Room['description'];
 }
 
-export default function RoomDescriptionButton({ description }: RoomDescriptionButtonProps) {
-  const { handleOpenModal, handleCloseModal } = useModal();
+export default function RoomDescriptionModalButton({
+  description,
+}: RoomDescriptionModalButtonProps) {
+  const { handleOpenModal, handleCloseModal } = useModal(MODAL_ID.ROOM_DESCRIPTION);
 
   return (
     <>
@@ -24,7 +27,7 @@ export default function RoomDescriptionButton({ description }: RoomDescriptionBu
         <span className="underline">더 보기</span>
         <IoIosArrowForward size={19} />
       </button>
-      <ModalProvider>
+      <ModalProvider modalId={MODAL_ID.ROOM_DESCRIPTION}>
         <div
           role="dialog"
           aria-modal="true"

@@ -2,13 +2,15 @@ import { closeModal, openModal } from '@/lib/features/modal/modalSlice';
 import { RootState } from '@/lib/store';
 import { useDispatch, useSelector } from 'react-redux';
 
-export const useModal = () => {
+export const useModal = (modalId: string) => {
   const dispatch = useDispatch();
 
-  const modalState = useSelector((state: RootState) => state.modal.modalState);
+  const isOpen = useSelector(
+    (state: RootState) => state.modal.modalState && state.modal.modalId === modalId,
+  );
 
   const handleOpenModal = () => {
-    dispatch(openModal());
+    dispatch(openModal(modalId));
   };
 
   const handleCloseModal = () => {
@@ -16,7 +18,7 @@ export const useModal = () => {
   };
 
   return {
-    modalState,
+    modalState: isOpen,
     handleOpenModal,
     handleCloseModal,
   };

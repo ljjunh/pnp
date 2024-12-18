@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import RoomDescriptionButton from '@/app/(header-footer)/rooms/[id]/components/information/RoomDescriptionButton';
+import RoomDescriptionModalButton from '@/app/(header-footer)/rooms/[id]/components/information/RoomDescriptionModalButton';
 import { Room } from '@/types/room';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateText } from '@/utils/truncateText';
@@ -86,7 +86,7 @@ export default function RoomDescription({
         {description && (
           <>
             <div>{truncateText(description)}</div>
-            <RoomDescriptionButton description={description} />
+            <RoomDescriptionModalButton description={description} />
           </>
         )}
       </section>

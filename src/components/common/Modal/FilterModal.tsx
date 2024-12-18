@@ -10,10 +10,11 @@ import PriceRange from '@/app/(header-footer)/components/Filter/PriceRange';
 import ReservationOption from '@/app/(header-footer)/components/Filter/ReservationOption';
 import RoomAndBed from '@/app/(header-footer)/components/Filter/RoomAndBed';
 import { useModal } from '@/hooks/useModal';
+import { MODAL_ID } from '@/constants/modal';
 import { RxCross2 } from 'react-icons/rx';
 
 export default function FilterModal() {
-  const { handleCloseModal } = useModal();
+  const { handleCloseModal } = useModal(MODAL_ID.ROOM_FILTER);
 
   return (
     <div className="relative h-[600px] w-[550px]">

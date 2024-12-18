@@ -1,28 +1,30 @@
-import RoomDescriptionButton from '@/app/(header-footer)/rooms/[id]/components/information/RoomDescriptionButton';
+import RoomDescriptionModalButton from '@/app/(header-footer)/rooms/[id]/components/information/RoomDescriptionModalButton';
 import { makeStore } from '@/lib/store';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Provider } from 'react-redux';
 
-const store = makeStore();
-
 const meta = {
-  title: 'Rooms/Information/RoomDescriptionButton',
-  component: RoomDescriptionButton,
+  title: 'Rooms/Information/RoomDescriptionModalButton',
+  component: RoomDescriptionModalButton,
   parameters: {
     layout: 'padded',
   },
   decorators: [
-    (Story) => (
-      <Provider store={store}>
-        <Story />
-      </Provider>
-    ),
+    (Story) => {
+      const store = makeStore();
+
+      return (
+        <Provider store={store}>
+          <Story />
+        </Provider>
+      );
+    },
   ],
-} satisfies Meta<typeof RoomDescriptionButton>;
+} satisfies Meta<typeof RoomDescriptionModalButton>;
 
 export default meta;
 
-type Story = StoryObj<typeof RoomDescriptionButton>;
+type Story = StoryObj<typeof RoomDescriptionModalButton>;
 
 export const Default: Story = {
   args: {

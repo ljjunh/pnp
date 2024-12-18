@@ -3,8 +3,6 @@ import { makeStore } from '@/lib/store';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Provider } from 'react-redux';
 
-const store = makeStore();
-
 const meta = {
   title: 'Rooms/Information/RoomDescription',
   component: RoomDescription,
@@ -12,11 +10,15 @@ const meta = {
     layout: 'padded',
   },
   decorators: [
-    (Story) => (
-      <Provider store={store}>
-        <Story />
-      </Provider>
-    ),
+    (Story) => {
+      const store = makeStore();
+
+      return (
+        <Provider store={store}>
+          <Story />
+        </Provider>
+      );
+    },
   ],
 } satisfies Meta<typeof RoomDescription>;
 
