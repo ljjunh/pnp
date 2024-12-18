@@ -12,7 +12,13 @@ interface MapProps {
   zoom?: number;
 }
 
-export default function Map({ lat, lng, height = '480px', width = '100%', zoom = 15 }: MapProps) {
+export default function GoogleMapView({
+  lat,
+  lng,
+  height = '480px',
+  width = '100%',
+  zoom = 15,
+}: MapProps) {
   const { isLoaded } = useGoogleMaps();
 
   if (!isLoaded) return <Skeleton className="h-[480px] w-full rounded-xl" />;

@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Map from '@/components/common/Map/Map';
+import GoogleMapView from '@/components/common/Map/GoogleMapView';
 
 const meta = {
-  title: 'Common/Map/Map',
-  component: Map,
+  title: 'Common/Map/GoogleMapView',
+  component: GoogleMapView,
   parameters: {
     layout: 'padded',
   },
-} satisfies Meta<typeof Map>;
+} satisfies Meta<typeof GoogleMapView>;
 
 export default meta;
 
-type Story = StoryObj<typeof Map>;
+type Story = StoryObj<typeof GoogleMapView>;
 
 export const Default: Story = {
   args: {
