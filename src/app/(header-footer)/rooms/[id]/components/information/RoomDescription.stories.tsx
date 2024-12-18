@@ -1,5 +1,7 @@
 import RoomDescription from '@/app/(header-footer)/rooms/[id]/components/information/RoomDescription';
+import { makeStore } from '@/lib/store';
 import type { Meta, StoryObj } from '@storybook/react';
+import { Provider } from 'react-redux';
 
 const meta = {
   title: 'Rooms/Information/RoomDescription',
@@ -7,6 +9,17 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
+  decorators: [
+    (Story) => {
+      const store = makeStore();
+
+      return (
+        <Provider store={store}>
+          <Story />
+        </Provider>
+      );
+    },
+  ],
 } satisfies Meta<typeof RoomDescription>;
 
 export default meta;
@@ -58,6 +71,56 @@ export const Default: Story = {
         email: 'hwangmijeong@live.com',
       },
     },
+    amenities: [
+      {
+        id: 1,
+        category: '욕실',
+        title: '헤어드라이어',
+        subTitle: null,
+        icon: 'SYSTEM_HAIRDRYER',
+        available: true,
+      },
+      {
+        id: 4,
+        category: '욕실',
+        title: '온수',
+        subTitle: null,
+        icon: 'SYSTEM_HOT_WATER',
+        available: true,
+      },
+      {
+        id: 6,
+        category: '엔터테인먼트',
+        title: 'TV',
+        subTitle: null,
+        icon: 'SYSTEM_TV',
+        available: true,
+      },
+      {
+        id: 7,
+        category: '냉난방',
+        title: '에어컨',
+        subTitle: null,
+        icon: 'SYSTEM_SNOWFLAKE',
+        available: true,
+      },
+      {
+        id: 14,
+        category: '인터넷 및 업무 공간',
+        title: '와이파이',
+        subTitle: null,
+        icon: 'SYSTEM_WI_FI',
+        available: true,
+      },
+      {
+        id: 20,
+        category: '위치 특성',
+        title: '해변으로 연결 - 해변 바로 앞',
+        subTitle: null,
+        icon: 'SYSTEM_BEACH',
+        available: true,
+      },
+    ],
     reviewsCount: 23,
     reviewsAverage: 4.67788,
   },

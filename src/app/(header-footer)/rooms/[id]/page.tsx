@@ -1,6 +1,7 @@
 import RoomBookingCard from '@/app/(header-footer)/rooms/[id]/components/booking/RoomBookingCard';
 import RoomGallery from '@/app/(header-footer)/rooms/[id]/components/header/RoomGallery';
 import RoomHeader from '@/app/(header-footer)/rooms/[id]/components/header/RoomHeader';
+import RoomAmenities from '@/app/(header-footer)/rooms/[id]/components/information/RoomAmenities';
 import RoomDescription from '@/app/(header-footer)/rooms/[id]/components/information/RoomDescription';
 import RoomHost from '@/app/(header-footer)/rooms/[id]/components/information/RoomHost';
 import RoomLocation from '@/app/(header-footer)/rooms/[id]/components/information/RoomLocation';
@@ -25,6 +26,7 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
             host={room.host}
             reviewsCount={room.reviewsCount}
             reviewsAverage={room.reviewsAverage}
+            amenities={room.amenities}
           />
         </div>
         <div className="relative col-span-2">
@@ -43,6 +45,7 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
         reviewsCount={room.reviewsCount}
         reviewsAverage={room.reviewsAverage}
       />
+      <RoomAmenities amenities={room.amenities} />
       <RoomHost host={room.host} />
       <RoomRules
         id={Number(params.id)}

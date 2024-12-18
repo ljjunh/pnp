@@ -14,7 +14,7 @@ interface RoomHostProps {
 
 export default function RoomHost({ host }: RoomHostProps) {
   return (
-    <div className="border-b pb-12">
+    <div className="border-b py-12">
       <h2 className="mb-6 text-2xl">호스트 소개</h2>
       <div className="flex gap-20">
         <div className="flex flex-col justify-between">
