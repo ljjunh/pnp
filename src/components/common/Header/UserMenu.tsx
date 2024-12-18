@@ -4,9 +4,10 @@ import { LOGGED_IN_MENU_ITEMS, LOGGED_OUT_MENU_ITEMS } from '@/constants/menuIte
 interface UserMenuProps {
   isLoggedIn: boolean;
   isOpen: boolean;
+  onToggleOpen: () => void;
 }
 
-export default function UserMenu({ isLoggedIn, isOpen }: UserMenuProps) {
+export default function UserMenu({ isLoggedIn, isOpen, onToggleOpen }: UserMenuProps) {
   if (!isOpen) return null;
   const menuItems = isLoggedIn ? LOGGED_IN_MENU_ITEMS : LOGGED_OUT_MENU_ITEMS;
 
@@ -24,6 +25,7 @@ export default function UserMenu({ isLoggedIn, isOpen }: UserMenuProps) {
             label={item.label}
             href={item.href}
             hasDivider={item.hasDivider}
+            onToggleOpen={onToggleOpen}
           />
         ))}
       </div>
