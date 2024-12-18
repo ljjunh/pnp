@@ -14,6 +14,7 @@ interface RoomDescriptionProps {
   host: Room['host'];
   reviewsCount: Room['reviewsCount'];
   reviewsAverage: Room['reviewsAverage'];
+  amenities: Room['amenities'];
 }
 
 export default function RoomDescription({
@@ -23,7 +24,10 @@ export default function RoomDescription({
   host,
   reviewsCount,
   reviewsAverage,
+  amenities,
 }: RoomDescriptionProps) {
+  const availableAmenities = amenities.filter((amenity) => amenity.available === true).slice(0, 6);
+
   return (
     <>
       <section className="flex flex-col border-b border-neutral-04 py-8">
@@ -47,6 +51,15 @@ export default function RoomDescription({
           <span className="underline">후기 {reviewsCount ? reviewsCount : 0}개</span>
         </span>
       </section>
+      {availableAmenities.length > 0 && (
+        <section className="grid grid-cols-2 gap-4 border-b border-neutral-04 py-6">
+          {availableAmenities.map((amenity) => (
+            <div key={amenity.id}>
+              <span className="text-sm text-shade-02">{amenity.title}</span>
+            </div>
+          ))}
+        </section>
+      )}
       <section className="flex items-center gap-5 border-b border-neutral-04 py-6">
         <div className="relative h-10 w-10 rounded-full bg-black">
           {host.user.image && (
