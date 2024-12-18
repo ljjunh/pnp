@@ -3,6 +3,7 @@ import RoomGallery from '@/app/(header-footer)/rooms/[id]/components/header/Room
 import RoomHeader from '@/app/(header-footer)/rooms/[id]/components/header/RoomHeader';
 import RoomDescription from '@/app/(header-footer)/rooms/[id]/components/information/RoomDescription';
 import RoomHost from '@/app/(header-footer)/rooms/[id]/components/information/RoomHost';
+import RoomLocation from '@/app/(header-footer)/rooms/[id]/components/information/RoomLocation';
 import RoomRules from '@/app/(header-footer)/rooms/[id]/components/information/RoomRules';
 import RoomReviewList from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewList';
 import { Room } from '@/types/room';
@@ -15,7 +16,7 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
     <div className="pt-6">
       <RoomHeader title={room.title} />
       <RoomGallery images={room.images.slice(0, 5)} />
-      <section className="grid grid-cols-5 gap-28">
+      <section className="grid grid-cols-5 gap-28 border-b border-neutral-04 pb-12">
         <div className="col-span-3">
           <RoomDescription
             location={room.location}
@@ -32,6 +33,11 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
           </div>
         </div>
       </section>
+      <RoomLocation
+        lat={room.latitude}
+        lng={room.longitude}
+        location={room.location}
+      />
       <RoomReviewList
         id={Number(params.id)}
         reviewsCount={room.reviewsCount}
