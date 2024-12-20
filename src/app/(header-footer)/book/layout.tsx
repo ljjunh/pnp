@@ -9,6 +9,7 @@ export default function PaymentLayout({ children }: Readonly<{ children: React.R
       <Script
         src="https://nsp.pay.naver.com/sdk/js/naverpay.min.js"
         strategy="beforeInteractive"
+        crossOrigin="anonymous"
       />
     </>
   );

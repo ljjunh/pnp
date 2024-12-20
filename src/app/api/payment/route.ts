@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { auth } from '@/auth';
-import { UnAuthorizedError } from '@/errors';
+import { CustomError, UnAuthorizedError, ZodError } from '@/errors';
 import { CustomResponse } from '@/lib/server';
 import { paymentReadySchema } from '@/schemas/payment';
 import { createKakaoPayLink } from '@/services/payment';
@@ -43,6 +43,12 @@ export async function GET(request: NextRequest) {
       userId: session?.user.id,
       error: error instanceof Error ? error.message : error,
     });
+
+    if (error instanceof ZodError) {
+      return CustomResponse.zod(400, error.errors);
+    } else if (error instanceof CustomError) {
+      return CustomResponse.errors(error.message, error.statusCode);
+    }
 
     return CustomResponse.errors();
   }
