@@ -35,6 +35,6 @@ export const truncateText = (
   }
 
   const truncateIndex = getTruncateIndex(text, maxLength);
-  
+
   return `${text.slice(0, truncateIndex)}${suffix}`;
 };
