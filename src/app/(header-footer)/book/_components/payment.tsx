@@ -22,7 +22,7 @@ const Payment = () => {
         className="mt-6 w-full rounded-lg bg-[#FF385C] py-3 text-white"
         onClick={() =>
           requestPayment({
-            orderId: '123123lknsajdkfnuiasdfniu2ni3nasd123',
+            orderId: '123123jsadfhjsahjdfbew8sa225df4nmhj32',
             orderName: 'Room Payment',
             amount: 50000,
           })

@@ -10,32 +10,44 @@ const encodeSecretKey = Buffer.from(process.env.TOSS_SECRET_KEY + ':').toString(
  * @param {PaymentCreate} data 결제 요청 데이터
  * @param {string} errorCode 테스트용 에러 코드
  */
-export async function createPayment(userId: string, data: PaymentCreate, errorCode?: string) {
+export async function createPayment(userId: string, data: PaymentCreate) {
   const idempotentKey = `${userId}-${data.orderId}`;
+  const errorHeader: HeadersInit = data.error
+    ? {
+        'TossPayments-Test-Code': data.error,
+      }
+    : {};
+
   try {
-    throw new Error('결제 요청에 실패하였습니다.');
+    const request = await fetch(`${TOSSPAYMENT_BASE_URL}/v1/payments/confirm`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Idempotency-Key': idempotentKey,
+        Authorization: `Basic ${encodeSecretKey}`,
+        ...errorHeader,
+      },
+      body: JSON.stringify({
+        paymentKey: data.paymentKey,
+        orderId: data.orderId,
+        amount: data.amount,
+      }),
+    });
+    if (!request.ok) {
+      throw new Error('결제 요청에 실패하였습니다.');
+    }
 
-    // const request = await fetch(`${TOSSPAYMENT_BASE_URL}/v1/payments/confirm`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Idempotency-Key': idempotentKey,
-    //     Authorization: `Basic ${encodeSecretKey}`,
-    //   },
-    //   body: JSON.stringify({
-    //     paymentKey: data.paymentKey,
-    //     orderId: data.orderId,
-    //     amount: data.amount,
-    //   }),
-    // });
-    // if (!request.ok) {
-    //   throw new Error('결제 요청에 실패하였습니다.');
-    // }
-
-    // const response = await request.json();
-    // console.log('결제가 성공적으로 완료되었습니다.', response);
+    const response = await request.json();
+    console.log('결제가 성공적으로 완료되었습니다.', response);
   } catch (error) {
+    console.error(error);
+
     console.error('결제 요청에 실패하였습니다.', error);
-    sendToRetryQueue({ ...data, idempotentKey });
+    try {
+      sendToRetryQueue({ ...data, idempotentKey });
+    } catch (retryError) {
+      console.error('재시도 큐에 메시지를 전송하는데 실패하였습니다.', retryError);
+      throw new Error('결제 요청에 실패하였습니다.');
+    }
   }
 }

@@ -14,6 +14,7 @@ export const paymentCreateSchema = z.object({
     .min(100, '결제 금액은 최소 100원 이상이어야 합니다')
     .max(10_000_000, '결제 금액은 최대 10,000,000원 이하여야 합니다')
     .nonnegative('결제 금액은 0원 이상이어야 합니다'),
+  error: z.string().optional(),
 });
 
 export type PaymentCreate = z.infer<typeof paymentCreateSchema>;

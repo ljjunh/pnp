@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     }
 
     const data = paymentCreateSchema.parse(await request.json());
-    createPayment(session.user.id, data);
+    await createPayment(session.user.id, data);
 
     return CustomResponse.empty();
   } catch (error) {

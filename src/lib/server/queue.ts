@@ -1,7 +1,7 @@
 import { PaymentCreate } from '@/schemas/payment';
 import { SQSClient, SendMessageCommand } from '@aws-sdk/client-sqs';
 
-const sqsClient = new SQSClient({ region: 'ap-northeast-2' });
+const sqsClient = new SQSClient({ region: process.env.AWS_REGION ?? 'ap-northeast-2' });
 
 interface PaymentCreateRetry extends PaymentCreate {
   idempotentKey: string;

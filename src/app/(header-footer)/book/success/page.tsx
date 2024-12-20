@@ -16,6 +16,7 @@ export default function SuccessPage() {
       orderId,
       paymentKey,
       amount: Number(amount),
+      error: 'INVALID_STOPPED_CARD',
     });
   }, [searchParams]);
 
