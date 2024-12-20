@@ -27,16 +27,14 @@ export async function GET(request: NextRequest) {
 
     if (data.name === 'KAKAOPAY') {
       const response = await createKakaoPayLink(session.user.id, data);
-      switch (agent) {
-        case 'mobile':
-          return CustomResponse.ok(response.mobileLink);
-        case 'desktop':
-          return CustomResponse.ok(response.pcLink);
-        case 'android':
-          return CustomResponse.ok(response.androidLink);
-        case 'ios':
-          return CustomResponse.ok(response.iosLink);
-      }
+      const agentLinkMap = {
+        mobile: response.mobileLink,
+        desktop: response.pcLink,
+        android: response.androidLink,
+        ios: response.iosLink,
+      };
+      const link = agentLinkMap[agent] || response.pcLink;
+      return CustomResponse.ok({ link, tid: response.tid });
     }
 
     return CustomResponse.empty();

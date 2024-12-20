@@ -2,18 +2,21 @@ import { NextRequest } from 'next/server';
 import { auth } from '@/auth';
 import { CustomError, UnAuthorizedError, ZodError } from '@/errors';
 import { CustomResponse } from '@/lib/server';
-import { paymentCreateSchema } from '@/schemas/payment';
-import { createPayment } from '@/services/payment';
+import { paymentConfirmSchema } from '@/schemas/payment';
+import { confirmPayment } from '@/services/payment';
+import { PaymentConfirmParams } from '@/types/payment';
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest, { params }: { params: PaymentConfirmParams }) {
   const session = await auth();
   try {
     if (!session) {
       throw new UnAuthorizedError();
     }
 
-    const data = paymentCreateSchema.parse(await request.json());
-    await createPayment(session.user.id, data);
+    const schema = paymentConfirmSchema[params.provider];
+    const data = schema.parse(await request.json());
+
+    await confirmPayment(params.provider, session.user.id, data);
 
     return CustomResponse.empty();
   } catch (error) {

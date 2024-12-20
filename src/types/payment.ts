@@ -6,3 +6,9 @@ export interface KakaoPayLink {
   androidLink: string;
   iosLink: string;
 }
+
+export type ProviderType = 'toss' | 'kakaopay' | 'naverpay';
+
+export type PaymentConfirmParams = {
+  provider: ProviderType;
+};

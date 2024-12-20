@@ -12,7 +12,6 @@ interface RequestPaymentProps {
 interface NaverPay {
   open: (params: {
     merchantPayKey: string;
-    merchantUserKey: string;
     productName: string;
     totalPayAmount: number;
     taxScopeAmount: number;
@@ -82,8 +81,18 @@ const usePayment = () => {
       return;
     }
 
-    const { data } = await response.json();
-    window.open(data, '_blank', 'noopener,noreferrer');
+    const {
+      data: { link, tid },
+    } = await response.json();
+    localStorage.setItem(
+      'kakaopay',
+      JSON.stringify({
+        tid,
+        orderId,
+        orderName,
+      }),
+    );
+    window.open(link, '_blank', 'noopener,noreferrer');
   }, []);
 
   /**
@@ -129,7 +138,6 @@ const usePayment = () => {
 
       naver.open({
         merchantPayKey: orderId,
-        merchantUserKey: session!!.user.id,
         productName: orderName,
         totalPayAmount: amount,
         taxScopeAmount: 0,
