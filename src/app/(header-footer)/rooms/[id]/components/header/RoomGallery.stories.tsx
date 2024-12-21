@@ -1,5 +1,7 @@
 import RoomGallery from '@/app/(header-footer)/rooms/[id]/components/header/RoomGallery';
+import { makeStore } from '@/lib/store';
 import type { Meta, StoryObj } from '@storybook/react';
+import { Provider } from 'react-redux';
 
 const meta = {
   title: 'Rooms/Header/RoomGallery',
@@ -7,6 +9,17 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
+  decorators: [
+    (Story) => {
+      const store = makeStore();
+
+      return (
+        <Provider store={store}>
+          <Story />
+        </Provider>
+      );
+    },
+  ],
 } satisfies Meta<typeof RoomGallery>;
 
 export default meta;
