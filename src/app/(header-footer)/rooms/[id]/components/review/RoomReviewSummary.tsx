@@ -26,8 +26,8 @@ export default function RoomReviewSummary({
   value,
 }: RoomReviewSummaryProps) {
   return (
-    <div className="border-b pb-10">
-      <div className="flex items-center pb-10 text-2xl font-semibold">
+    <div className="border-b border-neutral-04 pb-10">
+      <div className="flex items-center pb-10 text-2xl">
         {reviewsAverage > 0 && (
           <span className="mr-2 flex items-center gap-1">
             <IoIosStar />

@@ -1,8 +1,9 @@
 import { useModal } from '@/hooks/useModal';
+import { MODAL_ID } from '@/constants/modal';
 import { RxHamburgerMenu } from 'react-icons/rx';
 
 export default function FilterButton() {
-  const { handleOpenModal } = useModal();
+  const { handleOpenModal } = useModal(MODAL_ID.ROOM_FILTER);
 
   return (
     <button
