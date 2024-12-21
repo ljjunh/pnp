@@ -17,7 +17,7 @@ import { getFilterRoom } from '@/services/room';
 // 무료 주차 공간 'SYSTEM_MAPS_CAR_RENTAL'
 // 전기차 충전 시설 'SYSTEM_EV_CHARGER'
 // 아기 침대 'SYSTEM_CRIB'
-// 킹사이즈 침대 '' //! 왜 못찾겠지
+// 킹사이즈 침대 ''
 // 헬스장 'SYSTEM_GYM'
 // 바비큐 그릴 'SYSTEM_GRILL'
 // 조식 'SYSTEM_BREAKFAST'
@@ -40,17 +40,17 @@ export async function GET(request: NextRequest) {
   const bathroom = searchParams.get('bathroom') ? Number(searchParams.get('bathroom')) : null;
 
   // 편의시설 조회 -> icon string 값 받아옴
-  const amenities = searchParams.get('amenities')?.split(',') || [];
+  const amenities = searchParams.get('amenities')?.split(',') || null;
 
   // 예약 옵션 조회 -> SYSTEM_KEY(셀프 체크인), SYSTEM_BUZZER(디지털 도어록), SYSTEM_PETS(반려동물 동반 허용)
-  const option = searchParams.get('option')?.split(',') || [];
+  const option = searchParams.get('option')?.split(',') || null;
 
   // 건물 유형 조회
   // TODO: 건물 유형 46개 메인 페이지 만들고 하기
   // const buildingType = searchParams.get('buildingType');
 
-  // 호스트 언어 조회
-  const language = searchParams.get('language')?.split(',') || [];
+  // 호스트 언어 조회 -> id 값 받아옴
+  const language = searchParams.get('language')?.split(',').map(Number) || null;
 
   const filterParams = {
     roomType,
@@ -59,6 +59,7 @@ export async function GET(request: NextRequest) {
     bathroom,
     amenityArray: amenities,
     option,
+    language,
   };
 
   const room = await getFilterRoom(filterParams);

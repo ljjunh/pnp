@@ -218,7 +218,7 @@ export async function getRoomPrice() {
   const distribution = Array.from({ length: 50 }, (_, i) => {
     const rangeStart = minPrice + interval * i;
     const rangeEnd = rangeStart + interval;
-    
+
     return {
       distance: `${Math.floor(rangeStart)}-${Math.floor(rangeEnd)}`,
       count: 0,
@@ -249,6 +249,7 @@ export async function getRoomPrice() {
  * @param {number} bathroom 욕실 수
  * @param {string[]} amenityArray 편의시설
  * @param {string[]} option 예약 옵션
+ * @param {string[]} language 호스트 언어
  *
  */
 interface FilterRoom {
@@ -256,8 +257,9 @@ interface FilterRoom {
   bedroom?: number | null;
   bed?: number | null;
   bathroom?: number | null;
-  amenityArray: string[];
-  option: string[];
+  amenityArray: string[] | null;
+  option: string[] | null;
+  language: number[] | null;
 }
 
 export async function getFilterRoom({
@@ -267,6 +269,7 @@ export async function getFilterRoom({
   bathroom,
   amenityArray,
   option,
+  language,
 }: FilterRoom): Promise<Room[]> {
   const ROOM_TYPE = {
     Entire: 'Entire home/apt',
@@ -324,7 +327,31 @@ export async function getFilterRoom({
         some: {
           amenity: {
             icon: {
-              in: [...amenityArray, ...option],
+              in: amenityArray,
+            },
+          },
+        },
+      },
+    }),
+    ...(option && {
+      amenities: {
+        some: {
+          amenity: {
+            icon: {
+              in: option,
+            },
+          },
+        },
+      },
+    }),
+    ...(language && {
+      host: {
+        languages: {
+          some: {
+            language: {
+              id: {
+                in: language,
+              },
             },
           },
         },
@@ -388,6 +415,15 @@ export async function getFilterRoom({
           hostStartedAt: true,
           reviewsAverage: true,
           reviewsCount: true,
+          languages: {
+            select: {
+              language: {
+                select: {
+                  content: true,
+                },
+              },
+            },
+          },
           hostTags: {
             select: {
               tag: {
