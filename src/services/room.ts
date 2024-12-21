@@ -254,12 +254,12 @@ export async function getRoomPrice() {
  */
 interface FilterRoom {
   roomType?: string | null;
-  bedroom?: number | null;
-  bed?: number | null;
-  bathroom?: number | null;
-  amenityArray: string[] | null;
-  option: string[] | null;
-  language: number[] | null;
+  bedroom?: number;
+  bed?: number;
+  bathroom?: number;
+  amenityArray: string[];
+  option: string[];
+  language: number[];
 }
 
 export async function getFilterRoom({
@@ -277,87 +277,86 @@ export async function getFilterRoom({
     Shared: 'Shared room',
   };
 
-  const whereConditions: Prisma.RoomWhereInput = {
-    ...(roomType && {
-      roomType:
-        roomType === 'Entire'
-          ? ROOM_TYPE.Entire
-          : {
-              in: [ROOM_TYPE.Private, ROOM_TYPE.Shared],
-            },
-    }),
-    ...(bedroom && {
-      roomTags: {
+  const whereConditions: Prisma.RoomWhereInput = {};
+
+  if (roomType) {
+    whereConditions.roomType =
+      roomType === 'Entire' ? ROOM_TYPE.Entire : ROOM_TYPE.Private || ROOM_TYPE.Shared;
+  }
+
+  if (bedroom) {
+    whereConditions.roomTags = {
+      some: {
+        tag: {
+          content: {
+            in: Array.from({ length: 17 - bedroom + 1 }, (_, i) => `침실 ${i + bedroom}개`),
+          },
+        },
+      },
+    };
+  }
+
+  if (bed) {
+    whereConditions.roomTags = {
+      some: {
+        tag: {
+          content: {
+            in: Array.from({ length: 17 - bed + 1 }, (_, i) => `침대 ${i + bed}개`),
+          },
+        },
+      },
+    };
+  }
+
+  if (bathroom) {
+    whereConditions.roomTags = {
+      some: {
+        tag: {
+          content: {
+            in: Array.from({ length: 10 - bathroom + 1 }, (_, i) => `욕실 ${(i + bathroom) / 2}개`),
+          },
+        },
+      },
+    };
+  }
+
+  if (amenityArray.length > 0) {
+    whereConditions.amenities = {
+      some: {
+        amenity: {
+          icon: {
+            in: amenityArray,
+          },
+        },
+      },
+    };
+  }
+
+  if (option.length > 0) {
+    whereConditions.amenities = {
+      some: {
+        amenity: {
+          icon: {
+            in: option,
+          },
+        },
+      },
+    };
+  }
+
+  if (language.length > 0) {
+    whereConditions.host = {
+      languages: {
         some: {
-          tag: {
-            content: {
-              in: Array.from({ length: 17 - bedroom + 1 }, (_, i) => `침실 ${i + bedroom}개`),
+          language: {
+            id: {
+              in: language,
             },
           },
         },
       },
-    }),
-    ...(bed && {
-      roomTags: {
-        some: {
-          tag: {
-            content: {
-              in: Array.from({ length: 17 - bed + 1 }, (_, i) => `침대 ${i + bed}개`),
-            },
-          },
-        },
-      },
-    }),
-    ...(bathroom && {
-      roomTags: {
-        some: {
-          tag: {
-            content: {
-              in: Array.from(
-                { length: 10 - bathroom + 1 },
-                (_, i) => `욕실 ${(i + bathroom) / 2}개`,
-              ),
-            },
-          },
-        },
-      },
-    }),
-    ...(amenityArray && {
-      amenities: {
-        some: {
-          amenity: {
-            icon: {
-              in: amenityArray,
-            },
-          },
-        },
-      },
-    }),
-    ...(option && {
-      amenities: {
-        some: {
-          amenity: {
-            icon: {
-              in: option,
-            },
-          },
-        },
-      },
-    }),
-    ...(language && {
-      host: {
-        languages: {
-          some: {
-            language: {
-              id: {
-                in: language,
-              },
-            },
-          },
-        },
-      },
-    }),
-  };
+    };
+  }
 
   const rooms = await prisma.room.findMany({
     relationLoadStrategy: 'join',

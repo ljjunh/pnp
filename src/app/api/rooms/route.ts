@@ -29,40 +29,50 @@ import { getFilterRoom } from '@/services/room';
 // 일산화탄소 경보기 'SYSTEM_DETECTOR_CO'
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
+  try {
+    const searchParams = request.nextUrl.searchParams;
 
-  // null 이면 전체 타입, Private room은 방, Entire home/apt는 집 전체
-  const roomType = searchParams.get('roomType');
+    // null 이면 전체 타입, Private room은 방, Entire home/apt는 집 전체
+    const roomType = searchParams.get('roomType');
 
-  // 침실 및 침대 조회
-  const bedroom = searchParams.get('bedroom') ? Number(searchParams.get('bedroom')) : null;
-  const bed = searchParams.get('bed') ? Number(searchParams.get('bed')) : null;
-  const bathroom = searchParams.get('bathroom') ? Number(searchParams.get('bathroom')) : null;
+    // 침실 및 침대 조회
+    const bedroom = searchParams.get('bedroom') ? Number(searchParams.get('bedroom')) : undefined;
+    const bed = searchParams.get('bed') ? Number(searchParams.get('bed')) : undefined;
+    const bathroom = searchParams.get('bathroom')
+      ? Number(searchParams.get('bathroom'))
+      : undefined;
 
-  // 편의시설 조회 -> icon string 값 받아옴
-  const amenities = searchParams.get('amenities')?.split(',') || null;
+    // 편의시설 조회 -> icon string 값 받아옴
+    const amenities = searchParams.getAll('amenities');
 
-  // 예약 옵션 조회 -> SYSTEM_KEY(셀프 체크인), SYSTEM_BUZZER(디지털 도어록), SYSTEM_PETS(반려동물 동반 허용)
-  const option = searchParams.get('option')?.split(',') || null;
+    // 예약 옵션 조회 -> SYSTEM_KEY(셀프 체크인), SYSTEM_BUZZER(디지털 도어록), SYSTEM_PETS(반려동물 동반 허용)
+    const option = searchParams.getAll('option');
 
-  // 건물 유형 조회
-  // TODO: 건물 유형 46개 메인 페이지 만들고 하기
-  // const buildingType = searchParams.get('buildingType');
+    // 건물 유형 조회
+    // TODO: 건물 유형 46개 메인 페이지 만들고 하기
+    // const buildingType = searchParams.get('buildingType');
 
-  // 호스트 언어 조회 -> id 값 받아옴
-  const language = searchParams.get('language')?.split(',').map(Number) || null;
+    // 호스트 언어 조회 -> id 값 받아옴
+    const language = searchParams.getAll('language').map(Number);
 
-  const filterParams = {
-    roomType,
-    bedroom,
-    bed,
-    bathroom,
-    amenityArray: amenities,
-    option,
-    language,
-  };
+    const filterParams = {
+      roomType,
+      bedroom,
+      bed,
+      bathroom,
+      amenityArray: amenities,
+      option,
+      language,
+    };
 
-  const room = await getFilterRoom(filterParams);
+    const room = await getFilterRoom(filterParams);
 
-  return CustomResponse.ok(room);
+    return CustomResponse.ok(room);
+  } catch (error) {
+    console.error('숙소 필터 조회 중 에러 발생: ', {
+      error: error instanceof Error ? error.message : error,
+    });
+
+    return CustomResponse.errors();
+  }
 }
