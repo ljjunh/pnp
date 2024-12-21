@@ -214,7 +214,6 @@ model Host {
   school       String?
   job          String?
   address      String?
-  language     String?
   birth        String?
   favoriteSong String? @map("favorite_song")
   liked        String?
@@ -227,11 +226,33 @@ model Host {
   reviewsCount   Int   @default(0) @map("reviews_count")
   reviewsAverage Float @default(0) @map("reviews_average")
 
-  hostTags HostTag[]
-  user     User      @relation(fields: [userId], references: [id])
-  rooms    Room[]
+  hostTags  HostTag[]
+  user      User           @relation(fields: [userId], references: [id])
+  rooms     Room[]
+  languages HostLanguage[]
 
   @@map("hosts")
+}
+
+model HostLanguage {
+  id         Int @id @default(autoincrement())
+  hostId     Int @map("host_id")
+  languageId Int @map("language_id")
+
+  host     Host     @relation(fields: [hostId], references: [id])
+  language Language @relation(fields: [languageId], references: [id])
+
+  @@unique([hostId, languageId])
+  @@map("host_languages")
+}
+
+model Language {
+  id      Int    @id @default(autoincrement())
+  content String @unique @db.VarChar(100)
+
+  hosts HostLanguage[]
+
+  @@map("languages")
 }
 
 model Tag {
