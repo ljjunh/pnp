@@ -284,60 +284,63 @@ export async function getFilterRoom({
       roomType === 'Entire' ? ROOM_TYPE.Entire : ROOM_TYPE.Private || ROOM_TYPE.Shared;
   }
 
+  const tagConditions = [];
+
   if (bedroom) {
-    whereConditions.roomTags = {
-      some: {
-        tag: {
-          content: {
-            in: Array.from({ length: 17 - bedroom + 1 }, (_, i) => `침실 ${i + bedroom}개`),
+    tagConditions.push({
+      roomTags: {
+        some: {
+          tag: {
+            content: {
+              in: Array.from({ length: 17 - bedroom + 1 }, (_, i) => `침실 ${i + bedroom}개`),
+            },
           },
         },
       },
-    };
+    });
   }
 
   if (bed) {
-    whereConditions.roomTags = {
-      some: {
-        tag: {
-          content: {
-            in: Array.from({ length: 17 - bed + 1 }, (_, i) => `침대 ${i + bed}개`),
+    tagConditions.push({
+      roomTags: {
+        some: {
+          tag: {
+            content: {
+              in: Array.from({ length: 17 - bed + 1 }, (_, i) => `침대 ${i + bed}개`),
+            },
           },
         },
       },
-    };
+    });
   }
 
   if (bathroom) {
-    whereConditions.roomTags = {
-      some: {
-        tag: {
-          content: {
-            in: Array.from({ length: 10 - bathroom + 1 }, (_, i) => `욕실 ${(i + bathroom) / 2}개`),
+    tagConditions.push({
+      roomTags: {
+        some: {
+          tag: {
+            content: {
+              in: Array.from(
+                { length: 10 - bathroom + 1 },
+                (_, i) => `욕실 ${(i + bathroom) / 2}개`,
+              ),
+            },
           },
         },
       },
-    };
+    });
   }
 
-  if (amenityArray.length > 0) {
+  if (tagConditions.length > 0) {
+    whereConditions.AND = tagConditions;
+  }
+
+  if (amenityArray.length > 0 || option.length > 0) {
     whereConditions.amenities = {
       some: {
         amenity: {
           icon: {
-            in: amenityArray,
-          },
-        },
-      },
-    };
-  }
-
-  if (option.length > 0) {
-    whereConditions.amenities = {
-      some: {
-        amenity: {
-          icon: {
-            in: option,
+            in: [...amenityArray, ...option],
           },
         },
       },
