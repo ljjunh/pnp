@@ -50,7 +50,7 @@ export default function RoomGallery({ images }: RoomGalleryProps) {
           className="object-cover transition-opacity duration-200 hover:brightness-[0.80]"
         />
       </div>
-      <RoomGalleryModalButton images={images}/>
+      {images.length > 0 && <RoomGalleryModalButton images={images} />}
     </div>
   );
 }

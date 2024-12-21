@@ -34,7 +34,11 @@ export default function RoomGalleryModalButton({ images }: RoomGalleryModalButto
         <span className="text-sm">사진 모두 보기</span>
       </button>
       <ModalProvider modalId={MODAL_ID.ROOM_GALLERY}>
-        <div className="fixed inset-0 flex h-screen w-screen flex-col bg-white">
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 flex h-screen w-screen flex-col bg-white"
+        >
           <div className="ml-4 mt-4 w-fit rounded-full p-2 hover:bg-neutral-01">
             <IoIosArrowBack
               onClick={handleCloseModal}
