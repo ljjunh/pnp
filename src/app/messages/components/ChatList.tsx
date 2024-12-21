@@ -39,7 +39,7 @@ export function ChatList() {
 
   return (
     <section className="flex w-1/4 flex-col gap-8 px-6 py-6">
-      <header className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between transition-all duration-300">
           {!showSearchBar ? (
             <>
@@ -89,7 +89,7 @@ export function ChatList() {
             />
             <div
               onClick={(e) => e.stopPropagation()}
-              className={`z-10 absolute -left-4 top-12 w-[22rem] rounded-xl bg-white drop-shadow-2xl transition-all duration-300 ease-in-out ${showFilter ? 'translate-y-0 scale-100 opacity-100' : 'pointer-events-none -translate-y-2 scale-95 opacity-0'}`}
+              className={`absolute -left-4 top-12 z-10 w-[22rem] rounded-xl bg-white drop-shadow-2xl transition-all duration-300 ease-in-out ${showFilter ? 'translate-y-0 scale-100 opacity-100' : 'pointer-events-none -translate-y-2 scale-95 opacity-0'}`}
             >
               <div className="flex flex-col gap-1 px-2 py-4 text-base font-medium text-black">
                 {filterItems.map((item) => {
@@ -111,7 +111,7 @@ export function ChatList() {
           {/* 클릭 효과 넣기*/}
           <button className="rounded-3xl border px-4 py-2 text-sm">읽지 않음</button>
         </div>
-      </header>
+      </div>
 
       <ul>
         <li className="flex w-full gap-5 rounded-md bg-gray-100 px-3 py-3 pb-4 text-sm text-gray-400">
