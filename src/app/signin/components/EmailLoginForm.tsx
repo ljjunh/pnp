@@ -1,29 +1,28 @@
 'use client';
 
-import { useFormState } from 'react-dom';
 import Link from 'next/link';
-import { EmailLoginFormBtn } from '@/app/signin/EmailLoginFormBtn';
-import { handleEmailLogin } from '@/app/signin/action';
+import { EmailLoginFormBtn } from '@/app/signin/components/EmailLoginFormBtn';
+import { useEmailLoginForm } from '@/hooks/useEmailLoginForm';
 import { getWebmailUrl } from '@/utils/email';
+import { MESSAGES } from '@/constants/login';
 
 export const EmailLoginForm = () => {
-  const [state, dispatch] = useFormState(handleEmailLogin, null);
+  const { dispatch, email, success, errors } = useEmailLoginForm();
 
   return (
     <div className="space-y-4">
-      
       {/* 이메일 전송 완료 후 안내 문구 */}
-      {state?.success && state.email && (
+      {success && email && (
         <div className="rounded-md bg-green-50 px-2 py-4">
           <div className="flex items-end gap-4">
-            <p className="text-sm text-green-700">이메일로 전송된 로그인 링크를 확인하세요</p>
+            <p className="text-sm text-green-700">{MESSAGES.CHECK_EMAIL}</p>
             <Link
-              href={getWebmailUrl(state.email)}
+              href={getWebmailUrl(email)}
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-green-700 underline hover:text-green-800"
             >
-              메일로 이동하기
+              {MESSAGES.MOVE_TO_MAIL}
             </Link>
           </div>
         </div>
@@ -44,13 +43,32 @@ export const EmailLoginForm = () => {
           />
 
           {/* 이메일 포맷 관련 에러 문구 */}
-          {state?.errors?.email && <p className="text-sm text-red-500">{state.errors.email[0]}</p>}
+          {errors.email.length > 0 && (
+            <div
+              className="flex flex-col gap-1"
+              role="alert"
+              aria-live="polite"
+            >
+              {errors.email.map((error, index) => (
+                <p
+                  key={index}
+                  className="text-sm text-red-500"
+                >
+                  {error}
+                </p>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* 서버 관련 에러 문구 */}
-        {state?.errors?.server && (
-          <div className="rounded-md bg-red-50 px-2 py-4">
-            <p className="text-sm text-red-500">{state.errors.server[0]}</p>
+        {errors.server.length > 0 && (
+          <div
+            className="rounded-md bg-red-50 px-2 py-4"
+            role="alert"
+            aria-live="polite"
+          >
+            <p className="text-sm text-red-500">{errors.server[0]}</p>
           </div>
         )}
 

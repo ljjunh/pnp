@@ -3,6 +3,7 @@
 import FilterButton from '@/components/common/Button/FilterButton';
 import FilterModal from '@/app/(header-footer)/components/Filter/FilterModal';
 import ModalProvider from '@/components/common/ModalProvider/ModalProvider';
+import { MODAL_ID } from '@/constants/modal';
 
 export default function Filter() {
   return (
@@ -11,7 +12,7 @@ export default function Filter() {
         <p>필터 아이콘들 들어갈 자리</p>
         <FilterButton />
       </div>
-      <ModalProvider>
+      <ModalProvider modalId={MODAL_ID.ROOM_FILTER}>
         <FilterModal />
       </ModalProvider>
     </>

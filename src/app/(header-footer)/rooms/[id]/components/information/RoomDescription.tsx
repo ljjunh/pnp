@@ -1,15 +1,20 @@
 import React from 'react';
 import Image from 'next/image';
+import RoomDescriptionModalButton from '@/app/(header-footer)/rooms/[id]/components/information/RoomDescriptionModalButton';
 import { Room } from '@/types/room';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateText } from '@/utils/truncateText';
-import { IoIosArrowForward, IoIosStar } from 'react-icons/io';
+import { ImTrophy } from 'react-icons/im';
+import { IoIosStar } from 'react-icons/io';
 
 interface RoomDescriptionProps {
   location: Room['location'];
   roomTags: Room['roomTags'];
   description: Room['description'];
   host: Room['host'];
+  reviewsCount: Room['reviewsCount'];
+  reviewsAverage: Room['reviewsAverage'];
+  amenities: Room['amenities'];
 }
 
 export default function RoomDescription({
@@ -17,7 +22,12 @@ export default function RoomDescription({
   roomTags,
   description,
   host,
+  reviewsCount,
+  reviewsAverage,
+  amenities,
 }: RoomDescriptionProps) {
+  const availableAmenities = amenities.filter((amenity) => amenity.available === true).slice(0, 6);
+
   return (
     <>
       <section className="flex flex-col border-b border-neutral-04 py-8">
@@ -31,14 +41,25 @@ export default function RoomDescription({
           ))}
         </span>
         <span className="flex gap-1 text-base">
-          <span className="flex items-center gap-1 text-[17px]">
-            <IoIosStar />
-            4.87
-          </span>
-          –<span>·</span>
-          <span className="underline">후기 221개</span>
+          {reviewsAverage > 0 && (
+            <span className="flex items-center gap-1 text-[17px]">
+              <IoIosStar />
+              {reviewsAverage.toFixed(2)}
+              <span>·</span>
+            </span>
+          )}
+          <span className="underline">후기 {reviewsCount ? reviewsCount : 0}개</span>
         </span>
       </section>
+      {availableAmenities.length > 0 && (
+        <section className="grid grid-cols-2 gap-4 border-b border-neutral-04 py-6">
+          {availableAmenities.map((amenity) => (
+            <div key={amenity.id}>
+              <span className="text-sm text-shade-02">{amenity.title}</span>
+            </div>
+          ))}
+        </section>
+      )}
       <section className="flex items-center gap-5 border-b border-neutral-04 py-6">
         <div className="relative h-10 w-10 rounded-full bg-black">
           {host.user.image && (
@@ -46,9 +67,10 @@ export default function RoomDescription({
               src={host.user.image}
               fill
               alt="호스트 프로필 이미지"
-              className="rounded-full object-cover"
+              className="relative rounded-full object-cover"
             />
           )}
+          {host.isSuperHost && <ImTrophy className="absolute bottom-0 right-0 text-primary-02" />}
         </div>
 
         <div className="flex flex-col">
@@ -60,17 +82,11 @@ export default function RoomDescription({
           </span>
         </div>
       </section>
-      <section className="border-b border-neutral-04 py-12">
+      <section className="py-12">
         {description && (
           <>
             <div>{truncateText(description)}</div>
-            <button
-              type="button"
-              className="mt-4 flex items-center"
-            >
-              <span className="underline">더 보기</span>
-              <IoIosArrowForward size={19} />
-            </button>
+            <RoomDescriptionModalButton description={description} />
           </>
         )}
       </section>

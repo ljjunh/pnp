@@ -3,12 +3,12 @@ import { useModal } from '@/hooks/useModal';
 
 interface ModalProviderProps {
   children: ReactNode;
+  modalId: string;
 }
 
-const ModalProvider = ({ children }: ModalProviderProps) => {
-  const { modalState, handleCloseModal } = useModal();
+const ModalProvider = ({ children, modalId }: ModalProviderProps) => {
+  const { modalState, handleCloseModal } = useModal(modalId);
   const modalRef = useRef<HTMLDivElement>(null);
-
   const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
       handleCloseModal();

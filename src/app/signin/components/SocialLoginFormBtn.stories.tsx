@@ -1,5 +1,5 @@
+import { SocialLoginFormBtn } from '@/app/signin/components/SocialLoginFormBtn';
 import type { Meta, StoryObj } from '@storybook/react';
-import { SocialLoginFormBtn } from '@/app/signin/SocialLoginFormBtn';
 
 const meta = {
   title: 'Login/SocialLoginFormBtn',
