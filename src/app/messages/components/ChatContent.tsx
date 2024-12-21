@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoImageOutline } from 'react-icons/io5';
 import { Message, dummyMessages } from './dummyMessages';
@@ -5,6 +6,15 @@ import { Message, dummyMessages } from './dummyMessages';
 interface ChatContentProps {
   showReservation: boolean;
   onToggleReservation: () => void;
+}
+
+interface MessageGroup {
+  time: string;
+  messages: Message[];
+}
+
+interface DateGroup {
+  [key: string]: MessageGroup[];
 }
 
 const formatDate = (dateStr: string) => {
@@ -24,24 +34,35 @@ const formatTime = (timeStr: string) => {
 };
 
 export function ChatContent({ showReservation, onToggleReservation }: ChatContentProps) {
-  // 날짜별로 메시지 그룹화
-  const messagesByDate = dummyMessages.reduce(
-    (groups, message) => {
-      const date = message.timestamp.split(' ')[0];
-      if (!groups[date]) {
-        groups[date] = [];
-      }
-      groups[date].push(message);
-      return groups;
-    },
-    {} as Record<string, Message[]>,
-  );
+  // 날짜와 시간별로 메시지 그룹화
+  const messagesByDateTime = dummyMessages.reduce((groups, message) => {
+    const [date, time] = message.timestamp.split(' ');
+
+    if (!groups[date]) {
+      groups[date] = [];
+    }
+
+    // 같은 시간대의 메시지 그룹 찾기
+    let timeGroup = groups[date].find(
+      (group) => group.time === time && group.messages[0].sender === message.sender,
+    );
+
+    if (!timeGroup) {
+      timeGroup = { time, messages: [] };
+      groups[date].push(timeGroup);
+    }
+
+    timeGroup.messages.push(message);
+    return groups;
+  }, {} as DateGroup);
 
   return (
     <section
-      className={`flex flex-col border-x transition-all duration-300 ease-in-out ${showReservation ? 'w-1/2' : 'w-3/4'}`}
+      className={`flex flex-col border-x transition-all duration-300 ease-in-out ${
+        showReservation ? 'w-1/2' : 'w-3/4'
+      }`}
     >
-      <header className="flex h-20 items-center justify-between border-b px-8 py-6">
+      <div className="flex h-20 items-center justify-between border-b px-8 py-6">
         <div className="flex items-center gap-3">
           <FaUserCircle
             size={48}
@@ -50,9 +71,9 @@ export function ChatContent({ showReservation, onToggleReservation }: ChatConten
           <h1 className="text-2xl">호스트 이름</h1>
         </div>
         {showReservation ? null : <button onClick={onToggleReservation}>예약보기</button>}
-      </header>
+      </div>
       <div className="flex-1 space-y-6 overflow-y-scroll px-10 py-6">
-        {Object.entries(messagesByDate).map(([date, messages]) => (
+        {Object.entries(messagesByDateTime).map(([date, timeGroups]) => (
           <div
             key={date}
             className="space-y-4"
@@ -62,28 +83,47 @@ export function ChatContent({ showReservation, onToggleReservation }: ChatConten
                 {formatDate(date)}
               </span>
             </div>
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${message.sender === 'host' ? 'justify-start' : 'justify-end'}`}
-              >
+            {timeGroups.map((group, groupIndex) => (
+              <div key={`${date}-${group.time}-${groupIndex}`}>
                 <div
-                  className={`max-w-[70%] rounded-2xl px-4 py-2 ${
-                    message.sender === 'host' ? 'bg-gray-100' : 'bg-gray-700 text-white'
-                  }`}
-                >
-                  {message.isImage ? (
-                    <div className="flex h-48 w-48 items-center justify-center rounded-lg bg-gray-300">
-                      이미지
-                    </div>
-                  ) : (
-                    <p>{message.content}</p>
+                  className={cn(
+                    'flex',
+                    group.messages[0].sender === 'host' ? 'justify-start' : 'justify-end',
                   )}
-                  <p
-                    className={`mt-1 text-xs ${message.sender === 'host' ? 'text-gray-500' : 'text-gray-200'}`}
-                  >
-                    {formatTime(message.timestamp.split(' ')[1])}
-                  </p>
+                >
+                  <div className="max-w-[70%] space-y-2">
+                    {/* 시간은 그룹당 한 번만 표시 */}
+                    <p
+                      className={cn(
+                        'text-xs text-gray-500',
+                        group.messages[0].sender === 'host' ? 'pl-3' : 'pr-3 text-right',
+                      )}
+                    >
+                      {group.messages[0].sender === 'host' && '호스트 이름 '}
+                      {formatTime(group.time)}
+                    </p>
+                    {/* 그룹 내 메시지들 */}
+                    <div className="space-y-2">
+                      {group.messages.map((message) => (
+                        <div
+                          key={message.id}
+                          className={cn(
+                            'rounded-2xl px-4 py-2',
+                            message.sender === 'host' ? 'bg-gray-100' : 'bg-gray-700 text-white',
+                            message.isImage ? 'inline-block' : 'break-words',
+                          )}
+                        >
+                          {message.isImage ? (
+                            <div className="flex h-48 w-48 items-center justify-center rounded-lg bg-gray-300">
+                              이미지
+                            </div>
+                          ) : (
+                            <p>{message.content}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
