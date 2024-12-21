@@ -1,7 +1,7 @@
 'use client';
 
 import FilterButton from '@/components/common/Button/FilterButton';
-import FilterModal from '@/components/common/Modal/FilterModal';
+import FilterModal from '@/app/(header-footer)/components/Filter/FilterModal';
 import ModalProvider from '@/components/common/ModalProvider/ModalProvider';
 
 export default function Filter() {

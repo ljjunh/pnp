@@ -128,9 +128,9 @@ const TagList: TagListType = {
     icon: <CiSquareAlert size={24} />,
     name: '일산화탄소 경보기',
   },
-  rightNow: {
+  digital: {
     icon: <AiOutlineThunderbolt size={24} />,
-    name: '즉시 예약',
+    name: '디지털 도어록',
   },
   selfCheckIn: {
     icon: <GoKey size={24} />,

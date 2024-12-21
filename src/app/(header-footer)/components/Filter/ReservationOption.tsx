@@ -1,6 +1,6 @@
 import Tag from './Tag';
 
-const reservation = ['rightNow', 'selfCheckIn', 'pet'];
+const reservation = ['digital', 'selfCheckIn', 'pet'];
 
 export default function ReservationOption() {
   return (
