@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoImageOutline } from 'react-icons/io5';
-import { Message, dummyMessages } from './dummyMessages';
+import { Message, dummyMessages } from '@/app/messages/components/dummyMessages';
 
 interface ChatContentProps {
   showReservation: boolean;

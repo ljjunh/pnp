@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { ChatContent } from './components/ChatContent';
-import { ChatList } from './components/ChatList';
-import { ReservationInfo } from './components/ReservationInfo';
+import { ChatContent } from '@/app/messages/components/ChatContent';
+import { ChatList } from '@/app/messages/components/ChatList';
+import { ReservationInfo } from '@/app/messages/components/ReservationInfo';
 
 export default function Messages() {
   const [showReservation, setShowReservation] = useState<boolean>(true);
