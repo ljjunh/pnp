@@ -154,6 +154,7 @@ model Amenity {
   amenities RoomAmenity[]
 
   @@map("amenities")
+  @@index([icon])
 }
 
 model RoomRule {

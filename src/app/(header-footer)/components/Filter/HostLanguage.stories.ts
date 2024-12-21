@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import HostLanguage from './HostLanguage';
+import HostLanguage from '@/app/(header-footer)/components/filter/HostLanguage';
 
 const meta = {
   title: 'Filter/HostLanguage',

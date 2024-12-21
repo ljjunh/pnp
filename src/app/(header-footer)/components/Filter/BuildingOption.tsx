@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import Tag from './Tag';
+import Tag from '@/app/(header-footer)/components/filter/Tag';
 
 const buildingOption = ['apartment', 'guestHouse', 'hotel'];
 

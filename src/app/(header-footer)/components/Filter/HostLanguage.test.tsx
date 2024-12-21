@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import HostLanguage from './HostLanguage';
+import HostLanguage from '@/app/(header-footer)/components/filter/HostLanguage';
 
 describe('HostLanguage 컴포넌트 테스트', () => {
   test('초기 상태에서 HostLanguage 아코디언이 열리지 않았는지 확인', () => {

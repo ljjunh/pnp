@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import Tag from './Tag';
+import Tag from '@/app/(header-footer)/components/filter/Tag';
 
 describe('Tag 컴포넌트', () => {
   test('태그 텍스트가 정상적으로 렌더링 된다', () => {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 export default function KindOfRoom() {
@@ -6,10 +6,6 @@ export default function KindOfRoom() {
 
   const hoverStyle = 'hover:rounded-lg hover:border-none hover:bg-neutral-01';
   const selectStyle = 'rounded-lg border-2 border-black bg-neutral-01';
-
-  useEffect(() => {
-    console.log(kindRoom);
-  }, [kindRoom]);
 
   return (
     <div className="px-6 py-8">
