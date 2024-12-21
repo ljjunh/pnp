@@ -1,0 +1,15 @@
+{
+  "TableName": "Messages",
+  "KeySchema": [
+    { "AttributeName": "roomId", "KeyType": "HASH" },
+    { "AttributeName": "timestamp", "KeyType": "RANGE" }
+  ],
+  "AttributeDefinitions": [
+    { "AttributeName": "roomId", "AttributeType": "S" },
+    { "AttributeName": "timestamp", "AttributeType": "N" }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 10,
+    "WriteCapacityUnits": 10
+  }
+}

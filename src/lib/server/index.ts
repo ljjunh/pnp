@@ -1,3 +1,4 @@
+import { dynamoDB } from './dynamodb';
 import {
   PaginationResponse,
   createPaginationResponse,
@@ -11,6 +12,7 @@ import { remove, removeBulk, upload, uploadBulk } from './s3';
 export {
   CustomResponse,
   createPaginationResponse,
+  dynamoDB,
   getPaginationParams,
   getSkipTake,
   prisma,

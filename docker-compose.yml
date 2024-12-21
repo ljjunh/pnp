@@ -10,9 +10,19 @@ services:
       - MYSQL_USER=pnp
       - MYSQL_PASSWORD=pnp
     ports:
-      - "3306:3306"
+      - '3306:3306'
     volumes:
       - database:/var/lib/mysql
+
+  dynamodb:
+    image: amazon/dynamodb-local:latest
+    container_name: dynamodb-local
+    ports:
+      - '8000:8000'
+    command: '-jar DynamoDBLocal.jar -sharedDb -dbPath ./data'
+    volumes:
+      - './docker/dynamodb:/home/dynamodblocal/data'
+    working_dir: /home/dynamodblocal
 
 volumes:
   database:
