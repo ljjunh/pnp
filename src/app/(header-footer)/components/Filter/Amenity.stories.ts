@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Amenity from './Amenity';
+import Amenity from '@/app/(header-footer)/components/filter/Amenity';
 
 const meta = {
   title: 'Filter/Amenity',

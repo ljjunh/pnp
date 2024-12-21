@@ -1,12 +1,12 @@
 'use client';
 
-import Amenity from '@/app/(header-footer)/components/Filter/Amenity';
-import BuildingOption from '@/app/(header-footer)/components/Filter/BuildingOption';
-import HostLanguage from '@/app/(header-footer)/components/Filter/HostLanguage';
-import KindOfRoom from '@/app/(header-footer)/components/Filter/KindOfRoom';
-import PriceRange from '@/app/(header-footer)/components/Filter/PriceRange';
-import ReservationOption from '@/app/(header-footer)/components/Filter/ReservationOption';
-import RoomAndBed from '@/app/(header-footer)/components/Filter/RoomAndBed';
+import Amenity from '@/app/(header-footer)/components/filter/Amenity';
+import BuildingOption from '@/app/(header-footer)/components/filter/BuildingOption';
+import HostLanguage from '@/app/(header-footer)/components/filter/HostLanguage';
+import KindOfRoom from '@/app/(header-footer)/components/filter/KindOfRoom';
+import PriceRange from '@/app/(header-footer)/components/filter/PriceRange';
+import ReservationOption from '@/app/(header-footer)/components/filter/ReservationOption';
+import RoomAndBed from '@/app/(header-footer)/components/filter/RoomAndBed';
 import { useModal } from '@/hooks/useModal';
 import { MODAL_ID } from '@/constants/modal';
 import { RxCross2 } from 'react-icons/rx';

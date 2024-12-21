@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import RoomAndBed from './RoomAndBed';
+import RoomAndBed from '@/app/(header-footer)/components/filter/RoomAndBed';
 
 const meta = {
   title: 'Filter/RoomAndBed',

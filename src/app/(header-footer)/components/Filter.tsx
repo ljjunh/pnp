@@ -1,6 +1,6 @@
 'use client';
 
-import FilterModal from '@/app/(header-footer)/components/Filter/FilterModal';
+import FilterModal from '@/app/(header-footer)/components/filter/FilterModal';
 import FilterButton from '@/components/common/Button/FilterButton';
 import ModalProvider from '@/components/common/ModalProvider/ModalProvider';
 import { MODAL_ID } from '@/constants/modal';

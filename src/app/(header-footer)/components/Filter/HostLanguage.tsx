@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import CheckList from './CheckList';
+import CheckList from '@/app/(header-footer)/components/filter/CheckList';
 
 export default function HostLanguage() {
   const [open, setOpen] = useState<boolean>(false);

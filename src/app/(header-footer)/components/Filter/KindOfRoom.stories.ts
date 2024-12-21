@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import KindOfRoom from './KindOfRoom';
+import KindOfRoom from '@/app/(header-footer)/components/filter/KindOfRoom';
 
 const meta = {
   title: 'Filter/KindOfRoom',

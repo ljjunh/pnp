@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import Amenity from './Amenity';
+import Amenity from '@/app/(header-footer)/components/filter/Amenity';
 
 const AMENITY_DATA = {
   essential: [
