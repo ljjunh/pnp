@@ -65,7 +65,7 @@ export function ChatContent({ showReservation, onToggleReservation }: ChatConten
       <div className="flex h-20 items-center justify-between border-b px-8 py-6">
         <div className="flex items-center gap-3">
           <FaUserCircle
-            size={48}
+            size={40}
             className="text-gray-500"
           />
           <h1 className="text-2xl">호스트 이름</h1>

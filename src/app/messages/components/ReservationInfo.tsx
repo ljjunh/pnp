@@ -1,6 +1,6 @@
 import RoomCardCarousel from '@/components/common/Card/RoomCardCarousel';
 import { BsHouseExclamation } from 'react-icons/bs';
-import { FaAirbnb } from 'react-icons/fa';
+import { FaAirbnb, FaUserCircle } from 'react-icons/fa';
 import { IoIosArrowForward } from 'react-icons/io';
 import { IoIosHelpCircle } from 'react-icons/io';
 import { TbWorld } from 'react-icons/tb';
@@ -28,7 +28,7 @@ export function ReservationInfo({ showReservation, onToggleReservation }: Reserv
       }`}
     >
       <div className="flex h-20 items-center justify-between border-b px-8 py-6">
-        <h1 className="text-2xl">예약</h1>
+        <h1 className="text-2xl font-medium">예약</h1>
         <button onClick={onToggleReservation}>X</button>
       </div>
 
@@ -65,8 +65,8 @@ export function ReservationInfo({ showReservation, onToggleReservation }: Reserv
         <button>
           <div className="flex gap-3 px-4 py-4 hover:bg-gray-100">
             <BsHouseExclamation className="size-8" />
-            <div className="flex flex-col items-start">
-              <h1>숙소</h1>
+            <div className="flex flex-col text-left">
+              <h1 className="font-medium">숙소</h1>
               <p className="line-clamp-1">고색역 도보 5분 넷플릭스 웨이브 쿠팡 플레이</p>
             </div>
           </div>
@@ -144,7 +144,10 @@ export function ReservationInfo({ showReservation, onToggleReservation }: Reserv
         <div className="flex flex-col gap-5 px-4">
           <div className="flex justify-between">
             <h2 className="text-xl font-semibold">호스트: 호스트 이름</h2>
-            <div>호스트 프로필</div>
+            <FaUserCircle
+              size={52}
+              className="text-gray-500"
+            />
           </div>
           <p className="cursor-pointer underline">더 보기</p>
         </div>
