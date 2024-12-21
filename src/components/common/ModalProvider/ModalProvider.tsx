@@ -1,9 +1,9 @@
 import { ReactNode, useEffect, useRef } from 'react';
-import { useModal } from '@/hooks/useModal';
+import { ModalIdType, useModal } from '@/hooks/useModal';
 
 interface ModalProviderProps {
   children: ReactNode;
-  modalId: string;
+  modalId: ModalIdType;
 }
 
 const ModalProvider = ({ children, modalId }: ModalProviderProps) => {

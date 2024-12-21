@@ -48,10 +48,11 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
       <RoomAmenities amenities={room.amenities} />
       <RoomHost host={room.host} />
       <RoomRules
-        id={Number(params.id)}
         checkIn={room.checkIn}
         checkOut={room.checkOut}
         rules={room.rules}
+        checkInType={room.checkInType}
+        amenities={room.amenities}
       />
     </div>
   );
