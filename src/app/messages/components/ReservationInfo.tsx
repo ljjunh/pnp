@@ -29,7 +29,12 @@ export function ReservationInfo({ showReservation, onToggleReservation }: Reserv
     >
       <div className="flex h-20 items-center justify-between border-b px-8 py-6">
         <h1 className="text-2xl font-medium">예약</h1>
-        <button onClick={onToggleReservation}>X</button>
+        <button
+          className="cursor-pointer rounded-full bg-gray-100 px-3 py-1"
+          onClick={onToggleReservation}
+        >
+          X
+        </button>
       </div>
 
       <div className="flex flex-1 flex-col gap-3 overflow-y-scroll px-2">
@@ -47,14 +52,14 @@ export function ReservationInfo({ showReservation, onToggleReservation }: Reserv
             지급 또는 결제 요청
           </button>
           <hr />
-          <div className="flex justify-between">
+          <div className="flex justify-between text-gray-500">
             <div className="flex-1 border-r">
-              <p>체크인</p>
+              <p className="text-black">체크인</p>
               <p>1월 11일 (화)</p>
               <p>오후 4:00</p>
             </div>
             <div className="flex-1 text-right">
-              <p>체크인</p>
+              <p className="text-black">체크인</p>
               <p>1월 11일 (화)</p>
               <p>오후 4:00</p>
             </div>
@@ -67,7 +72,9 @@ export function ReservationInfo({ showReservation, onToggleReservation }: Reserv
             <BsHouseExclamation className="size-8" />
             <div className="flex flex-col text-left">
               <h1 className="font-medium">숙소</h1>
-              <p className="line-clamp-1">고색역 도보 5분 넷플릭스 웨이브 쿠팡 플레이</p>
+              <p className="line-clamp-1 text-xs text-gray-500">
+                고색역 도보 5분 넷플릭스 웨이브 쿠팡플레이 티빙 디지니플러스
+              </p>
             </div>
           </div>
         </button>
@@ -86,6 +93,8 @@ export function ReservationInfo({ showReservation, onToggleReservation }: Reserv
           <hr />
           <div>
             <h2 className="font-semibold">환불 정책</h2>
+            <p>체크인 시간인 1월 11일 오후 12:00 전에 취소하면 부분 환불을 받으실 수 있습니다. 그 이후에는 취소 시점에 따라 환불액이 결정됩니다.</p>
+            <p className="cursor-pointer underline">자세히 알아보기</p>
           </div>
           <div>
             <div className="-mx-4 px-4 hover:bg-gray-100">
@@ -112,13 +121,12 @@ export function ReservationInfo({ showReservation, onToggleReservation }: Reserv
                   <IoIosArrowForward />
                 </div>
               </button>
-              <hr />
             </div>
           </div>
         </div>
         <div className="border-b-8" />
         <div className="flex flex-col gap-5 px-4">
-          <h2 className="text-xl font-semibold">숙소 이용 규칙 및 안내</h2>
+          <h2 className="text-xl font-medium">숙소 이용 규칙 및 안내</h2>
           <div>
             <h3 className="font-bold">숙소 이용규칙</h3>
             <p>셀프 체크인:스마트 도어록</p>
@@ -175,14 +183,15 @@ export function ReservationInfo({ showReservation, onToggleReservation }: Reserv
         </div>
 
         <div className="border-b-8" />
-        <div className="flex flex-col gap-5 px-4">
+        <div className="flex flex-col gap-2 px-4 pb-5 pt-3">
           <div>
-            <h2>언제든 도움을 받으세요</h2>
-            <p>도움이 필요하세요? 전 세계 어디서든 연중무휴로 지원해드립니다.</p>
+            <h2 className="text-xl font-medium">언제든 도움을 받으세요</h2>
+            <p className="text-sm">
+              도움이 필요하세요? 전 세계 어디서든 연중무휴로 지원해드립니다.
+            </p>
           </div>
           <div>
             <div className="-mx-4 px-4 hover:bg-gray-100">
-              <hr />
               <button className="w-full py-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -192,7 +201,6 @@ export function ReservationInfo({ showReservation, onToggleReservation }: Reserv
                   <IoIosArrowForward />
                 </div>
               </button>
-
               <hr />
             </div>
             <div className="-mx-4 px-4 hover:bg-gray-100">
@@ -205,7 +213,6 @@ export function ReservationInfo({ showReservation, onToggleReservation }: Reserv
                   <IoIosArrowForward />
                 </div>
               </button>
-              <hr />
             </div>
           </div>
         </div>
