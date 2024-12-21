@@ -5,4 +5,5 @@ export const MODAL_ID = {
   ROOM_RULES: 'room-rules-modal',
   ROOM_SAFETY: 'room-safety-modal',
   ROOM_CANCELLATION: 'room-cancellation-modal',
+  ROOM_GALLERY: 'room-gallery-modal',
 } as const;
