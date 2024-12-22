@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import { messageSchema } from '@/schemas';
 import { Server } from 'socket.io';
 import { NextIOResponse } from '@/types/next';
 
@@ -18,7 +19,16 @@ export async function GET(request: NextRequest, response: NextIOResponse) {
   response.socket.server.io = io;
 
   io.on('connection', (socket) => {
-    console.log('a user connected');
+    socket.on('message', async (message) => {
+      try {
+        const data = messageSchema.parse(JSON.parse(message));
+        io.emit('message', message);
+      } catch (error) {
+        console.error(error);
+        socket.emit('error', error);
+      }
+    });
+
     socket.on('disconnect', () => {
       console.log('user disconnected');
     });
