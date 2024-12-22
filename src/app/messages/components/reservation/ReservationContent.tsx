@@ -1,0 +1,40 @@
+import { CustomerSupport } from '@/app/messages/components/reservation/CustomerSupport';
+import { HostInformation } from '@/app/messages/components/reservation/HostInformation';
+import { PaymentInformation } from '@/app/messages/components/reservation/PaymentInformation';
+import { ReservationDetailInfomation } from '@/app/messages/components/reservation/ReservationDetailInformation';
+import { RoomInformation } from '@/app/messages/components/reservation/RoomInformation';
+import { RoomRules } from '@/app/messages/components/reservation/RoomRules';
+
+export function ReservationContent() {
+  return (
+    <div className="flex flex-1 flex-col gap-3 overflow-y-scroll px-2">
+      {/* 객실 정보 */}
+      <RoomInformation />
+
+      <div className="border-b-8" />
+
+      {/* 예약 상세 정보 */}
+      <ReservationDetailInfomation />
+
+      <div className="border-b-8" />
+
+      {/* 이용 규칙 */}
+      <RoomRules />
+
+      <div className="border-b-8" />
+
+      {/* 호스트 정보 */}
+      <HostInformation />
+
+      <div className="border-b-8" />
+
+      {/* 결제 정보 */}
+      <PaymentInformation />
+
+      <div className="border-b-8" />
+
+      {/* 고객 지원 */}
+      <CustomerSupport />
+    </div>
+  );
+}

@@ -1,18 +1,19 @@
 'use client';
 
 import { useState } from 'react';
+import { AllMessageFilter } from '@/app/messages/components/message/AllMessageFilter';
+import { AllMessageHeader } from '@/app/messages/components/message/AllMessageHeader';
+import { AllMessageListItem } from '@/app/messages/components/message/AllMessageListItem';
+import { AllMessageSearchBar } from '@/app/messages/components/message/AllMessageSearchBar';
 import { MessageContent } from '@/app/messages/components/message/MessageContent';
-import { ReservationInfo } from '@/app/messages/components/reservation/ReservationInfo';
+import { MessageHeader } from '@/app/messages/components/message/MessageHeader';
+import { MessageInput } from '@/app/messages/components/message/MessageInput';
+import { ReservationContent } from '@/app/messages/components/reservation/ReservationContent';
+import { ReservationHeader } from '@/app/messages/components/reservation/ReservationHeader';
 import { FilterItem } from '@/types/message';
 import { BsSuitcaseLg } from 'react-icons/bs';
 import { BsChatSquare } from 'react-icons/bs';
 import { FaAirbnb } from 'react-icons/fa';
-import { AllMessageFilter } from './components/message/AllMessageFilter';
-import { AllMessageHeader } from './components/message/AllMessageHeader';
-import { AllMessageListItem } from './components/message/AllMessageListItem';
-import { AllMessageSearchBar } from './components/message/AllMessageSearchBar';
-import { MessageHeader } from './components/message/MessageHeader';
-import { MessageInput } from './components/message/MessageInput';
 
 const filterItems: FilterItem[] = [
   {
@@ -97,11 +98,10 @@ export default function Messages() {
           showReservation ? 'w-1/4 opacity-100' : 'w-0 opacity-0'
         }`}
       >
+        <ReservationHeader toggleReservation={toggleReservation} />
+
         {/* 예약 관련 숙소 정보 보내주기 */}
-        <ReservationInfo
-          showReservation={showReservation}
-          toggleReservation={toggleReservation}
-        />
+        <ReservationContent />
       </section>
     </div>
   );
