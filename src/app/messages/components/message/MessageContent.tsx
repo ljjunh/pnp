@@ -33,7 +33,7 @@ const formatTime = (timeStr: string) => {
   return `${hour < 12 ? '오전' : '오후'} ${hour < 12 ? hour : hour - 12}:${minutes}`;
 };
 
-export function ChatContent({ showReservation, toggleReservation }: ChatContentProps) {
+export function MessageContent({ showReservation, toggleReservation }: ChatContentProps) {
   // 날짜와 시간별로 메시지 그룹화
   const messagesByDateTime = dummyMessages.reduce((groups, message) => {
     const [date, time] = message.timestamp.split(' ');

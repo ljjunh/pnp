@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { ChatContent } from '@/app/messages/components/ChatContent';
-import { ReservationInfo } from '@/app/messages/components/ReservationInfo';
+import { MessageContent } from '@/app/messages/components/message/MessageContent';
+import { ReservationInfo } from '@/app/messages/components/reservation/ReservationInfo';
 import { FilterItem } from '@/types/message';
 import { BsSuitcaseLg } from 'react-icons/bs';
 import { BsChatSquare } from 'react-icons/bs';
@@ -77,7 +77,7 @@ export default function Messages() {
         }`}
       >
         {/* 지난 메세지 내역, 웹소켓 연결해주기 */}
-        <ChatContent
+        <MessageContent
           showReservation={showReservation}
           toggleReservation={toggleReservation}
         />
