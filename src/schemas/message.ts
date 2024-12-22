@@ -1,52 +1,45 @@
 import { z } from 'zod';
 import { MessageType } from '@/types/message';
 
-const locationSchema = z.object({
+const coordinatesSchema = z.object({
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
 });
 
-const contentSchema = z.object({
-  text: z.string().optional(),
-  mediaUrl: z.string().url().optional(),
-  fileSize: z.number().optional(),
-  fileMimeType: z.string().optional(),
-});
-
 const metadataSchema = z.object({
-  location: locationSchema.optional(),
-  duration: z.number().optional(),
-  thumbnailUrl: z.string().url().optional(),
+  fileSize: z.number().optional(),
+  mimeType: z.string().optional(),
+  coordinates: coordinatesSchema.optional(),
 });
 
-export const messageSchema = z
+export const messageInputSchema = z
   .object({
-    roomId: z.string({
-      required_error: 'roomId 값은 필수입니다.',
-    }),
-    senderId: z.string({
-      required_error: 'senderId 값은 필수입니다.',
-    }),
-    receiverId: z.string({
-      required_error: 'receiverId 값은 필수입니다.',
-    }),
     type: z.nativeEnum(MessageType),
-    content: contentSchema,
+    content: z.string().min(1, { message: '내용은 비워둘 수 없습니다' }),
+    senderId: z.string({
+      required_error: '보낸 사람 ID는 필수입니다',
+    }),
+    roomId: z.number({
+      required_error: '방 ID는 필수입니다',
+    }),
+    timestamp: z.number().positive(),
     metadata: metadataSchema.optional(),
-    encryptionKey: z.string().optional(),
   })
   .refine(
     (data) => {
+      // 타입별 추가 검증 로직
       switch (data.type) {
-        case MessageType.TEXT:
-          return !!data.content.text;
         case MessageType.IMAGE:
-          return !!data.content.fileSize && !!data.content.fileMimeType;
+          return !!data.metadata?.mimeType && !!data.metadata?.fileSize;
         case MessageType.LOCATION:
-          return !!data.metadata?.location;
+          return !!data.metadata?.coordinates;
         default:
           return true;
       }
     },
-    { message: 'Invalid message content for the specified type' },
+    {
+      message: '메시지 타입에 따른 메타데이터가 누락되었습니다',
+    },
   );
+
+export type MessageInput = z.infer<typeof messageInputSchema>;

@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { messageSchema } from '@/schemas';
+import { messageInputSchema } from '@/schemas';
 import { Server } from 'socket.io';
 import { NextIOResponse } from '@/types/next';
 
@@ -19,10 +19,14 @@ export async function GET(request: NextRequest, response: NextIOResponse) {
   response.socket.server.io = io;
 
   io.on('connection', (socket) => {
+    socket.on('enter', async (roomId) => {
+      socket.join(roomId);
+      console.log(`user entered room: ${roomId}`);
+    });
+
     socket.on('message', async (message) => {
       try {
-        const data = messageSchema.parse(JSON.parse(message));
-        io.emit('message', message);
+        const data = messageInputSchema.parse(message);
       } catch (error) {
         console.error(error);
         socket.emit('error', error);
