@@ -62,7 +62,6 @@ export async function createReservation(userId: string, data: CreateReservationI
       checkOut: data.checkOut,
       guestNumber: data.guestNumber,
       totalPrice: price,
-      message: data.message,
     },
   });
 }
@@ -90,7 +89,6 @@ export async function getReservationByOrderNumber(
       orderNumber: true,
       checkIn: true,
       checkOut: true,
-      message: true,
       guestNumber: true,
       // * 숙소 정보 한번에 조회
       room: {
