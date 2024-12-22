@@ -15,7 +15,7 @@ import { BsSuitcaseLg } from 'react-icons/bs';
 import { BsChatSquare } from 'react-icons/bs';
 import { FaAirbnb } from 'react-icons/fa';
 
-const filterItems: FilterItem[] = [
+export const filterItems: FilterItem[] = [
   {
     id: 1,
     label: '전체',
