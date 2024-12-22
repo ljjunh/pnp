@@ -1,43 +1,88 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import FilterModal from '@/app/(header-footer)/components/filter/FilterModal';
 import FilterButton from '@/components/common/Button/FilterButton';
 import ModalProvider from '@/components/common/ModalProvider/ModalProvider';
 import { MODAL_ID } from '@/constants/modal';
-
-const filterArray: string[] = [
-  'B&B',
-  '게스트 스위트',
-  '게스트용 별채',
-  '공동주택',
-  '농장 체험',
-  '레지던스',
-  '로프트',
-  '료칸',
-  '리조트',
-  '방갈로',
-  '별장',
-  '산장',
-  '아파트',
-  '저택',
-  '집',
-  '초소형 주택',
-  '카사 파르티쿨라르',
-  '캠핑장',
-  '캠핑카',
-  '컨테이너 하우스',
-  '콘도',
-  '타운하우스',
-  '펜션',
-  '호스텔',
-  '휴가용 주택',
-];
+import { PROPERTY } from '@/constants/property';
+import { BiCategory } from 'react-icons/bi';
+import { CiCircleChevLeft, CiCircleChevRight } from 'react-icons/ci';
 
 export default function Filter() {
+  const params = useSearchParams();
+  const propertyId = params.get('property');
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [showLeftArrow, setShowLeftArrow] = useState<boolean>(false);
+  const [showRightArrow, setShowRightArrow] = useState<boolean>(true);
+
+  const checkScroll = () => {
+    const element = scrollRef.current;
+    if (element) {
+      const isStart = element.scrollLeft === 0;
+      const isEnd = element.scrollWidth - element.clientWidth - element.scrollLeft < 1;
+
+      setShowLeftArrow(!isStart);
+      setShowRightArrow(!isEnd);
+    }
+  };
+
+  useEffect(() => {
+    const element = scrollRef.current;
+    if (element) {
+      element.addEventListener('scroll', checkScroll);
+      checkScroll();
+    }
+    return () => element?.removeEventListener('scroll', checkScroll);
+  }, []);
+
+  const scroll = (direction: number) => {
+    const element = scrollRef.current;
+    if (element) {
+      const scrollAmount = direction * (64 * 6);
+      element.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   return (
     <>
-      <div className="flex h-[78px] flex-row items-center justify-between">
-        <p>필터 아이콘들 들어갈 자리</p>
+      <div className="flex h-[78px] w-full flex-row items-center justify-between">
+        <div className="relative flex flex-1 items-center overflow-hidden">
+          {showLeftArrow && (
+            <button
+              className="absolute left-0 z-10 flex h-full items-center justify-center bg-gradient-to-r from-white via-white to-transparent px-2"
+              onClick={() => scroll(-1)}
+            >
+              <CiCircleChevLeft size={30} />
+            </button>
+          )}
+          <div
+            ref={scrollRef}
+            className="scrollbar-hide flex flex-1 flex-row items-center gap-6 overflow-x-auto"
+          >
+            {Object.values(PROPERTY).map((content, index) => (
+              <Link
+                href={`?property=${index}`}
+                className={`flex w-16 flex-shrink-0 cursor-pointer flex-col items-center justify-center space-y-1.5 hover:text-black ${propertyId === index.toString() ? 'text-black' : 'text-gray-500'}`}
+                key={`${content}-${index}`}
+              >
+                <BiCategory size={24} />
+                <span className="whitespace-nowrap text-xs">{content}</span>
+              </Link>
+            ))}
+          </div>
+          {showRightArrow && (
+            <button
+              onClick={() => scroll(1)}
+              className="absolute right-0 z-10 flex h-full items-center justify-center bg-gradient-to-l from-white via-white to-transparent"
+            >
+              <CiCircleChevRight size={30} />
+            </button>
+          )}
+        </div>
         <FilterButton />
       </div>
       <ModalProvider modalId={MODAL_ID.ROOM_FILTER}>
