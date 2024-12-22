@@ -8,7 +8,7 @@ import { TbReceiptFilled } from 'react-icons/tb';
 
 interface ReservationInfoProps {
   showReservation: boolean;
-  onToggleReservation: () => void;
+  toggleReservation: () => void;
 }
 
 const images = [
@@ -20,18 +20,14 @@ const images = [
   '/images/06.avif',
 ];
 
-export function ReservationInfo({ showReservation, onToggleReservation }: ReservationInfoProps) {
+export function ReservationInfo({ showReservation, toggleReservation }: ReservationInfoProps) {
   return (
-    <section
-      className={`flex flex-col overflow-hidden transition-all duration-300 ease-in-out ${
-        showReservation ? 'w-1/4 opacity-100' : 'w-0 opacity-0'
-      }`}
-    >
+      <>
       <div className="flex h-20 items-center justify-between border-b px-8 py-6">
         <h1 className="text-2xl font-medium">예약</h1>
         <button
           className="cursor-pointer rounded-full bg-gray-100 px-3 py-1"
-          onClick={onToggleReservation}
+          onClick={toggleReservation}
         >
           X
         </button>
@@ -217,6 +213,6 @@ export function ReservationInfo({ showReservation, onToggleReservation }: Reserv
           </div>
         </div>
       </div>
-    </section>
+      </>
   );
 }

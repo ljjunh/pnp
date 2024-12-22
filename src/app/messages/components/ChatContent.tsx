@@ -1,11 +1,11 @@
+import { Message, dummyMessages } from '@/app/messages/components/dummyMessages';
 import { cn } from '@/lib/utils';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoImageOutline } from 'react-icons/io5';
-import { Message, dummyMessages } from '@/app/messages/components/dummyMessages';
 
 interface ChatContentProps {
   showReservation: boolean;
-  onToggleReservation: () => void;
+  toggleReservation: () => void;
 }
 
 interface MessageGroup {
@@ -33,7 +33,7 @@ const formatTime = (timeStr: string) => {
   return `${hour < 12 ? '오전' : '오후'} ${hour < 12 ? hour : hour - 12}:${minutes}`;
 };
 
-export function ChatContent({ showReservation, onToggleReservation }: ChatContentProps) {
+export function ChatContent({ showReservation, toggleReservation }: ChatContentProps) {
   // 날짜와 시간별로 메시지 그룹화
   const messagesByDateTime = dummyMessages.reduce((groups, message) => {
     const [date, time] = message.timestamp.split(' ');
@@ -57,11 +57,7 @@ export function ChatContent({ showReservation, onToggleReservation }: ChatConten
   }, {} as DateGroup);
 
   return (
-    <section
-      className={`flex flex-col border-x transition-all duration-300 ease-in-out ${
-        showReservation ? 'w-1/2' : 'w-3/4'
-      }`}
-    >
+    <>
       <div className="flex h-20 items-center justify-between border-b px-8 py-6">
         <div className="flex items-center gap-3">
           <FaUserCircle
@@ -70,7 +66,7 @@ export function ChatContent({ showReservation, onToggleReservation }: ChatConten
           />
           <h1 className="text-2xl">호스트 이름</h1>
         </div>
-        {showReservation ? null : <button onClick={onToggleReservation}>예약보기</button>}
+        {showReservation ? null : <button onClick={toggleReservation}>예약보기</button>}
       </div>
       <div className="flex-1 space-y-6 overflow-y-scroll px-10 py-6">
         {Object.entries(messagesByDateTime).map(([date, timeGroups]) => (
@@ -140,6 +136,6 @@ export function ChatContent({ showReservation, onToggleReservation }: ChatConten
           />
         </form>
       </div>
-    </section>
+    </>
   );
 }
