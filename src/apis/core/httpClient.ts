@@ -79,6 +79,7 @@ export class HttpClient {
       headers: {
         ...config.headers,
       },
+      credentials: 'include',
     };
 
     // 모든 요청 인터셉터 순차적 실행
