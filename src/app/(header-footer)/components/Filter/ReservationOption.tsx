@@ -1,6 +1,6 @@
-import Tag from './Tag';
+import Tag from '@/app/(header-footer)/components/filter/Tag';
 
-const reservation = ['rightNow', 'selfCheckIn', 'pet'];
+const reservation = ['digital', 'selfCheckIn', 'pet'];
 
 export default function ReservationOption() {
   return (

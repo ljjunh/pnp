@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import BuildingOption from './BuildingOption';
+import BuildingOption from '@/app/(header-footer)/components/filter/BuildingOption';
 
 describe('BuildingOption 컴포넌트 테스트', () => {
   test('초기 상태에서 BuildingOption 아코디언이 열렸는지 확인', () => {

@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import CheckList from './CheckList';
+import CheckList from '@/app/(header-footer)/components/filter/CheckList';
 
 describe('CheckList 컴포넌트 테스트', () => {
   test('체크박스가 prop받은 title에 맞게 렌더링 되는지 확인', () => {

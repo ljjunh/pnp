@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ReservationOption from './ReservationOption';
+import ReservationOption from '@/app/(header-footer)/components/filter/ReservationOption';
 
 const meta = {
   title: 'Filter/ReservationOption',

@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import KindOfRoom from './KindOfRoom';
+import KindOfRoom from '@/app/(header-footer)/components/filter/KindOfRoom';
 
 describe('KindOfRoom 컴포넌트 테스트', () => {
   test('초기 상태에서 모든 버튼이 렌더링되는지 확인', () => {

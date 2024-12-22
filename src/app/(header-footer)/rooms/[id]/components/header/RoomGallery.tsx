@@ -1,6 +1,6 @@
 import Image from 'next/image';
+import RoomGalleryModalButton from '@/app/(header-footer)/rooms/[id]/components/header/RoomGalleryModalButton';
 import { Room } from '@/types/room';
-import { CgMenuGridO } from 'react-icons/cg';
 
 interface RoomGalleryProps {
   images: Room['images'];
@@ -50,10 +50,7 @@ export default function RoomGallery({ images }: RoomGalleryProps) {
           className="object-cover transition-opacity duration-200 hover:brightness-[0.80]"
         />
       </div>
-      <button className="absolute bottom-6 right-6 flex items-center gap-2 rounded-lg border border-shade-02 bg-shade-01 px-4 py-1.5 hover:brightness-[0.95]">
-        <CgMenuGridO size={18} />
-        <span className="text-sm">사진 모두 보기</span>
-      </button>
+      {images.length > 0 && <RoomGalleryModalButton images={images} />}
     </div>
   );
 }

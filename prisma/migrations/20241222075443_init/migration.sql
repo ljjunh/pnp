@@ -123,6 +123,7 @@ CREATE TABLE `amenities` (
     `icon` VARCHAR(191) NOT NULL,
     `available` BOOLEAN NOT NULL,
 
+    INDEX `amenities_icon_idx`(`icon`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -177,7 +178,6 @@ CREATE TABLE `hosts` (
     `school` VARCHAR(191) NULL,
     `job` VARCHAR(191) NULL,
     `address` VARCHAR(191) NULL,
-    `language` VARCHAR(191) NULL,
     `birth` VARCHAR(191) NULL,
     `favorite_song` VARCHAR(191) NULL,
     `liked` VARCHAR(191) NULL,
@@ -190,6 +190,25 @@ CREATE TABLE `hosts` (
     `reviews_average` DOUBLE NOT NULL DEFAULT 0,
 
     UNIQUE INDEX `hosts_user_id_key`(`user_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `host_languages` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `host_id` INTEGER NOT NULL,
+    `language_id` INTEGER NOT NULL,
+
+    UNIQUE INDEX `host_languages_host_id_language_id_key`(`host_id`, `language_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `languages` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `content` VARCHAR(100) NOT NULL,
+
+    UNIQUE INDEX `languages_content_key`(`content`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -244,7 +263,6 @@ CREATE TABLE `reservations` (
     `guest_number` INTEGER NOT NULL,
     `total_price` INTEGER NOT NULL,
     `status` ENUM('PENDING', 'PAYMENT', 'CONFIRMED', 'CANCELED', 'COMPLETED') NOT NULL DEFAULT 'PENDING',
-    `message` VARCHAR(191) NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -284,6 +302,12 @@ ALTER TABLE `reviews` ADD CONSTRAINT `reviews_user_id_fkey` FOREIGN KEY (`user_i
 
 -- AddForeignKey
 ALTER TABLE `hosts` ADD CONSTRAINT `hosts_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `host_languages` ADD CONSTRAINT `host_languages_host_id_fkey` FOREIGN KEY (`host_id`) REFERENCES `hosts`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `host_languages` ADD CONSTRAINT `host_languages_language_id_fkey` FOREIGN KEY (`language_id`) REFERENCES `languages`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `host_tags` ADD CONSTRAINT `host_tags_host_id_fkey` FOREIGN KEY (`host_id`) REFERENCES `hosts`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

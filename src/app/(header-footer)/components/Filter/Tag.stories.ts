@@ -1,4 +1,4 @@
-import Tag from '@/app/(header-footer)/components/Filter/Tag';
+import Tag from '@/app/(header-footer)/components/filter/Tag';
 import { Meta, StoryObj } from '@storybook/react';
 
 const meta = {

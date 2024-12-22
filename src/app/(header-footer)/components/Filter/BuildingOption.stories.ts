@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import BuildingOption from './BuildingOption';
+import BuildingOption from '@/app/(header-footer)/components/filter/BuildingOption';
 
 const meta = {
   title: 'Filter/BuildingOption',

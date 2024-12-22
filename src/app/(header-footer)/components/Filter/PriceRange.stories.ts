@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import PriceRange from './PriceRange';
+import PriceRange from '@/app/(header-footer)/components/filter/PriceRange';
 
 const meta = {
   title: 'Filter/PriceRange',
