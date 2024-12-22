@@ -11,6 +11,8 @@ import { AllMessageFilter } from './components/message/AllMessageFilter';
 import { AllMessageHeader } from './components/message/AllMessageHeader';
 import { AllMessageListItem } from './components/message/AllMessageListItem';
 import { AllMessageSearchBar } from './components/message/AllMessageSearchBar';
+import { MessageHeader } from './components/message/MessageHeader';
+import { MessageInput } from './components/message/MessageInput';
 
 const filterItems: FilterItem[] = [
   {
@@ -53,11 +55,14 @@ export default function Messages() {
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between transition-all duration-300">
             {!showSearchBar ? (
+              // 전체 메세지 목록 헤더
               <AllMessageHeader toggleSearchBar={toggleSearchBar} />
             ) : (
+              // 전체 메세지 목록 검색창
               <AllMessageSearchBar toggleSearchBar={toggleSearchBar} />
             )}
           </div>
+          {/* 전체 메세지 목록 필터 */}
           <AllMessageFilter
             showFilter={showFilter}
             toggleFilter={toggleFilter}
@@ -76,11 +81,15 @@ export default function Messages() {
           showReservation ? 'w-1/2' : 'w-3/4'
         }`}
       >
-        {/* 지난 메세지 내역, 웹소켓 연결해주기 */}
-        <MessageContent
+        {/* 메세지 헤더 */}
+        <MessageHeader
           showReservation={showReservation}
           toggleReservation={toggleReservation}
         />
+        {/* 지난 메세지 내역, 웹소켓 연결해주기 */}
+        <MessageContent />
+        {/* 메세지 입력창 */}
+        <MessageInput />
       </section>
 
       <section
