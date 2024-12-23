@@ -1,7 +1,7 @@
 import { CustomerSupport } from '@/app/messages/components/reservation/CustomerSupport';
 import { HostInformation } from '@/app/messages/components/reservation/HostInformation';
 import { PaymentInformation } from '@/app/messages/components/reservation/PaymentInformation';
-import { ReservationDetailInfomation } from '@/app/messages/components/reservation/ReservationDetailInformation';
+import { ReservationDetailInformation } from '@/app/messages/components/reservation/ReservationDetailInformation';
 import { RoomInformation } from '@/app/messages/components/reservation/RoomInformation';
 import { RoomRules } from '@/app/messages/components/reservation/RoomRules';
 
@@ -14,7 +14,7 @@ export function ReservationContent() {
       <div className="border-b-8" />
 
       {/* 예약 상세 정보 */}
-      <ReservationDetailInfomation />
+      <ReservationDetailInformation />
 
       <div className="border-b-8" />
 
