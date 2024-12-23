@@ -40,6 +40,7 @@ export default function UserNav() {
       <UserMenu
         isLoggedIn={status === 'authenticated'}
         isOpen={isOpen}
+        onToggleOpen={toggleOpen}
       />
     </div>
   );

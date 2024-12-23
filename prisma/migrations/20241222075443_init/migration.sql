@@ -123,6 +123,7 @@ CREATE TABLE `amenities` (
     `icon` VARCHAR(191) NOT NULL,
     `available` BOOLEAN NOT NULL,
 
+    INDEX `amenities_icon_idx`(`icon`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -262,7 +263,6 @@ CREATE TABLE `reservations` (
     `guest_number` INTEGER NOT NULL,
     `total_price` INTEGER NOT NULL,
     `status` ENUM('PENDING', 'PAYMENT', 'CONFIRMED', 'CANCELED', 'COMPLETED') NOT NULL DEFAULT 'PENDING',
-    `message` VARCHAR(191) NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 

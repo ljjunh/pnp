@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { EmailLoginFormBtn } from '@/app/signin/components/EmailLoginFormBtn';
+import { EmailLoginFormBtn } from '@/app/(header-footer)/signin/components/EmailLoginFormBtn';
 import { useEmailLoginForm } from '@/hooks/useEmailLoginForm';
 import { getWebmailUrl } from '@/utils/email';
 import { MESSAGES } from '@/constants/login';
