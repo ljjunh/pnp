@@ -4,14 +4,13 @@ import { auth } from '@/auth';
 import { CreateReservationInput, createReservationSchema } from '@/schemas/reservation';
 import { httpClient } from '@/apis/core/httpClient';
 
-export async function createReservation(input: CreateReservationInput) {
+export async function createReservation(input: CreateReservationInput): Promise<void> {
   try {
     // 세션 체크
     const session = await auth();
     if (!session) {
       throw new Error('로그인이 필요합니다.');
     }
-    console.log(session);
 
     // zod로 입력값 검증
     const validatedDate = createReservationSchema.parse(input);
@@ -22,8 +21,7 @@ export async function createReservation(input: CreateReservationInput) {
     if (!response.success) {
       throw new Error(response.message || '예약에 실패했습니다.');
     }
-
-    return response.data;
+    return;
   } catch (error) {
     console.error('예약 생성 중 에러 발생:', error);
 

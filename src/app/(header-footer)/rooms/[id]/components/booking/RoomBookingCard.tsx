@@ -68,7 +68,7 @@ export default function RoomBookingCard({ price, roomId }: RoomBookingCardProps)
 
     try {
       await createReservation(reservationData);
-      console.log('성공-------------------------------------');
+      alert('성공했습니다.');
     } catch (error) {
       alert(error instanceof Error ? error.message : '예약에 실패했습니다.');
     }
