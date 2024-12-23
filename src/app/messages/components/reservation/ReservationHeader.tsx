@@ -9,8 +9,9 @@ export function ReservationHeader({ toggleReservation }: ReservationHeaderProps)
       <button
         className="cursor-pointer rounded-full bg-gray-100 px-3 py-1"
         onClick={toggleReservation}
+        aria-label="예약 정보 창 닫기"
       >
-        X
+        <span aria-hidden="true">&times;</span>
       </button>
     </div>
   );

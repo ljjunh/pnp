@@ -15,7 +15,7 @@ import { BsSuitcaseLg } from 'react-icons/bs';
 import { BsChatSquare } from 'react-icons/bs';
 import { FaAirbnb } from 'react-icons/fa';
 
-export const filterItems: FilterItem[] = [
+export const filterItems = [
   {
     id: 1,
     label: '전체',
@@ -31,7 +31,7 @@ export const filterItems: FilterItem[] = [
     label: '지원',
     icon: FaAirbnb,
   },
-];
+] as const satisfies FilterItem[];
 
 export default function Messages() {
   const [showReservation, setShowReservation] = useState<boolean>(true);
@@ -52,7 +52,10 @@ export default function Messages() {
 
   return (
     <div className="flex h-[calc(100vh-5rem)] overflow-hidden">
-      <section className="flex w-1/4 flex-col gap-8 px-6 py-6">
+      <section
+        className="flex w-1/4 flex-col gap-8 px-6 py-6"
+        aria-label="메시지 목록"
+      >
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between transition-all duration-300">
             {!showSearchBar ? (
@@ -72,7 +75,10 @@ export default function Messages() {
         </div>
 
         {/* 전체 메세지 목록 받아서 보내주기 */}
-        <ul>
+        <ul
+          role="list"
+          aria-label="대화 목록"
+        >
           <AllMessageListItem />
         </ul>
       </section>

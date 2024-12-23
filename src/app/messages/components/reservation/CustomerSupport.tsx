@@ -11,7 +11,11 @@ export function CustomerSupport() {
       </div>
       <div>
         <div className="-mx-4 px-4 hover:bg-gray-100">
-          <button className="w-full py-3">
+          <button
+            type="button"
+            className="w-full py-3"
+            aria-label="고객지원 팀에 연락하기"
+          >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <FaAirbnb />
@@ -23,7 +27,11 @@ export function CustomerSupport() {
           <hr />
         </div>
         <div className="-mx-4 px-4 hover:bg-gray-100">
-          <button className="w-full py-3">
+          <button
+            type="button"
+            className="w-full py-3"
+            aria-label="도움말 센터 방문하기"
+          >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <IoIosHelpCircle />

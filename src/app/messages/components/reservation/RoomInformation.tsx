@@ -34,9 +34,9 @@ export function RoomInformation() {
             <p>오후 4:00</p>
           </div>
           <div className="flex-1 text-right">
-            <p className="text-black">체크인</p>
-            <p>1월 11일 (화)</p>
-            <p>오후 4:00</p>
+            <p className="text-black">체크아웃</p>
+            <p>1월 13일 (목)</p>
+            <p>오전 11:00</p>
           </div>
         </div>
         <hr />

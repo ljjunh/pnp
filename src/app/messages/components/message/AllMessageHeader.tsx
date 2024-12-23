@@ -10,16 +10,20 @@ export function AllMessageHeader({ toggleSearchBar }: AllMessageHeaderProps) {
     <>
       <h1 className="text-2xl font-medium">메시지</h1>
       <div className="flex gap-2">
-        <div
+        <button
           onClick={toggleSearchBar}
           className="cursor-pointer rounded-full bg-gray-100 p-2"
+          aria-label="메세지 검색창 열기"
         >
           <IoIosSearch className="size-5" />
-        </div>
+        </button>
         {/* 설정 모달 넣기 */}
-        <div className="cursor-pointer rounded-full bg-gray-100 p-2">
+        <button
+          className="cursor-pointer rounded-full bg-gray-100 p-2"
+          aria-label="메세지 설정 창 열기"
+        >
           <VscSettings className="size-5" />
-        </div>
+        </button>
       </div>
     </>
   );

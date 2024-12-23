@@ -12,6 +12,7 @@ export function MessageHeader({ showReservation, toggleReservation }: MessageCon
         <FaUserCircle
           size={40}
           className="text-gray-500"
+          aria-label="호스트 프로필 이미지"
         />
         <h1 className="text-2xl">호스트 이름</h1>
       </div>

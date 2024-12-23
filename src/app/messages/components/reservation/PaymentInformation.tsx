@@ -11,7 +11,11 @@ export function PaymentInformation() {
       </div>
       <div className="-mx-4 px-4 hover:bg-gray-100">
         <hr />
-        <button className="w-full py-3">
+        <button
+          type="button"
+          className="w-full py-3"
+          aria-label="영수증 받기"
+        >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <TbReceiptFilled />
