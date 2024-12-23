@@ -1,8 +1,8 @@
 import { BadRequestError, NotFoundError } from '@/errors';
 import { ForbiddenError } from '@/errors/errors';
-import { prisma } from '@/lib/server';
+import { prisma, upload } from '@/lib/server';
 import { Filter, PriceFilter, UpdateRoom } from '@/schemas/rooms';
-import { Prisma } from '@prisma/client';
+import { Prisma, RoomImage } from '@prisma/client';
 import { FilterRoom, Room } from '@/types/room';
 import { extractProperty } from '@/utils/convertor';
 import { PROPERTY } from '@/constants/property';
@@ -556,4 +556,83 @@ export async function updateRoom(roomId: number, userId: string, data: UpdateRoo
     },
     data: updateData,
   });
+}
+
+/**
+ * 숙소에 존재하는 이미지들을 조회한다.
+ *
+ * @param {number} roomId 방 아이디
+ * @param {string} userId 사용자 아이디
+ *
+ * @returns {Promise<RoomImage[]>} 방 이미지들
+ */
+export async function getRoomImages(roomId: number, userId: string): Promise<RoomImage[]> {
+  const room = await prisma.room.findFirst({
+    where: {
+      id: roomId,
+    },
+    select: {
+      host: {
+        select: {
+          userId: true,
+        },
+      },
+      images: true,
+    },
+  });
+
+  if (!room) {
+    throw new NotFoundError();
+  }
+
+  if (room.host.userId !== userId) {
+    throw new ForbiddenError('본인의 숙소만 조회할 수 있습니다.');
+  }
+
+  return room.images;
+}
+
+/**
+ * 숙소 이미지를 업로드한다.
+ *
+ * @param {number} roomId 방 아이디
+ * @param {string} userId 사용자 아이디
+ * @param {File[]} images 이미지 파일들
+ */
+export async function uploadRoomImages(roomId: number, userId: string, images: File[]) {
+  const room = await prisma.room.findFirst({
+    where: {
+      id: roomId,
+    },
+    select: {
+      host: {
+        select: {
+          userId: true,
+        },
+      },
+    },
+  });
+
+  if (!room) {
+    throw new NotFoundError();
+  }
+
+  if (room.host.userId !== userId) {
+    throw new ForbiddenError('본인의 숙소만 조회할 수 있습니다.');
+  }
+
+  const uploadImages = images.map(async (image: File, index: number) => {
+    const imageKey = await upload(image, 'rooms');
+
+    return prisma.roomImage.create({
+      data: {
+        imageLink: imageKey,
+        orientation: 'LANDSCAPE',
+        roomId: roomId,
+        caption: `숙소 이미지 ${index + 1}`,
+      },
+    });
+  });
+
+  await Promise.all(uploadImages);
 }
