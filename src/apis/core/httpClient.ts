@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { BaseResponse } from '@/lib/server/response';
 
 // HTTP 요청 메서드 타입 정의
@@ -35,6 +36,13 @@ export class HttpClient {
     return HttpClient.instance;
   }
 
+  private getCookies(): string {
+    const cookieStore = cookies();
+    const allCookies = cookieStore.getAll();
+
+    return allCookies.map((cookie) => `${cookie.name}=${cookie.value}`).join('; ');
+  }
+
   // 요청 인터셉터 추가하는 메서드
   public addRequestInterceptor(interceptor: RequestInterceptor): void {
     this.requestInterceptors.push(interceptor);
@@ -51,7 +59,6 @@ export class HttpClient {
       onRequest: (config) => ({
         ...config,
         headers: {
-          'Content-Type': 'application/json',
           ...config.headers,
         },
       }),
@@ -73,11 +80,13 @@ export class HttpClient {
     config: RequestInit = {},
   ): Promise<BaseResponse<T>> {
     // 기본 설정과 사용자 설정을 병합
+    console.log(url);
     let fetchConfig: RequestInit = {
       ...config,
       method,
       headers: {
         ...config.headers,
+        Cookie: this.getCookies(),
       },
     };
 

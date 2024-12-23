@@ -3,17 +3,20 @@
 import { useState } from 'react';
 import RoomBookingCalendar from '@/app/(header-footer)/rooms/[id]/components/booking/RoomBookingCalendar';
 import RoomBookingDropdown from '@/app/(header-footer)/rooms/[id]/components/booking/RoomBookingDropdown';
+import { CreateReservationInput } from '@/schemas';
 import { addDays } from 'date-fns';
 import { Room } from '@/types/room';
 import Button from '@/components/common/Button/Button';
+import { createReservation } from '@/apis/reservation/actions';
 
 interface RoomBookingCardProps {
   price: Room['price'];
+  roomId: Room['id'];
 }
 
-export default function RoomBookingCard({ price }: RoomBookingCardProps) {
-  const [checkIn, setCheckIn] = useState<Date>(new Date());
-  const [checkOut, setCheckOut] = useState<Date>(addDays(new Date(), 1));
+export default function RoomBookingCard({ price, roomId }: RoomBookingCardProps) {
+  const [checkIn, setCheckIn] = useState<Date>(addDays(new Date(), 1));
+  const [checkOut, setCheckOut] = useState<Date>(addDays(new Date(), 2));
   const [showCalendar, setShowCalendar] = useState(false);
   const [showGuestDropdown, setShowGuestDropdown] = useState(false);
   const [guests, setGuests] = useState({
@@ -53,6 +56,24 @@ export default function RoomBookingCard({ price }: RoomBookingCardProps) {
   const serviceFee = Math.round(subtotal * (serviceFeePercentage / 100));
   const total = subtotal + serviceFee;
 
+  const handleReservation = async () => {
+    const guestNumber = guests.adults + guests.children + guests.infants + guests.pets;
+
+    const reservationData: CreateReservationInput = {
+      roomId,
+      guestNumber,
+      checkIn,
+      checkOut,
+    };
+
+    try {
+      await createReservation(reservationData);
+      alert('성공했습니다.');
+    } catch (error) {
+      alert(error instanceof Error ? error.message : '예약에 실패했습니다.');
+    }
+  };
+
   return (
     <div className="border-1 mt-8 rounded-xl border p-6 shadow-lg">
       <div className="mb-6">
@@ -79,6 +100,7 @@ export default function RoomBookingCard({ price }: RoomBookingCardProps) {
         <Button
           variant="primary"
           size="full"
+          onClick={handleReservation}
         >
           예약하기
         </Button>
