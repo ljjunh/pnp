@@ -38,7 +38,7 @@ export async function PATCH(request: NextRequest, { params }: { params: RoomPara
 
     const roomId = Number(params.roomId);
 
-    if (isNaN(roomId)) {
+    if (Number.isNaN(roomId)) {
       throw new BadRequestError('유효하지 않은 ID 형식입니다.');
     }
 

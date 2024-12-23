@@ -511,6 +511,16 @@ export async function updateRoom(roomId: number, userId: string, data: UpdateRoo
           userId: true,
         },
       },
+      reservations: {
+        where: {
+          NOT: {
+            status: 'CANCELED',
+          },
+          checkIn: {
+            lte: new Date(),
+          },
+        },
+      },
     },
   });
 
@@ -520,6 +530,10 @@ export async function updateRoom(roomId: number, userId: string, data: UpdateRoo
 
   if (room.host.userId !== userId) {
     throw new ForbiddenError('본인의 숙소만 수정할 수 있습니다.');
+  }
+
+  if (room.reservations.length > 0) {
+    throw new BadRequestError('예약이 존재하는 숙소는 수정할 수 없습니다.');
   }
 
   const updateData: Prisma.RoomUpdateInput = {
@@ -535,10 +549,6 @@ export async function updateRoom(roomId: number, userId: string, data: UpdateRoo
     ...(data.location && { location: data.location }),
     ...(data.capacity && { capacity: data.capacity }),
   };
-
-  if (!room) {
-    throw new NotFoundError();
-  }
 
   await prisma.room.update({
     where: {
