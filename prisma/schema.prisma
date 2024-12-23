@@ -107,7 +107,7 @@ model Room {
   reviewsCount   Int   @default(0) @map("reviews_count")
   reviewsAverage Float @default(0) @map("reviews_average")
 
-  status RoomStatus @default(DRAFT)
+  status RoomStatus @default(COMPLETED)
 
   roomTags  RoomTag[]
   images    RoomImage[]
