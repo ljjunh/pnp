@@ -6,9 +6,10 @@ interface UserMenuItemProps {
   label: string;
   hasDivider?: boolean; // 하단 구분선 유무
   href?: string; // 링크용 경로
+  onToggleOpen: () => void;
 }
 
-export default function UserMenuItem({ id, label, hasDivider, href }: UserMenuItemProps) {
+export default function UserMenuItem({ id, label, hasDivider, href, onToggleOpen }: UserMenuItemProps) {
   const handleClick = async () => {
     switch (id) {
       case 'logout':
@@ -29,7 +30,7 @@ export default function UserMenuItem({ id, label, hasDivider, href }: UserMenuIt
   return (
     <>
       {href ? (
-        <Link href={href}>{content}</Link>
+        <Link href={href} onClick={onToggleOpen}>{content}</Link>
       ) : (
         <button
           onClick={handleClick}

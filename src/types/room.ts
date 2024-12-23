@@ -31,3 +31,10 @@ export type Room = Pick<
   host: HostWithUser;
   amenities: Amenity[];
 };
+
+export type FilterRoom = Pick<
+  PrismaRoom,
+  'id' | 'location' | 'price' | 'latitude' | 'longitude' | 'reviewsAverage'
+> & {
+  images: Pick<RoomImage, 'id' | 'imageLink' | 'orientation'>[];
+};
