@@ -9,7 +9,10 @@ export async function GET(request: NextRequest) {
 
     const filterParams = filterSchema.parse({
       // null 이면 전체 타입, Private room은 방, Entire home/apt는 집 전체
-      roomType: searchParams.get('roomType') as 'Entire' | 'Private' | 'Shared' | null,
+      roomType: searchParams.get('roomType') as 'Entire' | 'Private' | null,
+      // 가격 조회
+      minPrice: searchParams.get('minPrice') ? Number(searchParams.get('minPrice')) : undefined,
+      maxPrice: searchParams.get('maxPrice') ? Number(searchParams.get('maxPrice')) : undefined,
       // 침실 및 침대 조회
       bedroom: searchParams.get('bedroom') ? Number(searchParams.get('bedroom')) : undefined,
       bed: searchParams.get('bed') ? Number(searchParams.get('bed')) : undefined,
@@ -21,7 +24,7 @@ export async function GET(request: NextRequest) {
       // 호스트 언어 조회 -> id 값 받아옴
       language: searchParams.getAll('language').map(Number),
       // 숙소 타입 조회
-      property: searchParams.get('property'),
+      property: searchParams.get('property') ? Number(searchParams.get('property')) : undefined,
     });
 
     const room = await getFilterRoom(filterParams);

@@ -1,9 +1,10 @@
 import { BadRequestError, NotFoundError } from '@/errors';
 import { prisma } from '@/lib/server';
-import { Filter } from '@/schemas/rooms';
+import { Filter, PriceFilter } from '@/schemas/rooms';
 import { Prisma } from '@prisma/client';
 import { FilterRoom, Room } from '@/types/room';
 import { extractProperty } from '@/utils/convertor';
+import { PROPERTY } from '@/constants/property';
 
 /**
  * 숙소 정보를 조회한다
@@ -200,9 +201,25 @@ export async function deleteRoomScrap(roomId: number, userId: string) {
 
 /**
  * 숙소의 가격을 조회한다.
+ *
+ * @param {PriceFilter} filter 가격 필터
  */
-export async function getRoomPrice() {
+export async function getRoomPrice(filter: PriceFilter) {
+  const { roomType, property } = filter;
+
+  const whereConditions: Prisma.RoomWhereInput = {
+    ...(roomType && {
+      roomType: roomType === 'Entire' ? ROOM_TYPE.Entire : ROOM_TYPE.Private || ROOM_TYPE.Shared,
+    }),
+    ...(property && {
+      propertyType: {
+        contains: PROPERTY[+property as keyof typeof PROPERTY],
+      },
+    }),
+  };
+
   const price = await prisma.room.findMany({
+    where: whereConditions,
     select: {
       price: true,
     },
@@ -216,9 +233,13 @@ export async function getRoomPrice() {
 
   const interval = (maxPrice - minPrice) / 50;
 
+  // interval이 너무 작은 경우 처리
+  const minimumInterval = 15000; // 최소 구간 설정
+  const calculatedInterval = Math.max(interval, minimumInterval);
+
   const distribution = Array.from({ length: 50 }, (_, i) => {
-    const rangeStart = minPrice + interval * i;
-    const rangeEnd = rangeStart + interval;
+    const rangeStart = minPrice + calculatedInterval * i;
+    const rangeEnd = rangeStart + calculatedInterval;
 
     return {
       distance: `${Math.floor(rangeStart)}-${Math.floor(rangeEnd)}`,
@@ -226,8 +247,31 @@ export async function getRoomPrice() {
     };
   });
 
+  // prices가 비어있을 경우
+  if (prices.length === 0) {
+    return {
+      minPrice: 0,
+      maxPrice: 0,
+      distribution: [],
+    };
+  }
+
+  // prices가 1개일 경우
+  if (minPrice === maxPrice) {
+    return {
+      minPrice,
+      maxPrice,
+      distribution: [
+        {
+          distance: `${minPrice}-${maxPrice}`,
+          count: prices.length,
+        },
+      ],
+    };
+  }
+
   prices.forEach((price) => {
-    const binIndex = Math.floor((price - minPrice) / interval);
+    const binIndex = Math.floor((price - minPrice) / calculatedInterval);
     const safeIndex = binIndex >= 50 ? 49 : binIndex;
     distribution[safeIndex].count++;
   });
@@ -287,8 +331,6 @@ export async function getFilterRoom(filter: Filter): Promise<FilterRoom[]> {
 export async function getFilterRoomCount(filter: Filter): Promise<number> {
   const whereConditions = getWhereConditions(filter);
 
-  console.log(filter);
-
   const count = await prisma.room.count({
     where: whereConditions,
   });
@@ -302,13 +344,31 @@ export async function getFilterRoomCount(filter: Filter): Promise<number> {
  *
  */
 const getWhereConditions = (filter: Filter) => {
-  const { roomType, bedroom, bed, bathroom, amenityArray, option, language, property } = filter;
+  const {
+    roomType,
+    minPrice,
+    maxPrice,
+    bedroom,
+    bed,
+    bathroom,
+    amenityArray,
+    option,
+    language,
+    property,
+  } = filter;
 
   const whereConditions: Prisma.RoomWhereInput = {};
 
   if (roomType) {
     whereConditions.roomType =
       roomType === 'Entire' ? ROOM_TYPE.Entire : ROOM_TYPE.Private || ROOM_TYPE.Shared;
+  }
+
+  if (minPrice || maxPrice) {
+    whereConditions.price = {
+      gte: minPrice || 0,
+      lte: maxPrice || 10_000_000,
+    };
   }
 
   const tagConditions = [];
@@ -390,7 +450,7 @@ const getWhereConditions = (filter: Filter) => {
 
   if (property) {
     whereConditions.propertyType = {
-      contains: property,
+      contains: PROPERTY[+property as keyof typeof PROPERTY],
     };
   }
 
