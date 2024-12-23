@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 import { CustomResponse } from '@/lib/server';
 import { filterSchema } from '@/schemas/rooms';
-import { getFilterRoom } from '@/services/room';
+import { getFilterRoomCount } from '@/services/room';
 
 export async function GET(request: NextRequest) {
   try {
@@ -26,10 +26,9 @@ export async function GET(request: NextRequest) {
       // 숙소 타입 조회
       property: searchParams.get('property') ? Number(searchParams.get('property')) : undefined,
     });
+    const roomCount = await getFilterRoomCount(filterParams);
 
-    const room = await getFilterRoom(filterParams);
-
-    return CustomResponse.ok(room);
+    return CustomResponse.ok(roomCount);
   } catch (error) {
     console.error('숙소 필터 조회 중 에러 발생: ', {
       error: error instanceof Error ? error.message : error,

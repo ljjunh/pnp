@@ -1,8 +1,10 @@
 import { BadRequestError, NotFoundError } from '@/errors';
 import { prisma } from '@/lib/server';
+import { Filter, PriceFilter } from '@/schemas/rooms';
 import { Prisma } from '@prisma/client';
-import { Room } from '@/types/room';
+import { FilterRoom, Room } from '@/types/room';
 import { extractProperty } from '@/utils/convertor';
+import { PROPERTY } from '@/constants/property';
 
 /**
  * 숙소 정보를 조회한다
@@ -199,9 +201,25 @@ export async function deleteRoomScrap(roomId: number, userId: string) {
 
 /**
  * 숙소의 가격을 조회한다.
+ *
+ * @param {PriceFilter} filter 가격 필터
  */
-export async function getRoomPrice() {
+export async function getRoomPrice(filter: PriceFilter) {
+  const { roomType, property } = filter;
+
+  const whereConditions: Prisma.RoomWhereInput = {
+    ...(roomType && {
+      roomType: roomType === 'Entire' ? ROOM_TYPE.Entire : ROOM_TYPE.Private || ROOM_TYPE.Shared,
+    }),
+    ...(property && {
+      propertyType: {
+        contains: PROPERTY[+property as keyof typeof PROPERTY],
+      },
+    }),
+  };
+
   const price = await prisma.room.findMany({
+    where: whereConditions,
     select: {
       price: true,
     },
@@ -215,9 +233,13 @@ export async function getRoomPrice() {
 
   const interval = (maxPrice - minPrice) / 50;
 
+  // interval이 너무 작은 경우 처리
+  const minimumInterval = 15000; // 최소 구간 설정
+  const calculatedInterval = Math.max(interval, minimumInterval);
+
   const distribution = Array.from({ length: 50 }, (_, i) => {
-    const rangeStart = minPrice + interval * i;
-    const rangeEnd = rangeStart + interval;
+    const rangeStart = minPrice + calculatedInterval * i;
+    const rangeEnd = rangeStart + calculatedInterval;
 
     return {
       distance: `${Math.floor(rangeStart)}-${Math.floor(rangeEnd)}`,
@@ -225,8 +247,31 @@ export async function getRoomPrice() {
     };
   });
 
+  // prices가 비어있을 경우
+  if (prices.length === 0) {
+    return {
+      minPrice: 0,
+      maxPrice: 0,
+      distribution: [],
+    };
+  }
+
+  // prices가 1개일 경우
+  if (minPrice === maxPrice) {
+    return {
+      minPrice,
+      maxPrice,
+      distribution: [
+        {
+          distance: `${minPrice}-${maxPrice}`,
+          count: prices.length,
+        },
+      ],
+    };
+  }
+
   prices.forEach((price) => {
-    const binIndex = Math.floor((price - minPrice) / interval);
+    const binIndex = Math.floor((price - minPrice) / calculatedInterval);
     const safeIndex = binIndex >= 50 ? 49 : binIndex;
     distribution[safeIndex].count++;
   });
@@ -243,45 +288,87 @@ export async function getRoomPrice() {
 /**
  * 필터 정보에 따라 숙소를 조회한다.
  *
- * @param {string} roomType 방 타입
- * @param {number} bedroom 침실 수
- * @param {number} bed 침대 수
- * @param {number} bathroom 욕실 수
- * @param {string[]} amenityArray 편의시설
- * @param {string[]} option 예약 옵션
- * @param {string[]} language 호스트 언어
- *
+ * @param {Filter} filter 필터 정보
  */
-interface FilterRoom {
-  roomType?: string | null;
-  bedroom?: number;
-  bed?: number;
-  bathroom?: number;
-  amenityArray: string[];
-  option: string[];
-  language: number[];
+
+const ROOM_TYPE = {
+  Entire: 'Entire home/apt',
+  Private: 'Private room',
+  Shared: 'Shared room',
+};
+
+export async function getFilterRoom(filter: Filter): Promise<FilterRoom[]> {
+  const whereConditions = getWhereConditions(filter);
+
+  const rooms = await prisma.room.findMany({
+    relationLoadStrategy: 'join',
+    where: whereConditions,
+    select: {
+      id: true,
+      location: true,
+      price: true,
+      latitude: true,
+      longitude: true,
+      reviewsAverage: true,
+      images: {
+        select: {
+          id: true,
+          imageLink: true,
+          orientation: true,
+        },
+      },
+    },
+  });
+
+  return rooms;
 }
 
-export async function getFilterRoom({
-  roomType,
-  bedroom,
-  bed,
-  bathroom,
-  amenityArray,
-  option,
-  language,
-}: FilterRoom): Promise<Room[]> {
-  const ROOM_TYPE = {
-    Entire: 'Entire home/apt',
-    Private: 'Private room',
-    Shared: 'Shared room',
-  };
+/**
+ * 숙소 필터 정보에 따라 숙소의 갯수를 조회한다.
+ *
+ * @param {Filter} filter 필터 정보
+ */
+export async function getFilterRoomCount(filter: Filter): Promise<number> {
+  const whereConditions = getWhereConditions(filter);
+
+  const count = await prisma.room.count({
+    where: whereConditions,
+  });
+
+  return count;
+}
+
+/**
+ * 필터 정보에 따라 where 조건을 생성한다.
+ * @param filter 필터 조건
+ *
+ */
+const getWhereConditions = (filter: Filter) => {
+  const {
+    roomType,
+    minPrice,
+    maxPrice,
+    bedroom,
+    bed,
+    bathroom,
+    amenityArray,
+    option,
+    language,
+    property,
+  } = filter;
 
   const whereConditions: Prisma.RoomWhereInput = {};
 
   if (roomType) {
     whereConditions.roomType =
       roomType === 'Entire' ? ROOM_TYPE.Entire : ROOM_TYPE.Private || ROOM_TYPE.Shared;
+  }
+
+  if (minPrice || maxPrice) {
+    whereConditions.price = {
+      gte: minPrice || 0,
+      lte: maxPrice || 10_000_000,
+    };
   }
 
   const tagConditions = [];
@@ -361,103 +448,11 @@ export async function getFilterRoom({
     };
   }
 
-  const rooms = await prisma.room.findMany({
-    relationLoadStrategy: 'join',
-    where: whereConditions,
-    select: {
-      id: true,
-      airbnbLink: true,
-      title: true,
-      description: true,
-      seoTitle: true,
-      seoDescription: true,
-      thumbnail: true,
-      location: true,
-      price: true,
-      latitude: true,
-      longitude: true,
-      capacity: true,
-      checkIn: true,
-      checkOut: true,
-      checkInType: true,
-      reviewsCount: true,
-      reviewsAverage: true,
-      roomTags: {
-        select: {
-          tag: {
-            select: {
-              id: true,
-              content: true,
-            },
-          },
-        },
-      },
-      images: {
-        select: {
-          id: true,
-          imageLink: true,
-          orientation: true,
-        },
-      },
-      rules: {
-        select: {
-          rule: true,
-        },
-      },
-      amenities: {
-        select: {
-          amenity: true,
-        },
-      },
-      host: {
-        select: {
-          id: true,
-          isSuperHost: true,
-          isVerified: true,
-          hostStartedAt: true,
-          reviewsAverage: true,
-          reviewsCount: true,
-          languages: {
-            select: {
-              language: {
-                select: {
-                  content: true,
-                },
-              },
-            },
-          },
-          hostTags: {
-            select: {
-              tag: {
-                select: {
-                  content: true,
-                },
-              },
-            },
-          },
-          user: {
-            select: {
-              id: true,
-              name: true,
-              image: true,
-              email: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  if (property) {
+    whereConditions.propertyType = {
+      contains: PROPERTY[+property as keyof typeof PROPERTY],
+    };
+  }
 
-  const parseRooms = rooms.map((room) => ({
-    ...room,
-    roomTags: room.roomTags.map((tag) => tag.tag),
-    rules: room.rules.map((rule) => rule.rule),
-    amenities: room.amenities.map((amenity) => amenity.amenity),
-    host: {
-      ...room.host,
-      hostTags: room.host.hostTags.map((tag) => tag.tag),
-    },
-  }));
-
-  return parseRooms;
-}
+  return whereConditions;
+};
