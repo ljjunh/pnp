@@ -8,6 +8,30 @@ export type Refinement = {
   };
 };
 
+export const latitude = z
+  .number({
+    required_error: '위도는 필수 입력입니다',
+    invalid_type_error: '위도는 숫자여야 합니다',
+  })
+  .min(-90, {
+    message: '위도는 -90에서 90 사이여야 합니다',
+  })
+  .max(90, {
+    message: '위도는 -90에서 90 사이여야 합니다',
+  });
+
+export const longitude = z
+  .number({
+    required_error: '경도는 필수 입력입니다',
+    invalid_type_error: '경도는 숫자여야 합니다',
+  })
+  .min(-180, {
+    message: '경도는 -180에서 180 사이여야 합니다',
+  })
+  .max(180, {
+    message: '경도는 -180에서 180 사이여야 합니다',
+  });
+
 export const rating = z
   .number({
     required_error: '평점은 필수 입력입니다',
