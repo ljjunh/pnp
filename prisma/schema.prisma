@@ -107,6 +107,8 @@ model Room {
   reviewsCount   Int   @default(0) @map("reviews_count")
   reviewsAverage Float @default(0) @map("reviews_average")
 
+  status RoomStatus @default(DRAFT)
+
   roomTags  RoomTag[]
   images    RoomImage[]
   reviews   Review[]
@@ -119,6 +121,12 @@ model Room {
   Reservation Reservation[]
 
   @@map("rooms")
+}
+
+enum RoomStatus {
+  DRAFT
+  IN_PROGRESS
+  COMPLETED
 }
 
 model RoomImage {

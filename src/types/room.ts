@@ -38,3 +38,7 @@ export type FilterRoom = Pick<
 > & {
   images: Pick<RoomImage, 'id' | 'imageLink' | 'orientation'>[];
 };
+
+export type CreateRoomResponse = {
+  roomId: number;
+};

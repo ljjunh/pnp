@@ -76,5 +76,14 @@ export const priceFilterSchema = z.object({
   property,
 });
 
+export const createRoomSchema = z.object({
+  roomType: roomType,
+  price: price,
+  bedRoom: bedroom,
+  bed: bed,
+  bathroom: bathroom,
+});
+
 export type Filter = z.infer<typeof filterSchema>;
 export type PriceFilter = z.infer<typeof priceFilterSchema>;
+export type CreateRoom = z.infer<typeof createRoomSchema>;

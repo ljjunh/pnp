@@ -8,6 +8,8 @@ import { prisma } from './prisma';
 import CustomResponse from './response';
 import { remove, removeBulk, upload, uploadBulk } from './s3';
 
+export * from './throttling';
+
 export {
   CustomResponse,
   createPaginationResponse,

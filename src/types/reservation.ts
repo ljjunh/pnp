@@ -11,9 +11,14 @@ export type ReservationParams = {
   orderNumber: string;
 };
 
+export type CreateReservationResponse = {
+  reservationId: number;
+  orderNumber: string;
+};
+
 export type Reservation = Pick<
   PrismaReservation,
-  'userId' | 'roomId' | 'checkIn' | 'checkOut' | 'message' | 'guestNumber' | 'orderNumber'
+  'userId' | 'roomId' | 'checkIn' | 'checkOut' | 'guestNumber' | 'orderNumber'
 > & {
   room: Pick<Room, 'title' | 'thumbnail'> & {
     images: RoomImage[];

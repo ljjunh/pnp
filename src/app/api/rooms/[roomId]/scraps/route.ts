@@ -58,7 +58,7 @@ export async function POST(
 
     await createRoomScrap(roomId, session.user.id);
 
-    return CustomResponse.created();
+    return CustomResponse.createEmpty();
   } catch (error) {
     console.error('스크랩 생성 중 에러 발생: ', {
       roomId: params.roomId,

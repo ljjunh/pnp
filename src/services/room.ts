@@ -456,3 +456,38 @@ const getWhereConditions = (filter: Filter) => {
 
   return whereConditions;
 };
+
+/**
+ * 숙소를 생성한다.
+ *
+ * @param {string} userId 호스트 아이디
+ * @returns {Promise<number>} 생성된 방 아이디
+ */
+export async function createRoom(userId: string): Promise<number> {
+  const room = await prisma.room.create({
+    data: {
+      host: {
+        connect: {
+          userId: userId,
+        },
+      },
+      location: '',
+      title: '',
+      description: '',
+      seoTitle: '',
+      seoDescription: '',
+      thumbnail: '',
+      price: 0,
+      latitude: 0,
+      longitude: 0,
+      capacity: 0,
+      checkIn: '',
+      checkOut: '',
+      checkInType: '',
+      propertyType: '',
+      roomType: '',
+    },
+  });
+
+  return room.id;
+}
