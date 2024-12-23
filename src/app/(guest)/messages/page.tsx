@@ -1,15 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { AllMessageFilter } from '@/app/messages/components/message/AllMessageFilter';
-import { AllMessageHeader } from '@/app/messages/components/message/AllMessageHeader';
-import { AllMessageListItem } from '@/app/messages/components/message/AllMessageListItem';
-import { AllMessageSearchBar } from '@/app/messages/components/message/AllMessageSearchBar';
-import { MessageContent } from '@/app/messages/components/message/MessageContent';
-import { MessageHeader } from '@/app/messages/components/message/MessageHeader';
-import { MessageInput } from '@/app/messages/components/message/MessageInput';
-import { ReservationContent } from '@/app/messages/components/reservation/ReservationContent';
-import { ReservationHeader } from '@/app/messages/components/reservation/ReservationHeader';
+import { ReservationContent } from '@/app/(guest)/components/reservation/ReservationContent';
+import { ReservationHeader } from '@/app/(guest)/components/reservation/ReservationHeader';
+import { AllMessageFilter } from '@/app/(guest)/messages/components/AllMessageFilter';
+import { AllMessageHeader } from '@/app/(guest)/messages/components/AllMessageHeader';
+import { AllMessageListItem } from '@/app/(guest)/messages/components/AllMessageListItem';
+import { AllMessageSearchBar } from '@/app/(guest)/messages/components/AllMessageSearchBar';
+import { MessageContent } from '@/app/(guest)/messages/components/MessageContent';
+import { MessageHeader } from '@/app/(guest)/messages/components/MessageHeader';
+import { MessageInput } from '@/app/(guest)/messages/components/MessageInput';
 import { FilterItem } from '@/types/message';
 import { BsSuitcaseLg } from 'react-icons/bs';
 import { BsChatSquare } from 'react-icons/bs';

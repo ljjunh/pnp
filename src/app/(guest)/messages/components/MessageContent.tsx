@@ -1,4 +1,4 @@
-import { Message, dummyMessages } from '@/app/messages/components/dummyMessages';
+import { Message, dummyMessages } from '@/app/(guest)/messages/components/dummyMessages';
 import { cn } from '@/lib/utils';
 
 interface MessageGroup {
@@ -12,6 +12,7 @@ interface DateGroup {
 
 const formatDate = (dateStr: string) => {
   const date = new Date(dateStr);
+
   return new Intl.DateTimeFormat('ko-KR', {
     year: 'numeric',
     month: 'long',
@@ -23,6 +24,7 @@ const formatDate = (dateStr: string) => {
 const formatTime = (timeStr: string) => {
   const [hours, minutes] = timeStr.split(':');
   const hour = parseInt(hours);
+
   return `${hour < 12 ? '오전' : '오후'} ${hour < 12 ? hour : hour - 12}:${minutes}`;
 };
 
