@@ -1,7 +1,7 @@
 import { ROUTES } from '@/constants/routeURL';
 
 export const LOGGED_IN_MENU_ITEMS = [
-  { id: 'messages', label: '메시지', href: ROUTES.HOME },
+  { id: 'messages', label: '메시지', href: ROUTES.USER.MESSAGES },
   { id: 'trips', label: '여행', href: ROUTES.HOME },
   { id: 'wishlist', label: '위시리스트', href: ROUTES.HOME, hasDivider: true },
   { id: 'host-home', label: '당신의 공간을 에어비앤비하세요', href: ROUTES.HOME },

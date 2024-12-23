@@ -1,11 +1,11 @@
-import { EmailLoginForm } from '@/app/signin/components/EmailLoginForm';
-import { LoginHeader } from '@/app/signin/components/LoginHeader';
-import { SocialLogin } from '@/app/signin/components/SocialLogin';
+import { EmailLoginForm } from '@/app/(header-footer)/signin/components/EmailLoginForm';
+import { LoginHeader } from '@/app/(header-footer)/signin/components/LoginHeader';
+import { SocialLogin } from '@/app/(header-footer)/signin/components/SocialLogin';
 import { MESSAGES } from '@/constants/login';
 
 export default function LoginPage() {
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
+    <div className="mt-20 flex items-center justify-center">
       <main className="w-full max-w-screen-sm rounded-lg border bg-white">
         <LoginHeader />
 
