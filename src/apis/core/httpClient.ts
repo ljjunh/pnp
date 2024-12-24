@@ -37,6 +37,11 @@ export class HttpClient {
   }
 
   private getCookies(): string {
+    // 테스트 환경에서는 빈 문자열 반환
+    if (process.env.NODE_ENV === 'test') {
+      return '';
+    }
+
     const cookieStore = cookies();
     const allCookies = cookieStore.getAll();
 
