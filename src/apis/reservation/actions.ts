@@ -3,9 +3,12 @@
 import { auth } from '@/auth';
 import { CreateReservationInput } from '@/schemas/reservation';
 import { ActionResponse } from '@/types/action';
+import { CreateReservationResponse } from '@/types/reservation';
 import { httpClient } from '@/apis/core/httpClient';
 
-export async function createReservation(input: CreateReservationInput): Promise<ActionResponse> {
+export async function createReservation(
+  input: CreateReservationInput,
+): Promise<ActionResponse<CreateReservationResponse>> {
   try {
     // 세션 체크
     const session = await auth();
@@ -18,7 +21,7 @@ export async function createReservation(input: CreateReservationInput): Promise<
     }
 
     // API 요청
-    const response = await httpClient.post<undefined>('/reservation', input);
+    const response = await httpClient.post<CreateReservationResponse>('/reservation', input);
 
     // 실패 시 응답
     if (!response.success) {
@@ -32,6 +35,7 @@ export async function createReservation(input: CreateReservationInput): Promise<
     return {
       success: true,
       status: 200,
+      data: response.data,
     };
   } catch (error) {
     // 서버 요청 또는 처리 중 발생한 예상치 못한 오류 처리

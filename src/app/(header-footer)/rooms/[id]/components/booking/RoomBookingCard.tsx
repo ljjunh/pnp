@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { createReservation } from '@/apis/reservation/actions';
 import { useToast } from '@/hooks/use-toast';
+import { calculatePrice } from '@/utils/calculatePrice';
 import { ROUTES } from '@/constants/routeURL';
 
 interface RoomBookingCardProps {
@@ -29,57 +30,80 @@ interface RoomBookingCardProps {
 
 export default function RoomBookingCard({ price, roomId }: RoomBookingCardProps) {
   const { toast } = useToast();
-  const [showDialog, setShowDialog] = useState(false);
   const router = useRouter();
-  const [checkIn, setCheckIn] = useState<Date>(addDays(new Date(), 1));
-  const [checkOut, setCheckOut] = useState<Date>(addDays(new Date(), 2));
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [showGuestDropdown, setShowGuestDropdown] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  const [dates, setDates] = useState({
+    checkIn: addDays(new Date(), 1),
+    checkOut: addDays(new Date(), 2),
+    showCalendar: false,
+  });
   const [guests, setGuests] = useState({
-    adults: 1,
-    children: 0,
-    infants: 0,
-    pets: 0,
+    counts: {
+      adults: 1,
+      children: 0,
+      infants: 0,
+      pets: 0,
+    },
+    showDropdown: false,
   });
 
-  const handleGuestChange = (type: keyof typeof guests, value: number) => {
+  const handleGuestChange = (type: keyof typeof guests.counts, value: number) => {
     setGuests((prev) => ({
       ...prev,
-      [type]: value,
+      counts: {
+        ...prev.counts,
+        [type]: value,
+      },
     }));
   };
 
   const handleDateChange = (startDate: Date, endDate: Date) => {
-    setCheckIn(startDate);
-    setCheckOut(endDate);
+    setDates((prev) => ({
+      ...prev,
+      checkIn: startDate,
+      checkOut: endDate,
+    }));
   };
 
   const handleCalendarToggle = () => {
-    setShowGuestDropdown(false);
-    setShowCalendar((prev) => !prev);
+    setGuests((prev) => ({
+      ...prev,
+      showDropdown: false,
+    }));
+    setDates((prev) => ({
+      ...prev,
+      showCalendar: !prev.showCalendar,
+    }));
   };
 
   const handleGuestDropdownToggle = () => {
-    setShowCalendar(false);
-    setShowGuestDropdown((prev) => !prev);
+    setDates((prev) => ({
+      ...prev,
+      showCalendar: false,
+    }));
+    setGuests((prev) => ({
+      ...prev,
+      showDropdown: !prev.showDropdown,
+    }));
   };
 
-  const pricePerNight = price;
-  const serviceFeePercentage = 10;
+  const nights = Math.ceil(
+    (dates.checkOut.getTime() - dates.checkIn.getTime()) / (1000 * 60 * 60 * 24),
+  );
 
-  const nights = Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24));
-  const subtotal = pricePerNight * nights;
-  const serviceFee = Math.round(subtotal * (serviceFeePercentage / 100));
-  const total = subtotal + serviceFee;
+  const { subtotal, serviceFee, total } = calculatePrice({
+    price,
+    nights,
+  });
 
   const handleReservation = async () => {
-    const guestNumber = guests.adults + guests.children + guests.infants + guests.pets;
+    const guestNumber = Object.values(guests.counts).reduce((sum, count) => sum + count, 0);
 
     const reservationData: CreateReservationInput = {
       roomId,
       guestNumber,
-      checkIn,
-      checkOut,
+      checkIn: dates.checkIn,
+      checkOut: dates.checkOut,
     };
     const response = await createReservation(reservationData);
     if (!response.success) {
@@ -99,7 +123,18 @@ export default function RoomBookingCard({ price, roomId }: RoomBookingCardProps)
       }
       return;
     }
-    alert('성공했습니다.');
+
+    // 성공했지만 orderNumber가 없는 경우는 서버 에러로 간주
+    if (!response.data?.orderNumber) {
+      toast({
+        title: '예약 실패',
+        description: '예약은 완료되었으나 주문번호를 받아오지 못했습니다. 고객센터로 문의해주세요.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    // 타입이 보장된 상태일때만 라우팅
+    router.push(ROUTES.BOOK(response.data?.orderNumber));
   };
 
   const handleConfirm = () => {
@@ -111,22 +146,22 @@ export default function RoomBookingCard({ price, roomId }: RoomBookingCardProps)
     <>
       <div className="border-1 mt-8 rounded-xl border p-6 shadow-lg">
         <div className="mb-6">
-          <span className="mr-1.5 font-bold">₩{pricePerNight.toLocaleString()}</span>
+          <span className="mr-1.5 font-bold">₩{price.toLocaleString()}</span>
           <span className="text-base">/박</span>
         </div>
 
         <div className="mb-4 grid grid-cols-2 rounded-lg border border-neutral-05">
           <RoomBookingCalendar
-            isOpen={showCalendar}
+            isOpen={dates.showCalendar}
             onToggle={handleCalendarToggle}
-            startDate={checkIn}
-            endDate={checkOut}
+            startDate={dates.checkIn}
+            endDate={dates.checkOut}
             onDateChange={handleDateChange}
           />
           <RoomBookingDropdown
-            isOpen={showGuestDropdown}
+            isOpen={guests.showDropdown}
             onToggle={handleGuestDropdownToggle}
-            guestCounts={guests}
+            guestCounts={guests.counts}
             onGuestChange={handleGuestChange}
           />
         </div>
@@ -147,7 +182,7 @@ export default function RoomBookingCard({ price, roomId }: RoomBookingCardProps)
         <section className="mt-6 flex flex-col gap-4">
           <div className="flex justify-between">
             <div className="underline">
-              ₩{pricePerNight.toLocaleString()} x {nights}박
+              ₩{price.toLocaleString()} x {nights}박
             </div>
             <div>₩{subtotal.toLocaleString()}</div>
           </div>
