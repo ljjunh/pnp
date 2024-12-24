@@ -549,6 +549,9 @@ export async function updateRoom(roomId: number, userId: string, data: UpdateRoo
     ...(data.longitude && { longitude: data.longitude }),
     ...(data.location && { location: data.location }),
     ...(data.capacity && { capacity: data.capacity }),
+    ...(data.checkIn && { checkIn: data.checkIn }),
+    ...(data.checkOut && { checkOut: data.checkOut }),
+    ...(data.checkInType && { checkInType: data.checkInType }),
     ...(data.amenities && {
       amenities: {
         connectOrCreate: data.amenities.map((amenityId) => ({
@@ -556,6 +559,16 @@ export async function updateRoom(roomId: number, userId: string, data: UpdateRoo
             roomId_amenityId: { amenityId, roomId },
           },
           create: { amenityId },
+        })),
+      },
+    }),
+    ...(data.rules && {
+      rules: {
+        connectOrCreate: data.rules.map((ruleId) => ({
+          where: {
+            roomId_ruleId: { ruleId, roomId },
+          },
+          create: { ruleId },
         })),
       },
     }),
