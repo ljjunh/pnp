@@ -80,7 +80,6 @@ export class HttpClient {
     config: RequestInit = {},
   ): Promise<BaseResponse<T>> {
     // 기본 설정과 사용자 설정을 병합
-    console.log(url);
     let fetchConfig: RequestInit = {
       ...config,
       method,
