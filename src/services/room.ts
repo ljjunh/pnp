@@ -1,7 +1,8 @@
 import { BadRequestError, NotFoundError } from '@/errors';
-import { prisma } from '@/lib/server';
-import { Filter, PriceFilter } from '@/schemas/rooms';
-import { Prisma } from '@prisma/client';
+import { ForbiddenError } from '@/errors/errors';
+import { prisma, upload } from '@/lib/server';
+import { Filter, PriceFilter, UpdateRoom } from '@/schemas/rooms';
+import { Prisma, RoomImage } from '@prisma/client';
 import { FilterRoom, Room } from '@/types/room';
 import { extractProperty } from '@/utils/convertor';
 import { PROPERTY } from '@/constants/property';
@@ -456,3 +457,182 @@ const getWhereConditions = (filter: Filter) => {
 
   return whereConditions;
 };
+
+/**
+ * 숙소를 생성한다.
+ *
+ * @param {string} userId 호스트 아이디
+ * @returns {Promise<number>} 생성된 방 아이디
+ */
+export async function createRoom(userId: string): Promise<number> {
+  const room = await prisma.room.create({
+    data: {
+      host: {
+        connect: {
+          userId: userId,
+        },
+      },
+      location: '',
+      title: '',
+      description: '',
+      seoTitle: '',
+      seoDescription: '',
+      thumbnail: '',
+      price: 0,
+      latitude: 0,
+      longitude: 0,
+      capacity: 0,
+      checkIn: '',
+      checkOut: '',
+      checkInType: '',
+      propertyType: '',
+      roomType: '',
+    },
+  });
+
+  return room.id;
+}
+
+/**
+ * 숙소를 수정한다.
+ *
+ * @param {number} roomId 방 아이디
+ * @param {string} userId 호스트 아이디
+ * @param {UpdateRoom} data 수정할 방 정보
+ */
+export async function updateRoom(roomId: number, userId: string, data: UpdateRoom) {
+  const room = await prisma.room.findFirst({
+    where: {
+      id: roomId,
+    },
+    select: {
+      host: {
+        select: {
+          userId: true,
+        },
+      },
+      reservations: {
+        where: {
+          NOT: {
+            status: 'CANCELED',
+          },
+          checkIn: {
+            lte: new Date(),
+          },
+        },
+      },
+    },
+  });
+
+  if (!room) {
+    throw new NotFoundError();
+  }
+
+  if (room.host.userId !== userId) {
+    throw new ForbiddenError('본인의 숙소만 수정할 수 있습니다.');
+  }
+
+  if (room.reservations.length > 0) {
+    throw new BadRequestError('예약이 존재하는 숙소는 수정할 수 없습니다.');
+  }
+
+  const updateData: Prisma.RoomUpdateInput = {
+    ...(data.roomType && { roomType: data.roomType }),
+    ...(data.bed && { bed: data.bed }),
+    ...(data.bathroom && { bathroom: data.bathroom }),
+    ...(data.price && { price: data.price }),
+    ...(data.bedRoom && { bedRoom: data.bedRoom }),
+    ...(data.title && { title: data.title, seoTitle: data.title }),
+    ...(data.description && { description: data.description, seoDescription: data.description }),
+    ...(data.latitude && { latitude: data.latitude }),
+    ...(data.longitude && { longitude: data.longitude }),
+    ...(data.location && { location: data.location }),
+    ...(data.capacity && { capacity: data.capacity }),
+  };
+
+  await prisma.room.update({
+    where: {
+      id: roomId,
+    },
+    data: updateData,
+  });
+}
+
+/**
+ * 숙소에 존재하는 이미지들을 조회한다.
+ *
+ * @param {number} roomId 방 아이디
+ * @param {string} userId 사용자 아이디
+ *
+ * @returns {Promise<RoomImage[]>} 방 이미지들
+ */
+export async function getRoomImages(roomId: number, userId: string): Promise<RoomImage[]> {
+  const room = await prisma.room.findFirst({
+    where: {
+      id: roomId,
+    },
+    select: {
+      host: {
+        select: {
+          userId: true,
+        },
+      },
+      images: true,
+    },
+  });
+
+  if (!room) {
+    throw new NotFoundError();
+  }
+
+  if (room.host.userId !== userId) {
+    throw new ForbiddenError('본인의 숙소만 조회할 수 있습니다.');
+  }
+
+  return room.images;
+}
+
+/**
+ * 숙소 이미지를 업로드한다.
+ *
+ * @param {number} roomId 방 아이디
+ * @param {string} userId 사용자 아이디
+ * @param {File[]} images 이미지 파일들
+ */
+export async function uploadRoomImages(roomId: number, userId: string, images: File[]) {
+  const room = await prisma.room.findFirst({
+    where: {
+      id: roomId,
+    },
+    select: {
+      host: {
+        select: {
+          userId: true,
+        },
+      },
+    },
+  });
+
+  if (!room) {
+    throw new NotFoundError();
+  }
+
+  if (room.host.userId !== userId) {
+    throw new ForbiddenError('본인의 숙소만 조회할 수 있습니다.');
+  }
+
+  const uploadImages = images.map(async (image: File, index: number) => {
+    const imageKey = await upload(image, 'rooms');
+
+    return prisma.roomImage.create({
+      data: {
+        imageLink: imageKey,
+        orientation: 'LANDSCAPE',
+        roomId: roomId,
+        caption: `숙소 이미지 ${index + 1}`,
+      },
+    });
+  });
+
+  await Promise.all(uploadImages);
+}

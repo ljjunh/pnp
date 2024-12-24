@@ -1,7 +1,8 @@
 import { z } from 'zod';
 import { PROPERTY } from '@/constants/property';
+import { latitude } from './type';
 
-const roomType = z.enum(['Entire', 'Private']).nullable();
+const roomType = z.enum(['Entire', 'Private']).optional();
 
 const price = z
   .number({ message: '가격은 숫자여야 합니다.' })
@@ -76,5 +77,36 @@ export const priceFilterSchema = z.object({
   property,
 });
 
+export const updateRoomSchema = z.object({
+  title: z
+    .string()
+    .min(3, {
+      message: '제목은 3글자 이상이어야 합니다.',
+    })
+    .max(50, {
+      message: '제목은 50글자 이하여야 합니다.',
+    })
+    .optional(),
+  description: z
+    .string()
+    .min(10, {
+      message: '설명은 10글자 이상이어야 합니다.',
+    })
+    .max(1000, {
+      message: '설명은 1000글자 이하여야 합니다.',
+    })
+    .optional(),
+  roomType: roomType,
+  latitude: latitude.optional(),
+  longitude: latitude.optional(),
+  location: z.string().optional(),
+  capacity: z.number().optional(),
+  price: price,
+  bedRoom: bedroom,
+  bed: bed,
+  bathroom: bathroom,
+});
+
 export type Filter = z.infer<typeof filterSchema>;
 export type PriceFilter = z.infer<typeof priceFilterSchema>;
+export type UpdateRoom = z.infer<typeof updateRoomSchema>;

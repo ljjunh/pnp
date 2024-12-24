@@ -107,18 +107,26 @@ model Room {
   reviewsCount   Int   @default(0) @map("reviews_count")
   reviewsAverage Float @default(0) @map("reviews_average")
 
-  roomTags  RoomTag[]
-  images    RoomImage[]
-  reviews   Review[]
-  rules     RoomRule[]
-  amenities RoomAmenity[]
-  scraps    RoomScrap[]
+  status RoomStatus @default(COMPLETED)
 
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @default(now()) @updatedAt @map("updated_at")
-  Reservation Reservation[]
+  roomTags     RoomTag[]
+  images       RoomImage[]
+  reviews      Review[]
+  rules        RoomRule[]
+  amenities    RoomAmenity[]
+  scraps       RoomScrap[]
+  reservations Reservation[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   @@map("rooms")
+}
+
+enum RoomStatus {
+  DRAFT
+  IN_PROGRESS
+  COMPLETED
 }
 
 model RoomImage {

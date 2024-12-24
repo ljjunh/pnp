@@ -9,9 +9,18 @@ import { Reservation } from '@/types/reservation';
  *
  * @param {string} userId 사용자 ID
  * @param {CreateReservationInput} data 예약 생성 데이터
- * @returns
+ * @returns {Promise<{
+ *  reservationId: number;
+ *  orderNumber: string;
+ * }>} 예약 ID
  */
-export async function createReservation(userId: string, data: CreateReservationInput) {
+export async function createReservation(
+  userId: string,
+  data: CreateReservationInput,
+): Promise<{
+  reservationId: number;
+  orderNumber: string;
+}> {
   const room = await prisma.room.findUnique({
     where: {
       id: data.roomId,
@@ -53,7 +62,7 @@ export async function createReservation(userId: string, data: CreateReservationI
   // * 주문 번호 생성
   const orderNumber = generateOrderNumber(data.roomId);
 
-  await prisma.reservation.create({
+  const reservation = await prisma.reservation.create({
     data: {
       userId: userId,
       roomId: data.roomId,
@@ -64,6 +73,11 @@ export async function createReservation(userId: string, data: CreateReservationI
       totalPrice: price,
     },
   });
+
+  return {
+    reservationId: reservation.id,
+    orderNumber: orderNumber,
+  };
 }
 
 /**

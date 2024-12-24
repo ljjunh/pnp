@@ -24,6 +24,20 @@ class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T> | object>
     );
   }
 
+  static create<T>(data: T): CustomResponse<T> {
+    return CustomResponse.json(
+      {
+        success: true,
+        status: 201,
+        data: data,
+        message: 'CREATED',
+      },
+      {
+        status: 201,
+      },
+    );
+  }
+
   static empty(message: string = 'OK', statusCode: number = 200): CustomResponse<undefined> {
     return CustomResponse.json(
       {
@@ -38,7 +52,7 @@ class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T> | object>
     );
   }
 
-  static created(): CustomResponse<undefined> {
+  static createEmpty(): CustomResponse<undefined> {
     return CustomResponse.empty('CREATED', 201);
   }
 
