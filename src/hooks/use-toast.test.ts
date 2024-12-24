@@ -10,9 +10,6 @@ describe('토스트 기능 테스트', () => {
         result.current.dismiss(toast.id);
       });
     });
-  });
-
-  beforeEach(() => {
     jest.useFakeTimers();
   });
 
