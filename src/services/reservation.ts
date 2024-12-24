@@ -109,13 +109,9 @@ export async function getReservationByOrderNumber(
         select: {
           title: true,
           thumbnail: true,
-          images: true,
-          // * 숙소의 규칙 조회
-          rules: {
-            select: {
-              rule: true,
-            },
-          },
+          reviewsCount: true,
+          reviewsAverage: true,
+          propertyType: true,
           // * 숙소의 호스트 정보
           host: {
             select: {

@@ -105,6 +105,11 @@ export const updateRoomSchema = z.object({
   bedRoom: bedroom,
   bed: bed,
   bathroom: bathroom,
+  amenities: z.array(z.number(), { message: '편의시설 ID 값이 들어가야 합니다.' }).optional(),
+  rules: z.array(z.number(), { message: '규칙 ID 값이 들어가야 합니다.' }).optional(),
+  checkIn: z.string().optional(),
+  checkOut: z.string().optional(),
+  checkInType: z.string().optional(),
 });
 
 export type Filter = z.infer<typeof filterSchema>;
