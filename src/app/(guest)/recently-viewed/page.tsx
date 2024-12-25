@@ -34,7 +34,7 @@ export default function RecentlyViewed() {
           <h3 className="font-medium">날짜</h3>
           <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             <div>
-              <div className="relative h-[300px] w-[300px]">
+              <div className="relative aspect-square">
                 <div className="absolute left-3 top-3 z-10 cursor-pointer rounded-full bg-slate-50 px-2 shadow-lg hover:scale-105 hover:bg-white">
                   <span>&times;</span>
                 </div>
