@@ -11,7 +11,7 @@ export type CreateReservationResponse = {
 
 export type Reservation = Pick<
   PrismaReservation,
-  'userId' | 'roomId' | 'checkIn' | 'checkOut' | 'guestNumber' | 'orderNumber'
+  'userId' | 'roomId' | 'checkIn' | 'checkOut' | 'guestNumber' | 'orderNumber' | 'totalPrice'
 > & {
   room: Pick<Room, 'title' | 'thumbnail' | 'reviewsCount' | 'reviewsAverage' | 'propertyType'> & {
     host: Pick<Host, 'id' | 'isSuperHost' | 'isVerified'> & {
