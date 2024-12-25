@@ -1,8 +1,7 @@
-// components/BookingPage.tsx
 import Image from 'next/image';
-import Payment from './_components/payment';
+import Payment from '@/app/(header-footer)/book/[orderNumber]/components/payment';
 
-export default async function BookingPage() {
+export default async function BookingPage({ params }: { params: { orderNumber: string } }) {
   return (
     <div className="mx-auto max-w-3xl p-4">
       {/* Header */}
