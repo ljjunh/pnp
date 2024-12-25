@@ -34,8 +34,8 @@ export default function Trips() {
 
         <h2 className="my-6 text-xl">이전 여행지</h2>
 
-        <ul className="flex gap-5">
-          <li className="flex w-[33%] cursor-pointer gap-3">
+        <ul className="grid grid-cols-3 gap-5">
+          <li className="flex cursor-pointer gap-3">
             <div className="relative w-20">
               <Image
                 src="/images/05.avif"

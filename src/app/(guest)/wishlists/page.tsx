@@ -12,21 +12,21 @@ const images = [
 export default function Wishlists() {
   return (
     <div className="flex w-full justify-center">
-      <div className="w-full max-w-screen-2xl px-20 py-12 flex flex-col gap-5">
+      <div className="flex w-full max-w-screen-2xl flex-col gap-8 px-20 py-12">
         <h1 className="text-3xl font-medium">위시리스트</h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {images.map((image, index) => (
             <div
               key={index}
               className="flex w-full flex-col gap-2"
             >
-              <div className="aspect-square w-full rounded-xl p-2 shadow-[0_0_10px_rgba(0,0,0,0.1)]">
-                <div className="relative h-full w-full">
+              <div className="aspect-square w-full rounded-2xl p-1 shadow-[0_0_10px_rgba(0,0,0,0.1)]">
+                <div className="relative h-full w-full cursor-pointer">
                   <Image
                     src={image}
                     alt="숙소 사진"
                     fill
-                    className="rounded-xl object-cover"
+                    className="rounded-2xl object-cover"
                   />
                 </div>
               </div>
