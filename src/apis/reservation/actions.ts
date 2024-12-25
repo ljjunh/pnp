@@ -22,7 +22,6 @@ export async function createReservation(
 
     // API 요청
     const response = await httpClient.post<CreateReservationResponse>('/reservation', input);
-
     // 실패 시 응답
     if (!response.success) {
       return {
