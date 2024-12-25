@@ -4,6 +4,9 @@ import { prisma } from '@/lib/server';
 import { CreateReservationInput, ReservationAvailableInput } from '@/schemas';
 import { Reservation } from '@/types/reservation';
 
+const CHECKIN_DEFAULT = '15:00';
+const CHECKOUT_DEFAULT = '11:00';
+
 /**
  * 새롭게 숙소를 예약한다.
  *
@@ -62,14 +65,17 @@ export async function createReservation(
   // * 주문 번호 생성
   const orderNumber = generateOrderNumber(data.roomId);
 
+  const roomCheckIn = setRoomTime(data.checkIn, room.checkIn || CHECKIN_DEFAULT);
+  const roomCheckOut = setRoomTime(data.checkOut, room.checkOut || CHECKOUT_DEFAULT);
+
   const reservation = await prisma.reservation.create({
     data: {
       userId: userId,
       roomId: data.roomId,
       orderNumber: orderNumber,
-      checkIn: data.checkIn,
+      checkIn: roomCheckIn,
       days: differenceInDays,
-      checkOut: data.checkOut,
+      checkOut: roomCheckOut,
       guestNumber: data.guestNumber,
       totalPrice: price,
     },
@@ -114,6 +120,10 @@ export async function getReservationByOrderNumber(
           thumbnail: true,
           reviewsCount: true,
           price: true,
+          checkIn: true,
+          checkOut: true,
+          checkInType: true,
+          capacity: true,
           reviewsAverage: true,
           propertyType: true,
           // * 숙소의 호스트 정보
@@ -283,4 +293,11 @@ const generateOrderNumber = (roomId: number): string => {
     .padStart(6, '0');
 
   return `${year}${month}${day}-${paddedRoomId}-${random}`;
+};
+
+const setRoomTime = (date: Date, time: string): Date => {
+  const newDate = new Date(date);
+  const [hours, minutes] = time.split(':').map(Number);
+  newDate.setHours(hours, minutes);
+  return newDate;
 };

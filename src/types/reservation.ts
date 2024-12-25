@@ -22,7 +22,16 @@ export type Reservation = Pick<
 > & {
   room: Pick<
     Room,
-    'title' | 'thumbnail' | 'reviewsCount' | 'reviewsAverage' | 'propertyType' | 'price'
+    | 'title'
+    | 'thumbnail'
+    | 'reviewsCount'
+    | 'reviewsAverage'
+    | 'propertyType'
+    | 'price'
+    | 'checkIn'
+    | 'checkOut'
+    | 'checkInType'
+    | 'capacity'
   > & {
     host: Pick<Host, 'id' | 'isSuperHost' | 'isVerified'> & {
       user: Pick<User, 'id' | 'name' | 'image'>;
