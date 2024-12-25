@@ -68,6 +68,7 @@ export async function createReservation(
       roomId: data.roomId,
       orderNumber: orderNumber,
       checkIn: data.checkIn,
+      days: differenceInDays,
       checkOut: data.checkOut,
       guestNumber: data.guestNumber,
       totalPrice: price,
@@ -104,6 +105,7 @@ export async function getReservationByOrderNumber(
       checkIn: true,
       totalPrice: true,
       checkOut: true,
+      days: true,
       guestNumber: true,
       // * 숙소 정보 한번에 조회
       room: {
@@ -111,6 +113,7 @@ export async function getReservationByOrderNumber(
           title: true,
           thumbnail: true,
           reviewsCount: true,
+          price: true,
           reviewsAverage: true,
           propertyType: true,
           // * 숙소의 호스트 정보

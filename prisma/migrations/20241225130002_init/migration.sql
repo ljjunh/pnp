@@ -262,6 +262,7 @@ CREATE TABLE `reservations` (
     `check_in` DATETIME(3) NOT NULL,
     `check_out` DATETIME(3) NOT NULL,
     `guest_number` INTEGER NOT NULL,
+    `days` INTEGER NOT NULL,
     `total_price` INTEGER NOT NULL,
     `status` ENUM('PENDING', 'PAYMENT', 'CONFIRMED', 'CANCELED', 'COMPLETED') NOT NULL DEFAULT 'PENDING',
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),

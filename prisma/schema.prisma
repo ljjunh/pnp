@@ -319,6 +319,7 @@ model Reservation {
   checkIn     DateTime          @map("check_in")
   checkOut    DateTime          @map("check_out")
   guestNumber Int               @map("guest_number")
+  days        Int
   totalPrice  Int               @map("total_price")
   status      ReservationStatus @default(PENDING)
   createdAt   DateTime          @default(now()) @map("created_at")
