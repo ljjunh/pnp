@@ -151,7 +151,7 @@ export default function RoomBookingCard({ price, roomId }: RoomBookingCardProps)
       return;
     }
     // 타입이 보장된 상태일때만 라우팅
-    router.push(ROUTES.BOOK(response.data?.orderNumber));
+    router.push(ROUTES.RESERVATION(response.data?.orderNumber));
   };
 
   const handleConfirm = () => {

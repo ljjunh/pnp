@@ -1,11 +1,11 @@
 import Image from 'next/image';
-import Payment from '@/app/(header-footer)/book/[orderNumber]/components/payment';
+import Payment from '@/app/(header-footer)/reservation/[orderNumber]/components/payment';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { Reservation } from '@/types/reservation';
 import { getReservation } from '@/apis/reservation/queries';
 
-export default async function BookingPage({ params }: { params: { orderNumber: string } }) {
+export default async function ReservationPage({ params }: { params: { orderNumber: string } }) {
   const reservation: Reservation = await getReservation(params.orderNumber);
   console.log('데이터---', reservation);
 
@@ -64,13 +64,15 @@ export default async function BookingPage({ params }: { params: { orderNumber: s
 
       {/* Room Info */}
       <div className="mb-6 flex gap-4">
-        <Image
-          src="/room-image.jpg"
-          alt={'호스트 프로필 이미지'}
-          width={100}
-          height={100}
-          className="rounded-lg"
-        />
+        {reservation.room.host.user.image && (
+          <Image
+            src={reservation.room.host.user.image}
+            alt={'호스트 프로필 이미지'}
+            width={100}
+            height={100}
+            className="rounded-lg"
+          />
+        )}
         <div>
           <h2 className="font-medium">{reservation.room.host.user.name}</h2>
           <div className="flex items-center gap-1 text-sm">
