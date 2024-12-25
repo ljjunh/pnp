@@ -83,14 +83,14 @@ export async function createReservation(
 /**
  * 주문 번호를 기반으로 예약 정보를 가져온다.
  *
- * @param {string} orderNumber 주문 번호
  * @param {string} userId 사용자 ID
+ * @param {string} orderNumber 주문 번호
  *
  * @returns {Promise<Reservation>} 예약 정보
  */
 export async function getReservationByOrderNumber(
-  orderNumber: string,
   userId: string,
+  orderNumber: string,
 ): Promise<Reservation> {
   const reservation = await prisma.reservation.findUnique({
     relationLoadStrategy: 'join',
