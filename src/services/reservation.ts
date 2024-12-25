@@ -102,6 +102,7 @@ export async function getReservationByOrderNumber(
       roomId: true,
       orderNumber: true,
       checkIn: true,
+      totalPrice: true,
       checkOut: true,
       guestNumber: true,
       // * 숙소 정보 한번에 조회
@@ -140,7 +141,7 @@ export async function getReservationByOrderNumber(
     throw new ForbiddenError('해당 예약 정보에 접근할 권한이 없습니다.');
   }
 
-  return reservation as Reservation;
+  return reservation;
 }
 
 /**
