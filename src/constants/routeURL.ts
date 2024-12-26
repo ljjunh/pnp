@@ -6,7 +6,7 @@ export const ROUTES = {
     TRIPS: '/trips',
     TRIPS_DETAIL: (id: number) => `/trips/${id}`,
     WISHLISTS: '/wishlists',
-    WISHLIST_DETAIL: (id: number) => `/trips/${id}`,
+    WISHLIST_DETAIL: (id: number) => `/wishlists/${id}`,
     RECENTLY_VIEWED: 'recently-viewed',
   } as const,
   ROOMS: {
