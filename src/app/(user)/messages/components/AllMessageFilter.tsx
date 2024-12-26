@@ -21,12 +21,12 @@ export function AllMessageFilter({ showFilter, toggleFilter, filterItems }: AllM
         <div
           onClick={(e) => e.stopPropagation()}
           className={`absolute -left-4 top-12 z-10 w-[22rem] rounded-xl bg-white drop-shadow-2xl transition-all duration-300 ease-in-out ${showFilter ? 'translate-y-0 scale-100 opacity-100' : 'pointer-events-none -translate-y-2 scale-95 opacity-0'}`}
-          role="menu"
           aria-expanded={showFilter}
         >
           <div className="flex flex-col gap-1 px-2 py-4 text-base font-medium text-black">
             {filterItems.map((item) => {
               const Icon = item.icon;
+
               return (
                 <div
                   key={item.id}

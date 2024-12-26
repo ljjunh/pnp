@@ -1,9 +1,9 @@
-import { CustomerSupport } from '@/app/messages/components/reservation/CustomerSupport';
-import { HostInformation } from '@/app/messages/components/reservation/HostInformation';
-import { PaymentInformation } from '@/app/messages/components/reservation/PaymentInformation';
-import { ReservationDetailInformation } from '@/app/messages/components/reservation/ReservationDetailInformation';
-import { RoomInformation } from '@/app/messages/components/reservation/RoomInformation';
-import { RoomRules } from '@/app/messages/components/reservation/RoomRules';
+import { CustomerSupport } from '@/app/(user)/components/reservation/CustomerSupport';
+import { HostInformation } from '@/app/(user)/components/reservation/HostInformation';
+import { PaymentInformation } from '@/app/(user)/components/reservation/PaymentInformation';
+import { ReservationDetailInformation } from '@/app/(user)/components/reservation/ReservationDetailInformation';
+import { RoomInformation } from '@/app/(user)/components/reservation/RoomInformation';
+import { RoomRules } from '@/app/(user)/components/reservation/RoomRules';
 
 export function ReservationContent() {
   return (

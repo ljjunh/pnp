@@ -1,4 +1,4 @@
-import { filterItems } from '@/app/messages/page';
+import { filterItems } from '@/app/(user)/messages/page';
 import type { Meta, StoryObj } from '@storybook/react';
 import { AllMessageFilter } from './AllMessageFilter';
 
