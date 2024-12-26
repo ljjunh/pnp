@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import FilterModal from '@/app/(header-footer)/components/qwer/FilterModal';
+import FilterModal from '@/app/(header-footer)/components/filter/FilterModal';
 import FilterButton from '@/components/common/Button/FilterButton';
 import ModalProvider from '@/components/common/ModalProvider/ModalProvider';
 import { MODAL_ID } from '@/constants/modal';
