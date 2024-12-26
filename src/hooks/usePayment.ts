@@ -115,8 +115,8 @@ const usePayment = () => {
           orderId: orderId,
           orderName: orderName,
           amount: amount,
-          successUrl: process.env.NEXT_PUBLIC_BASE_URL + '/book/success',
-          failUrl: process.env.NEXT_PUBLIC_BASE_URL + '/book/fail',
+          successUrl: process.env.NEXT_PUBLIC_BASE_URL + '/reservation/success',
+          failUrl: process.env.NEXT_PUBLIC_BASE_URL + '/reservation/fail',
         });
       } catch (error) {
         console.error('결제 요청에 실패하였습니다.', error);

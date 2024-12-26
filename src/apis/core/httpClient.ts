@@ -1,4 +1,5 @@
-import { cookies } from 'next/headers';
+import { getServerCookies } from '@/app/lib/server/cookies';
+import { CustomError } from '@/errors';
 import { BaseResponse } from '@/lib/server/response';
 
 // HTTP 요청 메서드 타입 정의
@@ -37,15 +38,15 @@ export class HttpClient {
   }
 
   private getCookies(): string {
+    if (typeof window !== 'undefined') {
+      return document.cookie;
+    }
     // 테스트 환경에서는 빈 문자열 반환
     if (process.env.NODE_ENV === 'test') {
       return '';
     }
 
-    const cookieStore = cookies();
-    const allCookies = cookieStore.getAll();
-
-    return allCookies.map((cookie) => `${cookie.name}=${cookie.value}`).join('; ');
+    return getServerCookies();
   }
 
   // 요청 인터셉터 추가하는 메서드
@@ -60,6 +61,7 @@ export class HttpClient {
 
   // 기본 인터셉터 설정
   private setupDefaultInterceptors(): void {
+    // 기본 요청 인터셉터
     this.addRequestInterceptor({
       onRequest: (config) => ({
         ...config,
@@ -67,6 +69,17 @@ export class HttpClient {
           ...config.headers,
         },
       }),
+    });
+
+    // 기본 응답 인터셉터
+    this.addResponseInterceptor({
+      onResponse: async <T>(response: BaseResponse<T>) => {
+        // 서버에서 401 상태를 반환한 경우
+        if (response.status === 401) {
+          throw new CustomError(response.message || '인증이 필요한 요청입니다.', 401);
+        }
+        return response;
+      },
     });
   }
 

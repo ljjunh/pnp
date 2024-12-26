@@ -1,11 +1,18 @@
 'use client';
 
 import { useState } from 'react';
+import { Reservation } from '@/types/reservation';
 import usePayment, { PaymentType } from '@/hooks/usePayment';
 
-export default function Payment() {
+interface PaymentProps {
+  orderNumber: Reservation['orderNumber'];
+  totalPrice: number;
+  title: Reservation['room']['title'];
+}
+
+export default function Payment({ orderNumber, totalPrice, title }: PaymentProps) {
   const { isReady, requestPayment } = usePayment();
-  const [method, setMethod] = useState<PaymentType | null>(null);
+  const [method, setMethod] = useState<PaymentType>('TRANSFER');
 
   return (
     <div>
@@ -71,13 +78,14 @@ export default function Payment() {
       <button
         disabled={!isReady}
         className="mt-6 w-full rounded-lg bg-[#FF385C] py-3 text-white"
-        onClick={() =>
+        onClick={() => {
+          console.log('클릭되잖아');
           requestPayment(method, {
-            orderId: '123123jsadfhjsahjdfbew8sa225df4nmh222j32',
-            orderName: 'Room Payment',
-            amount: 50000,
-          })
-        }
+            orderId: orderNumber,
+            orderName: title,
+            amount: totalPrice,
+          });
+        }}
       >
         확인 및 결제
       </button>
