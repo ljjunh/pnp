@@ -34,6 +34,7 @@ export async function GET(request: NextRequest) {
         ios: response.iosLink,
       };
       const link = agentLinkMap[agent] || response.pcLink;
+
       return CustomResponse.ok({ link, tid: response.tid });
     }
 

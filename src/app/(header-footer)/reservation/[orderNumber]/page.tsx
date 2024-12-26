@@ -7,8 +7,6 @@ import { getReservation } from '@/apis/reservation/queries';
 
 export default async function ReservationPage({ params }: { params: { orderNumber: string } }) {
   const reservation: Reservation = await getReservation(params.orderNumber);
-  console.log('데이터---', reservation);
-
   const serviceFee = Math.round(reservation.totalPrice * (10 / 100));
 
   // date-fns로 날짜/시간 포맷팅
@@ -94,10 +92,12 @@ export default async function ReservationPage({ params }: { params: { orderNumbe
             {checkInDate}-{checkOutDate}
           </span>
         </div>
-        <div className="flex justify-between">
-          <span>체크인 시간</span>
-          <span className="text-right">오후 3시</span>
-        </div>
+        {reservation.room.checkIn && (
+          <div className="flex justify-between">
+            <span>체크인 시간</span>
+            <span className="text-right">{reservation.room.checkIn} 이후</span>
+          </div>
+        )}
         <div className="flex justify-between">
           <span>게스트</span>
           <span className="text-right">게스트 {reservation.guestNumber}명</span>
@@ -126,7 +126,11 @@ export default async function ReservationPage({ params }: { params: { orderNumbe
       {/* Payment Section */}
       <div className="mt-6">
         <h2 className="mb-4 font-medium">결제 수단</h2>
-        <Payment />
+        <Payment
+          orderNumber={params.orderNumber}
+          title={reservation.room.title}
+          totalPrice={reservation.totalPrice + serviceFee}
+        />
       </div>
     </div>
   );
