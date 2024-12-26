@@ -29,3 +29,9 @@ export class ServerError extends CustomError {
     super(message, 500);
   }
 }
+
+export class TooManyRequestError extends CustomError {
+  constructor(message: string = '요청이 너무 많습니다') {
+    super(message, 429);
+  }
+}

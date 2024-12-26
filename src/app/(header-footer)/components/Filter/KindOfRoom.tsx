@@ -1,8 +1,29 @@
-import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { FilterType } from '@/schemas/rooms';
 
-export default function KindOfRoom() {
-  const [kindRoom, setKindRoom] = useState<string>('');
+interface KindOfRoomProps {
+  roomType?: 'Entire' | 'Private' | null;
+  handleFilter: (newState: 'Entire' | 'Private' | null, type: keyof FilterType) => void;
+}
+
+export default function KindOfRoom({ roomType, handleFilter }: KindOfRoomProps) {
+  const handleRoomTypeChange = (type: string) => {
+    let newRoomType: 'Entire' | 'Private' | null = null;
+
+    switch (type) {
+      case '방':
+        newRoomType = 'Private';
+        break;
+      case '집 전체':
+        newRoomType = 'Entire';
+        break;
+      case '모든 유형':
+        newRoomType = null;
+        break;
+    }
+
+    handleFilter(newRoomType, 'roomType');
+  };
 
   const hoverStyle = 'hover:rounded-lg hover:border-none hover:bg-neutral-01';
   const selectStyle = 'rounded-lg border-2 border-black bg-neutral-01';
@@ -18,9 +39,11 @@ export default function KindOfRoom() {
             className={cn(
               'flex cursor-pointer items-center justify-center border-r border-neutral-03',
               hoverStyle,
-              kindRoom === '모든 유형' && selectStyle,
+              roomType === null && selectStyle,
             )}
-            onClick={() => setKindRoom('모든 유형')}
+            onClick={() => {
+              handleRoomTypeChange('모든 유형');
+            }}
           >
             <span className="text-sm">모든 유형</span>
           </div>
@@ -28,9 +51,11 @@ export default function KindOfRoom() {
             className={cn(
               'flex cursor-pointer items-center justify-center border-r border-neutral-03',
               hoverStyle,
-              kindRoom === '방' && selectStyle,
+              roomType === 'Private' && selectStyle,
             )}
-            onClick={() => setKindRoom('방')}
+            onClick={() => {
+              handleRoomTypeChange('방');
+            }}
           >
             <span className="text-sm">방</span>
           </div>
@@ -38,9 +63,11 @@ export default function KindOfRoom() {
             className={cn(
               'flex cursor-pointer items-center justify-center',
               hoverStyle,
-              kindRoom === '집 전체' && selectStyle,
+              roomType === 'Entire' && selectStyle,
             )}
-            onClick={() => setKindRoom('집 전체')}
+            onClick={() => {
+              handleRoomTypeChange('집 전체');
+            }}
           >
             <span className="text-sm">집 전체</span>
           </div>

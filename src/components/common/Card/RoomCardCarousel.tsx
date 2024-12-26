@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { ImageLink } from '@/types/room';
 import { getActiveDotIndex } from '@/utils/getActiveDotIndex';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
 
 interface RoomCardCarouselProps {
-  images: string[];
+  images: ImageLink[];
   liked?: boolean;
   onLike?: () => void;
 }
@@ -34,11 +35,13 @@ export default function RoomCardCarousel({ images, liked = false, onLike }: Room
     >
       {/* 메인 이미지 */}
       <Image
-        src={images[currentIndex]}
+        src={images[currentIndex]?.imageLink}
         alt={`숙소 이미지 ${currentIndex + 1}/${images.length}`}
         role="img"
         aria-label={`숙소 이미지 ${currentIndex + 1}/${images.length}`}
         fill
+        // FIXME: 나중에 수정
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         className="object-cover transition-transform duration-300 ease-in-out"
       />
       {/* 좋아요 버튼 */}

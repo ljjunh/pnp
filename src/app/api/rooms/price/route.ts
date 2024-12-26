@@ -1,9 +1,18 @@
+import { NextRequest } from 'next/server';
 import { CustomResponse } from '@/lib/server';
+import { priceFilterSchema } from '@/schemas/rooms';
 import { getRoomPrice } from '@/services/room';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const priceData = await getRoomPrice();
+    const searchParams = request.nextUrl.searchParams;
+
+    const filterParams = priceFilterSchema.parse({
+      roomType: searchParams.get('roomType') as 'Entire' | 'Private' | null,
+      property: searchParams.get('property'),
+    });
+
+    const priceData = await getRoomPrice(filterParams);
 
     return CustomResponse.ok(priceData);
   } catch (error) {

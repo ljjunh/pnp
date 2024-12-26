@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import Tag from '@/app/(header-footer)/components/filter/Tag';
+import { FilterType } from '@/schemas/rooms';
+import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 
 const essentialAmenities = [
   'wifi',
@@ -33,9 +34,24 @@ const locationAmenities = ['beach', 'nearWater'];
 
 const safetyAmenities = ['fireAlarm', 'carbonMonoxideDetector'];
 
-export default function Amenity() {
+interface AmenityProps {
+  amenityArray: string[];
+  handleFilter: (newState: string[], type: keyof FilterType) => void;
+}
+
+export default function Amenity({ amenityArray, handleFilter }: AmenityProps) {
+  const [amenities, setAmenities] = useState<string[]>(amenityArray);
   const [more, setMore] = useState<boolean>(false);
-  
+
+  const handleAmenity = (amenity: string) => {
+    const newAmenities = amenities.includes(amenity)
+      ? amenities.filter((prevAmenity) => prevAmenity !== amenity)
+      : [...amenities, amenity];
+
+    setAmenities(newAmenities);
+    handleFilter(newAmenities, 'amenityArray');
+  };
+
   return (
     <div className="px-6 py-8">
       <div className="pb-4">
@@ -50,6 +66,8 @@ export default function Amenity() {
                 <Tag
                   tag={amenity}
                   key={`${amenity}-${index}`}
+                  handleClick={handleAmenity}
+                  isChecked={amenities.includes(amenity)}
                 />
               ))}
             </div>
@@ -61,6 +79,8 @@ export default function Amenity() {
                 <Tag
                   tag={amenity}
                   key={`${amenity}-${index}`}
+                  handleClick={handleAmenity}
+                  isChecked={amenities.includes(amenity)}
                 />
               ))}
             </div>
@@ -72,6 +92,8 @@ export default function Amenity() {
                 <Tag
                   tag={amenity}
                   key={`${amenity}-${index}`}
+                  handleClick={handleAmenity}
+                  isChecked={amenities.includes(amenity)}
                 />
               ))}
             </div>
@@ -83,6 +105,8 @@ export default function Amenity() {
                 <Tag
                   tag={amenity}
                   key={`${amenity}-${index}`}
+                  handleClick={handleAmenity}
+                  isChecked={amenities.includes(amenity)}
                 />
               ))}
             </div>
@@ -102,6 +126,8 @@ export default function Amenity() {
               <Tag
                 tag={amenity}
                 key={`${amenity}-${index}`}
+                handleClick={handleAmenity}
+                isChecked={amenities.includes(amenity)}
               />
             ))}
           </div>
