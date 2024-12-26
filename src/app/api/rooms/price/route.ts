@@ -12,8 +12,6 @@ export async function GET(request: NextRequest) {
       property: searchParams.get('property'),
     });
 
-    console.log('property', filterParams.property);
-
     const priceData = await getRoomPrice(filterParams);
 
     return CustomResponse.ok(priceData);

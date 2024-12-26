@@ -1,9 +1,26 @@
 import { useState } from 'react';
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import CheckList from '@/app/(header-footer)/components/filter/CheckList';
+import { FilterType } from '@/schemas/rooms';
+import { LANGUAGE } from '@/constants/language';
+import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 
-export default function HostLanguage() {
+interface HostLanguageProps {
+  language: number[];
+  handleFilter: (newState: number[], type: keyof FilterType) => void;
+}
+
+export default function HostLanguage({ language, handleFilter }: HostLanguageProps) {
+  const [hostLanguage, setHostLanguage] = useState<number[]>(language);
   const [open, setOpen] = useState<boolean>(false);
+
+  const handleLanguage = (language: number) => {
+    const newLanguage = hostLanguage.includes(language)
+      ? hostLanguage.filter((prevLanguage) => prevLanguage !== language)
+      : [...hostLanguage, language];
+
+    setHostLanguage(newLanguage);
+    handleFilter(newLanguage, 'language');
+  };
 
   return (
     <div className="space-y-6 px-6 py-8">
@@ -17,13 +34,14 @@ export default function HostLanguage() {
       </div>
       {open && (
         <div className="space-y-4">
-          <CheckList title="중국어" />
-          <CheckList title="영어" />
-          <CheckList title="프랑스어" />
-          <CheckList title="일본어" />
-          <CheckList title="한국어" />
-          <CheckList title="아랍어" />
-          <CheckList title="인도네시아어" />
+          {LANGUAGE.map((language, index) => (
+            <CheckList
+              id={language.id}
+              title={language.content}
+              handleClick={handleLanguage}
+              key={`${index}-${language.content}`}
+            />
+          ))}
         </div>
       )}
     </div>

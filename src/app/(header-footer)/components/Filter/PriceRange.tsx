@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { FilterType } from '@/schemas/rooms';
 import {
   BarElement,
   CategoryScale,
@@ -9,36 +10,73 @@ import {
   Tooltip,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { PriceFilterRange } from '@/types/room';
+import { fetchFilterPrice } from '@/apis/filters/action';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export default function PriceRange() {
-  const minPrice = 14000;
-  const maxPrice = 490000;
+interface PriceRangeProps {
+  roomType: 'Entire' | 'Private' | null;
+  property?: number | null;
+  handleFilter: (newState: number, type: keyof FilterType) => void;
+}
+
+export default function PriceRange({ roomType, property, handleFilter }: PriceRangeProps) {
+  const [priceRange, setPriceRange] = useState<PriceFilterRange>({
+    minPrice: 0,
+    maxPrice: 0,
+    distribution: [],
+  });
+
+  // 초기 로딩 시 가격 범위 조회
+  // TODO: 모달이 열려있을때만 조회하게 수정
+  useEffect(() => {
+    const initRange = async () => {
+      try {
+        const response = await fetchFilterPrice({ roomType, property });
+        setPriceRange(response);
+        setRange([response.minPrice, response.maxPrice]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    initRange();
+  }, []);
+
+  // 숙소 유형 변경 시 가격 범위 업데이트
+  useEffect(() => {
+    const changeRange = async () => {
+      try {
+        const response = await fetchFilterPrice({ roomType, property });
+        setPriceRange(response);
+        setRange([response.minPrice, response.maxPrice]);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    changeRange();
+  }, [roomType]);
+
+  const { minPrice, maxPrice, distribution } = priceRange;
+
   const [range, setRange] = useState([minPrice, maxPrice]);
   const sliderRef = useRef<HTMLDivElement>(null);
 
   const data = {
-    labels: Array(50).fill(''),
+    labels: distribution.map((item) => item.distance),
     datasets: [
       {
-        data: [
-          10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 5, 15, 25,
-          35, 45, 55, 65, 75, 85, 95, 100, 95, 85, 75, 65, 55, 45, 35, 25, 15, 5, 10, 20, 30, 40,
-          50, 60, 70, 80, 90, 100,
-        ],
-        backgroundColor: [
-          ...Array(50)
-            .fill('')
-            .map((_, index) => {
-              const percentage = (index / 49) * 100;
-              
-              return percentage >= ((range[0] - 14000) / (490000 - 14000)) * 100 &&
-                percentage <= ((range[1] - 14000) / (490000 - 14000)) * 100
-                ? '#FF385C'
-                : '#DDDDDD';
-            }),
-        ],
+        data: distribution.map((item) => item.count),
+        backgroundColor: distribution.map((_, index) => {
+          const percentage = (index / (distribution.length - 1)) * 100;
+
+          return percentage >= ((range[0] - minPrice) / (maxPrice - minPrice)) * 100 &&
+            percentage <= ((range[1] - minPrice) / (maxPrice - minPrice)) * 100
+            ? '#FF385C'
+            : '#DDDDDD';
+        }),
         barThickness: 6,
       },
     ],
@@ -60,7 +98,6 @@ export default function PriceRange() {
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>, isMin: boolean) => {
     e.preventDefault();
 
-    // sliderRef.current가 null이 아님을 보장
     if (!sliderRef.current) return;
 
     const sliderRect = sliderRef.current.getBoundingClientRect();
@@ -83,6 +120,12 @@ export default function PriceRange() {
     const handleMouseUp = () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
+
+      setRange((currentRange) => {
+        handleFilter(currentRange[0], 'minPrice');
+        handleFilter(currentRange[1], 'maxPrice');
+        return currentRange;
+      });
     };
 
     document.addEventListener('mousemove', handleMouseMove);

@@ -5,6 +5,8 @@ export type RoomParams = {
   roomId: string;
 };
 
+export type ImageLink = Pick<RoomImage, 'id' | 'imageLink' | 'orientation'>;
+
 export type Room = Pick<
   PrismaRoom,
   | 'id'
@@ -26,7 +28,7 @@ export type Room = Pick<
   | 'checkInType'
 > & {
   roomTags: Pick<Tag, 'id' | 'content'>[];
-  images: Pick<RoomImage, 'id' | 'imageLink' | 'orientation'>[];
+  images: ImageLink[];
   rules: Rule[];
   host: HostWithUser;
   amenities: Amenity[];
@@ -36,5 +38,14 @@ export type FilterRoom = Pick<
   PrismaRoom,
   'id' | 'location' | 'price' | 'latitude' | 'longitude' | 'reviewsAverage'
 > & {
-  images: Pick<RoomImage, 'id' | 'imageLink' | 'orientation'>[];
+  images: ImageLink[];
+};
+
+export type PriceFilterRange = {
+  minPrice: number;
+  maxPrice: number;
+  distribution: {
+    distance: string;
+    count: number;
+  }[];
 };

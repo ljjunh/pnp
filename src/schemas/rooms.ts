@@ -76,5 +76,5 @@ export const priceFilterSchema = z.object({
   property,
 });
 
-export type Filter = z.infer<typeof filterSchema>;
+export type FilterType = z.infer<typeof filterSchema>;
 export type PriceFilter = z.infer<typeof priceFilterSchema>;

@@ -155,12 +155,17 @@ const TagList: TagListType = {
 };
 
 interface TagProps {
-  tag: keyof TagListType;
+  tag: string;
+  handleClick: (tag: string) => void;
+  isChecked: boolean;
 }
 
-export default function Tag({ tag }: TagProps) {
+export default function Tag({ tag, handleClick, isChecked }: TagProps) {
   return (
-    <div className="flex w-fit cursor-pointer items-center justify-center space-x-2 rounded-3xl border border-neutral-03 px-5 py-2.5 hover:border-black">
+    <div
+      className={`flex w-fit cursor-pointer items-center justify-center space-x-2 rounded-3xl border px-5 py-2.5 hover:border-black ${isChecked ? 'border-black' : 'border-neutral-03'}`}
+      onClick={() => handleClick(tag)}
+    >
       {TagList[tag].icon}
       <span className="text-sm">{TagList[tag].name}</span>
     </div>
