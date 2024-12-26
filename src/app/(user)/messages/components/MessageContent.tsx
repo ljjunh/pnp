@@ -1,4 +1,4 @@
-import { Message, dummyMessages } from '@/app/(guest)/messages/components/dummyMessages';
+import { Message, dummyMessages } from '@/app/(user)/messages/components/dummyMessages';
 import { cn } from '@/lib/utils';
 
 interface MessageGroup {

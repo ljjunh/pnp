@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { BackBtn } from '@/app/(guest)/recently-viewed/components/BackBtn';
-import { EditBtn } from '@/app/(guest)/recently-viewed/components/EditBtn';
-import { RoomCard } from '@/app/(guest)/recently-viewed/components/RoomCard';
+import { BackBtn } from '@/app/(user)/recently-viewed/components/BackBtn';
+import { EditBtn } from '@/app/(user)/recently-viewed/components/EditBtn';
+import { RoomCard } from '@/app/(user)/recently-viewed/components/RoomCard';
 
 export default function RecentlyViewed() {
   const [isEdit, setIsEdit] = useState<boolean>(false);

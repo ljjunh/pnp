@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { RecentlyViewedCard } from './components/RecentlyViewedCard';
-import { WishlistsCard } from './components/WishlistsCard';
+import { RecentlyViewedCard } from '@/app/(user)/wishlists/components/RecentlyViewedCard';
+import { WishlistsCard } from '@/app/(user)/wishlists/components/WishlistsCard';
 
 const images = [
   '/images/05.avif',

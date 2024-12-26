@@ -1,6 +1,6 @@
-import { Help } from '@/app/(guest)/trips/components/Help';
-import { NoReservation } from '@/app/(guest)/trips/components/NoReservation';
-import { ReservationCard } from '@/app/(guest)/trips/components/ReservationCard';
+import { Help } from '@/app/(user)/trips/components/Help';
+import { NoReservation } from '@/app/(user)/trips/components/NoReservation';
+import { ReservationCard } from '@/app/(user)/trips/components/ReservationCard';
 
 const reservation = [];
 

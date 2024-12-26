@@ -1,7 +1,7 @@
-import { BackBtn } from './components/BackBtn';
-import { Btn } from './components/Btn';
-import { SettingBtn } from './components/SettingBtn';
-import { WishlistCard } from './components/WishlistCard';
+import { BackBtn } from '@/app/(user)/wishlists/[id]/components/BackBtn';
+import { Btn } from '@/app/(user)/wishlists/[id]/components/Btn';
+import { SettingBtn } from '@/app/(user)/wishlists/[id]/components/SettingBtn';
+import { WishlistCard } from '@/app/(user)/wishlists/[id]/components/WishlistCard';
 
 const filters = ['날짜 입력하기', '게스트 1명', '공유하기'];
 
