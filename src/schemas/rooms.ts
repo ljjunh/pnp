@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { PROPERTY } from '@/constants/property';
 import { latitude } from './type';
 
-const roomType = z.enum(['Entire', 'Private']).optional();
+const roomType = z.enum(['Entire', 'Private']).optional().nullable();
 
 const price = z
   .number({ message: '가격은 숫자여야 합니다.' })

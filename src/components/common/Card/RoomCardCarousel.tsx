@@ -40,6 +40,8 @@ export default function RoomCardCarousel({ images, liked = false, onLike }: Room
         role="img"
         aria-label={`숙소 이미지 ${currentIndex + 1}/${images.length}`}
         fill
+        // FIXME: 나중에 수정
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         className="object-cover transition-transform duration-300 ease-in-out"
       />
       {/* 좋아요 버튼 */}

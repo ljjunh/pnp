@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
 
     const filterParams = priceFilterSchema.parse({
-      roomType: searchParams.get('roomType') as 'Entire' | 'Private' | 'Shared' | null,
+      roomType: searchParams.get('roomType') as 'Entire' | 'Private' | null,
       property: searchParams.get('property'),
     });
 
