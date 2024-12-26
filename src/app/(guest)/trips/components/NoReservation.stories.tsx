@@ -1,17 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { EditBtn } from './EditBtn';
+import { NoReservation } from './NoReservation';
 
-const meta: Meta<typeof EditBtn> = {
-  title: 'Recently-viewed/EditBtn',
-  component: EditBtn,
+const meta: Meta<typeof NoReservation> = {
+  title: 'Trips/NoReservation',
+  component: NoReservation,
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
   },
   tags: ['autodocs'],
-
   decorators: [
     (Story) => (
-      <div className='w-32'>
+      <div className="max-w-6xl">
         <Story />
       </div>
     ),
@@ -19,7 +18,7 @@ const meta: Meta<typeof EditBtn> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof EditBtn>;
+type Story = StoryObj<typeof NoReservation>;
 
 // 기본 스토리
 export const Default: Story = {};

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { EditBtn } from './EditBtn';
+import { ReservationCard } from './ReservationCard';
 
-const meta: Meta<typeof EditBtn> = {
-  title: 'Recently-viewed/EditBtn',
-  component: EditBtn,
+const meta: Meta<typeof ReservationCard> = {
+  title: 'Trips/ReservationCard',
+  component: ReservationCard,
   parameters: {
     layout: 'centered',
   },
@@ -11,7 +11,7 @@ const meta: Meta<typeof EditBtn> = {
 
   decorators: [
     (Story) => (
-      <div className='w-32'>
+      <div>
         <Story />
       </div>
     ),
@@ -19,7 +19,6 @@ const meta: Meta<typeof EditBtn> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof EditBtn>;
+type Story = StoryObj<typeof ReservationCard>;
 
-// 기본 스토리
 export const Default: Story = {};
