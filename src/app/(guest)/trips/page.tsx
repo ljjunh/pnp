@@ -2,36 +2,44 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ROUTES } from '@/constants/routeURL';
 
+const reservation = [];
+
 export default function Trips() {
   return (
     <div className="flex w-full justify-center">
       <div className="w-full max-w-screen-2xl px-20 py-12">
         <h1 className="text-3xl font-semibold">여행</h1>
 
-        <div className="my-12 flex h-72 w-full gap-4 rounded-lg border border-gray-300">
-          <div className="flex w-[30%] flex-col justify-end gap-6 p-8">
-            <div>
-              <h3 className="font-medium">아직 예약된 여행이 없습니다!</h3>
-              <p className="text-sm text-gray-400">
-                여행 가방에 쌓인 먼저를 털어내고 다음 여행 계획을 세워보세요.
-              </p>
+        {reservation.length > 0 ? (
+          <div className="my-12 grid h-72 w-full grid-cols-1 rounded-lg border border-gray-300 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            예약 내역들
+          </div>
+        ) : (
+          <div className="my-12 flex h-72 w-full gap-4 rounded-lg border border-gray-300">
+            <div className="flex w-[30%] flex-col justify-end gap-6 p-8">
+              <div>
+                <h3 className="font-medium">아직 예약된 여행이 없습니다!</h3>
+                <p className="text-sm text-gray-400">
+                  여행 가방에 쌓인 먼저를 털어내고 다음 여행 계획을 세워보세요.
+                </p>
+              </div>
+              <Link
+                href={ROUTES.HOME}
+                className="w-32 rounded-md bg-button-01 px-3 py-3 text-center text-base text-white"
+              >
+                숙소 검색하기
+              </Link>
             </div>
-            <Link
-              href={ROUTES.HOME}
-              className="w-32 rounded-md bg-button-01 px-3 py-3 text-center text-base text-white"
-            >
-              숙소 검색하기
-            </Link>
+            <div className="relative w-[70%]">
+              <Image
+                src="/images/tripImage.avif"
+                alt="여행 배너 이미지"
+                fill
+                className="rounded-e-lg object-cover"
+              />
+            </div>
           </div>
-          <div className="relative w-[70%]">
-            <Image
-              src="/images/tripImage.avif"
-              alt="여행 배너 이미지"
-              fill
-              className="rounded-e-lg object-cover"
-            />
-          </div>
-        </div>
+        )}
 
         <h2 className="my-6 text-xl">이전 여행지</h2>
 
