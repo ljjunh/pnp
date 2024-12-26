@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { ROUTES } from '@/constants/routeURL';
 
 export default function Trips() {
   return (
@@ -16,7 +17,7 @@ export default function Trips() {
               </p>
             </div>
             <Link
-              href="/"
+              href={ROUTES.HOME}
               className="w-32 rounded-md bg-button-01 px-3 py-3 text-center text-base text-white"
             >
               숙소 검색하기

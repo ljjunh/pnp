@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { ROUTES } from '@/constants/routeURL';
 import { BsThreeDots } from 'react-icons/bs';
 import { IoIosArrowBack } from 'react-icons/io';
 
@@ -9,7 +10,7 @@ export default function WishlistsDetail() {
       <div className="w-[65%] px-5 pt-5">
         <div className="flex w-full items-center justify-between">
           <Link
-            href="/wishlists"
+            href={ROUTES.USER.WISHLISTS}
             className="rounded-full p-1 hover:bg-gray-100"
           >
             <IoIosArrowBack className="size-6" />

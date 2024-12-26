@@ -4,7 +4,11 @@ export const ROUTES = {
   USER: {
     MESSAGES: '/messages',
     TRIPS: '/trips',
-  },
+    TRIPS_DETAIL: (id: number) => `/trips/${id}`,
+    WISHLISTS: '/wishlists',
+    WISHLIST_DETAIL: (id: number) => `/trips/${id}`,
+    RECENTLY_VIEWED: 'recently-viewed',
+  } as const,
   ROOMS: {
     DETAIL: (id: number) => `/rooms/${id}`,
     HOUSE_RULES: (id: number) => `/rooms/${id}/houserules`,
