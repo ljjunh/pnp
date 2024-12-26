@@ -1,20 +1,15 @@
 import { useReducer } from 'react';
+import { FilterType } from '@/schemas/rooms';
 import { CiCircleMinus, CiCirclePlus } from 'react-icons/ci';
 
-type RoomValue = '상관없음' | '8+' | number;
+type RoomValue = '상관없음' | number;
 const ROOM_DEFAULT = '상관없음' as const;
-const ROOM_MAX = '8+' as const;
-
-const initialState = {
-  bedRoom: ROOM_DEFAULT,
-  bed: ROOM_DEFAULT,
-  bathRoom: ROOM_DEFAULT,
-};
+const ROOM_MAX = 8 as const;
 
 interface State {
-  bedRoom: RoomValue;
+  bedroom: RoomValue;
   bed: RoomValue;
-  bathRoom: RoomValue;
+  bathroom: RoomValue;
 }
 
 type Action =
@@ -22,15 +17,28 @@ type Action =
   | { type: 'BED'; payload: RoomValue }
   | { type: 'BATHROOM'; payload: RoomValue };
 
-export default function RoomAndBed() {
+interface RoomAndBedProps {
+  bedroom?: RoomValue;
+  bed?: RoomValue;
+  bathroom?: RoomValue;
+  handleFilter: (newState: RoomValue | null, type: keyof FilterType) => void;
+}
+
+export default function RoomAndBed({ bedroom, bed, bathroom, handleFilter }: RoomAndBedProps) {
+  const initialState = {
+    bedroom: bedroom ?? ROOM_DEFAULT,
+    bed: bed ?? ROOM_DEFAULT,
+    bathroom: bathroom ?? ROOM_DEFAULT,
+  };
+
   function roomReducer(state: State, action: Action) {
     switch (action.type) {
       case 'BEDROOM':
-        return { ...state, bedRoom: action.payload };
+        return { ...state, bedroom: action.payload };
       case 'BED':
         return { ...state, bed: action.payload };
       case 'BATHROOM':
-        return { ...state, bathRoom: action.payload };
+        return { ...state, bathroom: action.payload };
       default:
         return state;
     }
@@ -50,10 +58,6 @@ export default function RoomAndBed() {
         return '상관없음';
       }
 
-      if (nowValue === 7 && isIncrement) {
-        return ROOM_MAX;
-      }
-
       if (nowValue === ROOM_MAX) {
         return isIncrement ? ROOM_MAX : 7;
       }
@@ -62,6 +66,8 @@ export default function RoomAndBed() {
     };
 
     const newValue = changeValue();
+
+    handleFilter(newValue === ROOM_DEFAULT ? null : newValue, type as keyof FilterType);
 
     dispatch({
       type: type.toUpperCase() as Action['type'],
@@ -80,20 +86,23 @@ export default function RoomAndBed() {
           <div className="flex w-40 flex-row items-center justify-between">
             <CiCircleMinus
               size={36}
-              color={state.bedRoom === '상관없음' ? 'LightGray' : 'Gray'}
+              color={state.bedroom === '상관없음' ? 'LightGray' : 'Gray'}
               className="cursor-pointer"
               onClick={() => {
-                handleRoomChange('bedRoom', false);
+                handleRoomChange('bedroom', false);
               }}
               data-testid="bedroom-minus-button"
             />
-            <p className="px-4">{state.bedRoom}</p>
+            <p className="px-4">
+              {state.bedroom}
+              {state.bedroom !== ROOM_DEFAULT && '+'}
+            </p>
             <CiCirclePlus
               size={36}
-              color={state.bedRoom === '8+' ? 'LightGray' : 'Gray'}
+              color={state.bedroom === ROOM_MAX ? 'LightGray' : 'Gray'}
               className="cursor-pointer"
               onClick={() => {
-                handleRoomChange('bedRoom', true);
+                handleRoomChange('bedroom', true);
               }}
               data-testid="bedroom-plus-button"
             />
@@ -111,10 +120,13 @@ export default function RoomAndBed() {
               }}
               data-testid="bed-minus-button"
             />
-            <p className="px-4">{state.bed}</p>
+            <p className="px-4">
+              {state.bed}
+              {state.bed !== ROOM_DEFAULT && '+'}
+            </p>
             <CiCirclePlus
               size={36}
-              color={state.bed === '8+' ? 'LightGray' : 'Gray'}
+              color={state.bed === ROOM_MAX ? 'LightGray' : 'Gray'}
               className="cursor-pointer"
               onClick={() => {
                 handleRoomChange('bed', true);
@@ -128,20 +140,23 @@ export default function RoomAndBed() {
           <div className="flex w-40 flex-row items-center justify-between">
             <CiCircleMinus
               size={36}
-              color={state.bathRoom === '상관없음' ? 'LightGray' : 'Gray'}
+              color={state.bathroom === '상관없음' ? 'LightGray' : 'Gray'}
               className="cursor-pointer"
               onClick={() => {
-                handleRoomChange('bathRoom', false);
+                handleRoomChange('bathroom', false);
               }}
               data-testid="bathroom-minus-button"
             />
-            <p className="px-4">{state.bathRoom}</p>
+            <p className="px-4">
+              {state.bathroom}
+              {state.bathroom !== ROOM_DEFAULT && '+'}
+            </p>
             <CiCirclePlus
               size={36}
-              color={state.bathRoom === '8+' ? 'LightGray' : 'Gray'}
+              color={state.bathroom === ROOM_MAX ? 'LightGray' : 'Gray'}
               className="cursor-pointer"
               onClick={() => {
-                handleRoomChange('bathRoom', true);
+                handleRoomChange('bathroom', true);
               }}
               data-testid="bathroom-plus-button"
             />

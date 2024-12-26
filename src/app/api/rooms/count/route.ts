@@ -22,15 +22,16 @@ export async function GET(request: NextRequest) {
       // 예약 옵션 조회 -> SYSTEM_KEY(셀프 체크인), SYSTEM_BUZZER(디지털 도어록), SYSTEM_PETS(반려동물 동반 허용)
       option: searchParams.getAll('option'),
       // 호스트 언어 조회 -> id 값 받아옴
-      language: searchParams.getAll('language').map(Number),
+      language: searchParams.getAll('language')[0]?.split(',').map(Number),
       // 숙소 타입 조회
       property: searchParams.get('property') ? Number(searchParams.get('property')) : undefined,
     });
+
     const roomCount = await getFilterRoomCount(filterParams);
 
     return CustomResponse.ok(roomCount);
   } catch (error) {
-    console.error('숙소 필터 조회 중 에러 발생: ', {
+    console.error('숙소 필터 카운트 조회 중 에러 발생: ', {
       error: error instanceof Error ? error.message : error,
     });
 

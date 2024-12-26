@@ -3,21 +3,27 @@ import { IoSquareOutline } from 'react-icons/io5';
 import { MdCheckBox } from 'react-icons/md';
 
 interface CheckListProps {
+  id: number;
   title: string;
+  handleClick: (title: number) => void;
 }
 
-export default function CheckList({ title }: CheckListProps) {
+export default function CheckList({ id, title, handleClick }: CheckListProps) {
   const [check, setCheck] = useState<boolean>(false);
 
   return (
     <div
       className="flex cursor-pointer items-center justify-between"
-      onClick={() => setCheck(!check)}
+      onClick={() => {
+        setCheck(!check);
+        handleClick(id);
+      }}
       data-testid="check-list"
       role="check-box"
       onKeyDown={(e) => {
         if (e.key === 'Enter') {
           setCheck(!check);
+          handleClick(id);
         }
       }}
     >

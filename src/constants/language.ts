@@ -1,0 +1,18 @@
+export const LANGUAGE = [
+  { id: 1, content: '중국어' },
+  { id: 2, content: '한국어' },
+  { id: 3, content: '영어' },
+  { id: 4, content: '일본어' },
+  { id: 5, content: '프랑스어' },
+  { id: 6, content: '독일어' },
+  { id: 7, content: '스페인어' },
+  { id: 8, content: '포르투갈어' },
+  { id: 9, content: '필리핀어' },
+  { id: 10, content: '타갈로그어' },
+  { id: 11, content: '러시아어' },
+  { id: 12, content: '인도네시아어' },
+  { id: 13, content: '태국어' },
+  { id: 14, content: '이탈리아어' },
+  { id: 15, content: '아랍어' },
+  { id: 16, content: '튀르키예어' },
+];

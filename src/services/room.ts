@@ -1,9 +1,9 @@
 import { BadRequestError, NotFoundError } from '@/errors';
 import { ForbiddenError } from '@/errors/errors';
 import { prisma, upload } from '@/lib/server';
-import { Filter, PriceFilter, UpdateRoom } from '@/schemas/rooms';
+import { FilterType, PriceFilter, UpdateRoom } from '@/schemas/rooms';
 import { Prisma, RoomImage } from '@prisma/client';
-import { FilterRoom, Room } from '@/types/room';
+import { FilterRoom, PriceFilterRange, Room } from '@/types/room';
 import { extractProperty } from '@/utils/convertor';
 import { PROPERTY } from '@/constants/property';
 
@@ -205,7 +205,7 @@ export async function deleteRoomScrap(roomId: number, userId: string) {
  *
  * @param {PriceFilter} filter 가격 필터
  */
-export async function getRoomPrice(filter: PriceFilter) {
+export async function getRoomPrice(filter: PriceFilter): Promise<PriceFilterRange> {
   const { roomType, property } = filter;
 
   const whereConditions: Prisma.RoomWhereInput = {
@@ -289,7 +289,7 @@ export async function getRoomPrice(filter: PriceFilter) {
 /**
  * 필터 정보에 따라 숙소를 조회한다.
  *
- * @param {Filter} filter 필터 정보
+ * @param {FilterType} filter 필터 정보
  */
 
 const ROOM_TYPE = {
@@ -298,7 +298,7 @@ const ROOM_TYPE = {
   Shared: 'Shared room',
 };
 
-export async function getFilterRoom(filter: Filter): Promise<FilterRoom[]> {
+export async function getFilterRoom(filter: FilterType): Promise<FilterRoom[]> {
   const whereConditions = getWhereConditions(filter);
 
   const rooms = await prisma.room.findMany({
@@ -327,9 +327,9 @@ export async function getFilterRoom(filter: Filter): Promise<FilterRoom[]> {
 /**
  * 숙소 필터 정보에 따라 숙소의 갯수를 조회한다.
  *
- * @param {Filter} filter 필터 정보
+ * @param {FilterType} filter 필터 정보
  */
-export async function getFilterRoomCount(filter: Filter): Promise<number> {
+export async function getFilterRoomCount(filter: FilterType): Promise<number> {
   const whereConditions = getWhereConditions(filter);
 
   const count = await prisma.room.count({
@@ -341,10 +341,10 @@ export async function getFilterRoomCount(filter: Filter): Promise<number> {
 
 /**
  * 필터 정보에 따라 where 조건을 생성한다.
- * @param filter 필터 조건
+ * @param {FilterType} filter 필터 조건
  *
  */
-const getWhereConditions = (filter: Filter) => {
+const getWhereConditions = (filter: FilterType) => {
   const {
     roomType,
     minPrice,
