@@ -16,7 +16,7 @@ import { fetchFilterPrice } from '@/apis/filters/action';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 interface PriceRangeProps {
-  roomType: 'Entire' | 'Private' | null;
+  roomType?: 'Entire' | 'Private' | null;
   property?: number | null;
   handleFilter: (newState: number, type: keyof FilterType) => void;
 }

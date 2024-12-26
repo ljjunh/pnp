@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 import { FilterType } from '@/schemas/rooms';
 
 interface KindOfRoomProps {
-  roomType: 'Entire' | 'Private' | null;
+  roomType?: 'Entire' | 'Private' | null;
   handleFilter: (newState: 'Entire' | 'Private' | null, type: keyof FilterType) => void;
 }
 

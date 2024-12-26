@@ -1,8 +1,8 @@
 import Filter from '@/app/(header-footer)/components/Filter';
 import RoomList from '@/app/(header-footer)/components/RoomList';
 import { FilterType } from '@/schemas/rooms';
-import { getFilterRoom } from '@/services/room';
 import { FilterRoom } from '@/types/room';
+import { getFilterRoom } from '@/apis/filters/queries';
 
 export default async function Home({
   searchParams,
