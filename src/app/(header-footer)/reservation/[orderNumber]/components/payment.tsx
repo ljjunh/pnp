@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import usePayment, { PaymentType } from '@/hooks/usePayment';
 
-const Payment = () => {
+export default function Payment() {
   const { isReady, requestPayment } = usePayment();
   const [method, setMethod] = useState<PaymentType | null>(null);
 
@@ -83,6 +83,4 @@ const Payment = () => {
       </button>
     </div>
   );
-};
-
-export default Payment;
+}

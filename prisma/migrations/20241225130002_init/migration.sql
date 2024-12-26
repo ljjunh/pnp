@@ -85,6 +85,7 @@ CREATE TABLE `rooms` (
     `room_type` VARCHAR(191) NOT NULL,
     `reviews_count` INTEGER NOT NULL DEFAULT 0,
     `reviews_average` DOUBLE NOT NULL DEFAULT 0,
+    `status` ENUM('DRAFT', 'IN_PROGRESS', 'COMPLETED') NOT NULL DEFAULT 'COMPLETED',
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -261,6 +262,7 @@ CREATE TABLE `reservations` (
     `check_in` DATETIME(3) NOT NULL,
     `check_out` DATETIME(3) NOT NULL,
     `guest_number` INTEGER NOT NULL,
+    `days` INTEGER NOT NULL,
     `total_price` INTEGER NOT NULL,
     `status` ENUM('PENDING', 'PAYMENT', 'CONFIRMED', 'CANCELED', 'COMPLETED') NOT NULL DEFAULT 'PENDING',
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),

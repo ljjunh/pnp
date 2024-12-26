@@ -31,7 +31,10 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
         </div>
         <div className="relative col-span-2">
           <div className="sticky top-28">
-            <RoomBookingCard price={room.price} />
+            <RoomBookingCard
+              price={room.price}
+              roomId={room.id}
+            />
           </div>
         </div>
       </section>

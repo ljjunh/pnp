@@ -12,4 +12,5 @@ export const ROUTES = {
     SAFETY: (id: number) => `/rooms/${id}/safety`,
     REVIEWS: (id: number) => `/rooms/${id}/reviews`,
   } as const,
+  RESERVATION: (orderNumber: string) => `/reservation/${orderNumber}`,
 };

@@ -49,3 +49,7 @@ export type PriceFilterRange = {
     count: number;
   }[];
 };
+
+export type CreateRoomResponse = {
+  roomId: number;
+};

@@ -55,7 +55,7 @@ export async function POST(request: NextRequest, { params }: { params: ReviewPar
     const data = createReviewSchema.parse(await request.json());
 
     await createReview(roomId, session.user.id, data);
-    return CustomResponse.created();
+    return CustomResponse.createEmpty();
   } catch (error) {
     console.error('리뷰 생성 중 에러 발생: ', {
       roomId: params.roomId,

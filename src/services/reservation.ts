@@ -4,14 +4,26 @@ import { prisma } from '@/lib/server';
 import { CreateReservationInput, ReservationAvailableInput } from '@/schemas';
 import { Reservation } from '@/types/reservation';
 
+const CHECKIN_DEFAULT = '15:00';
+const CHECKOUT_DEFAULT = '11:00';
+
 /**
  * 새롭게 숙소를 예약한다.
  *
  * @param {string} userId 사용자 ID
  * @param {CreateReservationInput} data 예약 생성 데이터
- * @returns
+ * @returns {Promise<{
+ *  reservationId: number;
+ *  orderNumber: string;
+ * }>} 예약 ID
  */
-export async function createReservation(userId: string, data: CreateReservationInput) {
+export async function createReservation(
+  userId: string,
+  data: CreateReservationInput,
+): Promise<{
+  reservationId: number;
+  orderNumber: string;
+}> {
   const room = await prisma.room.findUnique({
     where: {
       id: data.roomId,
@@ -53,30 +65,39 @@ export async function createReservation(userId: string, data: CreateReservationI
   // * 주문 번호 생성
   const orderNumber = generateOrderNumber(data.roomId);
 
-  await prisma.reservation.create({
+  const roomCheckIn = setRoomTime(data.checkIn, room.checkIn || CHECKIN_DEFAULT);
+  const roomCheckOut = setRoomTime(data.checkOut, room.checkOut || CHECKOUT_DEFAULT);
+
+  const reservation = await prisma.reservation.create({
     data: {
       userId: userId,
       roomId: data.roomId,
       orderNumber: orderNumber,
-      checkIn: data.checkIn,
-      checkOut: data.checkOut,
+      checkIn: roomCheckIn,
+      days: differenceInDays,
+      checkOut: roomCheckOut,
       guestNumber: data.guestNumber,
       totalPrice: price,
     },
   });
+
+  return {
+    reservationId: reservation.id,
+    orderNumber: orderNumber,
+  };
 }
 
 /**
  * 주문 번호를 기반으로 예약 정보를 가져온다.
  *
- * @param {string} orderNumber 주문 번호
  * @param {string} userId 사용자 ID
+ * @param {string} orderNumber 주문 번호
  *
  * @returns {Promise<Reservation>} 예약 정보
  */
 export async function getReservationByOrderNumber(
-  orderNumber: string,
   userId: string,
+  orderNumber: string,
 ): Promise<Reservation> {
   const reservation = await prisma.reservation.findUnique({
     relationLoadStrategy: 'join',
@@ -88,20 +109,23 @@ export async function getReservationByOrderNumber(
       roomId: true,
       orderNumber: true,
       checkIn: true,
+      totalPrice: true,
       checkOut: true,
+      days: true,
       guestNumber: true,
       // * 숙소 정보 한번에 조회
       room: {
         select: {
           title: true,
           thumbnail: true,
-          images: true,
-          // * 숙소의 규칙 조회
-          rules: {
-            select: {
-              rule: true,
-            },
-          },
+          reviewsCount: true,
+          price: true,
+          checkIn: true,
+          checkOut: true,
+          checkInType: true,
+          capacity: true,
+          reviewsAverage: true,
+          propertyType: true,
           // * 숙소의 호스트 정보
           host: {
             select: {
@@ -130,7 +154,7 @@ export async function getReservationByOrderNumber(
     throw new ForbiddenError('해당 예약 정보에 접근할 권한이 없습니다.');
   }
 
-  return reservation as Reservation;
+  return reservation;
 }
 
 /**
@@ -269,4 +293,11 @@ const generateOrderNumber = (roomId: number): string => {
     .padStart(6, '0');
 
   return `${year}${month}${day}-${paddedRoomId}-${random}`;
+};
+
+const setRoomTime = (date: Date, time: string): Date => {
+  const newDate = new Date(date);
+  const [hours, minutes] = time.split(':').map(Number);
+  newDate.setHours(hours, minutes);
+  return newDate;
 };

@@ -1,7 +1,11 @@
 import { NextRequest } from 'next/server';
-import { CustomResponse } from '@/lib/server';
+import { auth } from '@/auth';
+import { CustomError, UnAuthorizedError } from '@/errors';
+import { TooManyRequestError } from '@/errors/errors';
+import { CustomResponse, createRoomLimit } from '@/lib/server';
 import { filterSchema } from '@/schemas/rooms';
-import { getFilterRoom } from '@/services/room';
+import { createRoom, getFilterRoom } from '@/services/room';
+import { CreateRoomResponse } from '@/types/room';
 
 export async function GET(request: NextRequest) {
   try {
@@ -34,6 +38,30 @@ export async function GET(request: NextRequest) {
     console.error('숙소 필터 조회 중 에러 발생: ', {
       error: error instanceof Error ? error.message : error,
     });
+
+    return CustomResponse.errors();
+  }
+}
+
+export async function POST(): Promise<CustomResponse<CreateRoomResponse>> {
+  try {
+    const session = await auth();
+    if (!session) {
+      throw new UnAuthorizedError();
+    }
+
+    const { success } = await createRoomLimit.limit(session.user.id);
+    if (!success) {
+      throw new TooManyRequestError('숙소 등록은 5분에 한 번만 가능합니다.');
+    }
+
+    const roomId = await createRoom(session.user.id);
+
+    return CustomResponse.create({ roomId });
+  } catch (error) {
+    if (error instanceof CustomError) {
+      return CustomResponse.errors(error.message, error.statusCode);
+    }
 
     return CustomResponse.errors();
   }

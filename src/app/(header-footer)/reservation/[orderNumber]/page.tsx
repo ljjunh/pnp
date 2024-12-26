@@ -1,8 +1,20 @@
-// components/BookingPage.tsx
 import Image from 'next/image';
-import Payment from './_components/payment';
+import Payment from '@/app/(header-footer)/reservation/[orderNumber]/components/payment';
+import { format } from 'date-fns';
+import { ko } from 'date-fns/locale';
+import { Reservation } from '@/types/reservation';
+import { getReservation } from '@/apis/reservation/queries';
 
-export default async function BookingPage() {
+export default async function ReservationPage({ params }: { params: { orderNumber: string } }) {
+  const reservation: Reservation = await getReservation(params.orderNumber);
+  console.log('데이터---', reservation);
+
+  const serviceFee = Math.round(reservation.totalPrice * (10 / 100));
+
+  // date-fns로 날짜/시간 포맷팅
+  const checkInDate = format(reservation.checkIn, 'M월 d일', { locale: ko });
+  const checkOutDate = format(reservation.checkOut, 'M월 d일', { locale: ko });
+
   return (
     <div className="mx-auto max-w-3xl p-4">
       {/* Header */}
@@ -52,18 +64,24 @@ export default async function BookingPage() {
 
       {/* Room Info */}
       <div className="mb-6 flex gap-4">
-        <Image
-          src="/room-image.jpg"
-          alt="Room"
-          width={100}
-          height={100}
-          className="rounded-lg"
-        />
+        {reservation.room.host.user.image && (
+          <Image
+            src={reservation.room.host.user.image}
+            alt={'호스트 프로필 이미지'}
+            width={100}
+            height={100}
+            className="rounded-lg"
+          />
+        )}
         <div>
-          <h2 className="font-medium">dmyk_Trapezoid</h2>
+          <h2 className="font-medium">{reservation.room.host.user.name}</h2>
           <div className="flex items-center gap-1 text-sm">
-            <span>★ 4.63 (총 628개) •</span>
-            <span className="text-gray-500">슈퍼호스트</span>
+            <span>
+              ★ {reservation.room.reviewsAverage} (총 {reservation.room.reviewsCount}개) •
+            </span>
+            <span className="text-gray-500">
+              {reservation.room.host.isSuperHost ? '슈퍼호스트' : '호스트'}
+            </span>
           </div>
         </div>
       </div>
@@ -72,15 +90,17 @@ export default async function BookingPage() {
       <div className="mb-6 space-y-4">
         <div className="flex justify-between">
           <span>날짜</span>
-          <span className="text-right">12월 18일-19일</span>
+          <span className="text-right">
+            {checkInDate}-{checkOutDate}
+          </span>
         </div>
         <div className="flex justify-between">
           <span>체크인 시간</span>
-          <span className="text-right">오후 4:00 - 오후 6:00</span>
+          <span className="text-right">오후 3시</span>
         </div>
         <div className="flex justify-between">
           <span>게스트</span>
-          <span className="text-right">게스트 1명</span>
+          <span className="text-right">게스트 {reservation.guestNumber}명</span>
         </div>
       </div>
 
@@ -88,16 +108,18 @@ export default async function BookingPage() {
       <div className="space-y-4 border-t pt-4">
         <h2 className="mb-4 font-medium">요금 세부정보</h2>
         <div className="flex justify-between">
-          <span>₩36,000 x 1박</span>
-          <span>₩36,000</span>
+          <span>
+            ₩{reservation.room.price.toLocaleString()} x {reservation.days}박
+          </span>
+          <span>₩{reservation.totalPrice.toLocaleString()}</span>
         </div>
         <div className="flex justify-between">
           <span>에어비앤비 서비스 수수료</span>
-          <span>₩5,590</span>
+          <span>₩{serviceFee.toLocaleString()}</span>
         </div>
         <div className="flex justify-between font-medium">
           <span>총 합계 (KRW)</span>
-          <span>₩41,590</span>
+          <span>₩{(reservation.totalPrice + serviceFee).toLocaleString()}</span>
         </div>
       </div>
 

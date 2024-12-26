@@ -1,7 +1,7 @@
 import Script from 'next/script';
 import Header from '@/components/common/Header/Header';
 
-export default function PaymentLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function ReservationLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <>
       <Header />
