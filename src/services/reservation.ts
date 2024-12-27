@@ -2,7 +2,7 @@ import { BadRequestError, NotFoundError } from '@/errors';
 import { ForbiddenError } from '@/errors/errors';
 import { prisma } from '@/lib/server';
 import { CreateReservationInput, ReservationAvailableInput } from '@/schemas';
-import { Reservation } from '@/types/reservation';
+import { Reservation, ReservationTrip } from '@/types/reservation';
 
 const CHECKIN_DEFAULT = '15:00';
 const CHECKOUT_DEFAULT = '11:00';
@@ -271,6 +271,46 @@ export async function checkReservation(data: ReservationAvailableInput): Promise
   });
 
   return !reservation;
+}
+
+/**
+ * 예약 정보를 가져온다.
+ *
+ * @param {string} userId 사용자 ID
+ * @returns {Promise<ReservationTrip[]>} 예약 정보
+ */
+export async function getReservations(userId: string): Promise<ReservationTrip[]> {
+  return await prisma.reservation.findMany({
+    where: {
+      userId: userId,
+    },
+    select: {
+      id: true,
+      orderNumber: true,
+      status: true,
+      checkIn: true,
+      checkOut: true,
+      room: {
+        select: {
+          id: true,
+          title: true,
+          thumbnail: true,
+          location: true,
+          host: {
+            select: {
+              id: true,
+              user: {
+                select: {
+                  name: true,
+                  image: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
 }
 
 /**
