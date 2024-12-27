@@ -1,9 +1,17 @@
 'use server';
 
+import { cookies } from 'next/headers';
 import { signIn } from '@/auth';
 import { z } from 'zod';
 import { FormState, Provider } from '@/types/login';
 import { ERROR_MESSAGES, GOOGLE, KAKAO } from '@/constants/login';
+
+// 쿠키에 저장된 redirectURL
+function getRedirectUrl(): string {
+  const cookieStore = cookies();
+
+  return cookieStore.get('prevPath')?.value || '/';
+}
 
 // zod 유효성 검사
 const formSchema = z.object({
@@ -16,7 +24,7 @@ const formSchema = z.object({
     .min(5, ERROR_MESSAGES.MIN_LENGTH_EMAIL)
     .max(254, ERROR_MESSAGES.MAX_LENGTH_EMAIL) // RFC 5321
     .email(ERROR_MESSAGES.INVALID_EMAIL)
-    .toLowerCase()
+    .toLowerCase(),
 });
 
 // 이메일 로그인 서버액션
@@ -40,9 +48,11 @@ export async function handleEmailLogin(
       };
     }
 
+    const redirectUrl = getRedirectUrl();
+
     await signIn('resend', {
       email: result.data.email,
-      redirectTo: '/',
+      redirectTo: redirectUrl,
       redirect: false,
     });
 
@@ -71,7 +81,8 @@ export async function handleEmailLogin(
 // 소셜 로그인 서버액션
 async function handleSocialLogin(provider: Provider) {
   'use server';
-  await signIn(provider, { redirectTo: '/' });
+  const redirectUrl = getRedirectUrl();
+  await signIn(provider, { redirectTo: redirectUrl });
 }
 
 export const googleLogin = async () => {
