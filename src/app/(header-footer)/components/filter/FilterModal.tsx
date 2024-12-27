@@ -72,7 +72,6 @@ export default function FilterModal() {
 
   // 필터 변경 시 숙소 갯수 조회
   useEffect(() => {
-    console.log('filter :', filter);
     const changeCount = async () => {
       try {
         const response = await fetchFilterCount(filter);
