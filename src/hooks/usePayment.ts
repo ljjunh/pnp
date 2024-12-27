@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
 import { TossPaymentsInstance, loadTossPayments } from '@tosspayments/payment-sdk';
 import { PaymentMethodCode } from '@tosspayments/payment__types';
 
@@ -38,7 +37,7 @@ declare global {
 export type PaymentType = PaymentMethodCode | 'KAKAOPAY' | 'NAVERPAY';
 
 const usePayment = () => {
-  const { status, data: session } = useSession();
+  // const { status, data: session } = useSession();
   const [toss, setToss] = useState<TossPaymentsInstance | null>(null);
   const [naver, setNaver] = useState<NaverPay | null>(null);
   const [isReady, setIsReady] = useState(false);

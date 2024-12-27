@@ -39,7 +39,7 @@ export async function createReservation(
     // 성공 시 응답
     return {
       success: true,
-      status: 200,
+      status: 201,
       data: response.data,
     };
   } catch (error) {

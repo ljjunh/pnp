@@ -1,5 +1,19 @@
 import { act, renderHook } from '@testing-library/react';
+import type { ToastProps } from '@/components/ui/toast';
 import { useToast } from './use-toast';
+
+// 기본 타입 정의
+type TestToast = ToastProps & {
+  id: string;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+  action?: React.ReactElement;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+};
+
+// update용 타입 정의 (id는 필수)
+type TestToastUpdate = Partial<Omit<TestToast, 'id'>> & { id: string };
 
 describe('토스트 기능 테스트', () => {
   beforeEach(() => {
@@ -118,7 +132,7 @@ describe('토스트 기능 테스트', () => {
     // given
     const { result } = renderHook(() => useToast());
     let toastId: string;
-    let updateToast: (props: any) => void;
+    let updateToast: (props: TestToastUpdate) => void;
 
     // when
     act(() => {
@@ -128,7 +142,7 @@ describe('토스트 기능 테스트', () => {
     });
 
     act(() => {
-      updateToast({ title: 'Updated Toast' });
+      updateToast({ id: toastId, title: 'Updated Toast' });
     });
 
     // then

@@ -1,5 +1,3 @@
-import { getServerCookies } from '@/app/lib/server/cookies';
-import { CustomError } from '@/errors';
 import { BaseResponse } from '@/lib/server/response';
 
 // HTTP 요청 메서드 타입 정의
@@ -37,14 +35,16 @@ export class HttpClient {
     return HttpClient.instance;
   }
 
-  private getCookies(): string {
+  private async getCookies(): Promise<string> {
     if (typeof window !== 'undefined') {
       return document.cookie;
     }
-    // 테스트 환경에서는 빈 문자열 반환
+
     if (process.env.NODE_ENV === 'test') {
       return '';
     }
+
+    const { getServerCookies } = await import('@/app/lib/server/cookies');
 
     return getServerCookies();
   }
@@ -70,17 +70,6 @@ export class HttpClient {
         },
       }),
     });
-
-    // 기본 응답 인터셉터
-    this.addResponseInterceptor({
-      onResponse: async <T>(response: BaseResponse<T>) => {
-        // 서버에서 401 상태를 반환한 경우
-        if (response.status === 401) {
-          throw new CustomError(response.message || '인증이 필요한 요청입니다.', 401);
-        }
-        return response;
-      },
-    });
   }
 
   /**
@@ -103,7 +92,7 @@ export class HttpClient {
       method,
       headers: {
         ...config.headers,
-        Cookie: this.getCookies(),
+        Cookie: await this.getCookies(),
       },
     };
 
