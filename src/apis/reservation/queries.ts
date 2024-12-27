@@ -1,8 +1,7 @@
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
 import { Reservation } from '@/types/reservation';
 import { httpClient } from '@/apis/core/httpClient';
-import { ROUTES } from '@/constants/routeURL';
 
 /**
  * 특정 예약 정보를 조회합니다.
@@ -15,8 +14,6 @@ export async function getReservation(orderNumber: string): Promise<Reservation> 
 
     if (!response.success) {
       switch (response.status) {
-        case 401:
-          redirect(ROUTES.LOGIN);
         case 404:
           notFound();
         default:
