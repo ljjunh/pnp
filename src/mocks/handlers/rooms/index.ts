@@ -1,3 +1,3 @@
-import { getRoomHandlers } from '@/mocks/handlers/rooms/getRoom';
+import { getRoomHandler } from '@/mocks/handlers/rooms/getRoom';
 
-export const roomHandlers = [...getRoomHandlers];
+export const roomHandlers = [...getRoomHandler];

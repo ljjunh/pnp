@@ -3,8 +3,32 @@ import { auth } from '@/auth';
 import { CustomError, UnAuthorizedError, ZodError } from '@/errors';
 import { CustomResponse } from '@/lib/server';
 import { createReservationSchema } from '@/schemas';
-import { createReservation } from '@/services/reservation';
-import { CreateReservationResponse } from '@/types/reservation';
+import { createReservation, getReservations } from '@/services/reservation';
+import { CreateReservationResponse, ReservationTrip } from '@/types/reservation';
+
+export async function GET(): Promise<CustomResponse<ReservationTrip[]>> {
+  const session = await auth();
+  try {
+    if (!session) {
+      throw new UnAuthorizedError();
+    }
+
+    const reservations = await getReservations(session.user.id);
+
+    return CustomResponse.ok(reservations);
+  } catch (error) {
+    console.error('예약 리스트 조회 중 에러 발생: ', {
+      userId: session?.user.id,
+      error: error instanceof Error ? error.message : error,
+    });
+
+    if (error instanceof CustomError) {
+      return CustomResponse.errors(error.message, error.statusCode);
+    }
+
+    return CustomResponse.errors();
+  }
+}
 
 export async function POST(
   request: NextRequest,

@@ -1,6 +1,8 @@
+'use server';
+
 import { cookies } from 'next/headers';
 
-export function getServerCookies(): string {
+export async function getServerCookies() {
   const cookieStore = cookies();
   const allCookies = cookieStore.getAll();
 

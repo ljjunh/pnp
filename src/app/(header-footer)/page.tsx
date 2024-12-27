@@ -1,7 +1,7 @@
 import Filter from '@/app/(header-footer)/components/Filter';
 import RoomList from '@/app/(header-footer)/components/RoomList';
 import { FilterType } from '@/schemas/rooms';
-import { FilterRoom } from '@/types/room';
+import { FilterRoomResponse } from '@/types/room';
 import { getFilterRoom } from '@/apis/filters/queries';
 
 export default async function Home({
@@ -35,12 +35,14 @@ export default async function Home({
     property: property ? Number(property) : undefined,
   };
 
-  const filterRoom: FilterRoom[] = await getFilterRoom(filter);
+  // TODO: 페이지네이션 추가
+  // 12의 배수로 들어가야 함
+  const filterRoom: FilterRoomResponse = await getFilterRoom(filter, 1, 60);
 
   return (
     <>
       <Filter />
-      <RoomList rooms={filterRoom} />
+      <RoomList rooms={filterRoom.data} />
     </>
   );
 }

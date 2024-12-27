@@ -1,0 +1,32 @@
+{
+  "userId": "cm550c09j00001fz89ip2s7jg",
+  "roomId": 7,
+  "orderNumber": "20241227-000000007-020929",
+  "checkIn": "2024-12-28T06:00:00.382Z",
+  "totalPrice": 136155,
+  "checkOut": "2024-12-29T02:00:00.382Z",
+  "days": 1,
+  "guestNumber": 1,
+  "room": {
+    "title": "레트로 감성카라반 에어스트림, 비치보이스_Boy21",
+    "thumbnail": "https://a0.muscache.com/pictures/3ab4a84c-3ff4-4204-8740-d3171f563eee.jpg",
+    "reviewsCount": 0,
+    "price": 136155,
+    "checkIn": "15:00",
+    "checkOut": "11:00",
+    "checkInType": "키패드",
+    "capacity": 2,
+    "reviewsAverage": 0,
+    "propertyType": "캠핑카",
+    "host": {
+      "id": 7,
+      "isSuperHost": true,
+      "isVerified": true,
+      "user": {
+        "id": "2ded2405-76b1-4888-b3fb-d38c1d2e5399",
+        "name": "BeachRiad",
+        "image": "https://a0.muscache.com/im/pictures/user/b8758d05-f5bc-47c2-8d7d-23f0a249dffd.jpg"
+      }
+    }
+  }
+}

@@ -2,12 +2,21 @@ import { NextRequest } from 'next/server';
 import { auth } from '@/auth';
 import { CustomError, UnAuthorizedError } from '@/errors';
 import { TooManyRequestError } from '@/errors/errors';
-import { CustomResponse, createRoomLimit } from '@/lib/server';
+import {
+  CustomResponse,
+  PaginationResponse,
+  createPaginationResponse,
+  createRoomLimit,
+  getPaginationParams,
+  getSkipTake,
+} from '@/lib/server';
 import { filterSchema } from '@/schemas/rooms';
 import { createRoom, getFilterRoom } from '@/services/room';
-import { CreateRoomResponse } from '@/types/room';
+import { CreateRoomResponse, FilterRoom } from '@/types/room';
 
-export async function GET(request: NextRequest) {
+export async function GET(
+  request: NextRequest,
+): Promise<CustomResponse<PaginationResponse<FilterRoom[]>>> {
   try {
     const searchParams = request.nextUrl.searchParams;
 
@@ -31,9 +40,12 @@ export async function GET(request: NextRequest) {
       property: searchParams.get('property') ? Number(searchParams.get('property')) : undefined,
     });
 
-    const room = await getFilterRoom(filterParams);
+    const { page, limit } = getPaginationParams(request);
+    const { skip, take } = getSkipTake(page, limit);
 
-    return CustomResponse.ok(room);
+    const [room, total] = await getFilterRoom(filterParams, skip, take);
+
+    return CustomResponse.ok(createPaginationResponse(room, total, page, limit));
   } catch (error) {
     console.error('숙소 필터 조회 중 에러 발생: ', {
       error: error instanceof Error ? error.message : error,

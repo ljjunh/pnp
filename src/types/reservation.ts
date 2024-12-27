@@ -9,6 +9,17 @@ export type CreateReservationResponse = {
   orderNumber: string;
 };
 
+export type ReservationTrip = Pick<
+  PrismaReservation,
+  'id' | 'orderNumber' | 'status' | 'checkIn' | 'checkOut'
+> & {
+  room: Pick<Room, 'id' | 'title' | 'thumbnail' | 'location'> & {
+    host: Pick<Host, 'id'> & {
+      user: Pick<User, 'name' | 'image'>;
+    };
+  };
+};
+
 export type Reservation = Pick<
   PrismaReservation,
   | 'userId'
