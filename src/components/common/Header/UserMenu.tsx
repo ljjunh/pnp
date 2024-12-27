@@ -15,7 +15,7 @@ export default function UserMenu({ isLoggedIn, isOpen, onToggleOpen }: UserMenuP
     <div
       role="menu"
       aria-orientation="vertical"
-      className="absolute right-0 top-14 z-10 w-[240px] rounded-xl bg-shade-01 text-sm shadow-[0px_0px_15px_rgba(0,0,0,0.1)]"
+      className="absolute right-0 top-14 z-20 w-[240px] rounded-xl bg-shade-01 text-sm shadow-[0px_0px_15px_rgba(0,0,0,0.1)]"
     >
       <div className="flex cursor-pointer flex-col">
         {menuItems.map((item) => (

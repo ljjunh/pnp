@@ -1,5 +1,6 @@
 import { FilterType, PriceFilter } from '@/schemas/rooms';
-import { FilterRoom, PriceFilterRange } from '@/types/room';
+import { FilterRoomResponse, PriceFilterRange } from '@/types/room';
+import { formatFilter } from '@/utils/formatFilter';
 import { httpClient } from '../core/httpClient';
 
 /**
@@ -36,14 +37,18 @@ export async function getRoomPrice(filter: PriceFilter): Promise<PriceFilterRang
  *
  * @param {FilterType} filter 필터 정보
  *
- * @returns {Promise<FilterRoom[]>} 방 정보
+ * @returns {Promise<FilterRoomResponse>} 방 정보
  */
-export async function getFilterRoom(filter: FilterType): Promise<FilterRoom[]> {
-  const params = getFilterParams(filter);
+export async function getFilterRoom(
+  filter: FilterType,
+  page?: number,
+  limit?: number,
+): Promise<FilterRoomResponse> {
+  const params = formatFilter(filter);
 
-  const url = `/rooms${params.toString() ? `?${params.toString()}` : ''}`;
+  const url = `/rooms${params.toString() ? `?${params.toString()}` : ''}${page ? `${params.toString() ? '&' : '?'}page=${page}` : ''}${limit ? `${page ? '&' : '?'}limit=${limit}` : ''}`;
 
-  const response = await httpClient.get<FilterRoom[]>(url);
+  const response = await httpClient.get<FilterRoomResponse>(url);
 
   if (!response.success) {
     throw new Error(response.message);
@@ -60,7 +65,7 @@ export async function getFilterRoom(filter: FilterType): Promise<FilterRoom[]> {
  * @returns {Promise<number>} 방 정보
  */
 export async function getFilterRoomCount(filter: FilterType): Promise<number> {
-  const params = getFilterParams(filter);
+  const params = formatFilter(filter);
 
   const url = `/rooms/count${params.toString() ? `?${params.toString()}` : ''}`;
 
@@ -72,68 +77,3 @@ export async function getFilterRoomCount(filter: FilterType): Promise<number> {
 
   return response.data;
 }
-
-/**
- * 필터 정보에 따라 params를 생성한다.
- *
- * @param filter 필터 정보
- * @returns {URLSearchParams} 필터 정보
- */
-const getFilterParams = (filter: FilterType) => {
-  const {
-    roomType,
-    minPrice,
-    maxPrice,
-    bedroom,
-    bed,
-    bathroom,
-    amenityArray,
-    option,
-    language,
-    property,
-  } = filter;
-
-  const params = new URLSearchParams();
-
-  if (roomType) {
-    params.append('roomType', roomType);
-  }
-
-  if (minPrice) {
-    params.append('minPrice', minPrice.toString());
-  }
-
-  if (maxPrice) {
-    params.append('maxPrice', maxPrice.toString());
-  }
-
-  if (bedroom) {
-    params.append('bedroom', bedroom.toString());
-  }
-
-  if (bed) {
-    params.append('bed', bed.toString());
-  }
-
-  if (bathroom) {
-    params.append('bathroom', bathroom.toString());
-  }
-
-  if (amenityArray.length > 0) {
-    params.append('amenities', amenityArray.join(','));
-  }
-
-  if (option.length > 0) {
-    params.append('option', option.join(','));
-  }
-
-  if (language.length > 0) {
-    params.append('language', language.join(','));
-  }
-
-  if (property) {
-    params.append('property', property.toString());
-  }
-
-  return params;
-};
