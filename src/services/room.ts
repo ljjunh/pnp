@@ -298,12 +298,17 @@ const ROOM_TYPE = {
   Shared: 'Shared room',
 };
 
-export async function getFilterRoom(filter: FilterType): Promise<FilterRoom[]> {
+export async function getFilterRoom(
+  filter: FilterType,
+  skip: number,
+  take: number,
+): Promise<[FilterRoom[], number]> {
   const whereConditions = getWhereConditions(filter);
 
   const rooms = await prisma.room.findMany({
     relationLoadStrategy: 'join',
     where: whereConditions,
+    ...{ skip, take },
     select: {
       id: true,
       location: true,
@@ -321,7 +326,7 @@ export async function getFilterRoom(filter: FilterType): Promise<FilterRoom[]> {
     },
   });
 
-  return rooms;
+  return [rooms, rooms.length];
 }
 
 /**

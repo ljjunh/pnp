@@ -53,3 +53,15 @@ export type PriceFilterRange = {
 export type CreateRoomResponse = {
   roomId: number;
 };
+
+export type FilterRoomResponse = {
+  data: FilterRoom[];
+  page: {
+    currentPage: number;
+    pageSize: number;
+    totalPages: number;
+    totalItems: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+  };
+};
