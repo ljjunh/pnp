@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
 import { mockReservation } from '@mocks/reservation';
 import { getReservation } from '@/apis/reservation/queries';
@@ -17,7 +18,6 @@ describe('Reservation Query', () => {
     });
 
     test('존재하지 않는 예약일 경우 notFound를 호출한다', async () => {
-      const { notFound } = require('next/navigation');
       await expect(getReservation('404')).rejects.toThrow();
       expect(notFound).toHaveBeenCalled();
     });
