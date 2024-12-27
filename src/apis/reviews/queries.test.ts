@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
 import mockReview from '@/mocks/fixtures/reviews.json';
 import { getReviews } from '@/apis/reviews/queries';
@@ -14,7 +15,6 @@ describe('Reviews Query Test', () => {
       expect(result).toEqual(mockReview);
     });
     test('존재하지 않는 방일 경우 notFound를 호출한다.', async () => {
-      const { notFound } = require('next/navigation');
       await expect(getReviews(404)).rejects.toThrow();
       expect(notFound).toHaveBeenCalled();
     });

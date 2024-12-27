@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
 import mockRoom from '@/mocks/fixtures/room.json';
 import { getRoom } from '@/apis/rooms/queries';
@@ -16,8 +17,6 @@ describe('Room Query Test', () => {
     });
 
     test('존재하지 않는 방일 경우 notFound를 호출한다.', async () => {
-      const { notFound } = require('next/navigation');
-
       await expect(getRoom(404)).rejects.toThrow();
       expect(notFound).toHaveBeenCalled();
     });
