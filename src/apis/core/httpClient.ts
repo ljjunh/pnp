@@ -3,9 +3,18 @@ import { BaseResponse } from '@/lib/server/response';
 // HTTP 요청 메서드 타입 정의
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
+interface NextFetchRequestConfig extends RequestInit {
+  next?: {
+    revalidate?: number | false;
+    tags?: string[];
+  };
+}
+
 // 요청 인터셉터 인터페이스
 interface RequestInterceptor {
-  onRequest(config: RequestInit): Promise<RequestInit> | RequestInit;
+  onRequest(
+    config: NextFetchRequestConfig,
+  ): Promise<NextFetchRequestConfig> | NextFetchRequestConfig;
 }
 
 // 응답 인터셉터 인터페이스
@@ -84,10 +93,10 @@ export class HttpClient {
     method: HttpMethod,
     url: string,
     data?: unknown,
-    config: RequestInit = {},
+    config: NextFetchRequestConfig = {},
   ): Promise<BaseResponse<T>> {
     // 기본 설정과 사용자 설정을 병합
-    let fetchConfig: RequestInit = {
+    let fetchConfig: NextFetchRequestConfig = {
       ...config,
       method,
       headers: {
@@ -119,26 +128,30 @@ export class HttpClient {
     return result;
   }
 
-  public async get<T>(url: string, config?: RequestInit): Promise<BaseResponse<T>> {
+  public async get<T>(url: string, config?: NextFetchRequestConfig): Promise<BaseResponse<T>> {
     return this.request<T>('GET', url, undefined, config);
   }
 
   public async post<T>(
     url: string,
     data?: unknown,
-    config?: RequestInit,
+    config?: NextFetchRequestConfig,
   ): Promise<BaseResponse<T>> {
     return this.request<T>('POST', url, data, config);
   }
 
-  public async put<T>(url: string, data?: unknown, config?: RequestInit): Promise<BaseResponse<T>> {
+  public async put<T>(
+    url: string,
+    data?: unknown,
+    config?: NextFetchRequestConfig,
+  ): Promise<BaseResponse<T>> {
     return this.request<T>('PUT', url, data, config);
   }
 
   public async patch<T>(
     url: string,
     data?: unknown,
-    config?: RequestInit,
+    config?: NextFetchRequestConfig,
   ): Promise<BaseResponse<T>> {
     return this.request<T>('PATCH', url, data, config);
   }
@@ -146,7 +159,7 @@ export class HttpClient {
   public async delete<T>(
     url: string,
     data?: unknown,
-    config?: RequestInit,
+    config?: NextFetchRequestConfig,
   ): Promise<BaseResponse<T>> {
     return this.request<T>('DELETE', url, data, config);
   }

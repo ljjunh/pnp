@@ -143,7 +143,7 @@ export default async function ReviewModal({ params }: { params: { id: string } }
               ))}
             </div>
           </div>
-          <RoomReviewForm />
+          <RoomReviewForm roomId={Number(params.id)} />
         </div>
       </div>
     </Modal>

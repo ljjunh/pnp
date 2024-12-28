@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
 import { ReviewSummarize } from '@/types/review';
 import { httpClient } from '@/apis/core/httpClient';
+import { CACHE_TAGS } from '@/constants/cacheTags';
 
 export interface GetReviewsResponse {
   data: ReviewSummarize;
@@ -31,6 +32,11 @@ export async function getReviews(
   try {
     const response = await httpClient.get<GetReviewsResponse>(
       `/rooms/${roomId}/reviews${page ? `?page=${page}` : ''}${limit ? `${page ? '&' : '?'}limit=${limit}` : ''}`,
+      {
+        next: {
+          tags: [CACHE_TAGS.REVIEWS.DETAIL(roomId)],
+        },
+      },
     );
 
     if (!response.success) {
