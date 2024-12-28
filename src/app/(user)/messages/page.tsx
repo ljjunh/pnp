@@ -10,28 +10,7 @@ import { AllMessageSearchBar } from '@/app/(user)/messages/components/AllMessage
 import { MessageContent } from '@/app/(user)/messages/components/MessageContent';
 import { MessageHeader } from '@/app/(user)/messages/components/MessageHeader';
 import { MessageInput } from '@/app/(user)/messages/components/MessageInput';
-import { FilterItem } from '@/types/message';
-import { BsSuitcaseLg } from 'react-icons/bs';
-import { BsChatSquare } from 'react-icons/bs';
-import { FaAirbnb } from 'react-icons/fa';
-
-export const filterItems = [
-  {
-    id: 1,
-    label: '전체',
-    icon: BsChatSquare,
-  },
-  {
-    id: 2,
-    label: '여행',
-    icon: BsSuitcaseLg,
-  },
-  {
-    id: 3,
-    label: '지원',
-    icon: FaAirbnb,
-  },
-] as const satisfies FilterItem[];
+import { filterItems } from '@/types/message';
 
 export default function Messages() {
   const [showReservation, setShowReservation] = useState<boolean>(true);

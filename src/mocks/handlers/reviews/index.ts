@@ -1,3 +1,3 @@
-import { getReviewsHandlers } from '@/mocks/handlers/reviews/getReviews';
+import { getReviewsHandler } from '@/mocks/handlers/reviews/getReviews';
 
-export const reviewsHandlers = [...getReviewsHandlers];
+export const reviewsHandlers = [...getReviewsHandler];

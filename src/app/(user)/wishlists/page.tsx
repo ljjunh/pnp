@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { RecentlyViewedCard } from '@/app/(user)/wishlists/components/RecentlyViewedCard';
 import { WishlistsCard } from '@/app/(user)/wishlists/components/WishlistsCard';
 

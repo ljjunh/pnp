@@ -1,5 +1,5 @@
-import { filterItems } from '@/app/(user)/messages/page';
 import type { Meta, StoryObj } from '@storybook/react';
+import { filterItems } from '@/types/message';
 import { AllMessageFilter } from './AllMessageFilter';
 
 const meta = {
