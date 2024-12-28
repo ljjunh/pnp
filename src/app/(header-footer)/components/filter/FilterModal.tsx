@@ -36,7 +36,10 @@ export default function FilterModal() {
 
   const [filter, setFilter] = useState<FilterType>(paramFilter);
 
-  const handleFilter = (newState: any, type: keyof FilterType) => {
+  const handleFilter = <K extends keyof FilterType>(
+    newState: FilterType[K],
+    type: keyof FilterType,
+  ) => {
     setFilter((prev) => ({ ...prev, [type]: newState }));
   };
 
