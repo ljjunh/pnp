@@ -368,6 +368,8 @@ const getWhereConditions = (filter: FilterType) => {
     property,
     location,
     capacity,
+    checkIn,
+    checkOut,
   } = filter;
 
   const whereConditions: Prisma.RoomWhereInput = {};
@@ -476,6 +478,30 @@ const getWhereConditions = (filter: FilterType) => {
   if (capacity) {
     whereConditions.capacity = {
       gte: capacity,
+    };
+  }
+
+  if (checkIn && checkOut) {
+    whereConditions.reservations = {
+      none: {
+        AND: [
+          {
+            checkOut: {
+              gt: new Date(checkIn),
+            },
+          },
+          {
+            checkIn: {
+              lt: new Date(checkOut),
+            },
+          },
+          {
+            status: {
+              in: ['CONFIRMED', 'PAYMENT', 'PENDING'],
+            },
+          },
+        ],
+      },
     };
   }
 
