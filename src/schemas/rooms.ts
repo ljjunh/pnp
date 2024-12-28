@@ -70,6 +70,20 @@ export const filterSchema = z.object({
   option,
   language,
   property,
+  location: z.string().optional(),
+  capacity: z.number().optional(),
+  checkIn: z
+    .string()
+    .regex(/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/, {
+      message: '유효한 YYYY-MM-DD 형식이 아닙니다.',
+    })
+    .optional(),
+  checkOut: z
+    .string()
+    .regex(/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/, {
+      message: '유효한 YYYY-MM-DD 형식이 아닙니다.',
+    })
+    .optional(),
 });
 
 export const priceFilterSchema = z.object({

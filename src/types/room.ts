@@ -5,6 +5,10 @@ export type RoomParams = {
   roomId: string;
 };
 
+export type RoomLocationParams = {
+  location: string;
+};
+
 export type ImageLink = Pick<RoomImage, 'id' | 'imageLink' | 'orientation'>;
 
 export type Room = Pick<
