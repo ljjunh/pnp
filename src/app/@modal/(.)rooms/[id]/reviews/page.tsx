@@ -2,6 +2,7 @@ import RoomReviewForm from '@/app/(header-footer)/rooms/[id]/components/review/R
 import RoomReviewItem from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewItem';
 import Modal from '@/components/common/Modal/Modal';
 import { GetReviewsResponse, getReviews } from '@/apis/reviews/queries';
+import { calculateAverageRating } from '@/utils/calculateAverageRating';
 import { GoComment } from 'react-icons/go';
 import { IoIosArrowDown } from 'react-icons/io';
 import { IoSearch } from 'react-icons/io5';
@@ -9,15 +10,15 @@ import { PiCheckCircle, PiKey, PiMapTrifold, PiSprayBottle, PiTag } from 'react-
 
 export default async function ReviewModal({ params }: { params: { id: string } }) {
   const review: GetReviewsResponse = await getReviews(Number(params.id));
-  const rating =
-    [
-      review.data.accuracy,
-      review.data.communication,
-      review.data.cleanliness,
-      review.data.location,
-      review.data.checkIn,
-      review.data.value,
-    ].reduce((sum, score) => sum + score, 0) / 6;
+
+  const rating = calculateAverageRating([
+    review.data.accuracy,
+    review.data.communication,
+    review.data.cleanliness,
+    review.data.location,
+    review.data.checkIn,
+    review.data.value,
+  ]);
 
   return (
     <Modal>
@@ -130,6 +131,8 @@ export default async function ReviewModal({ params }: { params: { id: string } }
               {review.data.reviews.map((review) => (
                 <RoomReviewItem
                   key={review.id}
+                  roomId={Number(params.id)}
+                  reviewId={review.id}
                   accuracy={review.accuracy}
                   communication={review.communication}
                   cleanliness={review.cleanliness}

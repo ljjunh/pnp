@@ -119,7 +119,7 @@ export default function RoomReviewForm({ roomId }: RoomReviewFormProps) {
     setFormState(INITIAL_FORM_STATE);
     // 성공 시 토스트 알림
     toast({
-      title: '리뷰가 작성되었습니다',
+      title: '리뷰가 작성되었습니다.',
     });
   };
 

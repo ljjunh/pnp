@@ -48,7 +48,7 @@ describe('Review Action Test', () => {
 
       expect(result.success).toBe(false);
       expect(result.status).toBe(401);
-      expect(result.message).toBe('로그인이 필요합니다');
+      expect(result.message).toBe('로그인이 필요합니다.');
     });
 
     test('서버 에러 응답에 message가 없는 경우 기본 메시지를 반환한다', async () => {

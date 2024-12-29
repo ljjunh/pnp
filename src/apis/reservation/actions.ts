@@ -20,13 +20,14 @@ export async function createReservation(
     if (!session) {
       return {
         success: false,
-        message: '로그인이 필요합니다',
+        message: '로그인이 필요합니다.',
         status: 401,
       };
     }
 
     // API 요청
     const response = await httpClient.post<CreateReservationResponse>('/reservation', input);
+
     // API에서 명시적으로 처리되는 에러
     if (!response.success) {
       return {

@@ -105,6 +105,7 @@ export default function RoomBookingCard({ price, roomId }: RoomBookingCardProps)
       checkIn: dates.checkIn,
       checkOut: dates.checkOut,
     };
+
     const response = await createReservation(reservationData);
     if (!response.success) {
       switch (response.status) {

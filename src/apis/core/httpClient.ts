@@ -116,12 +116,27 @@ export class HttpClient {
       fetchConfig.body = JSON.stringify(data);
     }
 
-    // fetch 요청 실행 및 JSON 파싱
+    // fetch 요청 실행
     const response = await fetch(`${this.baseURL}${url}`, fetchConfig);
-    const jsonData: BaseResponse<T> = await response.json();
+    let result;
+
+    // response body 처리
+    try {
+      // body가 있는 응답의 경우 JSON으로 파싱
+      result = await response.json();
+    } catch {
+      // body가 없는 성공 응답(204 No Content, 304 Not Modified 등)을 BaseResponse로 처리
+      if (response.ok) {
+        result = {
+          success: true,
+          status: response.status,
+          message: response.statusText,
+          data: null,
+        } as BaseResponse<T>;
+      }
+    }
 
     // 모든 응답 인터셉터 순차적 실행
-    let result = jsonData;
     for (const interceptor of this.responseInterceptors) {
       result = await interceptor.onResponse(result);
     }

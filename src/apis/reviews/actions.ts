@@ -23,15 +23,14 @@ export async function createReview(
     if (!session) {
       return {
         success: false,
-        message: '로그인이 필요합니다',
+        message: '로그인이 필요합니다.',
         status: 401,
       };
     }
     // API 요청
-    const response = await httpClient.post<void>(`/rooms/${roomId}/reviews`, formData);
-
+    const response = await httpClient.post<null>(`/rooms/${roomId}/reviews`, formData);
+    // API에서 명시적으로 처리되는 에러
     if (!response.success) {
-      // API에서 명시적으로 처리되는 에러
       return {
         success: false,
         message: response.message || '리뷰 작성에 실패했습니다. 잠시 후 다시 시도해 주세요.',
@@ -52,6 +51,54 @@ export async function createReview(
       success: false,
       message:
         '네트워크 문제로 리뷰 작성에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.',
+      status: 500,
+    };
+  }
+}
+
+/**
+ * 숙소에 대한 리뷰를 삭제하는 서버 액션 입니다.
+ * @param roomId - 리뷰를 삭제할 숙소의 ID
+ * @param reviewId - 리뷰 ID
+ * @returns {Promise<ActionResponse>} 액션 결과
+ */
+export async function deleteReview(roomId: number, reviewId: number): Promise<ActionResponse> {
+  try {
+    const session = await auth();
+
+    if (!session) {
+      return {
+        success: false,
+        message: '로그인이 필요합니다',
+        status: 401,
+      };
+    }
+
+    // API 요청
+    const response = await httpClient.delete<null>(`/rooms/${roomId}/reviews/${reviewId}`);
+
+    // API에서 명시적으로 처리되는 에러
+    if (!response.success) {
+      return {
+        success: false,
+        message: response.message || '리뷰 작성에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+        status: response.status,
+      };
+    }
+
+    // 해당 숙소 리뷰 캐시 무효화
+    revalidateTag(CACHE_TAGS.REVIEWS.DETAIL(roomId));
+
+    // 성공 시 응답
+    return {
+      success: true,
+      status: 204,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message:
+        '네트워크 문제로 리뷰 삭제에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.',
       status: 500,
     };
   }
