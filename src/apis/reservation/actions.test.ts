@@ -7,6 +7,9 @@ jest.mock('@/auth', () => ({
 }));
 
 describe('Reservation Action Test', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   describe('createReservation', () => {
     // 모든 테스트에서 사용할 유효한 예약 입력값
     const validInput = {
@@ -41,7 +44,7 @@ describe('Reservation Action Test', () => {
       expect(result.message).toBe('로그인이 필요합니다');
     });
 
-    test('서버에서 에러 응답이 온 경우 500 응답 객체를 반환한다', async () => {
+    test('서버에서 에러 응답이 온 경우 서버에서 온 응답 객체(success, status, message)를 반환한다', async () => {
       //로그인 된 상태로 가정
       (auth as jest.Mock).mockResolvedValue({ user: { id: 1 } });
 

@@ -1,11 +1,9 @@
-import { CreateReservationInput } from '@/schemas/reservation';
 import { HttpResponse, http } from 'msw';
 
-export const createReservationHandler = http.post('/api/reservation', async ({ request }) => {
-  const input = (await request.json()) as CreateReservationInput;
-
+export const createReviewHandler = http.post(`/api/rooms/:roomId/reviews`, async ({ params }) => {
+  const roomId = Number(params.roomId);
   // 서버 에러 케이스
-  if (input.roomId === 500) {
+  if (roomId === 500) {
     return HttpResponse.json({
       success: false,
       status: 500,
@@ -14,12 +12,12 @@ export const createReservationHandler = http.post('/api/reservation', async ({ r
   }
 
   // 네트워크 에러 케이스
-  if (input.roomId === 501) {
+  if (roomId === 501) {
     return new Response(null, { status: 500 });
   }
 
   // message 없이 실패하는 케이스
-  if (input.roomId === 502) {
+  if (roomId === 502) {
     return HttpResponse.json({
       success: false,
       status: 500,
@@ -30,10 +28,5 @@ export const createReservationHandler = http.post('/api/reservation', async ({ r
   return HttpResponse.json({
     success: true,
     status: 201,
-    data: {
-      reservationId: 4,
-      orderNumber: '20241227-000000016-030643',
-    },
-    message: 'CREATED',
   });
 });
