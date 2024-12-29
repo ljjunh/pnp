@@ -27,6 +27,7 @@ export default function RoomReviewDeleteButton({ roomId, reviewId }: RoomReviewD
             variant: 'destructive',
           });
       }
+      return;
     }
     toast({
       title: '리뷰가 삭제되었습니다.',
