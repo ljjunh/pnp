@@ -69,7 +69,7 @@ export async function POST(
 export async function DELETE(
   request: NextRequest,
   { params }: { params: ReservationParams },
-): Promise<CustomResponse<undefined>> {
+): Promise<CustomResponse<undefined> | Response> {
   const session = await auth();
   try {
     if (!session) {

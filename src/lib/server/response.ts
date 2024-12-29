@@ -9,7 +9,7 @@ export interface BaseResponse<T> {
   errors?: ZodIssue[];
 }
 
-class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T> | object> {
+class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T> | unknown> {
   static ok<T>(data: T): CustomResponse<T> {
     return CustomResponse.json(
       {
@@ -56,8 +56,10 @@ class CustomResponse<T = unknown> extends NextResponse<BaseResponse<T> | object>
     return CustomResponse.empty('CREATED', 201);
   }
 
-  static deleted(): CustomResponse<undefined> {
-    return NextResponse.json({}, { status: 204 });
+  static deleted(): Response {
+    return new Response(null, {
+      status: 204,
+    });
   }
 
   static errors(
