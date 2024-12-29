@@ -35,5 +35,14 @@
     "src/ui/PopoverButton",
     "src/ui/PopoverMenu"
   ],
-  "exclude": ["node_modules", "./cypress.config.ts", "node_modules", "cypress", "**/*.cy.tsx", "k6"]
+  "exclude": [
+    "node_modules",
+    "./cypress.config.ts",
+    "node_modules",
+    "cypress",
+    "**/*.cy.tsx",
+    "k6",
+    "__mock__",
+    "__test__"
+  ]
 }

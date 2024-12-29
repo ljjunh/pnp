@@ -1,9 +1,9 @@
-import { PaymentCreate } from '@/schemas/payment';
+import { KakaoPayCreate, NaverPayCreate, TossPaymentCreate } from '@/schemas/payment';
 import { SQSClient, SendMessageCommand } from '@aws-sdk/client-sqs';
 
 const sqsClient = new SQSClient({ region: process.env.AWS_REGION ?? 'ap-northeast-2' });
 
-interface PaymentCreateRetry extends PaymentCreate {
+interface PaymentCreateRetry extends TossPaymentCreate, KakaoPayCreate, NaverPayCreate {
   idempotentKey: string;
 }
 
