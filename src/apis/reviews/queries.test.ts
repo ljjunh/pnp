@@ -9,6 +9,9 @@ jest.mock('next/navigation', () => ({
 }));
 
 describe('Reviews Query Test', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   describe('getReviews', () => {
     test('성공적으로 리뷰 정보를 가져온다', async () => {
       const result = await getReviews(1);

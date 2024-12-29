@@ -3,8 +3,7 @@ import RoomReviewItem from '@/app/(header-footer)/rooms/[id]/components/review/R
 import RoomReviewSummary from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewSummary';
 import { Room } from '@/types/room';
 import Button from '@/components/common/Button/Button';
-import { GetReviewsResponse } from '@/apis/reviews/queries';
-import { getReviews } from '@/apis/reviews/queries';
+import { GetReviewsResponse, getReviews } from '@/apis/reviews/queries';
 import { ROUTES } from '@/constants/routeURL';
 
 interface RoomReviewListProps {

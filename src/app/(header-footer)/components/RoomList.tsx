@@ -1,8 +1,8 @@
-import { FilterRoom } from '@/types/room';
+import { FilterRoom, StoryFilterRoom } from '@/types/room';
 import RoomCard from '@/components/common/Card/RoomCard';
 
 interface RoomListProps {
-  rooms: FilterRoom[];
+  rooms: FilterRoom[] | StoryFilterRoom[];
 }
 
 export default function RoomList({ rooms }: RoomListProps) {
