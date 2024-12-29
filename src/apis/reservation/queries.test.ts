@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
-import { mockReservation } from '@mocks/reservation';
+import mockReservation from '@/mocks/fixtures/reservation.json';
 import { getReservation } from '@/apis/reservation/queries';
 
 // next/navigation의 notFound를 모킹
@@ -9,6 +9,10 @@ jest.mock('next/navigation', () => ({
 }));
 
 describe('Reservation Query', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('getReservation', () => {
     test('성공적으로 예약 정보를 가져온다', async () => {
       const result = await getReservation('1');

@@ -9,6 +9,10 @@ jest.mock('next/navigation', () => ({
 }));
 
 describe('Room Query Test', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('getRoom', () => {
     test('성공적으로 룸 정보를 가져온다', async () => {
       const result = await getRoom(1);
