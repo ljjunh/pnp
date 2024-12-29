@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { ImageLink } from '@/types/room';
 import RoomCardCarousel from '@/components/common/Card/RoomCardCarousel';
 
 const meta = {
@@ -15,12 +16,13 @@ export default meta;
 
 type Story = StoryObj<typeof RoomCardCarousel>;
 
-const DUMMY_IMAGES = [
-  'https://picsum.photos/400/400?random=1',
-  'https://picsum.photos/400/400?random=2',
-  'https://picsum.photos/400/400?random=3',
-  'https://picsum.photos/400/400?random=4',
-  'https://picsum.photos/400/400?random=5',
+const DUMMY_IMAGES: ImageLink[] = [
+  { id: 1, imageLink: '/images/03.avif', orientation: 'LANDSCAPE' },
+  { id: 2, imageLink: '/images/02.avif', orientation: 'PORTRAIT' },
+  { id: 3, imageLink: '/images/01.avif', orientation: 'LANDSCAPE' },
+  { id: 4, imageLink: '/images/06.avif', orientation: 'PORTRAIT' },
+  { id: 5, imageLink: '/images/05.avif', orientation: 'LANDSCAPE' },
+  { id: 6, imageLink: '/images/04.avif', orientation: 'PORTRAIT' },
 ];
 
 // 기본 상태
