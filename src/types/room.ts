@@ -69,3 +69,8 @@ export type FilterRoomResponse = {
     hasPrevPage: boolean;
   };
 };
+
+export type StoryFilterRoom = Omit<FilterRoom, 'latitude' | 'longitude'> & {
+  latitude: number;
+  longitude: number;
+};
