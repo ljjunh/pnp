@@ -1,9 +1,11 @@
 'use server';
 
+import { revalidateTag } from 'next/cache';
 import { auth } from '@/auth';
 import { CreateReviewInput } from '@/schemas';
 import { ActionResponse } from '@/types/action';
 import { httpClient } from '@/apis/core/httpClient';
+import { CACHE_TAGS } from '@/constants/cacheTags';
 
 /**
  * 숙소에 대한 리뷰를 작성하는 서버 액션 입니다.
@@ -36,7 +38,9 @@ export async function createReview(
         status: response.status,
       };
     }
-    // 캐시 무효화 해야함
+    // 해당 숙소 리뷰 캐시 무효화
+    revalidateTag(CACHE_TAGS.REVIEWS.DETAIL(roomId));
+
     // 성공 시 응답
     return {
       success: true,

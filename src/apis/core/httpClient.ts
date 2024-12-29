@@ -99,6 +99,7 @@ export class HttpClient {
     let fetchConfig: NextFetchRequestConfig = {
       ...config,
       method,
+      cache: method === 'GET' ? 'force-cache' : undefined,
       headers: {
         ...config.headers,
         Cookie: await this.getCookies(),
