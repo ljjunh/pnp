@@ -136,7 +136,10 @@ export default function RoomBookingCard({ price, roomId }: RoomBookingCardProps)
           setShowDialog(true);
           break;
         default:
-          alert(response.message);
+          toast({
+            title: response.message,
+            variant: 'destructive',
+          });
       }
       return;
     }
