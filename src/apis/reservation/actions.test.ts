@@ -70,7 +70,7 @@ describe('Reservation Action Test', () => {
 
       expect(result.success).toBe(false);
       expect(result.status).toBe(500);
-      expect(result.message).toBe('예약에 실패했습니다');
+      expect(result.message).toBe('예약에 실패했습니다. 잠시 후 다시 시도해 주세요.');
     });
 
     test('네트워크 에러 발생 시 500 응답 객체를 반환한다', async () => {
@@ -85,7 +85,9 @@ describe('Reservation Action Test', () => {
 
       expect(result.success).toBe(false);
       expect(result.status).toBe(500);
-      expect(result.message).toBe('예약 생성 중 오류가 발생했습니다');
+      expect(result.message).toBe(
+        '네트워크 문제로 예약에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.',
+      );
     });
   });
 });

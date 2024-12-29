@@ -9,8 +9,7 @@ import { httpClient } from '@/apis/core/httpClient';
 /**
  * 예약을 생성하는 서버 액션입니다.
  * @param input - 예약 생성에 필요한 입력값
- * @returns 성공 시 생성된 예약 정보를 포함한 응답을, 실패 시 에러 메시지와 상태 코드를 포함한 응답을 반환합니다.
- * @throws {never} - 모든 에러는 ActionResponse 형태로 처리됩니다.
+ * @returns {Promise<ActionResponse<CreateReservationResponse>>} 성공 시 생성된 예약 정보를 포함한 응답을, 실패 시 에러 메시지와 상태 코드를 포함한 응답을 반환합니다.
  */
 export async function createReservation(
   input: CreateReservationInput,
@@ -28,11 +27,11 @@ export async function createReservation(
 
     // API 요청
     const response = await httpClient.post<CreateReservationResponse>('/reservation', input);
-    // 실패 시 응답
+    // API에서 명시적으로 처리되는 에러
     if (!response.success) {
       return {
         success: false,
-        message: response.message || '예약에 실패했습니다',
+        message: response.message || '예약에 실패했습니다. 잠시 후 다시 시도해 주세요.',
         status: response.status,
       };
     }
@@ -43,10 +42,10 @@ export async function createReservation(
       data: response.data,
     };
   } catch (error) {
-    // 서버 요청 또는 처리 중 발생한 예상치 못한 오류 처리
+    // fetch 자체가 실패한 경우(네트워크 연결 끊김, CORS 오류, DNS 실패 등 요청 자체가 실패한 경우)
     return {
       success: false,
-      message: '예약 생성 중 오류가 발생했습니다',
+      message: '네트워크 문제로 예약에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.',
       status: 500,
     };
   }
