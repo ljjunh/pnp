@@ -7,17 +7,17 @@ import { GetReviewsResponse, getReviews } from '@/apis/reviews/queries';
 import { ROUTES } from '@/constants/routeURL';
 
 interface RoomReviewListProps {
-  id: number;
+  roomId: number;
   reviewsCount: Room['reviewsCount'];
   reviewsAverage: Room['reviewsAverage'];
 }
 
 export default async function RoomReviewList({
-  id,
+  roomId,
   reviewsCount,
   reviewsAverage,
 }: RoomReviewListProps) {
-  const review: GetReviewsResponse = await getReviews(Number(id), 1, 6);
+  const review: GetReviewsResponse = await getReviews(roomId, 1, 6);
 
   return (
     <section className="py-12">
@@ -37,6 +37,8 @@ export default async function RoomReviewList({
             {review.data.reviews.map((review) => (
               <RoomReviewItem
                 key={review.id}
+                roomId={roomId}
+                reviewId={review.id}
                 accuracy={review.accuracy}
                 communication={review.communication}
                 cleanliness={review.cleanliness}
@@ -52,7 +54,7 @@ export default async function RoomReviewList({
 
           <div className="py-10">
             <Button variant="tertiary">
-              <Link href={ROUTES.ROOMS.REVIEWS(id)}>후기 {reviewsCount}개 모두 보기</Link>
+              <Link href={ROUTES.ROOMS.REVIEWS(roomId)}>후기 {reviewsCount}개 모두 보기</Link>
             </Button>
           </div>
         </div>

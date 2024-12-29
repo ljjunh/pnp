@@ -8,6 +8,8 @@ import { formatRelativeDate } from '@/utils/formatRelativeDate';
 import { IoIosStar } from 'react-icons/io';
 
 interface RoomReviewItemProps {
+  roomId: number;
+  reviewId: Review['id'];
   accuracy: Review['accuracy'];
   communication: Review['communication'];
   cleanliness: Review['cleanliness'];
@@ -20,6 +22,8 @@ interface RoomReviewItemProps {
 }
 
 export default async function RoomReviewItem({
+  roomId,
+  reviewId,
   accuracy,
   communication,
   cleanliness,
@@ -68,7 +72,10 @@ export default async function RoomReviewItem({
           {session?.user.id === user.id && (
             <div className="flex gap-2 text-sm text-neutral-07">
               <button className="hover:text-black">수정</button>
-              <RoomReviewDeleteButton />
+              <RoomReviewDeleteButton
+                roomId={roomId}
+                reviewId={reviewId}
+              />
             </div>
           )}
         </div>

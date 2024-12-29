@@ -131,6 +131,8 @@ export default async function ReviewModal({ params }: { params: { id: string } }
               {review.data.reviews.map((review) => (
                 <RoomReviewItem
                   key={review.id}
+                  roomId={Number(params.id)}
+                  reviewId={review.id}
                   accuracy={review.accuracy}
                   communication={review.communication}
                   cleanliness={review.cleanliness}

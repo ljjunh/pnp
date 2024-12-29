@@ -44,7 +44,7 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
         location={room.location}
       />
       <RoomReviewList
-        id={Number(params.id)}
+        roomId={room.id}
         reviewsCount={room.reviewsCount}
         reviewsAverage={room.reviewsAverage}
       />
