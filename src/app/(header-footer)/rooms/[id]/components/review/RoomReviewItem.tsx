@@ -1,6 +1,10 @@
+'use client';
+
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import RoomReviewDeleteButton from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewDeleteButton';
-import { auth } from '@/auth';
+import RoomReviewEditButton from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewEditButton';
 import { Review } from '@/types/review';
 import { calculateAverageRating } from '@/utils/calculateAverageRating';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
@@ -19,9 +23,10 @@ interface RoomReviewItemProps {
   content: Review['content'];
   createdAt: Review['createdAt'];
   user: Review['user'];
+  isInterceptedRoute?: boolean;
 }
 
-export default async function RoomReviewItem({
+export default function RoomReviewItem({
   roomId,
   reviewId,
   accuracy,
@@ -33,8 +38,14 @@ export default async function RoomReviewItem({
   content,
   createdAt,
   user,
+  isInterceptedRoute = false,
 }: RoomReviewItemProps) {
-  const session = await auth();
+  const { data: session } = useSession();
+
+  const [edit, setEdit] = useState({
+    isEditing: false,
+    content: content,
+  });
 
   const rating = calculateAverageRating([
     accuracy,
@@ -69,9 +80,14 @@ export default async function RoomReviewItem({
               </div>
             </div>
           </div>
-          {session?.user.id === user.id && (
+          {session?.user.id === user.id && isInterceptedRoute && (
             <div className="flex gap-2 text-sm text-neutral-07">
-              <button className="hover:text-black">수정</button>
+              <button
+                onClick={() => setEdit({ ...edit, isEditing: true })}
+                className="hover:text-black"
+              >
+                수정
+              </button>
               <RoomReviewDeleteButton
                 roomId={roomId}
                 reviewId={reviewId}
@@ -94,7 +110,31 @@ export default async function RoomReviewItem({
           <div>{formatRelativeDate(new Date(createdAt))}</div>
         </div>
       </div>
-      <div className="mt-1 text-shade-02">{content}</div>
+      {edit.isEditing ? (
+        <div className="mt-1">
+          <textarea
+            onChange={(e) => setEdit({ ...edit, content: e.target.value })}
+            className="w-full rounded-lg border p-2 text-shade-02"
+            rows={3}
+            value={edit.content ? edit.content : ''}
+          />
+          <div className="mt-2 flex justify-end gap-2">
+            <button
+              onClick={() => setEdit({ isEditing: false, content: content })}
+              className="rounded-lg px-3 py-1 hover:bg-neutral-02"
+            >
+              취소
+            </button>
+
+            <RoomReviewEditButton
+              editingContent={edit.content ? edit.content : ''}
+              onClose={() => setEdit({ isEditing: false, content })}
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="mt-1 text-shade-02">{content}</div>
+      )}
     </div>
   );
 }

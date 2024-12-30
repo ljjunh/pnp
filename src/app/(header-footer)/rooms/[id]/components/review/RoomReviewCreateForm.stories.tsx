@@ -1,9 +1,9 @@
-import RoomReviewForm from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewForm';
+import RoomReviewCreateForm from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewCreateForm';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Rooms/review/RoomReviewForm',
-  component: RoomReviewForm,
+  title: 'Rooms/review/RoomReviewCreateForm',
+  component: RoomReviewCreateForm,
   parameters: {
     layout: 'centered',
   },
@@ -14,11 +14,11 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof RoomReviewForm>;
+} satisfies Meta<typeof RoomReviewCreateForm>;
 
 export default meta;
 
-type Story = StoryObj<typeof RoomReviewForm>;
+type Story = StoryObj<typeof RoomReviewCreateForm>;
 
 export const Default: Story = {
   args: {

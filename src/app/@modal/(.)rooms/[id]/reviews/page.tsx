@@ -1,4 +1,4 @@
-import RoomReviewForm from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewForm';
+import RoomReviewCreateForm from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewCreateForm';
 import RoomReviewItem from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewItem';
 import Modal from '@/components/common/Modal/Modal';
 import { GetReviewsResponse, getReviews } from '@/apis/reviews/queries';
@@ -142,11 +142,12 @@ export default async function ReviewModal({ params }: { params: { id: string } }
                   content={review.content}
                   createdAt={review.createdAt}
                   user={review.user}
+                  isInterceptedRoute
                 />
               ))}
             </div>
           </div>
-          <RoomReviewForm roomId={Number(params.id)} />
+          <RoomReviewCreateForm roomId={Number(params.id)} />
         </div>
       </div>
     </Modal>

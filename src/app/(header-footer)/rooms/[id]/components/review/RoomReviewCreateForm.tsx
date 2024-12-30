@@ -49,11 +49,11 @@ const RATING_ITEMS = [
   { key: 'value', label: '가격 대비 만족도' },
 ] as const;
 
-interface RoomReviewFormProps {
+interface RoomReviewCreateFormProps {
   roomId: number;
 }
 
-export default function RoomReviewForm({ roomId }: RoomReviewFormProps) {
+export default function RoomReviewCreateForm({ roomId }: RoomReviewCreateFormProps) {
   const { toast } = useToast();
   const router = useRouter();
   const formRef = useRef<HTMLDivElement>(null);
@@ -166,7 +166,7 @@ export default function RoomReviewForm({ roomId }: RoomReviewFormProps) {
           isDisabled={!content.trim() || isLoading}
           onClick={handleSubmit}
         >
-          {isLoading ? '작성 중...' : '작성'}
+          {isLoading ? '작성 중' : '작성'}
         </Button>
       </div>
     </div>
