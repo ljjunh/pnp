@@ -1,21 +1,12 @@
-import RoomCardCarousel from '@/components/common/Card/RoomCardCarousel';
+// import RoomCardCarousel from '@/components/common/Card/RoomCardCarousel';
 import { BsHouseExclamation } from 'react-icons/bs';
-
-const images = [
-  '/images/05.avif',
-  '/images/02.avif',
-  '/images/04.avif',
-  '/images/01.avif',
-  '/images/03.avif',
-  '/images/06.avif',
-];
 
 export function RoomInformation() {
   return (
     <>
       <div className="flex flex-col gap-5 px-4 pt-4">
         <h1 className="text-2xl font-medium">호스트 이름의 숙소</h1>
-        <RoomCardCarousel images={images} />
+        <div>숙소 사진 정보</div>
         <div className="flex flex-col gap-1">
           <h3 className="font-bold">예약이 종료 되었습니다.</h3>
           <p>
