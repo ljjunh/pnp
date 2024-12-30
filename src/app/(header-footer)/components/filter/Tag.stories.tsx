@@ -77,7 +77,7 @@ export const Characteristic: Story = {
 };
 
 // 위치 태그
-export const Locaiton: Story = {
+export const Location: Story = {
   render: () => (
     <div className="flex flex-wrap gap-2">
       {LOCATION_AMENITIES.map((amenity, index) => (

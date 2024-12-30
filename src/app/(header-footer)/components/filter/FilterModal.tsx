@@ -10,7 +10,8 @@ import PriceRange from '@/app/(header-footer)/components/filter/PriceRange';
 import ReservationOption from '@/app/(header-footer)/components/filter/ReservationOption';
 import RoomAndBed from '@/app/(header-footer)/components/filter/RoomAndBed';
 import { FilterType } from '@/schemas/rooms';
-import { fetchFilterCount } from '@/apis/filters/action';
+import { getFilterCount } from '@/apis/filters/action';
+import { useToast } from '@/hooks/use-toast';
 import { useModal } from '@/hooks/useModal';
 import { formatFilter } from '@/utils/formatFilter';
 import { MODAL_ID } from '@/constants/modal';
@@ -18,6 +19,8 @@ import { RxCross2 } from 'react-icons/rx';
 
 export default function FilterModal() {
   const [filterCount, setFilterCount] = useState<number | null>(null);
+  const { toast } = useToast();
+  const { modalState } = useModal(MODAL_ID.ROOM_FILTER);
   const { handleCloseModal } = useModal(MODAL_ID.ROOM_FILTER);
   const params = useSearchParams();
 
@@ -59,14 +62,38 @@ export default function FilterModal() {
   };
 
   useEffect(() => {
-    const changeCount = async () => {
-      try {
-        const response = await fetchFilterCount(filter);
+    if (!modalState) return;
 
-        setFilterCount(response);
-      } catch (error) {
-        console.error(error);
+    const changeCount = async () => {
+      const response = await getFilterCount(filter);
+
+      if (!response.success) {
+        switch (response.status) {
+          case 500:
+            toast({
+              title: '네트워크 에러',
+              description: response.message,
+              variant: 'destructive',
+            });
+          default:
+            toast({
+              title: response.message,
+              variant: 'destructive',
+            });
+        }
       }
+
+      if (!response.data) {
+        toast({
+          title: '숙소 조회 실패',
+          description: '조건에 맞는 숙소가 존재하지 않습니다.',
+          variant: 'destructive',
+        });
+
+        return;
+      }
+
+      setFilterCount(response.data);
     };
 
     changeCount();

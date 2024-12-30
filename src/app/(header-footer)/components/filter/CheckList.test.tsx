@@ -7,14 +7,13 @@ describe('CheckList 컴포넌트 테스트', () => {
 
   test('체크박스가 prop받은 title에 맞게 렌더링 되는지 확인', () => {
     const title = '체크박스 테스트';
+    const mockHandleClick = jest.fn();
 
     render(
       <CheckList
         id={1}
         title={title}
-        handleClick={() => {
-          console.log('체크박스 클릭');
-        }}
+        handleClick={mockHandleClick}
       />,
     );
 
@@ -33,7 +32,7 @@ describe('CheckList 컴포넌트 테스트', () => {
       />,
     );
 
-    const checkList = screen.getByRole('check-box');
+    const checkList = screen.getByRole('checkbox');
 
     expect(screen.getByTestId('uncheck')).toBeInTheDocument();
 
