@@ -4,13 +4,11 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import RoomReviewDeleteButton from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewDeleteButton';
-import RoomReviewEditButton from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewEditButton';
-import RoomReviewRating from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewRating';
+import RoomReviewEditForm from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewEditForm';
 import { RatingValues, Review } from '@/types/review';
 import { calculateAverageRating } from '@/utils/calculateAverageRating';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { formatRelativeDate } from '@/utils/formatRelativeDate';
-import { RATING_ITEMS } from '@/constants/review';
 import { IoIosStar } from 'react-icons/io';
 
 interface RoomReviewItemProps {
@@ -43,20 +41,16 @@ export default function RoomReviewItem({
   isInterceptedRoute = false,
 }: RoomReviewItemProps) {
   const { data: session } = useSession();
+  const [isEditing, setIsEditing] = useState(false);
 
-  const [edit, setEdit] = useState({
-    isEditing: false,
-    content: content,
-  });
-
-  const [editRatings, setEditRatings] = useState<RatingValues>({
+  const initialRatings: RatingValues = {
     accuracy,
     cleanliness,
     checkIn,
     communication,
     location,
     value,
-  });
+  };
 
   const rating = calculateAverageRating([
     accuracy,
@@ -66,13 +60,6 @@ export default function RoomReviewItem({
     checkIn,
     value,
   ]);
-
-  const handleRatingChange = (key: keyof RatingValues) => (value: number) => {
-    setEditRatings((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
 
   return (
     <div>
@@ -101,7 +88,7 @@ export default function RoomReviewItem({
           {session?.user.id === user.id && isInterceptedRoute && (
             <div className="flex gap-2 text-sm text-neutral-07">
               <button
-                onClick={() => setEdit({ ...edit, isEditing: true })}
+                onClick={() => setIsEditing(true)}
                 className="hover:text-black"
               >
                 수정
@@ -128,44 +115,15 @@ export default function RoomReviewItem({
           <div>{formatRelativeDate(new Date(createdAt))}</div>
         </div>
       </div>
-      {edit.isEditing ? (
-        <div className="mt-2">
-          <div className="grid grid-cols-2 gap-x-8 pb-4">
-            {RATING_ITEMS.map(({ key, label }) => (
-              <RoomReviewRating
-                key={key}
-                label={label}
-                value={editRatings[key]}
-                onChange={handleRatingChange(key)}
-              />
-            ))}
-          </div>
-          <textarea
-            onChange={(e) => setEdit({ ...edit, content: e.target.value })}
-            className="w-full rounded-lg border p-2 text-shade-02"
-            rows={3}
-            value={edit.content ? edit.content : ''}
-          />
-          <div className="mt-2 flex justify-end gap-2">
-            <button
-              onClick={() => {
-                setEdit({ isEditing: false, content: content });
-                setEditRatings({ accuracy, communication, cleanliness, location, checkIn, value });
-              }}
-              className="rounded-lg px-3 py-1 hover:bg-neutral-02"
-            >
-              취소
-            </button>
-
-            <RoomReviewEditButton
-              roomId={roomId}
-              reviewId={reviewId}
-              editingContent={edit.content ? edit.content : ''}
-              onClose={() => setEdit({ isEditing: false, content })}
-              editRatings={editRatings}
-            />
-          </div>
-        </div>
+      {isEditing ? (
+        <RoomReviewEditForm
+          roomId={roomId}
+          reviewId={reviewId}
+          initialContent={content ? content : ''}
+          initialRatings={initialRatings}
+          onCancel={() => setIsEditing(false)}
+          onClose={() => setIsEditing(false)}
+        />
       ) : (
         <div className="mt-1 text-shade-02">{content}</div>
       )}
