@@ -1,4 +1,4 @@
-import { mockReservation } from '@mocks/reservation';
+import mockReservation from '@/mocks/fixtures/reservation.json';
 import { HttpResponse, http } from 'msw';
 
 export const getReservationHandler = http.get('/api/reservation/:orderNumber', ({ params }) => {

@@ -77,7 +77,7 @@ export async function POST(
 export async function DELETE(
   request: NextRequest,
   { params }: { params: RoomParams },
-): Promise<CustomResponse> {
+): Promise<CustomResponse | Response> {
   const session = await auth();
 
   try {

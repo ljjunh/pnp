@@ -6,6 +6,8 @@ import { updateReviewSchema } from '@/schemas/review';
 import { deleteReview, updateReview } from '@/services/review';
 import { ReviewParams } from '@/types/review';
 
+export const dynamic = 'force-dynamic';
+
 export async function PATCH(
   request: NextRequest,
   { params }: { params: ReviewParams },
@@ -48,7 +50,7 @@ export async function PATCH(
 export async function DELETE(
   request: NextRequest,
   { params }: { params: ReviewParams },
-): Promise<CustomResponse<undefined>> {
+): Promise<CustomResponse<undefined> | Response> {
   const session = await auth();
   try {
     if (!session) {

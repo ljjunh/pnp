@@ -305,28 +305,33 @@ export async function getFilterRoom(
 ): Promise<[FilterRoom[], number]> {
   const whereConditions = getWhereConditions(filter);
 
-  const rooms = await prisma.room.findMany({
-    relationLoadStrategy: 'join',
-    where: whereConditions,
-    ...{ skip, take },
-    select: {
-      id: true,
-      location: true,
-      price: true,
-      latitude: true,
-      longitude: true,
-      reviewsAverage: true,
-      images: {
-        select: {
-          id: true,
-          imageLink: true,
-          orientation: true,
+  const [rooms, count] = await Promise.all([
+    prisma.room.findMany({
+      relationLoadStrategy: 'join',
+      where: whereConditions,
+      ...{ skip, take },
+      select: {
+        id: true,
+        location: true,
+        price: true,
+        latitude: true,
+        longitude: true,
+        reviewsAverage: true,
+        images: {
+          select: {
+            id: true,
+            imageLink: true,
+            orientation: true,
+          },
         },
       },
-    },
-  });
+    }),
+    prisma.room.count({
+      where: whereConditions,
+    }),
+  ]);
 
-  return [rooms, rooms.length];
+  return [rooms, count];
 }
 
 /**
@@ -361,6 +366,10 @@ const getWhereConditions = (filter: FilterType) => {
     option,
     language,
     property,
+    location,
+    capacity,
+    checkIn,
+    checkOut,
   } = filter;
 
   const whereConditions: Prisma.RoomWhereInput = {};
@@ -457,6 +466,42 @@ const getWhereConditions = (filter: FilterType) => {
   if (property) {
     whereConditions.propertyType = {
       contains: PROPERTY[+property as keyof typeof PROPERTY],
+    };
+  }
+
+  if (location) {
+    whereConditions.location = {
+      equals: location,
+    };
+  }
+
+  if (capacity) {
+    whereConditions.capacity = {
+      gte: capacity,
+    };
+  }
+
+  if (checkIn && checkOut) {
+    whereConditions.reservations = {
+      none: {
+        AND: [
+          {
+            checkOut: {
+              gt: new Date(checkIn),
+            },
+          },
+          {
+            checkIn: {
+              lt: new Date(checkOut),
+            },
+          },
+          {
+            status: {
+              in: ['CONFIRMED', 'PAYMENT', 'PENDING'],
+            },
+          },
+        ],
+      },
     };
   }
 

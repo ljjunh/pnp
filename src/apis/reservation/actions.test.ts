@@ -7,6 +7,9 @@ jest.mock('@/auth', () => ({
 }));
 
 describe('Reservation Action Test', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   describe('createReservation', () => {
     // 모든 테스트에서 사용할 유효한 예약 입력값
     const validInput = {
@@ -38,10 +41,10 @@ describe('Reservation Action Test', () => {
 
       expect(result.success).toBe(false);
       expect(result.status).toBe(401);
-      expect(result.message).toBe('로그인이 필요합니다');
+      expect(result.message).toBe('로그인이 필요합니다.');
     });
 
-    test('서버에서 에러 응답이 온 경우 500 응답 객체를 반환한다', async () => {
+    test('서버에서 에러 응답이 온 경우 서버에서 온 응답 객체(success, status, message)를 반환한다', async () => {
       //로그인 된 상태로 가정
       (auth as jest.Mock).mockResolvedValue({ user: { id: 1 } });
 
@@ -70,7 +73,7 @@ describe('Reservation Action Test', () => {
 
       expect(result.success).toBe(false);
       expect(result.status).toBe(500);
-      expect(result.message).toBe('예약에 실패했습니다');
+      expect(result.message).toBe('예약에 실패했습니다. 잠시 후 다시 시도해 주세요.');
     });
 
     test('네트워크 에러 발생 시 500 응답 객체를 반환한다', async () => {
@@ -85,7 +88,9 @@ describe('Reservation Action Test', () => {
 
       expect(result.success).toBe(false);
       expect(result.status).toBe(500);
-      expect(result.message).toBe('예약 생성 중 오류가 발생했습니다');
+      expect(result.message).toBe(
+        '네트워크 문제로 예약에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.',
+      );
     });
   });
 });

@@ -25,6 +25,11 @@ export async function GET(request: NextRequest) {
       language: searchParams.getAll('language')[0]?.split(',').map(Number),
       // 숙소 타입 조회
       property: searchParams.get('property') ? Number(searchParams.get('property')) : undefined,
+      // 위치 조회 타입
+      location: searchParams.get('location') || undefined,
+      checkIn: searchParams.get('checkIn') || undefined,
+      checkOut: searchParams.get('checkOut') || undefined,
+      capacity: searchParams.get('capacity') ? Number(searchParams.get('capacity')) : undefined,
     });
 
     const roomCount = await getFilterRoomCount(filterParams);

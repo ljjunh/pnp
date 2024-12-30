@@ -5,6 +5,10 @@ export type RoomParams = {
   roomId: string;
 };
 
+export type RoomLocationParams = {
+  location: string;
+};
+
 export type ImageLink = Pick<RoomImage, 'id' | 'imageLink' | 'orientation'>;
 
 export type Room = Pick<
@@ -64,4 +68,9 @@ export type FilterRoomResponse = {
     hasNextPage: boolean;
     hasPrevPage: boolean;
   };
+};
+
+export type StoryFilterRoom = Omit<FilterRoom, 'latitude' | 'longitude'> & {
+  latitude: number;
+  longitude: number;
 };
