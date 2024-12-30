@@ -271,11 +271,77 @@ export async function updateReview(
  * @param {string} userId 사용자 아이디
  */
 export async function deleteReview(reviewId: number, userId: string): Promise<void> {
-  await prisma.review.delete({
-    where: {
-      id: reviewId,
-      userId,
-    },
+  await prisma.$transaction(async (prisma) => {
+    // * 리뷰 삭제 시 반정규화 된 리뷰의 평점과 호스트의 평점을 수정해준다.
+    const review = await prisma.review.delete({
+      where: {
+        id: reviewId,
+        userId,
+      },
+      select: {
+        roomId: true,
+        value: true,
+        checkIn: true,
+        location: true,
+        cleanliness: true,
+        communication: true,
+        accuracy: true,
+      },
+    });
+
+    if (!review) {
+      throw new NotFoundError(`존재하지 않는 리뷰입니다. (reviewId: ${reviewId})`);
+    }
+
+    // * 숙소의 평점 정보와 숙소의 호스트 평점 정보를 가져온다.
+    const room = await prisma.room.findUnique({
+      where: { id: review.roomId },
+      select: {
+        reviewsAverage: true,
+        reviewsCount: true,
+        host: {
+          select: {
+            id: true,
+            reviewsCount: true,
+            reviewsAverage: true,
+          },
+        },
+      },
+    });
+
+    if (!room) {
+      throw new NotFoundError(`존재하지 않는 숙소입니다. (roomId: ${review.roomId})`);
+    }
+
+    const average = averageReview(review);
+
+    // * 리뷰 삭제 시 숙소의 평점 정보를 업데이트 한다.
+    await prisma.room.update({
+      where: { id: review.roomId },
+      data: {
+        reviewsAverage: refinedAverage(
+          room.reviewsAverage * room.reviewsCount - average,
+          room.reviewsCount - 1,
+        ),
+        reviewsCount: {
+          decrement: 1,
+        },
+      },
+    });
+
+    // * 리뷰 삭제 시 호스트의 평점 정보를 업데이트 한다.
+    await prisma.host.update({
+      where: { id: room.host.id },
+      data: {
+        reviewsAverage: refinedAverage(
+          room.host.reviewsAverage * room.host.reviewsCount - average,
+          room.host.reviewsCount - 1,
+        ),
+        reviewsCount: {
+          decrement: 1,
+        },
+      },
+    });
   });
 }
 
