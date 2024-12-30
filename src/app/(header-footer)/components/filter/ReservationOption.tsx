@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import Tag from '@/app/(header-footer)/components/filter/Tag';
 import { FilterType } from '@/schemas/rooms';
-
-const reservation = ['digital', 'selfCheckIn', 'pet'];
+import { RESERVATION } from '@/constants/amenity';
 
 interface ReservationOptionProps {
   option: string[];
@@ -27,7 +26,7 @@ export default function ReservationOption({ option, handleFilter }: ReservationO
         <span className="text-lg font-semibold">예약 옵션</span>
       </div>
       <div className="flex flex-wrap gap-3">
-        {reservation.map((reservationItem, index) => (
+        {RESERVATION.map((reservationItem, index) => (
           <Tag
             tag={reservationItem}
             key={`${reservationItem}-${index}`}

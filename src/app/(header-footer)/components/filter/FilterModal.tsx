@@ -58,22 +58,6 @@ export default function FilterModal() {
     });
   };
 
-  // 초기 로딩 시 숙소 갯수 조회
-  useEffect(() => {
-    const initCount = async () => {
-      try {
-        const response = await fetchFilterCount(filter);
-
-        setFilterCount(response);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    initCount();
-  }, []);
-
-  // 필터 변경 시 숙소 갯수 조회
   useEffect(() => {
     const changeCount = async () => {
       try {

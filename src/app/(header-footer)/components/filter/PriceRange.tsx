@@ -28,10 +28,10 @@ export default function PriceRange({ roomType, property, handleFilter }: PriceRa
     distribution: [],
   });
 
-  // 초기 로딩 시 가격 범위 조회
   // TODO: 모달이 열려있을때만 조회하게 수정
+  // roomType이 변경될 때마다 가격 범위를 조회
   useEffect(() => {
-    const initRange = async () => {
+    const fetchPriceRange = async () => {
       try {
         const response = await fetchFilterPrice({ roomType, property });
         setPriceRange(response);
@@ -41,23 +41,8 @@ export default function PriceRange({ roomType, property, handleFilter }: PriceRa
       }
     };
 
-    initRange();
-  }, []);
-
-  // 숙소 유형 변경 시 가격 범위 업데이트
-  useEffect(() => {
-    const changeRange = async () => {
-      try {
-        const response = await fetchFilterPrice({ roomType, property });
-        setPriceRange(response);
-        setRange([response.minPrice, response.maxPrice]);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    changeRange();
-  }, [roomType]);
+    fetchPriceRange();
+  }, [roomType, property]);
 
   const { minPrice, maxPrice, distribution } = priceRange;
 

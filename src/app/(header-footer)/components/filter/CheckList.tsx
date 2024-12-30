@@ -18,7 +18,6 @@ export default function CheckList({ id, title, handleClick }: CheckListProps) {
         setCheck(!check);
         handleClick(id);
       }}
-      data-testid="check-list"
       role="check-box"
       onKeyDown={(e) => {
         if (e.key === 'Enter') {
