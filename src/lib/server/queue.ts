@@ -3,6 +3,12 @@ import { SQSClient, SendMessageCommand } from '@aws-sdk/client-sqs';
 
 const sqsClient = new SQSClient({ region: process.env.AWS_REGION ?? 'ap-northeast-2' });
 
+const queueURLs = {
+  email: process.env.EMAIL_QUEUE_URL,
+  push: process.env.PUSH_QUEUE_URL,
+  sms: process.env.SMS_QUEUE_URL,
+};
+
 interface PaymentCreateRetry extends TossPaymentCreate, KakaoPayCreate, NaverPayCreate {
   idempotentKey: string;
 }
@@ -18,5 +24,48 @@ export async function sendToRetryQueue(retry: PaymentCreateRetry) {
     console.debug('Successfully sent retry message');
   } catch (error) {
     console.error('Failed to send retry message: ', error);
+  }
+}
+
+interface NotificationProps {
+  userId: string;
+  email?: {
+    to: string;
+    subject: string;
+    content: string;
+  };
+  push?: {
+    token: string;
+    title: string;
+    body: string;
+  };
+  sms?: {
+    phoneNumber: string;
+    message: string;
+  };
+}
+
+/**
+ * 특정한 알람을 보내게 된다면 해당 함수를 사용합니다.
+ *
+ * @param {NotificationProps} props 알람을 보내기 위한 정보
+ */
+export async function sendToNotificationQueue(props: NotificationProps) {
+  const commands = Object.entries(props)
+    .filter(([key, value]) => {
+      return key !== 'userId' && value;
+    })
+    .map(([key, value]) => {
+      return new SendMessageCommand({
+        QueueUrl: queueURLs[key as keyof typeof queueURLs],
+        MessageBody: JSON.stringify(value),
+      });
+    });
+
+  try {
+    await Promise.all(commands.map((command) => sqsClient.send(command)));
+    console.debug('Successfully sent notification message');
+  } catch (error) {
+    console.error('Failed to send notification message: ', error);
   }
 }

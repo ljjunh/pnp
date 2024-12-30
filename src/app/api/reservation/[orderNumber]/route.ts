@@ -49,8 +49,6 @@ export async function POST(
 
     await confirmReservation(session.user.id, params.orderNumber);
 
-    // TODO: 예약 확정 후, 예약 확정 메일 혹은 알림을 보내야할까?
-
     return CustomResponse.empty();
   } catch (error) {
     console.error('예약 생성 중 에러 발생: ', {
