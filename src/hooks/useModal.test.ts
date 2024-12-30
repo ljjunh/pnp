@@ -8,8 +8,6 @@ jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
 }));
 
-//
-
 describe('useModal test', () => {
   const mockDispatch = jest.fn();
 
@@ -33,15 +31,17 @@ describe('useModal test', () => {
   });
 
   test('handleOpenModal 함수를 호출하면 dispatch가 openModal을 호출하고, modalState가 true인지 확인', () => {
-    (useSelector as unknown as jest.Mock).mockReturnValue(false);
+    (useSelector as unknown as jest.Mock).mockReturnValueOnce(false).mockReturnValueOnce(true);
 
     // useModal 훅을 렌더링
-    const { result } = renderHook(() => useModal(modalId));
+    const { result, rerender } = renderHook(() => useModal(modalId));
 
     // handleOpenModal 함수 호출, act를 사용해 비동기 처리
     act(() => {
       result.current.handleOpenModal();
     });
+
+    rerender();
 
     // openModal이 dispatch 되었는지 확인
     expect(mockDispatch).toHaveBeenCalledWith({
@@ -54,15 +54,17 @@ describe('useModal test', () => {
   });
 
   test('handleCloseModal 함수를 호출하면 dispatch가 closeModal을 호출하고, modalState가 false인지 확인', () => {
-    (useSelector as unknown as jest.Mock).mockReturnValue(false);
+    (useSelector as unknown as jest.Mock).mockReturnValueOnce(true).mockReturnValueOnce(false);
 
     // useModal 훅을 렌더링
-    const { result } = renderHook(() => useModal(modalId));
+    const { result, rerender } = renderHook(() => useModal(modalId));
 
     // handleCloseModal 함수 호출, act를 사용해 비동기 처리
     act(() => {
       result.current.handleCloseModal();
     });
+
+    rerender();
 
     // closeModal이 dispatch 되었는지 확인
     expect(mockDispatch).toHaveBeenCalledWith({

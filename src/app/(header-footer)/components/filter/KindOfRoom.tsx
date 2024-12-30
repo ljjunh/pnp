@@ -38,8 +38,8 @@ export default function KindOfRoom({ roomType, handleFilter }: KindOfRoomProps) 
           <div
             className={cn(
               'flex cursor-pointer items-center justify-center border-r border-neutral-03',
-              hoverStyle,
               roomType === null && selectStyle,
+              hoverStyle,
             )}
             onClick={() => {
               handleRoomTypeChange('모든 유형');
@@ -50,8 +50,8 @@ export default function KindOfRoom({ roomType, handleFilter }: KindOfRoomProps) 
           <div
             className={cn(
               'flex cursor-pointer items-center justify-center border-r border-neutral-03',
-              hoverStyle,
               roomType === 'Private' && selectStyle,
+              hoverStyle,
             )}
             onClick={() => {
               handleRoomTypeChange('방');
@@ -62,8 +62,8 @@ export default function KindOfRoom({ roomType, handleFilter }: KindOfRoomProps) 
           <div
             className={cn(
               'flex cursor-pointer items-center justify-center',
-              hoverStyle,
               roomType === 'Entire' && selectStyle,
+              hoverStyle,
             )}
             onClick={() => {
               handleRoomTypeChange('집 전체');

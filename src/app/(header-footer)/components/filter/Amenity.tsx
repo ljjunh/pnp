@@ -1,38 +1,13 @@
 import { useState } from 'react';
 import Tag from '@/app/(header-footer)/components/filter/Tag';
 import { FilterType } from '@/schemas/rooms';
+import {
+  CHARACTERISTIC_AMENITIES,
+  ESSENTIAL_AMENITIES,
+  LOCATION_AMENITIES,
+  SAFETY_AMENITIES,
+} from '@/constants/amenity';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-
-const essentialAmenities = [
-  'wifi',
-  'kitchen',
-  'washingMachine',
-  'dryingMachine',
-  'airConditioner',
-  'heating',
-  'library',
-  'tv',
-  'hairDryer',
-  'iron',
-];
-
-const characteristicAmenities = [
-  'swimmingPool',
-  'bath',
-  'parking',
-  'eletronic',
-  'babyBed',
-  'kingSizeBed',
-  'fitness',
-  'barbecue',
-  'breakfast',
-  'fireplace',
-  'smoking',
-];
-
-const locationAmenities = ['beach', 'nearWater'];
-
-const safetyAmenities = ['fireAlarm', 'carbonMonoxideDetector'];
 
 interface AmenityProps {
   amenityArray: string[];
@@ -40,15 +15,13 @@ interface AmenityProps {
 }
 
 export default function Amenity({ amenityArray, handleFilter }: AmenityProps) {
-  const [amenities, setAmenities] = useState<string[]>(amenityArray);
   const [more, setMore] = useState<boolean>(false);
 
   const handleAmenity = (amenity: string) => {
-    const newAmenities = amenities.includes(amenity)
-      ? amenities.filter((prevAmenity) => prevAmenity !== amenity)
-      : [...amenities, amenity];
+    const newAmenities = amenityArray.includes(amenity)
+      ? amenityArray.filter((prevAmenity) => prevAmenity !== amenity)
+      : [...amenityArray, amenity];
 
-    setAmenities(newAmenities);
     handleFilter(newAmenities, 'amenityArray');
   };
 
@@ -62,12 +35,12 @@ export default function Amenity({ amenityArray, handleFilter }: AmenityProps) {
           <div>
             <p className="mb-5">필수</p>
             <div className="flex flex-wrap gap-3">
-              {essentialAmenities.map((amenity, index) => (
+              {ESSENTIAL_AMENITIES.map((amenity, index) => (
                 <Tag
                   tag={amenity}
                   key={`${amenity}-${index}`}
                   handleClick={handleAmenity}
-                  isChecked={amenities.includes(amenity)}
+                  isChecked={amenityArray.includes(amenity)}
                 />
               ))}
             </div>
@@ -75,12 +48,12 @@ export default function Amenity({ amenityArray, handleFilter }: AmenityProps) {
           <div>
             <p className="mb-5">특징</p>
             <div className="flex flex-wrap gap-3">
-              {characteristicAmenities.map((amenity, index) => (
+              {CHARACTERISTIC_AMENITIES.map((amenity, index) => (
                 <Tag
                   tag={amenity}
                   key={`${amenity}-${index}`}
                   handleClick={handleAmenity}
-                  isChecked={amenities.includes(amenity)}
+                  isChecked={amenityArray.includes(amenity)}
                 />
               ))}
             </div>
@@ -88,12 +61,12 @@ export default function Amenity({ amenityArray, handleFilter }: AmenityProps) {
           <div>
             <p className="mb-5">위치</p>
             <div className="flex flex-wrap gap-3">
-              {locationAmenities.map((amenity, index) => (
+              {LOCATION_AMENITIES.map((amenity, index) => (
                 <Tag
                   tag={amenity}
                   key={`${amenity}-${index}`}
                   handleClick={handleAmenity}
-                  isChecked={amenities.includes(amenity)}
+                  isChecked={amenityArray.includes(amenity)}
                 />
               ))}
             </div>
@@ -101,12 +74,12 @@ export default function Amenity({ amenityArray, handleFilter }: AmenityProps) {
           <div>
             <p className="mb-5">안전</p>
             <div className="flex flex-wrap gap-3">
-              {safetyAmenities.map((amenity, index) => (
+              {SAFETY_AMENITIES.map((amenity, index) => (
                 <Tag
                   tag={amenity}
                   key={`${amenity}-${index}`}
                   handleClick={handleAmenity}
-                  isChecked={amenities.includes(amenity)}
+                  isChecked={amenityArray.includes(amenity)}
                 />
               ))}
             </div>
@@ -122,12 +95,12 @@ export default function Amenity({ amenityArray, handleFilter }: AmenityProps) {
       ) : (
         <div className="space-y-3">
           <div className="flex flex-wrap gap-3">
-            {essentialAmenities.slice(0, 6).map((amenity, index) => (
+            {ESSENTIAL_AMENITIES.slice(0, 6).map((amenity, index) => (
               <Tag
                 tag={amenity}
                 key={`${amenity}-${index}`}
                 handleClick={handleAmenity}
-                isChecked={amenities.includes(amenity)}
+                isChecked={amenityArray.includes(amenity)}
               />
             ))}
           </div>
