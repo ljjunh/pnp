@@ -69,7 +69,7 @@ export async function deleteReview(roomId: number, reviewId: number): Promise<Ac
     if (!session) {
       return {
         success: false,
-        message: '로그인이 필요합니다',
+        message: '로그인이 필요합니다.',
         status: 401,
       };
     }
@@ -81,7 +81,7 @@ export async function deleteReview(roomId: number, reviewId: number): Promise<Ac
     if (!response.success) {
       return {
         success: false,
-        message: response.message || '리뷰 작성에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+        message: response.message || '리뷰 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.',
         status: response.status,
       };
     }
@@ -104,6 +104,13 @@ export async function deleteReview(roomId: number, reviewId: number): Promise<Ac
   }
 }
 
+/**
+ * 숙소에 대한 리뷰를 수정하는 서버 액션 입니다.
+ * @param roomId - 리뷰를 삭제할 숙소의 ID
+ * @param reviewId - 리뷰 ID
+ * @param formData - 리뷰 수정 데이터 (정확성, 의사소통, 청결도, 위치, 체크인, 가격 대비 만족도, 리뷰 내용)
+ * @returns {Promise<ActionResponse>} 액션 결과
+ */
 export async function updateReview(
   roomId: number,
   reviewId: number,
