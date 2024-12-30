@@ -385,5 +385,9 @@ const averageReview = (data: ReviewCreate): number => {
 };
 
 export const refinedAverage = (sum: number, count: number): number => {
+  // * 리뷰 평균을 소수점 첫째 자리까지 반올림하여 반환한다. 만약, 리뷰가 없다면 0을 반환한다.
+  if (count === 0) {
+    return 0;
+  }
   return Number((sum / count).toFixed(1));
 };
