@@ -74,7 +74,7 @@ export default function PriceRange({ roomType, property, handleFilter }: PriceRa
     };
 
     fetchFilterPrice();
-  }, [roomType, property]);
+  }, [roomType, property, toast, modalState]);
 
   const { minPrice, maxPrice, distribution } = priceRange;
 

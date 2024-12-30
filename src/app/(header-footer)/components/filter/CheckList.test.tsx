@@ -32,7 +32,7 @@ describe('CheckList 컴포넌트 테스트', () => {
       />,
     );
 
-    const checkList = screen.getByRole('checkbox');
+    const checkList = screen.getByRole('check-box');
 
     expect(screen.getByTestId('uncheck')).toBeInTheDocument();
 

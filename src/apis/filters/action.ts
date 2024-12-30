@@ -16,6 +16,7 @@ export async function getFilterPrice({
   roomType,
   property,
 }: PriceFilter): Promise<ActionResponse<PriceFilterRange>> {
+  console.log('호출');
   try {
     const params = new URLSearchParams();
 

@@ -97,7 +97,7 @@ export default function FilterModal() {
     };
 
     changeCount();
-  }, [filter]);
+  }, [filter, toast, modalState]);
 
   // 클릭 시 필터링 주소로 이동 및 모달 닫기
   const handleFilterRoom = () => {
