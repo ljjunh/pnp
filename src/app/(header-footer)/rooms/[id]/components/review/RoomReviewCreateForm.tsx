@@ -3,19 +3,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import RoomReviewRating from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewRating';
+import { RatingValues } from '@/types/review';
 import Button from '@/components/common/Button/Button';
 import { createReview } from '@/apis/reviews/actions';
 import { useToast } from '@/hooks/use-toast';
+import { RATING_ITEMS } from '@/constants/review';
 import { ROUTES } from '@/constants/routeURL';
-
-interface RatingValues {
-  accuracy: number;
-  cleanliness: number;
-  checkIn: number;
-  communication: number;
-  location: number;
-  value: number;
-}
 
 interface ReviewFormState {
   content: string;
@@ -40,20 +33,11 @@ const INITIAL_FORM_STATE: ReviewFormState = {
   showRatingsSection: false,
 };
 
-const RATING_ITEMS = [
-  { key: 'accuracy', label: '정확성' },
-  { key: 'communication', label: '의사소통' },
-  { key: 'cleanliness', label: '청결도' },
-  { key: 'location', label: '위치' },
-  { key: 'checkIn', label: '체크인' },
-  { key: 'value', label: '가격 대비 만족도' },
-] as const;
-
-interface RoomReviewFormProps {
+interface RoomReviewCreateFormProps {
   roomId: number;
 }
 
-export default function RoomReviewForm({ roomId }: RoomReviewFormProps) {
+export default function RoomReviewCreateForm({ roomId }: RoomReviewCreateFormProps) {
   const { toast } = useToast();
   const router = useRouter();
   const formRef = useRef<HTMLDivElement>(null);
@@ -166,7 +150,7 @@ export default function RoomReviewForm({ roomId }: RoomReviewFormProps) {
           isDisabled={!content.trim() || isLoading}
           onClick={handleSubmit}
         >
-          {isLoading ? '작성 중...' : '작성'}
+          {isLoading ? '작성 중' : '작성'}
         </Button>
       </div>
     </div>

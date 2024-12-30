@@ -1,7 +1,11 @@
+'use client';
+
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import RoomReviewDeleteButton from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewDeleteButton';
-import { auth } from '@/auth';
-import { Review } from '@/types/review';
+import RoomReviewEditForm from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewEditForm';
+import { RatingValues, Review } from '@/types/review';
 import { calculateAverageRating } from '@/utils/calculateAverageRating';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { formatRelativeDate } from '@/utils/formatRelativeDate';
@@ -19,9 +23,10 @@ interface RoomReviewItemProps {
   content: Review['content'];
   createdAt: Review['createdAt'];
   user: Review['user'];
+  isInterceptedRoute?: boolean;
 }
 
-export default async function RoomReviewItem({
+export default function RoomReviewItem({
   roomId,
   reviewId,
   accuracy,
@@ -33,8 +38,19 @@ export default async function RoomReviewItem({
   content,
   createdAt,
   user,
+  isInterceptedRoute = false,
 }: RoomReviewItemProps) {
-  const session = await auth();
+  const { data: session } = useSession();
+  const [isEditing, setIsEditing] = useState(false);
+
+  const initialRatings: RatingValues = {
+    accuracy,
+    cleanliness,
+    checkIn,
+    communication,
+    location,
+    value,
+  };
 
   const rating = calculateAverageRating([
     accuracy,
@@ -69,9 +85,14 @@ export default async function RoomReviewItem({
               </div>
             </div>
           </div>
-          {session?.user.id === user.id && (
+          {session?.user.id === user.id && isInterceptedRoute && (
             <div className="flex gap-2 text-sm text-neutral-07">
-              <button className="hover:text-black">수정</button>
+              <button
+                onClick={() => setIsEditing(true)}
+                className="hover:text-black"
+              >
+                수정
+              </button>
               <RoomReviewDeleteButton
                 roomId={roomId}
                 reviewId={reviewId}
@@ -94,7 +115,18 @@ export default async function RoomReviewItem({
           <div>{formatRelativeDate(new Date(createdAt))}</div>
         </div>
       </div>
-      <div className="mt-1 text-shade-02">{content}</div>
+      {isEditing ? (
+        <RoomReviewEditForm
+          roomId={roomId}
+          reviewId={reviewId}
+          initialContent={content ? content : ''}
+          initialRatings={initialRatings}
+          onCancel={() => setIsEditing(false)}
+          onClose={() => setIsEditing(false)}
+        />
+      ) : (
+        <div className="mt-1 text-shade-02">{content}</div>
+      )}
     </div>
   );
 }

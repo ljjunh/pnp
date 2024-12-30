@@ -32,3 +32,12 @@ export type ReviewSummarize = {
   checkIn: number;
   value: number;
 };
+
+export interface RatingValues {
+  accuracy: number;
+  cleanliness: number;
+  checkIn: number;
+  communication: number;
+  location: number;
+  value: number;
+}
