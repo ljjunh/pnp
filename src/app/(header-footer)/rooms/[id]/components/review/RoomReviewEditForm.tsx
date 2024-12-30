@@ -47,12 +47,15 @@ export default function RoomReviewEditForm({
       </div>
       <textarea
         onChange={(e) => setContent(e.target.value)}
+        aria-label="리뷰 내용"
+        placeholder="리뷰를 입력해주세요"
         className="w-full rounded-lg border p-2 text-shade-02"
         rows={3}
         value={content}
       />
       <div className="mt-2 flex justify-end gap-2">
         <button
+          type="button"
           onClick={onCancel}
           className="rounded-lg px-3 py-1 hover:bg-neutral-02"
         >
