@@ -5,10 +5,12 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import RoomReviewDeleteButton from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewDeleteButton';
 import RoomReviewEditButton from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewEditButton';
-import { Review } from '@/types/review';
+import RoomReviewRating from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewRating';
+import { RatingValues, Review } from '@/types/review';
 import { calculateAverageRating } from '@/utils/calculateAverageRating';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { formatRelativeDate } from '@/utils/formatRelativeDate';
+import { RATING_ITEMS } from '@/constants/review';
 import { IoIosStar } from 'react-icons/io';
 
 interface RoomReviewItemProps {
@@ -47,6 +49,15 @@ export default function RoomReviewItem({
     content: content,
   });
 
+  const [editRatings, setEditRatings] = useState<RatingValues>({
+    accuracy,
+    cleanliness,
+    checkIn,
+    communication,
+    location,
+    value,
+  });
+
   const rating = calculateAverageRating([
     accuracy,
     communication,
@@ -55,6 +66,13 @@ export default function RoomReviewItem({
     checkIn,
     value,
   ]);
+
+  const handleRatingChange = (key: keyof RatingValues) => (value: number) => {
+    setEditRatings((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
 
   return (
     <div>
@@ -111,7 +129,17 @@ export default function RoomReviewItem({
         </div>
       </div>
       {edit.isEditing ? (
-        <div className="mt-1">
+        <div className="mt-2">
+          <div className="grid grid-cols-2 gap-x-8 pb-4">
+            {RATING_ITEMS.map(({ key, label }) => (
+              <RoomReviewRating
+                key={key}
+                label={label}
+                value={editRatings[key]}
+                onChange={handleRatingChange(key)}
+              />
+            ))}
+          </div>
           <textarea
             onChange={(e) => setEdit({ ...edit, content: e.target.value })}
             className="w-full rounded-lg border p-2 text-shade-02"
@@ -120,15 +148,21 @@ export default function RoomReviewItem({
           />
           <div className="mt-2 flex justify-end gap-2">
             <button
-              onClick={() => setEdit({ isEditing: false, content: content })}
+              onClick={() => {
+                setEdit({ isEditing: false, content: content });
+                setEditRatings({ accuracy, communication, cleanliness, location, checkIn, value });
+              }}
               className="rounded-lg px-3 py-1 hover:bg-neutral-02"
             >
               취소
             </button>
 
             <RoomReviewEditButton
+              roomId={roomId}
+              reviewId={reviewId}
               editingContent={edit.content ? edit.content : ''}
               onClose={() => setEdit({ isEditing: false, content })}
+              editRatings={editRatings}
             />
           </div>
         </div>
