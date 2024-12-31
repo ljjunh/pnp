@@ -1,7 +1,7 @@
 import { BadRequestError, NotFoundError } from '@/errors';
 import { ForbiddenError } from '@/errors/errors';
 import { prisma } from '@/lib/server';
-import { sendToNotificationQueue } from '@/lib/server/queue';
+import { sendNotification } from '@/lib/server/notification';
 import { CreateReservationInput, ReservationAvailableInput } from '@/schemas';
 import { Reservation, ReservationTrip } from '@/types/reservation';
 
@@ -253,7 +253,7 @@ export async function confirmReservation(orderNumber: string, userId: string) {
   if (confirm) {
     // FIXME: 알람을 보낼 때 사용자의 정보를 가져와야하며, 현재는 임시로 사용자 정보를 하드코딩함
     // * 알람을 보내는 로직
-    await sendToNotificationQueue({
+    await sendNotification({
       userId: confirm.userId,
       email: {
         to: 'sunsuking@gmail.com',
