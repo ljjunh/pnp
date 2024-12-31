@@ -3,10 +3,8 @@ import { CustomResponse } from '@/lib/server';
 import { filterSchema } from '@/schemas/rooms';
 import { getFilterRoomCount } from '@/services/room';
 
-export async function GET(
-  request: NextRequest,
-  { searchParams }: { searchParams: URLSearchParams },
-): Promise<CustomResponse> {
+export async function GET(request: NextRequest): Promise<CustomResponse> {
+  const searchParams = request.nextUrl.searchParams;
   try {
     const filterParams = filterSchema.parse({
       // null 이면 전체 타입, Private room은 방, Entire home/apt는 집 전체
