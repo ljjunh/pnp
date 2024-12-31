@@ -30,6 +30,7 @@ const DUMMY_ROOMS: StoryFilterRoom[] = [
     latitude: 33.495797,
     longitude: 126.425996,
     reviewsAverage: 4.95,
+    scrapped: false,
   },
   {
     id: 2,
@@ -46,6 +47,7 @@ const DUMMY_ROOMS: StoryFilterRoom[] = [
     latitude: 33.495797,
     longitude: 126.425996,
     reviewsAverage: 4.95,
+    scrapped: false,
   },
   {
     id: 3,
@@ -62,6 +64,7 @@ const DUMMY_ROOMS: StoryFilterRoom[] = [
     latitude: 33.495797,
     longitude: 126.425996,
     reviewsAverage: 4.95,
+    scrapped: true,
   },
   {
     id: 4,
@@ -78,6 +81,7 @@ const DUMMY_ROOMS: StoryFilterRoom[] = [
     latitude: 33.495797,
     longitude: 126.425996,
     reviewsAverage: 4.95,
+    scrapped: false,
   },
   {
     id: 5,
@@ -94,6 +98,7 @@ const DUMMY_ROOMS: StoryFilterRoom[] = [
     latitude: 33.495797,
     longitude: 126.425996,
     reviewsAverage: 4.95,
+    scrapped: false,
   },
 ];
 
