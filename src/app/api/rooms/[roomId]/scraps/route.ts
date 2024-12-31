@@ -28,7 +28,7 @@ export async function GET(
   } catch (error) {
     console.error('스크랩 조회 중 에러 발생: ', {
       roomId: params.roomId,
-      uesrId: session?.user.id,
+      userId: session?.user.id,
       error: error instanceof Error ? error.message : error,
     });
 
@@ -62,7 +62,7 @@ export async function POST(
   } catch (error) {
     console.error('스크랩 생성 중 에러 발생: ', {
       roomId: params.roomId,
-      uesrId: session?.user.id,
+      userId: session?.user.id,
       error: error instanceof Error ? error.message : error,
     });
 

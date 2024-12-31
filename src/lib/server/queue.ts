@@ -3,15 +3,15 @@ import { SQSClient, SendMessageCommand } from '@aws-sdk/client-sqs';
 
 const sqsClient = new SQSClient({ region: process.env.AWS_REGION ?? 'ap-northeast-2' });
 
-const queueURLs = {
+const QUEUE_URLS = {
   email: process.env.EMAIL_QUEUE_URL,
   push: process.env.PUSH_QUEUE_URL,
   sms: process.env.SMS_QUEUE_URL,
 };
 
-interface PaymentCreateRetry extends TossPaymentCreate, KakaoPayCreate, NaverPayCreate {
+type PaymentCreateRetry = (TossPaymentCreate | KakaoPayCreate | NaverPayCreate) & {
   idempotentKey: string;
-}
+};
 
 export async function sendToRetryQueue(retry: PaymentCreateRetry) {
   const command = new SendMessageCommand({
@@ -57,7 +57,7 @@ export async function sendToNotificationQueue(props: NotificationProps) {
     })
     .map(([key, value]) => {
       return new SendMessageCommand({
-        QueueUrl: queueURLs[key as keyof typeof queueURLs],
+        QueueUrl: QUEUE_URLS[key as keyof typeof QUEUE_URLS],
         MessageBody: JSON.stringify(value),
       });
     });
