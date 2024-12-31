@@ -16,5 +16,6 @@ type Story = StoryObj<typeof RoomHeader>;
 export const Default: Story = {
   args: {
     title: '한옥독채/거실겸큰방1/작은방1/설악해변도보3분/낙산사/설악산',
+    roomId: 1,
   },
 };
