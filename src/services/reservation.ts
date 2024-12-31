@@ -261,7 +261,7 @@ export async function confirmReservation(orderNumber: string, userId: string) {
         content: `예약이 확정되었습니다. 예약 번호: ${confirm.orderNumber}`,
       },
       sms: {
-        phoneNumber: '010-9995-5728',
+        phoneNumber: '+821099955728',
         message: `예약이 확정되었습니다. 예약 번호: ${confirm.orderNumber}`,
       },
     });
