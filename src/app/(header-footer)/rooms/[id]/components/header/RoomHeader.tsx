@@ -1,5 +1,6 @@
 import RoomScrapButton from '@/app/(header-footer)/rooms/[id]/components/header/RoomScrapButton';
 import { Room } from '@/types/room';
+import { getScrap } from '@/apis/rooms/queries';
 import { LuShare } from 'react-icons/lu';
 
 interface RoomHeaderProps {
@@ -7,7 +8,9 @@ interface RoomHeaderProps {
   roomId: Room['id'];
 }
 
-export default function RoomHeader({ title, roomId }: RoomHeaderProps) {
+export default async function RoomHeader({ title, roomId }: RoomHeaderProps) {
+  const isScrap = await getScrap(roomId);
+
   return (
     <div className="flex justify-between">
       <div className="flex-1 text-2xl">{title}</div>
@@ -19,7 +22,10 @@ export default function RoomHeader({ title, roomId }: RoomHeaderProps) {
           <LuShare size={16} />
           공유하기
         </button>
-        <RoomScrapButton roomId={roomId} />
+        <RoomScrapButton
+          roomId={roomId}
+          isScrap={isScrap}
+        />
       </div>
     </div>
   );
