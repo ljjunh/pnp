@@ -204,10 +204,10 @@ export async function cancelReservation(orderNumber: string, userId: string) {
 /**
  * 주문 번호를 기반으로 예약을 확정짓는다.
  *
- * @param {string} orderNumber 주문 번호
  * @param {string} userId 사용자 ID (호스트)
+ * @param {string} orderNumber 주문 번호
  */
-export async function confirmReservation(orderNumber: string, userId: string) {
+export async function confirmReservation(userId: string, orderNumber: string) {
   const reservation = await prisma.reservation.findUnique({
     relationLoadStrategy: 'join',
     where: {
