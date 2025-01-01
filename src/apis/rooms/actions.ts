@@ -37,8 +37,7 @@ export async function createScrap(roomId: number): Promise<ActionResponse> {
   } catch {
     return {
       success: false,
-      message:
-        '네트워크 문제로 리뷰 작성에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.',
+      message: '네트워크 문제로 스크랩에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.',
       status: 500,
     };
   }
