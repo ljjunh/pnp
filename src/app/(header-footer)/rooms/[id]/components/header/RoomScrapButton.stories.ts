@@ -16,5 +16,6 @@ type Story = StoryObj<typeof RoomScrapButton>;
 export const Default: Story = {
   args: {
     roomId: 1,
+    initialIsScrap: false,
   },
 };
