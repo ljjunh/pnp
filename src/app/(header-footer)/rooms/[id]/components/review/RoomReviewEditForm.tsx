@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import RoomReviewEditButton from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewEditButton';
+import RoomReviewRating from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewRating';
 import { RatingValues, Review } from '@/types/review';
 import { RATING_ITEMS } from '@/constants/review';
-import RoomReviewEditButton from './RoomReviewEditButton';
-import RoomReviewRating from './RoomReviewRating';
 
 interface RoomReviewEditFormProps {
   roomId: number;

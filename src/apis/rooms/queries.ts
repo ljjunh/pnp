@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
 import { Room } from '@/types/room';
 import { httpClient } from '@/apis/core/httpClient';
+import { CACHE_TAGS } from '@/constants/cacheTags';
 
 /**
  * 특정 숙소의 상세정보를 조회합니다.
@@ -48,7 +49,11 @@ export async function getRoom(id: number): Promise<Room> {
  */
 export async function getScrap(roomId: number): Promise<boolean> {
   try {
-    const response = await httpClient.get<boolean>(`/rooms/${roomId}/scrap`);
+    const response = await httpClient.get<boolean>(`/rooms/${roomId}/scrap`, {
+      next: {
+        tags: [CACHE_TAGS.ROOMS.SCRAP(roomId)],
+      },
+    });
 
     // API 응답이 성공이면 스크랩 상태 반환, 실패면 false 반환
     return response.success ? response.data : false;

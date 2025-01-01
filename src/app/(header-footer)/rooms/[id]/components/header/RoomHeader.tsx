@@ -24,7 +24,7 @@ export default async function RoomHeader({ title, roomId }: RoomHeaderProps) {
         </button>
         <RoomScrapButton
           roomId={roomId}
-          isScrap={isScrap}
+          initialIsScrap={isScrap}
         />
       </div>
     </div>
