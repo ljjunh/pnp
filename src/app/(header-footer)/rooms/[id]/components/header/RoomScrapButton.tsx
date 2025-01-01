@@ -1,10 +1,7 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { Room } from '@/types/room';
 import { useRoomScrap } from '@/hooks/useRoomScrap';
-import { ROUTES } from '@/constants/routeURL';
 import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io';
 
 interface RoomScrapButtonProps {
@@ -13,18 +10,13 @@ interface RoomScrapButtonProps {
 }
 
 export default function RoomScrapButton({ roomId, initialIsScrap }: RoomScrapButtonProps) {
-  const router = useRouter();
-  const { data: session } = useSession();
-  const { isScrap, isLoading, handleCreateScrap } = useRoomScrap(roomId, initialIsScrap);
+  const { isScrap, isLoading, handleCreateScrap, handleDeleteScrap } = useRoomScrap({
+    roomId,
+    initialIsScrap,
+  });
 
   const handleScrapClick = () => {
-    if (!session) {
-      router.push(ROUTES.LOGIN);
-      return;
-    }
-    if (!isScrap) {
-      handleCreateScrap();
-    }
+    isScrap ? handleDeleteScrap() : handleCreateScrap();
   };
 
   return (
