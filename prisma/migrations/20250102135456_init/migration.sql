@@ -152,6 +152,7 @@ CREATE TABLE `room_amenities` (
 CREATE TABLE `reviews` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `room_id` INTEGER NOT NULL,
+    `order_number` VARCHAR(191) NULL,
     `user_id` VARCHAR(191) NOT NULL,
     `airbnb_id` VARCHAR(191) NULL,
     `accuracy` INTEGER NOT NULL DEFAULT 0,
@@ -163,7 +164,9 @@ CREATE TABLE `reviews` (
     `content` TEXT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `reservationId` INTEGER NULL,
 
+    UNIQUE INDEX `reviews_order_number_key`(`order_number`),
     UNIQUE INDEX `reviews_airbnb_id_key`(`airbnb_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -322,6 +325,9 @@ ALTER TABLE `room_amenities` ADD CONSTRAINT `room_amenities_amenity_id_fkey` FOR
 
 -- AddForeignKey
 ALTER TABLE `reviews` ADD CONSTRAINT `reviews_room_id_fkey` FOREIGN KEY (`room_id`) REFERENCES `rooms`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `reviews` ADD CONSTRAINT `reviews_order_number_fkey` FOREIGN KEY (`order_number`) REFERENCES `reservations`(`order_number`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `reviews` ADD CONSTRAINT `reviews_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

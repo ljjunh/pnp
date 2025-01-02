@@ -119,18 +119,14 @@ export async function createReview(
   }
 
   // * 만약, 사용자가 해당 숙소에 예약한 이력이 없다면 리뷰를 작성할 수 없다.
-  const hasReservation = await prisma.reservation.findFirst({
+  const canReview = await prisma.review.count({
     where: {
+      orderNumber: data.orderNumber,
       userId,
-      roomId,
-      checkOut: {
-        lte: new Date(),
-      },
-      status: 'COMPLETED',
     },
   });
 
-  if (!hasReservation) {
+  if (canReview) {
     throw new ForbiddenError('리뷰를 작성할 권한이 없습니다.');
   }
 
@@ -361,6 +357,48 @@ export async function deleteReview(reviewId: number, userId: string): Promise<vo
     });
   });
 }
+
+/**
+ * 현재 사용자가 리뷰를 작성할 수 있는지 확인한다.
+ *
+ * @param {string} userId 사용자 아이디
+ * @param {number} roomId 방 아이디
+ * @returns {string[]} 리뷰 작성 가능한 예약 번호 목록
+ */
+export const availableReview = async (userId: string, roomId: number): Promise<string[]> => {
+  // * 사용자가 이미 작성한 리뷰 목록을 조회한다.
+  const writtenReviews = await prisma.review.findMany({
+    where: {
+      userId,
+      roomId,
+    },
+    select: {
+      orderNumber: true,
+    },
+  });
+
+  // * 사용자가 작성한 리뷰 목록을 제외한 리뷰 작성 가능한 예약 목록을 조회한다.
+  const canReview = await prisma.reservation.findMany({
+    where: {
+      userId,
+      roomId,
+      // * 예약이 완료된 상태만 조회한다.
+      status: 'COMPLETED',
+      // * 리뷰 작성 가능한 기간을 설정한다. (체크아웃 후 30일 이내)
+      checkOut: {
+        gte: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000),
+      },
+      orderNumber: {
+        notIn: writtenReviews.map((review) => review.orderNumber ?? ''),
+      },
+    },
+    select: {
+      orderNumber: true,
+    },
+  });
+
+  return canReview.map((reservation) => reservation.orderNumber);
+};
 
 interface ReviewCreate {
   accuracy: number;

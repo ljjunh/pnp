@@ -178,21 +178,23 @@ model RoomRule {
 }
 
 model RoomAmenity {
-  id        Int     @id @default(autoincrement())
-  room      Room    @relation(fields: [roomId], references: [id])
-  roomId    Int     @map("room_id")
-  amenity   Amenity @relation(fields: [amenityId], references: [id])
-  amenityId Int     @map("amenity_id")
+  id Int @id @default(autoincrement())
+
+  roomId    Int @map("room_id")
+  amenityId Int @map("amenity_id")
+
+  room    Room    @relation(fields: [roomId], references: [id])
+  amenity Amenity @relation(fields: [amenityId], references: [id])
 
   @@unique([roomId, amenityId])
   @@map("room_amenities")
 }
 
 model Review {
-  id            Int      @id @default(autoincrement())
-  room          Room     @relation(fields: [roomId], references: [id])
+  id Int @id @default(autoincrement())
+
   roomId        Int      @map("room_id")
-  user          User     @relation(fields: [userId], references: [id])
+  orderNumber   String?  @unique @map("order_number")
   userId        String   @map("user_id")
   airbnbId      String?  @unique @map("airbnb_id")
   accuracy      Int      @default(0)
@@ -204,6 +206,10 @@ model Review {
   content       String?  @db.Text
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @default(now()) @updatedAt @map("updated_at")
+  reservationId Int?
+
+  room Room @relation(fields: [roomId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
   @@map("reviews")
 }
