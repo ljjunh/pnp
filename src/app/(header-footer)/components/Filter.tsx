@@ -53,7 +53,7 @@ export default function Filter() {
         <div className="relative flex flex-1 items-center overflow-hidden">
           {showLeftArrow && (
             <button
-              className="absolute left-0 flex h-full items-center justify-center bg-gradient-to-r from-white via-white to-transparent px-2"
+              className="absolute left-0 flex h-full items-center justify-center bg-gradient-to-r from-white via-white to-transparent pr-6"
               onClick={() => scroll(-1)}
             >
               <CiCircleChevLeft size={30} />
@@ -77,7 +77,7 @@ export default function Filter() {
           {showRightArrow && (
             <button
               onClick={() => scroll(1)}
-              className="absolute right-0 flex h-full items-center justify-center bg-gradient-to-l from-white via-white to-transparent"
+              className="absolute right-0 flex h-full items-center justify-center bg-gradient-to-l from-white via-white to-transparent pl-6"
             >
               <CiCircleChevRight size={30} />
             </button>
