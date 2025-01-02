@@ -302,6 +302,7 @@ export async function getFilterRoom(
   filter: FilterType,
   skip: number,
   take: number,
+  userId: string | null = null,
 ): Promise<[FilterRoom[], number]> {
   const whereConditions = getWhereConditions(filter);
 
@@ -324,6 +325,13 @@ export async function getFilterRoom(
             orientation: true,
           },
         },
+        ...(userId && {
+          scraps: {
+            where: {
+              userId: userId,
+            },
+          },
+        }),
       },
     }),
     prisma.room.count({
@@ -331,7 +339,14 @@ export async function getFilterRoom(
     }),
   ]);
 
-  return [rooms, count];
+  const roomsWithScrap = rooms.map((room) => {
+    return {
+      ...room,
+      scrapped: room.scraps?.length > 0 || false,
+    };
+  });
+
+  return [roomsWithScrap, count];
 }
 
 /**

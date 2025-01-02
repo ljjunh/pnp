@@ -1,12 +1,22 @@
-// import RoomCardCarousel from '@/components/common/Card/RoomCardCarousel';
+import { ImageLink } from '@/types/room';
+import RoomCardCarousel from '@/components/common/Card/RoomCardCarousel';
 import { BsHouseExclamation } from 'react-icons/bs';
+
+const images: ImageLink[] = [
+  { id: 1, imageLink: '/images/03.avif', orientation: 'LANDSCAPE' },
+  { id: 2, imageLink: '/images/02.avif', orientation: 'PORTRAIT' },
+  { id: 3, imageLink: '/images/01.avif', orientation: 'LANDSCAPE' },
+  { id: 4, imageLink: '/images/06.avif', orientation: 'PORTRAIT' },
+  { id: 5, imageLink: '/images/05.avif', orientation: 'LANDSCAPE' },
+  { id: 6, imageLink: '/images/04.avif', orientation: 'PORTRAIT' },
+];
 
 export function RoomInformation() {
   return (
     <>
       <div className="flex flex-col gap-5 px-4 pt-4">
         <h1 className="text-2xl font-medium">호스트 이름의 숙소</h1>
-        <div>숙소 사진 정보</div>
+        <RoomCardCarousel images={images} />
         <div className="flex flex-col gap-1">
           <h3 className="font-bold">예약이 종료 되었습니다.</h3>
           <p>

@@ -11,7 +11,10 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { PriceFilterRange } from '@/types/room';
-import { fetchFilterPrice } from '@/apis/filters/action';
+import { getFilterPrice } from '@/apis/filters/action';
+import { useToast } from '@/hooks/use-toast';
+import { useModal } from '@/hooks/useModal';
+import { MODAL_ID } from '@/constants/modal';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -22,42 +25,56 @@ interface PriceRangeProps {
 }
 
 export default function PriceRange({ roomType, property, handleFilter }: PriceRangeProps) {
+  const { toast } = useToast();
+  const { modalState } = useModal(MODAL_ID.ROOM_FILTER);
   const [priceRange, setPriceRange] = useState<PriceFilterRange>({
     minPrice: 0,
     maxPrice: 0,
     distribution: [],
   });
 
-  // 초기 로딩 시 가격 범위 조회
-  // TODO: 모달이 열려있을때만 조회하게 수정
+  // roomType이 변경될 때마다 가격 범위를 조회
   useEffect(() => {
-    const initRange = async () => {
-      try {
-        const response = await fetchFilterPrice({ roomType, property });
-        setPriceRange(response);
-        setRange([response.minPrice, response.maxPrice]);
-      } catch (error) {
-        console.error(error);
+    if (!modalState) return;
+
+    const fetchFilterPrice = async () => {
+      const response = await getFilterPrice({ roomType, property });
+
+      // 실패했을 때
+      if (!response.success) {
+        switch (response.status) {
+          case 500:
+            toast({
+              title: '네트워크 문제',
+              description: response.message,
+              variant: 'destructive',
+            });
+          default:
+            toast({
+              title: response.message,
+              variant: 'destructive',
+            });
+        }
+
+        return;
       }
+
+      // data가 없으면 500 에러로 간주
+      if (!response.data) {
+        toast({
+          title: '가격 범위를 조회하는데 실패했습니다.',
+          variant: 'destructive',
+        });
+
+        return;
+      }
+
+      setPriceRange(response.data);
+      setRange([response.data.minPrice, response.data.maxPrice]);
     };
 
-    initRange();
-  }, []);
-
-  // 숙소 유형 변경 시 가격 범위 업데이트
-  useEffect(() => {
-    const changeRange = async () => {
-      try {
-        const response = await fetchFilterPrice({ roomType, property });
-        setPriceRange(response);
-        setRange([response.minPrice, response.maxPrice]);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    changeRange();
-  }, [roomType]);
+    fetchFilterPrice();
+  }, [roomType, property, toast, modalState]);
 
   const { minPrice, maxPrice, distribution } = priceRange;
 

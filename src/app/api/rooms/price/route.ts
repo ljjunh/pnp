@@ -3,10 +3,9 @@ import { CustomResponse } from '@/lib/server';
 import { priceFilterSchema } from '@/schemas/rooms';
 import { getRoomPrice } from '@/services/room';
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): Promise<CustomResponse> {
+  const searchParams = request.nextUrl.searchParams;
   try {
-    const searchParams = request.nextUrl.searchParams;
-
     const filterParams = priceFilterSchema.parse({
       roomType: searchParams.get('roomType') as 'Entire' | 'Private' | null,
       property: searchParams.get('property'),

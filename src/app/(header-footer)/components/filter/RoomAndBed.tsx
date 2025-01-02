@@ -91,7 +91,7 @@ export default function RoomAndBed({ bedroom, bed, bathroom, handleFilter }: Roo
               onClick={() => {
                 handleRoomChange('bedroom', false);
               }}
-              data-testid="bedroom-minus-button"
+              role="bedroom-minus-button"
             />
             <p className="px-4">
               {state.bedroom}
@@ -104,7 +104,7 @@ export default function RoomAndBed({ bedroom, bed, bathroom, handleFilter }: Roo
               onClick={() => {
                 handleRoomChange('bedroom', true);
               }}
-              data-testid="bedroom-plus-button"
+              role="bedroom-plus-button"
             />
           </div>
         </div>
@@ -118,7 +118,7 @@ export default function RoomAndBed({ bedroom, bed, bathroom, handleFilter }: Roo
               onClick={() => {
                 handleRoomChange('bed', false);
               }}
-              data-testid="bed-minus-button"
+              role="bed-minus-button"
             />
             <p className="px-4">
               {state.bed}
@@ -131,7 +131,7 @@ export default function RoomAndBed({ bedroom, bed, bathroom, handleFilter }: Roo
               onClick={() => {
                 handleRoomChange('bed', true);
               }}
-              data-testid="bed-plus-button"
+              role="bed-plus-button"
             />
           </div>
         </div>
@@ -145,7 +145,7 @@ export default function RoomAndBed({ bedroom, bed, bathroom, handleFilter }: Roo
               onClick={() => {
                 handleRoomChange('bathroom', false);
               }}
-              data-testid="bathroom-minus-button"
+              role="bathroom-minus-button"
             />
             <p className="px-4">
               {state.bathroom}
@@ -158,7 +158,7 @@ export default function RoomAndBed({ bedroom, bed, bathroom, handleFilter }: Roo
               onClick={() => {
                 handleRoomChange('bathroom', true);
               }}
-              data-testid="bathroom-plus-button"
+              role="bathroom-plus-button"
             />
           </div>
         </div>

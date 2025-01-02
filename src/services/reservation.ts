@@ -1,6 +1,7 @@
 import { BadRequestError, NotFoundError } from '@/errors';
 import { ForbiddenError } from '@/errors/errors';
 import { prisma } from '@/lib/server';
+import { sendNotification } from '@/lib/server/notification';
 import { CreateReservationInput, ReservationAvailableInput } from '@/schemas';
 import { Reservation, ReservationTrip } from '@/types/reservation';
 
@@ -203,10 +204,10 @@ export async function cancelReservation(orderNumber: string, userId: string) {
 /**
  * 주문 번호를 기반으로 예약을 확정짓는다.
  *
- * @param {string} orderNumber 주문 번호
  * @param {string} userId 사용자 ID (호스트)
+ * @param {string} orderNumber 주문 번호
  */
-export async function confirmReservation(orderNumber: string, userId: string) {
+export async function confirmReservation(userId: string, orderNumber: string) {
   const reservation = await prisma.reservation.findUnique({
     relationLoadStrategy: 'join',
     where: {
@@ -239,7 +240,7 @@ export async function confirmReservation(orderNumber: string, userId: string) {
     throw new BadRequestError('확정할 수 없는 예약입니다.');
   }
 
-  await prisma.reservation.update({
+  const confirm = await prisma.reservation.update({
     where: {
       orderNumber: orderNumber,
     },
@@ -247,6 +248,24 @@ export async function confirmReservation(orderNumber: string, userId: string) {
       status: 'CONFIRMED',
     },
   });
+
+  // * 예약에 성공하게 된다면 알람을 보낸다.
+  if (confirm) {
+    // FIXME: 알람을 보낼 때 사용자의 정보를 가져와야하며, 현재는 임시로 사용자 정보를 하드코딩함
+    // * 알람을 보내는 로직
+    await sendNotification({
+      userId: confirm.userId,
+      email: {
+        to: 'sunsuking@gmail.com',
+        subject: '예약이 확정되었습니다.',
+        content: `예약이 확정되었습니다. 예약 번호: ${confirm.orderNumber}`,
+      },
+      sms: {
+        phoneNumber: '+821099955728',
+        message: `예약이 확정되었습니다. 예약 번호: ${confirm.orderNumber}`,
+      },
+    });
+  }
 }
 
 /**

@@ -27,7 +27,6 @@ export type UserWithHost = User & {
     | 'school'
     | 'job'
     | 'address'
-    | 'language'
     | 'birth'
     | 'favoriteSong'
     | 'liked'

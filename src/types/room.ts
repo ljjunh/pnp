@@ -43,6 +43,7 @@ export type FilterRoom = Pick<
   'id' | 'location' | 'price' | 'latitude' | 'longitude' | 'reviewsAverage'
 > & {
   images: ImageLink[];
+  scrapped: boolean;
 };
 
 export type PriceFilterRange = {

@@ -15,7 +15,10 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
 
   return (
     <div className="pt-6">
-      <RoomHeader title={room.title} />
+      <RoomHeader
+        title={room.title}
+        roomId={room.id}
+      />
       <RoomGallery images={room.images.slice(0, 5)} />
       <section className="grid grid-cols-5 gap-28 border-b border-neutral-04 pb-12">
         <div className="col-span-3">

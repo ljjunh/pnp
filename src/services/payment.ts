@@ -100,8 +100,6 @@ export async function confirmTossPayment(
  * @param {NaverPayCreate} data 결제 요청 데이터
  */
 export async function confirmNaverPay(userId: string, idempotentKey: string, data: NaverPayCreate) {
-  console.log(data);
-  ('X-NaverPay-Idempotency-Key');
   try {
     const secretKey = process.env.NAVERPAY_CLIENT_SECRET;
     const chainId = process.env.NEXT_PUBLIC_NAVERPAY_CHAIN_ID;

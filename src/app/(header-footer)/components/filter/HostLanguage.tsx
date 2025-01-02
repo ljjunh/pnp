@@ -10,15 +10,13 @@ interface HostLanguageProps {
 }
 
 export default function HostLanguage({ language, handleFilter }: HostLanguageProps) {
-  const [hostLanguage, setHostLanguage] = useState<number[]>(language);
   const [open, setOpen] = useState<boolean>(false);
 
-  const handleLanguage = (language: number) => {
-    const newLanguage = hostLanguage.includes(language)
-      ? hostLanguage.filter((prevLanguage) => prevLanguage !== language)
-      : [...hostLanguage, language];
+  const handleLanguage = (nowLanguage: number) => {
+    const newLanguage = language.includes(nowLanguage)
+      ? language.filter((prevLanguage) => prevLanguage !== nowLanguage)
+      : [...language, nowLanguage];
 
-    setHostLanguage(newLanguage);
     handleFilter(newLanguage, 'language');
   };
 
@@ -27,7 +25,7 @@ export default function HostLanguage({ language, handleFilter }: HostLanguagePro
       <div
         className="flex cursor-pointer items-center justify-between pb-4"
         onClick={() => setOpen(!open)}
-        data-testid="host-language"
+        role="button"
       >
         <span className="text-lg font-semibold">호스트 언어</span>
         {open ? <IoIosArrowUp size={24} /> : <IoIosArrowDown size={24} />}
