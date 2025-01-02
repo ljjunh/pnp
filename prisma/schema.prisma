@@ -28,9 +28,10 @@ model User {
   roomScraps    RoomScrap[]
   host          Host?
 
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @default(now()) @updatedAt @map("updated_at")
-  Reservation Reservation[]
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @default(now()) @updatedAt @map("updated_at")
+  reservations Reservation[]
+  payments     Payment[]
 
   @@map("users")
 }
@@ -325,10 +326,51 @@ model Reservation {
   createdAt   DateTime          @default(now()) @map("created_at")
   updatedAt   DateTime          @default(now()) @updatedAt @map("updated_at")
 
-  user User @relation(fields: [userId], references: [id])
-  room Room @relation(fields: [roomId], references: [id])
+  user    User     @relation(fields: [userId], references: [id])
+  room    Room     @relation(fields: [roomId], references: [id])
+  payment Payment?
 
   @@map("reservations")
+}
+
+model Payment {
+  id Int @id @default(autoincrement())
+
+  orderNumber String      @unique @map("order_number")
+  reservation Reservation @relation(fields: [orderNumber], references: [orderNumber])
+  userId      String      @map("user_id")
+  user        User        @relation(fields: [userId], references: [id])
+
+  // * portone 관련 정보 저장
+  orderName     String        @map("order_name")
+  transactionId String        @unique @map("transaction_id")
+  merchantId    String        @unique @map("merchant_id")
+  status        PaymentStatus @default(PAY_PENDING)
+  currency      String        @default("KRW")
+  method        String
+
+  // * 결제 정보
+  amount     Int     @default(0)
+  vat        Int     @default(0)
+  paid       Int     @default(0)
+  receiptUrl String? @map("receipt_url")
+
+  paidAt          DateTime @map("paid_at")
+  statusUpdatedAt DateTime @map("status_updated_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("payments")
+}
+
+enum PaymentStatus {
+  CANCELLED
+  FAILED
+  PAID
+  PARTIAL_CANCELLED
+  PAY_PENDING
+  READY
+  VIRTUAL_ACCOUNT_ISSUED
 }
 
 enum ReservationStatus {
