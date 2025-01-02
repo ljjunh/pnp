@@ -21,10 +21,10 @@ interface RoomScrapProps {
  * @param {number} params.roomId - 스크랩할 숙소 ID
  * @param {boolean} params.initialIsScrap - 초기 스크랩 상태
  *
- * @returns {boolean} returns.isScrap - 현재 스크랩 상태
- * @returns {boolean} returns.isLoading - 요청 처리 중 여부
- * @returns {() => Promise<void>} returns.handleCreateScrap - 스크랩 생성 핸들러
- * @returns {() => Promise<void>} returns.handleDeleteScrap - 스크랩 삭제 핸들러
+ * @returns returns.isScrap - 현재 스크랩 상태
+ * @returns returns.isLoading - 요청 처리 중 여부
+ * @returns returns.addToScraps - 스크랩 생성 핸들러
+ * @returns returns.removeFromScraps - 스크랩 삭제 핸들러
  */
 export function useRoomScrap({ roomId, initialIsScrap }: RoomScrapProps) {
   const router = useRouter();
@@ -33,7 +33,11 @@ export function useRoomScrap({ roomId, initialIsScrap }: RoomScrapProps) {
   const [isScrap, setIsScrap] = useState(initialIsScrap);
   const [isLoading, setIsLoading] = useState(false);
 
-  const checkSession = () => {
+  const toggleScrap = () => {
+    isScrap ? removeFromScraps() : addToScraps();
+  };
+
+  const validateSession = () => {
     if (!session) {
       router.push(ROUTES.LOGIN);
       return false;
@@ -41,8 +45,8 @@ export function useRoomScrap({ roomId, initialIsScrap }: RoomScrapProps) {
     return true;
   };
 
-  const handleCreateScrap = async () => {
-    if (!checkSession()) return;
+  const addToScraps = async () => {
+    if (!validateSession()) return;
 
     setIsLoading(true);
     // Optimistic Update
@@ -72,8 +76,8 @@ export function useRoomScrap({ roomId, initialIsScrap }: RoomScrapProps) {
     setIsLoading(false);
   };
 
-  const handleDeleteScrap = async () => {
-    if (!checkSession()) return;
+  const removeFromScraps = async () => {
+    if (!validateSession()) return;
 
     setIsLoading(true);
     // Optimistic Update
@@ -106,7 +110,6 @@ export function useRoomScrap({ roomId, initialIsScrap }: RoomScrapProps) {
   return {
     isScrap,
     isLoading,
-    handleCreateScrap,
-    handleDeleteScrap,
+    toggleScrap,
   };
 }
