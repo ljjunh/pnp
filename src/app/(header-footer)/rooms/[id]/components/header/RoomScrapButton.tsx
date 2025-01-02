@@ -10,18 +10,14 @@ interface RoomScrapButtonProps {
 }
 
 export default function RoomScrapButton({ roomId, initialIsScrap }: RoomScrapButtonProps) {
-  const { isScrap, isLoading, handleCreateScrap, handleDeleteScrap } = useRoomScrap({
+  const { isScrap, isLoading, toggleScrap } = useRoomScrap({
     roomId,
     initialIsScrap,
   });
 
-  const handleScrapClick = () => {
-    isScrap ? handleDeleteScrap() : handleCreateScrap();
-  };
-
   return (
     <button
-      onClick={handleScrapClick}
+      onClick={toggleScrap}
       disabled={isLoading}
       type="button"
       className="flex items-center gap-2 rounded-lg p-2 text-sm underline hover:bg-neutral-01"
