@@ -69,7 +69,7 @@ export async function deleteScrap(roomId: number): Promise<ActionResponse> {
     if (!response.success) {
       return {
         success: false,
-        message: response.message || '스크랩에 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+        message: response.message || '스크랩 삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.',
         status: response.status,
       };
     }
