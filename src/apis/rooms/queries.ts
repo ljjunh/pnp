@@ -6,13 +6,13 @@ import { CACHE_TAGS } from '@/constants/cacheTags';
 
 /**
  * 특정 숙소의 상세정보를 조회합니다.
- * @param id - 조회할 숙소의 ID
+ * @param roomId - 조회할 숙소의 ID
  * @returns {Promise<Room>} 숙소의 상세 정보
  * @remarks 숙소를 찾을 수 없는 경우 Next.js not-found 페이지를 렌더링
  */
-export async function getRoom(id: number): Promise<Room> {
+export async function getRoom(roomId: number): Promise<Room> {
   try {
-    const response = await httpClient.get<Room>(`/rooms/${id}`);
+    const response = await httpClient.get<Room>(`/rooms/${roomId}`);
     if (!response.success) {
       switch (response.status) {
         case 404:
@@ -57,7 +57,7 @@ export async function getScrap(roomId: number): Promise<boolean> {
 
     // API 응답이 성공이면 스크랩 상태 반환, 실패면 false 반환
     return response.success ? response.data : false;
-  } catch (error) {
+  } catch {
     // 네트워크 오류 등이 발생해도 false 반환하여 스크랩되지 않은 것으로 처리
     return false;
   }
