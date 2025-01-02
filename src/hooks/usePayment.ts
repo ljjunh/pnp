@@ -39,14 +39,14 @@ const usePayment = () => {
       storeId: 'store-710ac3bd-2dfc-4c94-a1af-73511e2a6804',
       paymentId: orderId,
       orderName: orderName,
-      redirectUrl: 'https://example.com/success',
       totalAmount: amount,
       currency: 'CURRENCY_KRW',
       ...keys,
     } as PaymentRequest);
 
     if (!portone || portone.code) {
-      console.error(portone);
+      // TODO: 결제 실패 로직 처리
+      console.error('결제 요청에 실패하였습니다.', portone?.message);
       setStatus(PaymentStatus.ERROR);
       return;
     }
@@ -60,6 +60,7 @@ const usePayment = () => {
 
     if (response.status === 200) {
       setStatus(PaymentStatus.SUCCESS);
+      // TODO: 결제 성공 시 처리
       return;
     }
   };
