@@ -27,6 +27,7 @@ export async function POST(request: NextRequest): Promise<CustomResponse> {
       userId: session?.user.id,
       error: error instanceof Error ? error.message : error,
     });
+
     if (error instanceof ZodError) {
       return CustomResponse.zod(400, error.errors);
     } else if (error instanceof CustomError) {

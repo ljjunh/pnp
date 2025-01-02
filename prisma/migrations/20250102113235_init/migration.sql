@@ -279,7 +279,6 @@ CREATE TABLE `payments` (
     `user_id` VARCHAR(191) NOT NULL,
     `order_name` VARCHAR(191) NOT NULL,
     `transaction_id` VARCHAR(191) NOT NULL,
-    `merchant_id` VARCHAR(191) NOT NULL,
     `status` ENUM('CANCELLED', 'FAILED', 'PAID', 'PARTIAL_CANCELLED', 'PAY_PENDING', 'READY', 'VIRTUAL_ACCOUNT_ISSUED') NOT NULL DEFAULT 'PAY_PENDING',
     `currency` VARCHAR(191) NOT NULL DEFAULT 'KRW',
     `method` VARCHAR(191) NOT NULL,
@@ -294,7 +293,6 @@ CREATE TABLE `payments` (
 
     UNIQUE INDEX `payments_order_number_key`(`order_number`),
     UNIQUE INDEX `payments_transaction_id_key`(`transaction_id`),
-    UNIQUE INDEX `payments_merchant_id_key`(`merchant_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

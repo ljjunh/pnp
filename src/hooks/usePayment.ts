@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PortOne, { PaymentRequest } from '@portone/browser-sdk/v2';
+import { httpClient } from '@/apis/core/httpClient';
 
 interface RequestPaymentProps {
   orderId: string;
@@ -34,7 +35,7 @@ const usePayment = () => {
     setStatus(PaymentStatus.LOADING);
 
     const keys = parsePaymentMethod(method);
-    const response = await PortOne.requestPayment({
+    const portone = await PortOne.requestPayment({
       storeId: 'store-710ac3bd-2dfc-4c94-a1af-73511e2a6804',
       paymentId: orderId,
       orderName: orderName,
@@ -44,25 +45,23 @@ const usePayment = () => {
       ...keys,
     } as PaymentRequest);
 
-    if (!response || response.code) {
-      console.error(response);
+    if (!portone || portone.code) {
+      console.error(portone);
+      setStatus(PaymentStatus.ERROR);
       return;
     }
 
-    const res = await fetch('/api/payment/confirm', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        paymentId: response.paymentId,
-        orderId,
-        amount,
-        transactionId: response.txId,
-      }),
+    const response = await httpClient.post('/payment/confirm', {
+      paymentId: portone.paymentId,
+      orderId,
+      amount,
+      transactionId: portone.txId,
     });
 
-    console.log(res.json());
+    if (response.status === 200) {
+      setStatus(PaymentStatus.SUCCESS);
+      return;
+    }
   };
 
   const parsePaymentMethod = (
@@ -100,7 +99,7 @@ const usePayment = () => {
     };
   };
 
-  return { requestPayment };
+  return { status, requestPayment };
 };
 
 export default usePayment;

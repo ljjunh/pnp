@@ -1,3 +1,4 @@
+import { ServerError } from '@/errors/errors';
 import { prisma } from '@/lib/server';
 import { PaymentConfirm } from '@/schemas/payment';
 import { PortOneClient, PortOneError } from '@portone/server-sdk';
@@ -25,26 +26,43 @@ export async function confirmPayment(userId: string, data: PaymentConfirm) {
         paymentId: data.paymentId,
         status: payment.status,
       });
-      return;
+
+      throw new ServerError('결제에 실패하였습니다');
     }
 
-    return await prisma.payment.create({
-      data: {
-        orderNumber: payment.id,
-        userId,
-        transactionId: payment.transactionId,
-        merchantId: payment.merchantId,
-        orderName: payment.orderName,
-        method: String(payment.method?.type || 'UNKNOWN'),
-        amount: payment.amount.total,
-        vat: payment.amount.vat,
-        paid: payment.amount.paid,
-        receiptUrl: payment.receiptUrl,
-        status: payment.status,
-        currency: payment.currency,
-        paidAt: payment.paidAt,
-        statusUpdatedAt: payment.statusChangedAt,
-      },
+    return await prisma.$transaction(async (prisma) => {
+      const reservation = await prisma.reservation.update({
+        where: {
+          orderNumber: payment.id,
+          userId,
+        },
+        data: {
+          status: 'PAYMENT',
+        },
+      });
+
+      if (!reservation) {
+        throw new ServerError('예약 정보를 찾을 수 없습니다.');
+      }
+
+      // 신규 결제 정보 생성
+      return await prisma.payment.create({
+        data: {
+          orderNumber: payment.id,
+          userId,
+          transactionId: payment.transactionId,
+          orderName: payment.orderName,
+          method: String(payment.method?.type || 'UNKNOWN'),
+          amount: payment.amount.total,
+          vat: payment.amount.vat,
+          paid: payment.amount.paid,
+          receiptUrl: payment.receiptUrl,
+          status: payment.status,
+          currency: payment.currency,
+          paidAt: payment.paidAt,
+          statusUpdatedAt: payment.statusChangedAt,
+        },
+      });
     });
   } catch (error) {
     if (error instanceof PortOneError) {
@@ -53,8 +71,6 @@ export async function confirmPayment(userId: string, data: PaymentConfirm) {
         paymentId: data.paymentId,
         error: error.message,
       });
-
-      // 재시도 큐에 메시지를 전송합니다.
     }
   }
 }

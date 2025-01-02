@@ -344,7 +344,6 @@ model Payment {
   // * portone 관련 정보 저장
   orderName     String        @map("order_name")
   transactionId String        @unique @map("transaction_id")
-  merchantId    String        @unique @map("merchant_id")
   status        PaymentStatus @default(PAY_PENDING)
   currency      String        @default("KRW")
   method        String
