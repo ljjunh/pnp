@@ -272,6 +272,30 @@ CREATE TABLE `reservations` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `payments` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `order_number` VARCHAR(191) NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
+    `order_name` VARCHAR(191) NOT NULL,
+    `transaction_id` VARCHAR(191) NOT NULL,
+    `status` ENUM('CANCELLED', 'FAILED', 'PAID', 'PARTIAL_CANCELLED', 'PAY_PENDING', 'READY', 'VIRTUAL_ACCOUNT_ISSUED') NOT NULL DEFAULT 'PAY_PENDING',
+    `currency` VARCHAR(191) NOT NULL DEFAULT 'KRW',
+    `method` VARCHAR(191) NOT NULL,
+    `amount` INTEGER NOT NULL DEFAULT 0,
+    `vat` INTEGER NOT NULL DEFAULT 0,
+    `paid` INTEGER NOT NULL DEFAULT 0,
+    `receipt_url` VARCHAR(191) NULL,
+    `paid_at` DATETIME(3) NOT NULL,
+    `status_updated_at` DATETIME(3) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    UNIQUE INDEX `payments_order_number_key`(`order_number`),
+    UNIQUE INDEX `payments_transaction_id_key`(`transaction_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `accounts` ADD CONSTRAINT `accounts_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -334,3 +358,9 @@ ALTER TABLE `reservations` ADD CONSTRAINT `reservations_user_id_fkey` FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE `reservations` ADD CONSTRAINT `reservations_room_id_fkey` FOREIGN KEY (`room_id`) REFERENCES `rooms`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `payments` ADD CONSTRAINT `payments_order_number_fkey` FOREIGN KEY (`order_number`) REFERENCES `reservations`(`order_number`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `payments` ADD CONSTRAINT `payments_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
