@@ -395,6 +395,10 @@ export const availableReview = async (userId: string, roomId: number): Promise<s
     select: {
       orderNumber: true,
     },
+    // * 가장 오래된 예약부터 조회한다.
+    orderBy: {
+      createdAt: 'asc',
+    },
   });
 
   return canReview.map((reservation) => reservation.orderNumber);
