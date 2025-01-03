@@ -61,3 +61,38 @@ export async function getReviews(
     );
   }
 }
+
+/**
+ * 특정 숙소의 리뷰권한을 조회합니다.
+ * @param roomId - 조회할 숙소의 ID
+ * @returns {Promise<string[]>} 리뷰 작성 가능한 orderNumber 배열, 권한이 없거나 오류 발생 시 빈 배열([]) 반환
+ *
+ * @remarks
+ * - 리뷰 작성 권한이 있다면 주문번호 배열 반환, 없다면 빈 배열([])이 반환됩니다.
+ * - 숙소 하나에 여러 번 예약이 가능하므로 여러 개의 주문번호가 반환될 수 있습니다.
+ * - 배열은 예약 날짜 기준 오름차순 정렬 (오래된 예약이 앞쪽에 위치)
+ * - 네트워크 오류 등이 발생해도 빈 배열([])을 반환하여 권한 없음과 동일하게 처리합니다.
+ * - 리뷰 권한 조회는 부가 기능이므로 오류가 발생해도 전체 페이지에 영향을 주지 않아야 하며,
+ * - 사용자에게 별도의 에러 메시지를 표시할 필요가 없다고 판단했습니다.
+ */
+export async function getReviewAvailable(roomId: number): Promise<string[]> {
+  try {
+    const response = await httpClient.get<string[]>(`/rooms/${roomId}/reviews/available`, {
+      next: {
+        tags: [CACHE_TAGS.REVIEWS.AVAILABLE(roomId)],
+      },
+    });
+
+    return response.success ? response.data : [];
+  } catch {
+    // 네트워크 오류 등이 발생해도 [] 빈배열을 반환하여 권한없음 처리
+    return [];
+  }
+}
+
+// 권한확인으로 뭘 하냐? 리뷰 쓸 권한, 리뷰 생성 폼 Show
+// 에러가 나면 ? 그냥 생성 폼 안보이게 할까?
+// 일단 로그인 여부로 컴포넌트에서 한번 끊고
+// 로그인했는데 권한 없으면 hide -> 생성폼컴포넌트로 전달
+// 로그인했는데 권한 있으면 show, -> 생성폼컴포넌트로 전달
+// 로그인했는데 에러나면 hide만 하자

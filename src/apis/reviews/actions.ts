@@ -39,6 +39,8 @@ export async function createReview(
     }
     // 해당 숙소 리뷰 캐시 무효화
     revalidateTag(CACHE_TAGS.REVIEWS.DETAIL(roomId));
+    // 해당 숙소 리뷰 권한 캐시 무효화
+    revalidateTag(CACHE_TAGS.REVIEWS.AVAILABLE(roomId));
 
     // 성공 시 응답
     return {
@@ -88,6 +90,8 @@ export async function deleteReview(roomId: number, reviewId: number): Promise<Ac
 
     // 해당 숙소 리뷰 캐시 무효화
     revalidateTag(CACHE_TAGS.REVIEWS.DETAIL(roomId));
+    // 해당 숙소 리뷰 권한 캐시 무효화
+    revalidateTag(CACHE_TAGS.REVIEWS.AVAILABLE(roomId));
 
     // 성공 시 응답
     return {
