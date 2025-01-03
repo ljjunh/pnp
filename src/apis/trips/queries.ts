@@ -1,7 +1,6 @@
-import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
 import { ReservationTrip } from '@/types/reservation';
-import { httpClient } from '../core/httpClient';
+import { httpClient } from '@/apis/core/httpClient';
 
 /**
  * 예약된 여행 정보를 조회합니다.
@@ -13,18 +12,9 @@ export async function getReservationTrip(): Promise<ReservationTrip[]> {
   try {
     const response = await httpClient.get<ReservationTrip[]>('/reservation');
 
-    if (!response.success) {
-      switch (response.status) {
-        case 404:
-          notFound();
-        default:
-          throw new CustomError(response.message, response.status);
-      }
+    if (!response.success && response.status) {
+      throw new CustomError(response.message, response.status);
     }
-
-    // console.log(response);
-    // console.log(response.data);
-    // console.log(response.data[0].room.host);
 
     return response.data;
   } catch (error) {
