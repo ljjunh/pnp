@@ -89,10 +89,3 @@ export async function getReviewAvailable(roomId: number): Promise<string[]> {
     return [];
   }
 }
-
-// 권한확인으로 뭘 하냐? 리뷰 쓸 권한, 리뷰 생성 폼 Show
-// 에러가 나면 ? 그냥 생성 폼 안보이게 할까?
-// 일단 로그인 여부로 컴포넌트에서 한번 끊고
-// 로그인했는데 권한 없으면 hide -> 생성폼컴포넌트로 전달
-// 로그인했는데 권한 있으면 show, -> 생성폼컴포넌트로 전달
-// 로그인했는데 에러나면 hide만 하자
