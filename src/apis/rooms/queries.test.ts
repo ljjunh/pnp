@@ -14,7 +14,7 @@ describe('Room Query Test', () => {
   });
 
   describe('getRoom', () => {
-    test('성공적으로 룸 정보를 가져온다', async () => {
+    test('성공적으로 숙소 정보를 가져온다', async () => {
       const result = await getRoom(1);
 
       expect(result).toEqual(mockRoom);
