@@ -11,7 +11,7 @@ interface PaymentProps {
 }
 
 export default function Payment({ orderNumber, totalPrice, title }: PaymentProps) {
-  const { isReady, requestPayment } = usePayment();
+  const { requestPayment } = usePayment();
   const [method, setMethod] = useState<PaymentType>('TRANSFER');
 
   return (
@@ -36,8 +36,8 @@ export default function Payment({ orderNumber, totalPrice, title }: PaymentProps
 
         {/* 토스페이 */}
         <div
-          className={`relative flex cursor-pointer items-center rounded-lg border px-4 py-2 ${method === 'TOSSPAY' ? 'bg-gray-200' : ''}`}
-          onClick={() => setMethod('TOSSPAY')}
+          className={`relative flex cursor-pointer items-center rounded-lg border px-4 py-2 ${method === 'EASY_PAY' ? 'bg-gray-200' : ''}`}
+          onClick={() => setMethod('EASY_PAY')}
         >
           <span>토스페이</span>
         </div>
@@ -76,10 +76,8 @@ export default function Payment({ orderNumber, totalPrice, title }: PaymentProps
       </div>
       {/* Submit Button */}
       <button
-        disabled={!isReady}
         className="mt-6 w-full rounded-lg bg-[#FF385C] py-3 text-white"
         onClick={() => {
-          console.log('클릭되잖아');
           requestPayment(method, {
             orderId: orderNumber,
             orderName: title,
