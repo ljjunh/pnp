@@ -4,5 +4,6 @@ export const CACHE_TAGS = {
   },
   REVIEWS: {
     DETAIL: (roomId: number) => `rooms/${roomId}/review:detail`,
+    AVAILABLE: (roomId: number) => `rooms/${roomId}/review/available`,
   },
 } as const;

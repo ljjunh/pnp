@@ -1,7 +1,7 @@
 import RoomReviewCreateForm from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewCreateForm';
 import RoomReviewItem from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewItem';
 import Modal from '@/components/common/Modal/Modal';
-import { GetReviewsResponse, getReviews } from '@/apis/reviews/queries';
+import { getReviewAvailable, getReviews } from '@/apis/reviews/queries';
 import { calculateAverageRating } from '@/utils/calculateAverageRating';
 import { GoComment } from 'react-icons/go';
 import { IoIosArrowDown } from 'react-icons/io';
@@ -9,7 +9,8 @@ import { IoSearch } from 'react-icons/io5';
 import { PiCheckCircle, PiKey, PiMapTrifold, PiSprayBottle, PiTag } from 'react-icons/pi';
 
 export default async function ReviewModal({ params }: { params: { id: string } }) {
-  const review: GetReviewsResponse = await getReviews(Number(params.id));
+  const review = await getReviews(Number(params.id));
+  const isAvailable = await getReviewAvailable(Number(params.id));
 
   const rating = calculateAverageRating([
     review.data.accuracy,
@@ -126,28 +127,48 @@ export default async function ReviewModal({ params }: { params: { id: string } }
           </div>
 
           {/* 리뷰 리스트 - 스크롤 */}
+
           <div className="flex-1 overflow-y-auto pr-4">
             <div className="space-y-8">
-              {review.data.reviews.map((review) => (
-                <RoomReviewItem
-                  key={review.id}
-                  roomId={Number(params.id)}
-                  reviewId={review.id}
-                  accuracy={review.accuracy}
-                  communication={review.communication}
-                  cleanliness={review.cleanliness}
-                  location={review.location}
-                  checkIn={review.checkIn}
-                  value={review.value}
-                  content={review.content}
-                  createdAt={review.createdAt}
-                  user={review.user}
-                  isInterceptedRoute
-                />
-              ))}
+              {review.data.reviews.length > 0 ? (
+                review.data.reviews.map((review) => (
+                  <RoomReviewItem
+                    key={review.id}
+                    roomId={Number(params.id)}
+                    reviewId={review.id}
+                    accuracy={review.accuracy}
+                    communication={review.communication}
+                    cleanliness={review.cleanliness}
+                    location={review.location}
+                    checkIn={review.checkIn}
+                    value={review.value}
+                    content={review.content}
+                    createdAt={review.createdAt}
+                    user={review.user}
+                    isInterceptedRoute
+                  />
+                ))
+              ) : (
+                <div className="flex flex-col items-center justify-center py-24 text-neutral-07">
+                  <svg
+                    className="mb-4 h-16 w-16"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z" />
+                  </svg>
+                  <p className="text-lg font-medium">아직 작성된 리뷰가 없어요</p>
+                  <p className="mt-1 text-sm">이 숙소의 첫 번째 리뷰를 남겨보세요!</p>
+                </div>
+              )}
             </div>
           </div>
-          <RoomReviewCreateForm roomId={Number(params.id)} />
+          {isAvailable.length > 0 && (
+            <RoomReviewCreateForm
+              roomId={Number(params.id)}
+              isAvailable={isAvailable}
+            />
+          )}
         </div>
       </div>
     </Modal>
