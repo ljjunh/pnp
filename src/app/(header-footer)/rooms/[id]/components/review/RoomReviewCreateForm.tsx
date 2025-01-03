@@ -81,6 +81,7 @@ export default function RoomReviewCreateForm({ roomId }: RoomReviewCreateFormPro
 
     const response = await createReview(roomId, {
       content: content.trim(),
+      orderNumber: '빌드때문에 임시값',
       ...ratings,
     });
     setFormState((prev) => ({ ...prev, isLoading: false }));
