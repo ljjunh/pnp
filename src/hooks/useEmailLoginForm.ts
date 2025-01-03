@@ -1,6 +1,6 @@
 import { useFormState } from 'react-dom';
 import { FormState } from '@/types/login';
-import { handleEmailLogin } from '@/app/(header-footer)/signin/action';
+import { handleEmailLogin } from '@/apis/signin/action';
 
 const initialState: FormState = {
   success: false,
@@ -13,7 +13,7 @@ const initialState: FormState = {
 
 export const useEmailLoginForm = () => {
   const [state, dispatch] = useFormState(handleEmailLogin, initialState);
-  
+
   return {
     dispatch,
     email: state.email,

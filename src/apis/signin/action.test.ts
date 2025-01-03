@@ -7,6 +7,13 @@ jest.mock('@/auth', () => ({
   signIn: jest.fn(),
 }));
 
+const mockCookieGet = jest.fn();
+jest.mock('next/headers', () => ({
+  cookies: jest.fn(() => ({
+    get: mockCookieGet,
+  })),
+}));
+
 describe('이메일 로그인 처리 (handleEmailLogin)', () => {
   const prevState = {
     success: false,
