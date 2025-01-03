@@ -6,6 +6,9 @@ import { formatDate } from '@/utils/formatDate';
 import { UpcommingReservationCard } from './components/UpcommingReservationCard';
 import { categorizeReservations } from '@/utils/categorizeReservation';
 
+export const dynamic = 'force-dynamic'; // 동적 렌더링
+// export const revalidate = 60; // 60초 ISR
+
 export default async function Trips() {
   const reservations = await getReservationTrip();
   const { upcomingReservations, previousReservations } = categorizeReservations(reservations);
