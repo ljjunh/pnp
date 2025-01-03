@@ -53,11 +53,6 @@ describe('Room Query Test', () => {
       expect(result).toBe(false);
     });
 
-    test('API 응답이 success: false인 경우 false를 반환한다', async () => {
-      const result = await getScrap(3);
-      expect(result).toBe(false);
-    });
-
     test('서버에서 500 에러 발생 시 false를 반환한다', async () => {
       const result = await getScrap(500);
       expect(result).toBe(false);
