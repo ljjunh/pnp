@@ -3,7 +3,7 @@
 import { signIn } from '@/auth';
 import { z } from 'zod';
 import { FormState, Provider } from '@/types/login';
-import { getRedirectUrl } from '@/utils/getRedirectURl';
+import { getRedirectUrl } from '@/utils/getRedirectUrl';
 import { ERROR_MESSAGES, GOOGLE, KAKAO } from '@/constants/login';
 
 // zod 유효성 검사
