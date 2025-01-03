@@ -1,17 +1,10 @@
 'use server';
 
-import { cookies } from 'next/headers';
 import { signIn } from '@/auth';
 import { z } from 'zod';
 import { FormState, Provider } from '@/types/login';
+import { getRedirectUrl } from '@/utils/getRedirectURl';
 import { ERROR_MESSAGES, GOOGLE, KAKAO } from '@/constants/login';
-
-// 쿠키에 저장된 redirectURL
-function getRedirectUrl(): string {
-  const cookieStore = cookies();
-
-  return cookieStore.get('prevPath')?.value || '/';
-}
 
 // zod 유효성 검사
 const formSchema = z.object({
