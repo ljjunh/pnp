@@ -21,10 +21,11 @@ const mockData = [
 enum LocationStep {
   'INPUT',
   'CONFIRM',
+  'LOCATION_CHECK',
 }
 
 export default function Location() {
-  const [step, setStep] = useState(LocationStep.CONFIRM);
+  const [step, setStep] = useState(LocationStep.INPUT);
   const [isClick, setIsClick] = useState<boolean>(false);
   const [text, setText] = useState<string>('');
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -43,6 +44,22 @@ export default function Location() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  const handleNextStep = () => {
+    if (step === LocationStep.INPUT) {
+      setStep(LocationStep.CONFIRM);
+    } else if (step === LocationStep.CONFIRM) {
+      setStep(LocationStep.LOCATION_CHECK);
+    }
+  };
+
+  const handlePrevStep = () => {
+    if (step === LocationStep.CONFIRM) {
+      setStep(LocationStep.INPUT);
+    } else if (step === LocationStep.LOCATION_CHECK) {
+      setStep(LocationStep.CONFIRM);
+    }
+  };
 
   return (
     <div className="py-11">
@@ -116,7 +133,7 @@ export default function Location() {
         </>
       )}
       {step === LocationStep.CONFIRM && (
-        <div className="w-3/5">
+        <div className="w-4/5">
           <p className="pb-3 text-3xl">주소 확인</p>
           <p className="pb-10 text-lg text-neutral-07">
             주소는 게스트의 예약이 확정된 이후에 공개됩니다.
@@ -182,6 +199,48 @@ export default function Location() {
           />
         </div>
       )}
+      {step === LocationStep.LOCATION_CHECK && (
+        <div>
+          <p className="pb-3 text-3xl">핀이 놓인 위치가 정확한가요?</p>
+          <p className="pb-10 text-lg text-neutral-07">
+            주소는 게스트의 예약이 확정된 후에만 공개됩니다.
+          </p>
+          <div className="relative">
+            <GoogleMapView
+              lat={37.5642135}
+              lng={127.0016985}
+              height="480px"
+              zoom={13}
+            />
+            <div className="absolute left-1/2 top-4 z-20 flex w-4/5 -translate-x-1/2 space-x-3 rounded-full border-2 border-white bg-white px-6 py-5 transition-all duration-200">
+              <FaLocationDot size={30} />
+              <input
+                type="text"
+                placeholder="서울특별시"
+                className="w-full bg-white placeholder-black outline-none focus:border-none focus:outline-none focus:ring-0"
+                disabled
+                onChange={(e) => setText(e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="fixed bottom-0 left-0 right-0 flex h-20 items-center justify-center border-t border-neutral-04 bg-white">
+        <div className="flex w-full flex-row items-center justify-between px-20">
+          <button
+            className="border-b border-black text-base"
+            onClick={handlePrevStep}
+          >
+            뒤로
+          </button>
+          <button
+            className="rounded-xl bg-black px-8 py-3 text-white"
+            onClick={handleNextStep}
+          >
+            다음
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
