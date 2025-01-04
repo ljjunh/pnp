@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { addDays, differenceInDays, format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import { Calendar } from '@/components/ui/calendar';
+import { getRoomAvailableClient } from '@/apis/rooms/queries';
 
 interface RoomBookingCalendarProps {
+  availableDates: string[];
   isOpen: boolean;
   onToggle: () => void;
   startDate: Date;
@@ -15,6 +17,7 @@ interface RoomBookingCalendarProps {
 }
 
 export default function RoomBookingCalendar({
+  availableDates,
   isOpen,
   onToggle,
   startDate,
@@ -22,6 +25,16 @@ export default function RoomBookingCalendar({
   onDateChange,
 }: RoomBookingCalendarProps) {
   const [selectMode, setSelectMode] = useState<'checkIn' | 'checkOut'>('checkIn');
+
+  console.log(availableDates);
+
+  useEffect(() => {
+    const fetchTemp = async () => {
+      const result = await getRoomAvailableClient(9, 2024, 12);
+      console.log('결과임', result);
+    };
+    fetchTemp();
+  }, []);
 
   const dateRange: DateRange = {
     from: startDate,
