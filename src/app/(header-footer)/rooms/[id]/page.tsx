@@ -7,11 +7,13 @@ import RoomHost from '@/app/(header-footer)/rooms/[id]/components/information/Ro
 import RoomLocation from '@/app/(header-footer)/rooms/[id]/components/information/RoomLocation';
 import RoomRules from '@/app/(header-footer)/rooms/[id]/components/information/RoomRules';
 import RoomReviewList from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewList';
-import { Room } from '@/types/room';
-import { getRoom } from '@/apis/rooms/queries';
+import { getRoom, getRoomAvailable } from '@/apis/rooms/queries';
 
 export default async function RoomDetailPage({ params }: { params: { id: string } }) {
-  const room: Room = await getRoom(Number(params.id));
+  const [room, availableDates] = await Promise.all([
+    getRoom(Number(params.id)),
+    getRoomAvailable(Number(params.id)),
+  ]);
 
   return (
     <div className="pt-6">
@@ -37,6 +39,7 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
             <RoomBookingCard
               price={room.price}
               roomId={room.id}
+              availableDates={availableDates}
             />
           </div>
         </div>
