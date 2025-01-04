@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
 import mockRoom from '@/mocks/fixtures/room.json';
-import { getRoom, getScrap } from '@/apis/rooms/queries';
+import mockRoomAvailable from '@/mocks/fixtures/roomAvailable.json';
+import { getRoom, getRoomAvailable, getRoomAvailableClient, getScrap } from '@/apis/rooms/queries';
 
 // next/navigation의 notFound를 모킹
 jest.mock('next/navigation', () => ({
@@ -61,6 +62,52 @@ describe('Room Query Test', () => {
     test('네트워크 에러 발생 시 false를 반환한다', async () => {
       const result = await getScrap(501);
       expect(result).toBe(false);
+    });
+  });
+
+  describe('getRoomAvailable', () => {
+    test('성공적으로 예약 가능한 날짜 배열을 반환한다', async () => {
+      const result = await getRoomAvailable(1);
+      expect(result).toStrictEqual(mockRoomAvailable);
+    });
+
+    test('서버에서 500 에러 발생 시 에러를 던진다', async () => {
+      const error = await getRoomAvailable(500).catch((e) => e);
+      expect(error).toBeInstanceOf(CustomError);
+      expect(error.statusCode).toBe(500);
+      expect(error.message).toBe('서버 에러가 발생했습니다.');
+    });
+
+    test('네트워크 에러 발생 시 500 CustomError를 던진다', async () => {
+      const error = await getRoomAvailable(501).catch((e) => e);
+      expect(error).toBeInstanceOf(CustomError);
+      expect(error.statusCode).toBe(500);
+      expect(error.message).toBe(
+        '서비스에 일시적인 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+      );
+    });
+  });
+
+  describe('getRoomAvailableClient', () => {
+    test('성공적으로 예약 가능한 날짜 배열을 반환한다', async () => {
+      const result = await getRoomAvailableClient(1, 2025, 1);
+      expect(result).toStrictEqual(mockRoomAvailable);
+    });
+
+    test('서버에서 500 에러 발생 시 에러를 던진다', async () => {
+      const error = await getRoomAvailableClient(500, 2025, 1).catch((e) => e);
+      expect(error).toBeInstanceOf(CustomError);
+      expect(error.statusCode).toBe(500);
+      expect(error.message).toBe('서버 에러가 발생했습니다.');
+    });
+
+    test('네트워크 에러 발생 시 500 CustomError를 던진다', async () => {
+      const error = await getRoomAvailableClient(501, 2025, 1).catch((e) => e);
+      expect(error).toBeInstanceOf(CustomError);
+      expect(error.statusCode).toBe(500);
+      expect(error.message).toBe(
+        '서비스에 일시적인 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+      );
     });
   });
 });
