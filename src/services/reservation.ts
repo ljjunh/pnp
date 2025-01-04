@@ -275,7 +275,7 @@ export async function confirmReservation(userId: string, orderNumber: string) {
  */
 export async function checkReservation(data: ReservationAvailableInput): Promise<string[]> {
   const start = new Date(data.year, data.month - 2, 1);
-  const end = new Date(data.year, data.month, 0);
+  const end = new Date(data.year, data.month + 1, 0);
 
   const reservations = await prisma.reservation.findMany({
     where: {
