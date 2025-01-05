@@ -45,6 +45,24 @@ export default function RoomBookingCalendar({
     return format(date, 'yyyy년 M월 d일', { locale: ko });
   };
 
+  // 시작일부터 종료일까지의 모든 날짜가 예약 가능한지 확인하는 함수
+  const isDateRangeAvailable = (start: Date, end: Date) => {
+    // 시작일과 종료일 사이의 총 일수를 계산
+    // ex) 1월1일 ~ 1월3일이면 dayCount는 3
+    const dayCount = differenceInDays(end, start) + 1;
+
+    // Array.from으로 dayCount길이의 빈 배열 생성
+    return Array.from({ length: dayCount }).every((_, index) => {
+      // start 날짜에 index를 더해가면서 각 날짜 생성
+      // ex) start가 1월1일이고 index가 0,1,2면 1월1일, 1월2일, 1월3일
+      const currentDate = addDays(start, index);
+      const dateString = format(currentDate, 'yyyy.MM.dd');
+
+      // availableDates 배열에 해당 날짜가 있는지 확인
+      return availableDates.includes(dateString);
+    });
+  };
+
   const handleDateSelect: SelectRangeEventHandler = (
     range: DateRange | undefined,
     selectedDay: Date,
@@ -52,21 +70,41 @@ export default function RoomBookingCalendar({
     if (!selectedDay) return;
 
     if (selectMode === 'checkIn') {
-      // 체크인 모드 : 체크인 날짜가 체크아웃 날짜보다 늦으면 체크아웃도 하루 뒤로 같이 조정
-      if (selectedDay > endDate) {
-        onDateChange(selectedDay, addDays(selectedDay, 1));
-        setSelectMode('checkOut');
-        return;
+      // 선택한 날짜가 현재 체크아웃 날짜보다 이후인지 확인
+      const isAfterCurrentEndDate = selectedDay > endDate;
+      // 선택한 날짜가 체크아웃 날짜보다 이후면 체크아웃 = 선택한 날짜 + 1일
+      // 그렇지 않으면 체크아웃 = 현재 체크아웃 날짜 유지
+      const newEndDate = isAfterCurrentEndDate ? addDays(selectedDay, 1) : endDate;
+
+      // 새로운 날짜 범위가 예약 가능한지 확인
+      const isRangeValid = isDateRangeAvailable(selectedDay, newEndDate);
+
+      if (isRangeValid) {
+        // 예약 가능하면 날짜 업데이트
+        onDateChange(selectedDay, newEndDate);
+        // 선택한 날짜가 현재 체크아웃보다 이후였으면 체크아웃 선택모드로 전환
+        if (isAfterCurrentEndDate) {
+          setSelectMode('checkOut');
+        }
       }
-      onDateChange(selectedDay, endDate);
     }
     if (selectMode === 'checkOut') {
-      // 체크아웃 모드 : 체크인 날짜보다 이전 날짜 선택 시 체크인 날짜 설정
-      if (selectedDay < startDate) {
-        onDateChange(selectedDay, addDays(selectedDay, 1));
-        return;
+      // 선택한 날짜가 현재 체크인 날짜보다 이전인지 확인
+      const isBeforeCurrentStartDate = selectedDay < startDate;
+      // 새로운 [체크인, 체크아웃] 날짜 배열
+      const [newStartDate, newEndDate] = isBeforeCurrentStartDate
+        ? // 선택한 날짜가 현재 체크인보다 이전이면: [선택한 날짜, 선택한 날짜 + 1일]
+          [selectedDay, addDays(selectedDay, 1)]
+        : // 그렇지 않으면 [현재 체크인 날짜, 선택한 날짜]
+          [startDate, selectedDay];
+
+      // 새로운 날짜 범위가 예약 가능한지 확인
+      const isRangeValid = isDateRangeAvailable(newStartDate, newEndDate);
+
+      if (isRangeValid) {
+        // 예약 가능하면 날짜 업데이트
+        onDateChange(newStartDate, newEndDate);
       }
-      onDateChange(startDate, selectedDay);
     }
   };
 
