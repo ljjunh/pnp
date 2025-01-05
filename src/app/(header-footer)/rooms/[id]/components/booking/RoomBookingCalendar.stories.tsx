@@ -32,7 +32,8 @@ export const Default: StoryFn = () => {
 
   return (
     <RoomBookingCalendar
-      availableDates={[
+      roomId={1}
+      initialDates={[
         '2024.11.01',
         '2024.11.02',
         '2024.11.03',

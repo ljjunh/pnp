@@ -88,7 +88,8 @@ export default function RoomBookingCard({ price, roomId, availableDates }: RoomB
 
       <div className="mb-4 grid grid-cols-2 rounded-lg border border-neutral-05">
         <RoomBookingCalendar
-          availableDates={availableDates}
+          roomId={roomId}
+          initialDates={availableDates}
           isOpen={dates.showCalendar}
           onToggle={handleCalendarToggle}
           startDate={dates.checkIn}
