@@ -274,7 +274,7 @@ export async function confirmReservation(userId: string, orderNumber: string) {
  * @param {ReservationAvailableInput} data 예약 가능 여부 확인 데이터
  */
 export async function checkReservation(data: ReservationAvailableInput): Promise<string[]> {
-  const start = new Date(data.year, data.month - 2, 1);
+  const start = new Date(data.year, data.month - 1, 1);
   const end = new Date(data.year, data.month + 1, 0);
 
   const reservations = await prisma.reservation.findMany({
@@ -304,33 +304,38 @@ export async function checkReservation(data: ReservationAvailableInput): Promise
     },
   });
 
-  const allDates: Date[] = [];
-  const currentDate = new Date(start);
-  while (currentDate <= end) {
-    allDates.push(new Date(currentDate));
-    currentDate.setDate(currentDate.getDate() + 1);
-  }
+  const dates = Array.from(
+    {
+      length:
+        new Date(data.year, data.month + 1, 0).getDate() +
+        new Date(data.year, data.month, 0).getDate(),
+    },
+    (_, i) => {
+      const firstMonthDays = new Date(data.year, data.month, 0).getDate();
+      if (i < firstMonthDays) {
+        return new Date(data.year, data.month - 1, i + 2).toISOString().split('T')[0];
+      } else {
+        return new Date(data.year, data.month, i - firstMonthDays + 2).toISOString().split('T')[0];
+      }
+    },
+  );
 
-  // Remove dates that fall between check-in and check-out dates
-  const availableDates = allDates.filter((date) => {
-    return !reservations.some((reservation) => {
-      const checkIn = new Date(reservation.checkIn);
-      const checkOut = new Date(reservation.checkOut);
+  const reservationDates = reservations.flatMap((reservation) => {
+    const checkIn = new Date(reservation.checkIn);
+    const checkOut = new Date(reservation.checkOut);
 
-      return date >= checkIn && date <= checkOut;
-    });
+    const dates = [];
+    const currentDate = new Date(checkIn);
+
+    while (currentDate < checkOut) {
+      dates.push(currentDate.toISOString().split('T')[0]);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dates;
   });
 
-  // Format dates to YYYY.MM.DD
-  const formattedDates = availableDates.map((date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-
-    return `${year}.${month}.${day}`;
-  });
-
-  return formattedDates;
+  return dates.filter((date) => !reservationDates.includes(date));
 }
 
 /**
