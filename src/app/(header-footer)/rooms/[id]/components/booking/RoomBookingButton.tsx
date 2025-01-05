@@ -22,8 +22,8 @@ interface RoomBookingButtonProps {
     pets: number;
   };
   dates: {
-    checkIn: Date;
-    checkOut: Date;
+    checkIn: Date | null;
+    checkOut: Date | null;
   };
 }
 

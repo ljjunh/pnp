@@ -4,7 +4,6 @@ import { useState } from 'react';
 import RoomBookingButton from '@/app/(header-footer)/rooms/[id]/components/booking/RoomBookingButton';
 import RoomBookingCalendar from '@/app/(header-footer)/rooms/[id]/components/booking/RoomBookingCalendar';
 import RoomBookingDropdown from '@/app/(header-footer)/rooms/[id]/components/booking/RoomBookingDropdown';
-import { addDays } from 'date-fns';
 import { Room } from '@/types/room';
 import { calculatePrice } from '@/utils/calculatePrice';
 
@@ -14,10 +13,16 @@ interface RoomBookingCardProps {
   availableDates: string[];
 }
 
+interface Dates {
+  checkIn: Date | null;
+  checkOut: Date | null;
+  showCalendar: boolean;
+}
+
 export default function RoomBookingCard({ price, roomId, availableDates }: RoomBookingCardProps) {
-  const [dates, setDates] = useState({
-    checkIn: addDays(new Date(), 1),
-    checkOut: addDays(new Date(), 2),
+  const [dates, setDates] = useState<Dates>({
+    checkIn: null,
+    checkOut: null,
     showCalendar: false,
   });
   const [guests, setGuests] = useState({
@@ -40,7 +45,7 @@ export default function RoomBookingCard({ price, roomId, availableDates }: RoomB
     }));
   };
 
-  const handleDateChange = (startDate: Date, endDate: Date) => {
+  const handleDateChange = (startDate: Date | null, endDate: Date | null) => {
     setDates((prev) => ({
       ...prev,
       checkIn: startDate,
@@ -70,9 +75,10 @@ export default function RoomBookingCard({ price, roomId, availableDates }: RoomB
     }));
   };
 
-  const nights = Math.ceil(
-    (dates.checkOut.getTime() - dates.checkIn.getTime()) / (1000 * 60 * 60 * 24),
-  );
+  const nights =
+    dates.checkIn instanceof Date && dates.checkOut instanceof Date
+      ? Math.ceil((dates.checkOut.getTime() - dates.checkIn.getTime()) / (1000 * 60 * 60 * 24))
+      : 0;
 
   const { subtotal, serviceFee, total } = calculatePrice({
     price,

@@ -9,7 +9,6 @@ interface UseRoomAvailableDatesProps {
 export function useRoomAvailableDates({ roomId, initialDates }: UseRoomAvailableDatesProps) {
   // 예약 가능한 날짜
   const [availableDates, setAvailableDates] = useState<string[]>(initialDates);
-  console.log('초기데이터', initialDates);
   const [isLoading, setIsLoading] = useState(false);
 
   // 캐시 저장소
@@ -44,15 +43,12 @@ export function useRoomAvailableDates({ roomId, initialDates }: UseRoomAvailable
 
     // 새로운 데이터 패치
     setIsLoading(true);
-    // try-catch가 필요하려나
     try {
       const newDates = await getRoomAvailableClient(roomId, year, month);
-      console.log('패칭됨!!!!');
-      console.log(newDates);
       cache.set(cacheKey, newDates);
       setAvailableDates(newDates);
-    } catch (error) {
-      console.error('새로운 날짜 패칭 실패', error);
+    } catch {
+      setAvailableDates([]); // 빈 배열로 설정하여 모든 날짜를 선택 불가능하게 함
     } finally {
       setIsLoading(false);
     }

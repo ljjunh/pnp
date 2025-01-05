@@ -13,8 +13,8 @@ interface RoomBookingCalendarProps {
   initialDates: string[];
   isOpen: boolean;
   onToggle: () => void;
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | null;
+  endDate: Date | null;
   onDateChange: (startDate: Date, endDate: Date) => void;
 }
 
@@ -35,8 +35,8 @@ export default function RoomBookingCalendar({
   });
 
   const dateRange: DateRange = {
-    from: startDate,
-    to: endDate,
+    from: startDate || undefined,
+    to: endDate || undefined,
   };
 
   const nightsCount = startDate && endDate ? differenceInDays(endDate, startDate) : 0;
@@ -56,7 +56,7 @@ export default function RoomBookingCalendar({
       // start 날짜에 index를 더해가면서 각 날짜 생성
       // ex) start가 1월1일이고 index가 0,1,2면 1월1일, 1월2일, 1월3일
       const currentDate = addDays(start, index);
-      const dateString = format(currentDate, 'yyyy.MM.dd');
+      const dateString = format(currentDate, 'yyyy-MM-dd');
 
       // availableDates 배열에 해당 날짜가 있는지 확인
       return availableDates.includes(dateString);
@@ -71,10 +71,15 @@ export default function RoomBookingCalendar({
 
     if (selectMode === 'checkIn') {
       // 선택한 날짜가 현재 체크아웃 날짜보다 이후인지 확인
-      const isAfterCurrentEndDate = selectedDay > endDate;
+      const isAfterCurrentEndDate = endDate ? selectedDay > endDate : true;
+
       // 선택한 날짜가 체크아웃 날짜보다 이후면 체크아웃 = 선택한 날짜 + 1일
       // 그렇지 않으면 체크아웃 = 현재 체크아웃 날짜 유지
-      const newEndDate = isAfterCurrentEndDate ? addDays(selectedDay, 1) : endDate;
+      const newEndDate = endDate
+        ? isAfterCurrentEndDate
+          ? addDays(selectedDay, 1)
+          : endDate
+        : addDays(selectedDay, 1);
 
       // 새로운 날짜 범위가 예약 가능한지 확인
       const isRangeValid = isDateRangeAvailable(selectedDay, newEndDate);
@@ -90,13 +95,11 @@ export default function RoomBookingCalendar({
     }
     if (selectMode === 'checkOut') {
       // 선택한 날짜가 현재 체크인 날짜보다 이전인지 확인
-      const isBeforeCurrentStartDate = selectedDay < startDate;
+      const isBeforeCurrentStartDate = startDate ? selectedDay < startDate : true;
       // 새로운 [체크인, 체크아웃] 날짜 배열
       const [newStartDate, newEndDate] = isBeforeCurrentStartDate
-        ? // 선택한 날짜가 현재 체크인보다 이전이면: [선택한 날짜, 선택한 날짜 + 1일]
-          [selectedDay, addDays(selectedDay, 1)]
-        : // 그렇지 않으면 [현재 체크인 날짜, 선택한 날짜]
-          [startDate, selectedDay];
+        ? [selectedDay, addDays(selectedDay, 1)]
+        : [startDate as Date, selectedDay]; // startDate가 반드시 있다는 걸 알 수 있는 상황
 
       // 새로운 날짜 범위가 예약 가능한지 확인
       const isRangeValid = isDateRangeAvailable(newStartDate, newEndDate);
@@ -107,10 +110,9 @@ export default function RoomBookingCalendar({
       }
     }
   };
-
   // 예약 불가능한 날짜를 판별하는 함수
   const isDateDisabled = (date: Date) => {
-    const dateString = format(date, 'yyyy.MM.dd');
+    const dateString = format(date, 'yyyy-MM-dd');
 
     return !availableDates.includes(dateString);
   };
@@ -124,11 +126,13 @@ export default function RoomBookingCalendar({
         >
           <div className="text-[10px]">체크인</div>
           <div className="text-sm">
-            {startDate.toLocaleDateString('ko-KR', {
-              year: 'numeric',
-              month: 'numeric',
-              day: 'numeric',
-            })}
+            {startDate
+              ? startDate.toLocaleDateString('ko-KR', {
+                  year: 'numeric',
+                  month: 'numeric',
+                  day: 'numeric',
+                })
+              : '날짜 선택'}
           </div>
         </button>
         <button
@@ -137,11 +141,13 @@ export default function RoomBookingCalendar({
         >
           <div className="text-[10px]">체크아웃</div>
           <div className="text-sm">
-            {endDate.toLocaleDateString('ko-KR', {
-              year: 'numeric',
-              month: 'numeric',
-              day: 'numeric',
-            })}
+            {endDate
+              ? endDate.toLocaleDateString('ko-KR', {
+                  year: 'numeric',
+                  month: 'numeric',
+                  day: 'numeric',
+                })
+              : '날짜 선택'}
           </div>
         </button>
       </div>
@@ -157,7 +163,9 @@ export default function RoomBookingCalendar({
               <div className="flex flex-col">
                 <span className="text-2xl">{nightsCount}박</span>
                 <span className="pt-2 text-sm text-neutral-07">
-                  {formatDate(startDate)} - {formatDate(endDate)}
+                  {startDate && endDate
+                    ? `${formatDate(startDate)}-${formatDate(endDate)}`
+                    : '날짜를 선택해주세요'}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -169,7 +177,7 @@ export default function RoomBookingCalendar({
                 >
                   <span className="text-[10px]">체크인</span>
                   <span className="text-sm">
-                    {format(startDate, 'yyyy. M. d.', { locale: ko })}
+                    {startDate ? format(startDate, 'yyyy. M. d.', { locale: ko }) : '날짜 선택'}
                   </span>
                 </button>
                 <button
@@ -179,7 +187,9 @@ export default function RoomBookingCalendar({
                   }`}
                 >
                   <span className="text-[10px]">체크아웃</span>
-                  <span className="text-sm">{format(endDate, 'yyyy. M. d.', { locale: ko })}</span>
+                  <span className="text-sm">
+                    {endDate ? format(endDate, 'yyyy. M. d.', { locale: ko }) : '날짜 선택'}
+                  </span>
                 </button>
               </div>
             </div>
@@ -191,7 +201,7 @@ export default function RoomBookingCalendar({
               )}
               <Calendar
                 mode="range"
-                defaultMonth={startDate}
+                defaultMonth={startDate || new Date()}
                 selected={dateRange}
                 onSelect={handleDateSelect}
                 onMonthChange={onMonthChange}
