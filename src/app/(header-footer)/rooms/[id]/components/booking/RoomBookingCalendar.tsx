@@ -1,14 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { addDays, differenceInDays, format } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import { Loader2 } from 'lucide-react';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import { Calendar } from '@/components/ui/calendar';
-import { getRoomAvailableClient } from '@/apis/rooms/queries';
+import { useRoomAvailableDates } from '@/hooks/useRoomAvailableDates';
 
 interface RoomBookingCalendarProps {
-  availableDates: string[];
+  roomId: number;
+  initialDates: string[];
   isOpen: boolean;
   onToggle: () => void;
   startDate: Date;
@@ -17,7 +19,8 @@ interface RoomBookingCalendarProps {
 }
 
 export default function RoomBookingCalendar({
-  availableDates,
+  roomId,
+  initialDates,
   isOpen,
   onToggle,
   startDate,
@@ -26,15 +29,10 @@ export default function RoomBookingCalendar({
 }: RoomBookingCalendarProps) {
   const [selectMode, setSelectMode] = useState<'checkIn' | 'checkOut'>('checkIn');
 
-  console.log(availableDates);
-
-  useEffect(() => {
-    const fetchTemp = async () => {
-      const result = await getRoomAvailableClient(9, 2024, 12);
-      console.log('결과임', result);
-    };
-    fetchTemp();
-  }, []);
+  const { availableDates, isLoading, onMonthChange } = useRoomAvailableDates({
+    roomId,
+    initialDates,
+  });
 
   const dateRange: DateRange = {
     from: startDate,
@@ -70,6 +68,13 @@ export default function RoomBookingCalendar({
       }
       onDateChange(startDate, selectedDay);
     }
+  };
+
+  // 예약 불가능한 날짜를 판별하는 함수
+  const isDateDisabled = (date: Date) => {
+    const dateString = format(date, 'yyyy.MM.dd');
+
+    return !availableDates.includes(dateString);
   };
 
   return (
@@ -140,16 +145,24 @@ export default function RoomBookingCalendar({
                 </button>
               </div>
             </div>
-            <Calendar
-              mode="range"
-              defaultMonth={startDate}
-              selected={dateRange}
-              onSelect={handleDateSelect}
-              numberOfMonths={2}
-              locale={ko}
-              disabled={{ before: new Date() }}
-              fromMonth={new Date()}
-            />
+            <div className="relative">
+              {isLoading && (
+                <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/50">
+                  <Loader2 className="h-6 w-6 animate-spin text-shade-02" />
+                </div>
+              )}
+              <Calendar
+                mode="range"
+                defaultMonth={startDate}
+                selected={dateRange}
+                onSelect={handleDateSelect}
+                onMonthChange={onMonthChange}
+                numberOfMonths={2}
+                locale={ko}
+                disabled={(date) => isDateDisabled(date) || date < new Date()}
+                fromMonth={new Date()}
+              />
+            </div>
             <div className="mt-4 flex justify-end">
               <button
                 type="button"
