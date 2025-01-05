@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { addDays, differenceInDays, format } from 'date-fns';
+import { useEffect } from 'react';
+import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { Loader2 } from 'lucide-react';
-import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
+import { DateRange } from 'react-day-picker';
 import { Calendar } from '@/components/ui/calendar';
+import { useDateSelection } from '@/hooks/useDateSelection';
 import { useRoomAvailableDates } from '@/hooks/useRoomAvailableDates';
+import { calculateNightCount, formatDate, isDateDisabled } from '@/utils/dateUtils';
 
 interface RoomBookingCalendarProps {
   roomId: number;
@@ -27,11 +29,16 @@ export default function RoomBookingCalendar({
   endDate,
   onDateChange,
 }: RoomBookingCalendarProps) {
-  const [selectMode, setSelectMode] = useState<'checkIn' | 'checkOut'>('checkIn');
-
   const { availableDates, isLoading, onMonthChange } = useRoomAvailableDates({
     roomId,
     initialDates,
+  });
+
+  const { selectMode, setSelectMode, handleDateSelect } = useDateSelection({
+    availableDates,
+    onDateChange,
+    startDate,
+    endDate,
   });
 
   const dateRange: DateRange = {
@@ -39,92 +46,39 @@ export default function RoomBookingCalendar({
     to: endDate || undefined,
   };
 
-  const nightsCount = startDate && endDate ? differenceInDays(endDate, startDate) : 0;
+  const nightsCount = calculateNightCount(startDate, endDate);
 
-  const formatDate = (date: Date) => {
-    return format(date, 'yyyy년 M월 d일', { locale: ko });
-  };
-
-  // 시작일부터 종료일까지의 모든 날짜가 예약 가능한지 확인하는 함수
-  const isDateRangeAvailable = (start: Date, end: Date) => {
-    // 시작일과 종료일 사이의 총 일수를 계산
-    // ex) 1월1일 ~ 1월3일이면 dayCount는 3
-    const dayCount = differenceInDays(end, start) + 1;
-
-    // Array.from으로 dayCount길이의 빈 배열 생성
-    return Array.from({ length: dayCount }).every((_, index) => {
-      // start 날짜에 index를 더해가면서 각 날짜 생성
-      // ex) start가 1월1일이고 index가 0,1,2면 1월1일, 1월2일, 1월3일
-      const currentDate = addDays(start, index);
-      const dateString = format(currentDate, 'yyyy-MM-dd');
-
-      // availableDates 배열에 해당 날짜가 있는지 확인
-      return availableDates.includes(dateString);
-    });
-  };
-
-  const handleDateSelect: SelectRangeEventHandler = (
-    range: DateRange | undefined,
-    selectedDay: Date,
-  ) => {
-    if (!selectedDay) return;
-
-    if (selectMode === 'checkIn') {
-      // 선택한 날짜가 현재 체크아웃 날짜보다 이후인지 확인
-      const isAfterCurrentEndDate = endDate ? selectedDay > endDate : true;
-
-      // 선택한 날짜가 체크아웃 날짜보다 이후면 체크아웃 = 선택한 날짜 + 1일
-      // 그렇지 않으면 체크아웃 = 현재 체크아웃 날짜 유지
-      const newEndDate = endDate
-        ? isAfterCurrentEndDate
-          ? addDays(selectedDay, 1)
-          : endDate
-        : addDays(selectedDay, 1);
-
-      // 새로운 날짜 범위가 예약 가능한지 확인
-      const isRangeValid = isDateRangeAvailable(selectedDay, newEndDate);
-
-      if (isRangeValid) {
-        // 예약 가능하면 날짜 업데이트
-        onDateChange(selectedDay, newEndDate);
-        // 선택한 날짜가 현재 체크아웃보다 이후였으면 체크아웃 선택모드로 전환
-        if (isAfterCurrentEndDate) {
-          setSelectMode('checkOut');
-        }
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        onToggle();
       }
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleEscKey);
+      return () => window.removeEventListener('keydown', handleEscKey);
     }
-    if (selectMode === 'checkOut') {
-      // 선택한 날짜가 현재 체크인 날짜보다 이전인지 확인
-      const isBeforeCurrentStartDate = startDate ? selectedDay < startDate : true;
-      // 새로운 [체크인, 체크아웃] 날짜 배열
-      const [newStartDate, newEndDate] = isBeforeCurrentStartDate
-        ? [selectedDay, addDays(selectedDay, 1)]
-        : [startDate as Date, selectedDay]; // startDate가 반드시 있다는 걸 알 수 있는 상황
-
-      // 새로운 날짜 범위가 예약 가능한지 확인
-      const isRangeValid = isDateRangeAvailable(newStartDate, newEndDate);
-
-      if (isRangeValid) {
-        // 예약 가능하면 날짜 업데이트
-        onDateChange(newStartDate, newEndDate);
-      }
-    }
-  };
-  // 예약 불가능한 날짜를 판별하는 함수
-  const isDateDisabled = (date: Date) => {
-    const dateString = format(date, 'yyyy-MM-dd');
-
-    return !availableDates.includes(dateString);
-  };
+  }, [isOpen, onToggle]);
 
   return (
     <div className="col-span-2">
-      <div className="grid grid-cols-2">
+      <div
+        className="grid grid-cols-2"
+        role="group"
+        aria-label="날짜 선택"
+      >
         <button
           onClick={onToggle}
           className="border-b border-r border-neutral-05 px-3 py-2.5 text-left"
+          aria-expanded={isOpen}
+          aria-label={startDate ? `체크인 날짜: ${formatDate(startDate)}` : '체크인 날짜 선택'}
         >
-          <div className="text-[10px]">체크인</div>
+          <div
+            className="text-[10px]"
+            aria-hidden="true"
+          >
+            체크인
+          </div>
           <div className="text-sm">
             {startDate
               ? startDate.toLocaleDateString('ko-KR', {
@@ -138,8 +92,15 @@ export default function RoomBookingCalendar({
         <button
           onClick={onToggle}
           className="relative border-b border-neutral-05 px-3 py-2.5 text-left"
+          aria-expanded={isOpen}
+          aria-label={endDate ? `체크아웃 날짜: ${formatDate(endDate)}` : '체크아웃 날짜 선택'}
         >
-          <div className="text-[10px]">체크아웃</div>
+          <div
+            className="text-[10px]"
+            aria-hidden="true"
+          >
+            체크아웃
+          </div>
           <div className="text-sm">
             {endDate
               ? endDate.toLocaleDateString('ko-KR', {
@@ -157,25 +118,49 @@ export default function RoomBookingCalendar({
           <div
             className="fixed inset-0"
             onClick={onToggle}
+            role="presentation"
           />
-          <div className="absolute right-0 top-10 z-10 mt-2 rounded-lg border bg-white px-8 pb-4 pt-6 shadow-lg">
+          <div
+            className="absolute right-0 top-10 z-10 mt-2 rounded-lg border bg-white px-8 pb-4 pt-6 shadow-lg"
+            role="dialog"
+            aria-label="날짜 선택 달력"
+          >
             <div className="flex justify-between pb-4">
               <div className="flex flex-col">
-                <span className="text-2xl">{nightsCount}박</span>
-                <span className="pt-2 text-sm text-neutral-07">
+                <span
+                  className="text-2xl"
+                  role="status"
+                >
+                  {nightsCount}박
+                </span>
+                <span
+                  className="pt-2 text-sm text-neutral-07"
+                  aria-live="polite"
+                >
                   {startDate && endDate
                     ? `${formatDate(startDate)}-${formatDate(endDate)}`
                     : '날짜를 선택해주세요'}
                 </span>
               </div>
-              <div className="flex justify-between">
+              <div
+                className="flex justify-between"
+                role="radiogroup"
+                aria-label="날짜 선택 모드"
+              >
                 <button
                   onClick={() => setSelectMode('checkIn')}
                   className={`flex flex-col justify-center rounded-l-lg border border-neutral-05 py-2 pl-2.5 pr-10 text-left ${
                     selectMode === 'checkIn' ? 'border-2 border-shade-02' : ''
                   }`}
+                  role="radio"
+                  aria-checked={selectMode === 'checkIn'}
                 >
-                  <span className="text-[10px]">체크인</span>
+                  <span
+                    className="text-[10px]"
+                    aria-hidden="true"
+                  >
+                    체크인
+                  </span>
                   <span className="text-sm">
                     {startDate ? format(startDate, 'yyyy. M. d.', { locale: ko }) : '날짜 선택'}
                   </span>
@@ -185,17 +170,30 @@ export default function RoomBookingCalendar({
                   className={`flex flex-col justify-center rounded-r-lg border border-l-0 border-neutral-05 py-2 pl-2.5 pr-10 text-left ${
                     selectMode === 'checkOut' ? 'border-2 border-l-2 border-shade-02' : ''
                   }`}
+                  role="radio"
+                  aria-checked={selectMode === 'checkOut'}
                 >
-                  <span className="text-[10px]">체크아웃</span>
+                  <span
+                    className="text-[10px]"
+                    aria-hidden="true"
+                  >
+                    체크아웃
+                  </span>
                   <span className="text-sm">
                     {endDate ? format(endDate, 'yyyy. M. d.', { locale: ko }) : '날짜 선택'}
                   </span>
                 </button>
               </div>
             </div>
-            <div className="relative">
+            <div
+              className="relative"
+              aria-busy={isLoading}
+            >
               {isLoading && (
-                <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/50">
+                <div
+                  className="absolute inset-0 z-50 flex items-center justify-center bg-white/50"
+                  role="progressbar"
+                >
                   <Loader2 className="h-6 w-6 animate-spin text-shade-02" />
                 </div>
               )}
@@ -207,7 +205,7 @@ export default function RoomBookingCalendar({
                 onMonthChange={onMonthChange}
                 numberOfMonths={2}
                 locale={ko}
-                disabled={(date) => isDateDisabled(date) || date < new Date()}
+                disabled={(date) => isDateDisabled(date, availableDates)}
                 fromMonth={new Date()}
               />
             </div>
@@ -216,6 +214,7 @@ export default function RoomBookingCalendar({
                 type="button"
                 onClick={onToggle}
                 className="rounded-lg bg-shade-02 px-4 py-2 text-sm text-white hover:bg-black"
+                aria-label="달력 닫기"
               >
                 닫기
               </button>
