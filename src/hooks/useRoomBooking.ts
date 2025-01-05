@@ -14,8 +14,8 @@ interface UseRoomBookingProps {
     pets: number;
   };
   dates: {
-    checkIn: Date;
-    checkOut: Date;
+    checkIn: Date | null;
+    checkOut: Date | null;
   };
 }
 
@@ -25,6 +25,13 @@ export function useRoomBooking({ roomId, guestCounts, dates }: UseRoomBookingPro
   const [showLoginDialog, setShowLoginDialog] = useState(false);
 
   const handleReservation = async () => {
+    if (!dates.checkIn || !dates.checkOut) {
+      toast({
+        title: '날짜를 선택해주세요',
+        variant: 'destructive',
+      });
+      return;
+    }
     const guestNumber = Object.values(guestCounts).reduce((sum, count) => sum + count, 0);
 
     const reservationData: CreateReservationInput = {
