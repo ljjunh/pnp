@@ -84,11 +84,7 @@ export default function FilterModal() {
       }
 
       if (!response.data) {
-        toast({
-          title: '숙소 조회 실패',
-          description: '조건에 맞는 숙소가 존재하지 않습니다.',
-          variant: 'destructive',
-        });
+        setFilterCount(0);
 
         return;
       }

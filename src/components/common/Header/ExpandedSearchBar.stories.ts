@@ -12,7 +12,6 @@ const meta = {
   // 기본 props 값 설정
   args: {
     activeSection: null,
-    onSectionChange: (section) => console.log('Section changed:', section),
   },
   // Controls 탭에서 조작할 수 있도록 설정
   argTypes: {
@@ -20,10 +19,6 @@ const meta = {
       control: 'select',
       options: [null, 'location', 'checkIn', 'checkOut', 'guests'],
       description: '현재 활성화된 섹션',
-    },
-    onSectionChange: {
-      action: 'section changed',
-      description: '섹션 선택 시 호출되는 함수',
     },
   },
 } satisfies Meta<typeof ExpandedSearchBar>;
