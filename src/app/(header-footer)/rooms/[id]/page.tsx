@@ -32,6 +32,7 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
             reviewsCount={room.reviewsCount}
             reviewsAverage={room.reviewsAverage}
             amenities={room.amenities}
+            roomId={room.id}
           />
         </div>
         <div className="relative col-span-2">
