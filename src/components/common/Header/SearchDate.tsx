@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
-import { addDays } from 'date-fns';
+import { SearchType } from '@/schemas/rooms';
+import { addDays, format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import { Calendar } from '@/components/ui/calendar';
@@ -10,15 +11,27 @@ import { Section } from './ExpandedSearchBar';
 interface SearchDateProps {
   section: string | null;
   setSection: (section: Section | null) => void;
+  checkIn: string | undefined;
+  checkOut: string | undefined;
+  handleSearchFilter: (newState: string, type: keyof SearchType) => void;
 }
 
-export default function SearchDate({ section, setSection }: SearchDateProps) {
+export default function SearchDate({
+  section,
+  setSection,
+  checkIn,
+  checkOut,
+  handleSearchFilter,
+}: SearchDateProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectMode, setSelectMode] = useState<'checkIn' | 'checkOut'>('checkIn');
   const [plusDays, setPlusDays] = useState<string>('정확한 날짜');
-  const [dates, setDates] = useState<{ checkIn: Date | null; checkOut: Date | null }>({
-    checkIn: null,
-    checkOut: null,
+  const [dates, setDates] = useState<{
+    checkIn: Date | null;
+    checkOut: Date | null;
+  }>({
+    checkIn: checkIn ? new Date(checkIn) : null,
+    checkOut: checkOut ? new Date(checkOut) : null,
   });
 
   // Location에서 checkIn으로 진입할 때 처리
@@ -44,11 +57,18 @@ export default function SearchDate({ section, setSection }: SearchDateProps) {
   };
 
   const handleDateChange = (startDate: Date | null, endDate: Date | null) => {
-    setDates((prev) => ({
-      ...prev,
+    setDates({
       checkIn: startDate,
       checkOut: endDate,
-    }));
+    });
+
+    if (startDate) {
+      handleSearchFilter(format(startDate, 'yyyy-MM-dd'), 'checkIn');
+    }
+
+    if (endDate) {
+      handleSearchFilter(format(endDate, 'yyyy-MM-dd'), 'checkOut');
+    }
   };
 
   const handleDateSelect: SelectRangeEventHandler = (
@@ -87,6 +107,11 @@ export default function SearchDate({ section, setSection }: SearchDateProps) {
     }
   };
 
+  const formatDate = (date: Date | null) => {
+    if (!date) return '날짜 추가';
+    return format(date, 'yyyy-MM-dd');
+  };
+
   return (
     <Popover open={isOpen && (section === 'checkIn' || section === 'checkOut')}>
       <PopoverTrigger asChild>
@@ -102,7 +127,7 @@ export default function SearchDate({ section, setSection }: SearchDateProps) {
           >
             <div className="text-sm">체크인</div>
             <div className="text-md flex space-x-1 text-neutral-07">
-              <p>{dates.checkIn ? dates.checkIn.toLocaleDateString() : '날짜 추가'}</p>
+              <p>{formatDate(dates.checkIn)}</p>
               <p>{plusDays !== '정확한 날짜' && plusDays}</p>
             </div>
           </div>
@@ -120,7 +145,7 @@ export default function SearchDate({ section, setSection }: SearchDateProps) {
           >
             <div className="text-sm">체크아웃</div>
             <div className="text-md flex space-x-1 text-neutral-07">
-              <p>{dates.checkOut ? dates.checkOut.toLocaleDateString() : '날짜 추가'}</p>
+              <p>{formatDate(dates.checkOut)}</p>
               <p>{plusDays !== '정확한 날짜' && plusDays}</p>
             </div>
           </div>

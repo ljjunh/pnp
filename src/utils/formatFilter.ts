@@ -17,6 +17,12 @@ export const formatFilter = (filter: FilterType) => {
     option,
     language,
     property,
+    location,
+    checkIn,
+    checkOut,
+    guest,
+    baby,
+    pet,
   } = filter;
 
   const params = new URLSearchParams();
@@ -59,6 +65,22 @@ export const formatFilter = (filter: FilterType) => {
 
   if (property) {
     params.append('property', property.toString());
+  }
+
+  if (location) {
+    params.append('location', location.toString());
+  }
+
+  if (checkIn) {
+    params.append('checkIn', checkIn);
+  }
+
+  if (checkOut) {
+    params.append('checkOut', checkOut);
+  }
+
+  if (guest || baby || pet) {
+    params.append('capacity', ((guest || 0) + (baby || 0) + (pet || 0)).toString());
   }
 
   return params;

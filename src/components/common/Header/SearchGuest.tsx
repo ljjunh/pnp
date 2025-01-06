@@ -1,5 +1,8 @@
 import { useReducer } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { SearchType } from '@/schemas/rooms';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { CiCircleMinus, CiCirclePlus } from 'react-icons/ci';
 import SearchButton from '../Button/SearchButton';
@@ -34,9 +37,18 @@ const GUEST_TYPES = [
 interface SearchGuestProps {
   section: string | null;
   setSection: (section: Section | null) => void;
+  filter: SearchType;
+  handleSearchFilter: (newState: string, type: keyof SearchType) => void;
 }
 
-export default function SearchGuest({ section, setSection }: SearchGuestProps) {
+export default function SearchGuest({
+  section,
+  setSection,
+  filter,
+  handleSearchFilter,
+}: SearchGuestProps) {
+  const searchParams = useSearchParams();
+
   const guestReducer = (state: State, action: Action) => {
     switch (action.type) {
       case 'ADULT':
@@ -60,6 +72,8 @@ export default function SearchGuest({ section, setSection }: SearchGuestProps) {
   });
 
   const handleGuestChange = (type: keyof State, isIncrement: boolean) => {
+    handleSearchFilter((state.adult + state.child + state.baby + state.pet).toString(), 'capacity');
+
     const nowValue = state[type];
     const MAX_VALUE = type === 'adult' || type === 'child' ? GUEST_MAX : BABY_PET_MAX;
     const MIN_VALUE = type === 'adult' || type === 'child' ? GUEST_MIN : BABY_PET_MIN;
@@ -86,10 +100,40 @@ export default function SearchGuest({ section, setSection }: SearchGuestProps) {
     dispatch({ type: type.toUpperCase() as Action['type'], payload: changeValue() });
   };
 
+  const handleSearchClick = () => {
+    const newParams = new URLSearchParams(searchParams);
+
+    if (filter.location) {
+      newParams.set('location', filter.location);
+    }
+
+    if (filter.checkIn) {
+      newParams.set('checkIn', filter.checkIn);
+    }
+
+    if (filter.checkOut) {
+      newParams.set('checkOut', filter.checkOut);
+    }
+
+    if (state.adult || state.child) {
+      newParams.set('guest', `${state.adult + state.child}`);
+    }
+
+    if (state.baby) {
+      newParams.set('baby', state.baby.toString());
+    }
+
+    if (state.pet) {
+      newParams.set('pet', state.pet.toString());
+    }
+
+    return `/search${newParams.toString() ? `?${newParams.toString()}` : ''}`;
+  };
+
   return (
     <Popover open={section === 'guests'}>
       <PopoverTrigger
-        onClick={() => setSection('guests')}
+        onClick={() => setSection(section === 'guests' ? null : 'guests')}
         className={cn(
           'flex flex-1 items-center justify-between rounded-full transition-all duration-300',
           section === 'guests' ? 'bg-shade-01 hover:bg-shade-01' : '',
@@ -110,9 +154,12 @@ export default function SearchGuest({ section, setSection }: SearchGuestProps) {
               : '게스트 추가'}
           </span>
         </div>
-        <div className="pr-2">
+        <Link
+          className="pr-2"
+          href={handleSearchClick()}
+        >
           <SearchButton variant={section ? 'expanded' : 'filtered'} />
-        </div>
+        </Link>
       </PopoverTrigger>
       <PopoverContent
         align="end"

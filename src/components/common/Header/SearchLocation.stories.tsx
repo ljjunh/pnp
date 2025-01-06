@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react';
-import SearchDate from '@/components/common/Header/SearchDate';
+import SearchLocation from '@/components/common/Header/SearchLocation';
 
 const meta = {
-  title: 'Common/Header/SearchDate',
-  component: SearchDate,
+  title: 'Common/Header/SearchLocation',
+  component: SearchLocation,
   parameters: {
     layout: 'centered',
   },
@@ -18,22 +18,21 @@ const meta = {
     section: {
       control: {
         type: 'select',
-        options: ['checkIn', 'checkOut'],
+        options: ['location'],
       },
     },
   },
-} satisfies Meta<typeof SearchDate>;
+} satisfies Meta<typeof SearchLocation>;
 
 export default meta;
 
-type Story = StoryObj<typeof SearchDate>;
+type Story = StoryObj<typeof SearchLocation>;
 
 export const Default: Story = {
   args: {
     section: null,
     setSection: () => {},
-    checkIn: undefined,
-    checkOut: undefined,
+    location: undefined,
     handleSearchFilter: () => {},
   },
 };

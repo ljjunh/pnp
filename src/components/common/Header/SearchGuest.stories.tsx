@@ -1,15 +1,15 @@
 import { Meta, StoryObj } from '@storybook/react';
-import SearchDate from '@/components/common/Header/SearchDate';
+import SearchGuest from '@/components/common/Header/SearchGuest';
 
 const meta = {
-  title: 'Common/Header/SearchDate',
-  component: SearchDate,
+  title: 'Common/Header/SearchGuest',
+  component: SearchGuest,
   parameters: {
     layout: 'centered',
   },
   decorators: [
     (Story) => (
-      <div style={{ width: '300px' }}>
+      <div style={{ width: '400px' }}>
         <Story />
       </div>
     ),
@@ -18,22 +18,21 @@ const meta = {
     section: {
       control: {
         type: 'select',
-        options: ['checkIn', 'checkOut'],
+        options: ['guest'],
       },
     },
   },
-} satisfies Meta<typeof SearchDate>;
+} satisfies Meta<typeof SearchGuest>;
 
 export default meta;
 
-type Story = StoryObj<typeof SearchDate>;
+type Story = StoryObj<typeof SearchGuest>;
 
 export const Default: Story = {
   args: {
     section: null,
     setSection: () => {},
-    checkIn: undefined,
-    checkOut: undefined,
+    filter: {},
     handleSearchFilter: () => {},
   },
 };
