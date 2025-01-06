@@ -37,7 +37,7 @@ export function useRoomAvailableDates({ roomId, initialDates }: UseRoomAvailable
     // 이미 캐시된 데이터가 있는지 확인
     const cacheKey = `${year}-${month}`;
     if (cache.has(cacheKey)) {
-      setAvailableDates(cache.get(cacheKey) || []);
+      setAvailableDates(cache.get(cacheKey) as string[]);
       return;
     }
 
