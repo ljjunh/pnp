@@ -1,7 +1,7 @@
 import { useEmailLoginForm } from '@/hooks/useEmailLoginForm';
 
 // handleEmailLogin 모킹
-jest.mock('@/app/(header-footer)/signin/action', () => ({
+jest.mock('@/apis/signin/action', () => ({
   handleEmailLogin: jest.fn()
 }));
 

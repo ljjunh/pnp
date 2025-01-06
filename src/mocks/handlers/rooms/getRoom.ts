@@ -1,11 +1,11 @@
 import mockRoom from '@/mocks/fixtures/room.json';
 import { HttpResponse, http } from 'msw';
 
-export const getRoomHandler = http.get('/api/rooms/:id', ({ params }) => {
-  const { id } = params;
+export const getRoomHandler = http.get('/api/rooms/:roomId', ({ params }) => {
+  const roomId = Number(params.roomId);
 
   // notFound 에러 케이스
-  if (id === '404') {
+  if (roomId === 404) {
     return HttpResponse.json({
       success: false,
       status: 404,
@@ -14,16 +14,16 @@ export const getRoomHandler = http.get('/api/rooms/:id', ({ params }) => {
   }
 
   // 서버 에러 케이스
-  if (id === '500') {
+  if (roomId === 500) {
     return HttpResponse.json({
       success: false,
       status: 500,
-      message: '서버 에러가 발생했습니다',
+      message: '서버 에러가 발생했습니다.',
     });
   }
 
   // 네트워크 에러 케이스
-  if (id === '501') {
+  if (roomId === 501) {
     return new Response(null, { status: 500 });
   }
 

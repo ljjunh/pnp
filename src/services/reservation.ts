@@ -273,23 +273,69 @@ export async function confirmReservation(userId: string, orderNumber: string) {
  *
  * @param {ReservationAvailableInput} data 예약 가능 여부 확인 데이터
  */
-export async function checkReservation(data: ReservationAvailableInput): Promise<boolean> {
-  const reservation = await prisma.reservation.findFirst({
+export async function checkReservation(data: ReservationAvailableInput): Promise<string[]> {
+  const start = new Date(data.year, data.month - 1, 1);
+  const end = new Date(data.year, data.month + 1, 0);
+
+  const reservations = await prisma.reservation.findMany({
     where: {
       roomId: data.roomId,
       status: {
         in: ['PAYMENT', 'CONFIRMED', 'PENDING'],
       },
-      checkIn: {
-        lte: data.checkIn,
-      },
-      checkOut: {
-        gte: data.checkOut,
-      },
+      OR: [
+        {
+          checkIn: {
+            gte: start,
+            lte: end,
+          },
+        },
+        {
+          checkOut: {
+            gte: start,
+            lte: end,
+          },
+        },
+      ],
+    },
+    select: {
+      checkIn: true,
+      checkOut: true,
     },
   });
 
-  return !reservation;
+  const dates = Array.from(
+    {
+      length:
+        new Date(data.year, data.month + 1, 0).getDate() +
+        new Date(data.year, data.month, 0).getDate(),
+    },
+    (_, i) => {
+      const firstMonthDays = new Date(data.year, data.month, 0).getDate();
+      if (i < firstMonthDays) {
+        return new Date(data.year, data.month - 1, i + 2).toISOString().split('T')[0];
+      } else {
+        return new Date(data.year, data.month, i - firstMonthDays + 2).toISOString().split('T')[0];
+      }
+    },
+  );
+
+  const reservationDates = reservations.flatMap((reservation) => {
+    const checkIn = new Date(reservation.checkIn);
+    const checkOut = new Date(reservation.checkOut);
+
+    const dates = [];
+    const currentDate = new Date(checkIn);
+
+    while (currentDate < checkOut) {
+      dates.push(currentDate.toISOString().split('T')[0]);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dates;
+  });
+
+  return dates.filter((date) => !reservationDates.includes(date));
 }
 
 /**

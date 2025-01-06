@@ -28,6 +28,7 @@ describe('Review Action Test', () => {
       location: 5,
       value: 5,
       content: '테스트입니다.',
+      orderNumber: '1111-1111-1111',
     };
 
     test('성공적으로 리뷰를 생성한다', async () => {
@@ -37,8 +38,9 @@ describe('Review Action Test', () => {
 
       expect(result.success).toBe(true);
       expect(result.status).toBe(201);
+      expect(revalidateTag).toHaveBeenCalledTimes(2);
       expect(revalidateTag).toHaveBeenCalledWith(CACHE_TAGS.REVIEWS.DETAIL(201));
-      expect(revalidateTag).toHaveBeenCalledTimes(1);
+      expect(revalidateTag).toHaveBeenCalledWith(CACHE_TAGS.REVIEWS.AVAILABLE(201));
     });
 
     test('로그인 하지 않은 경우 401 응답 객체를 반환한다', async () => {
@@ -160,8 +162,9 @@ describe('Review Action Test', () => {
 
       expect(result.success).toBe(true);
       expect(result.status).toBe(204);
+      expect(revalidateTag).toHaveBeenCalledTimes(2);
       expect(revalidateTag).toHaveBeenCalledWith(CACHE_TAGS.REVIEWS.DETAIL(roomId));
-      expect(revalidateTag).toHaveBeenCalledTimes(1);
+      expect(revalidateTag).toHaveBeenCalledWith(CACHE_TAGS.REVIEWS.AVAILABLE(roomId));
     });
 
     test('로그인 하지 않은 경우 401 응답 객체를 반환한다', async () => {

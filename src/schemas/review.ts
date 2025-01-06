@@ -1,5 +1,6 @@
 import { schemaType } from '@/schemas';
 import { z } from 'zod';
+import { orderNumber } from './type';
 
 const contentType = z
   .string({
@@ -25,6 +26,7 @@ export type UpdateReviewInput = z.infer<typeof updateReviewSchema>;
 export const createReviewSchema = z.object({
   accuracy: schemaType.rating,
   checkIn: schemaType.rating,
+  orderNumber: orderNumber,
   cleanliness: schemaType.rating,
   communication: schemaType.rating,
   location: schemaType.rating,
