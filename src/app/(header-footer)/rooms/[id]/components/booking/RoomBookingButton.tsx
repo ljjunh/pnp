@@ -38,6 +38,7 @@ export default function RoomBookingButton({ roomId, guestCounts, dates }: RoomBo
           variant="primary"
           size="full"
           onClick={handleReservation}
+          isDisabled={!roomId || !dates.checkIn || !dates.checkOut}
         >
           예약하기
         </Button>
