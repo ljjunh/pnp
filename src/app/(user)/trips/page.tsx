@@ -30,6 +30,7 @@ export default async function Trips() {
                   hostName={reservation.room.host.user.name}
                   checkIn={formatDate(reservation.checkIn)}
                   checkOut={formatDate(reservation.checkOut)}
+                  orderNumber={reservation.orderNumber}
                 />
               ))}
             </div>
@@ -53,6 +54,7 @@ export default async function Trips() {
                   hostName={reservation.room.host.user.name}
                   checkIn={formatDate(reservation.checkIn)}
                   checkOut={formatDate(reservation.checkOut)}
+                  orderNumber={reservation.orderNumber}
                 />
               ))}
             </div>
