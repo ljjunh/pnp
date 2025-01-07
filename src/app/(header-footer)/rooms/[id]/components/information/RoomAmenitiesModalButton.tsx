@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { Room } from '@/types/room';
 import Button from '@/components/common/Button/Button';
 import ModalProvider from '@/components/common/ModalProvider/ModalProvider';
@@ -36,7 +37,25 @@ export default function RoomAmenitiesModalButton({ amenities }: RoomAmenitiesMod
           <h2 className="mb-8 text-2xl">숙소 편의시설</h2>
           <div className="flex flex-col">
             {amenities.map((amenity) => (
-              <span key={amenity.id}>{amenity.title}</span>
+              <div
+                key={amenity.id}
+                className="flex gap-3 border-b py-4"
+              >
+                <Image
+                  src={`/icons/${amenity.icon}.svg`}
+                  alt={amenity.title}
+                  width={25}
+                  height={25}
+                  onError={(e) => {
+                    e.currentTarget.src = '/icons/SYSTEM_SHAMPOO.svg';
+                  }}
+                />
+                <span
+                  className={`text-lg ${amenity.category === '숙소에 없는 시설' ? 'line-through' : ''}`}
+                >
+                  {amenity.title}
+                </span>
+              </div>
             ))}
           </div>
         </div>
