@@ -34,9 +34,7 @@ export async function getFilterPrice({
     if (!response.success) {
       return {
         success: false,
-        message:
-          response.message ||
-          '네트워크 문제로 가격 조회에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.',
+        message: response.message || '서버 에러가 발생하였습니다. 잠시후 다시 시도해주세요.',
         status: response.status,
       };
     }
@@ -73,9 +71,7 @@ export async function getFilterCount(filter: FilterType) {
     if (!response.success) {
       return {
         success: false,
-        message:
-          response.message ||
-          '네트워크 문제로 숙소 갯수 조회에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.',
+        message: response.message || '서버 에러가 발생하였습니다. 잠시후 다시 시도해주세요.',
         status: response.status,
       };
     }

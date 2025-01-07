@@ -23,14 +23,8 @@ export async function getFilterRoom(
 
     const response = await httpClient.get<FilterRoomResponse>(url);
 
-    if (!response.success) {
-      switch (response.status) {
-        case 500: {
-          throw new CustomError('서버 에러 입니다. 잠시 후 다시 시도해주세요.', 500);
-        }
-        default:
-          throw new CustomError(response.message, response.status);
-      }
+    if (!response.success && response.status) {
+      throw new CustomError(response.message, response.status);
     }
 
     return response.data;
@@ -39,6 +33,6 @@ export async function getFilterRoom(
       throw error;
     }
 
-    throw new CustomError('서버 에러 입니다. 잠시 후 다시 시도해주세요.', 500);
+    throw new CustomError('네트워크 에러 입니다. 잠시 후 다시 시도해주세요.', 500);
   }
 }

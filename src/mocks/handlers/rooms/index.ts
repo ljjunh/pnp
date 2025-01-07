@@ -5,7 +5,7 @@ import { getFilterRoomCountHandler } from '@/mocks/handlers/rooms/getFilterRoomC
 import { getRoomHandler } from '@/mocks/handlers/rooms/getRoom';
 import { getRoomAvailableHandler } from '@/mocks/handlers/rooms/getRoomAvailable';
 import { getScrapHandler } from '@/mocks/handlers/rooms/getScrap';
-import { getFilterRoomPriceHandler } from './getFilterRoomPriceHandler';
+import { getFilterRoomPriceHandler } from './getFilterRoomPrice';
 
 export const roomHandlers = [
   getFilterRoomPriceHandler,

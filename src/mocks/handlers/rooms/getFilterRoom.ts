@@ -14,6 +14,11 @@ export const getFilterRoomHandler = http.get('/api/rooms', ({ request }) => {
     });
   }
 
+  // 네트워크 에러 케이스
+  if (property === '501') {
+    return new Response(null, { status: 500 });
+  }
+
   return HttpResponse.json({
     success: true,
     status: 200,

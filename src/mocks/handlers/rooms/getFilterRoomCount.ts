@@ -14,6 +14,20 @@ export const getFilterRoomCountHandler = http.get('/api/rooms/count', ({ request
     });
   }
 
+  // 네트워크 에러 케이스
+  if (property === '501') {
+    return new Response(null, { status: 500 });
+  }
+
+  // 에러 메시지가 없는 경우
+  if (property === '502') {
+    return HttpResponse.json({
+      success: false,
+      status: 500,
+      message: '',
+    });
+  }
+
   return HttpResponse.json({
     success: true,
     status: 200,
