@@ -6,7 +6,7 @@ interface ErrorProps {
 }
 
 // TODO: 나중에 디자인 하기
-export default function Error({ error, reset }: ErrorProps) {
+export default function ErrorPage({ error, reset }: ErrorProps) {
   return (
     <div>
       <span>{error.message}</span>

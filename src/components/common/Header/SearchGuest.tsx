@@ -184,6 +184,7 @@ export default function SearchGuest({
                   className="cursor-pointer"
                   onClick={() => handleGuestChange(guest.key, false)}
                   role={`${guest.key}-minus-button`}
+                  aria-label={`${guest.label} 수 감소`}
                 />
                 <p className="px-4">{state[guest.key]}</p>
                 <CiCirclePlus
@@ -200,6 +201,7 @@ export default function SearchGuest({
                   className="cursor-pointer"
                   onClick={() => handleGuestChange(guest.key, true)}
                   role={`${guest.key}-plus-button`}
+                  aria-label={`${guest.label} 수 증가`}
                 />
               </div>
             </div>
