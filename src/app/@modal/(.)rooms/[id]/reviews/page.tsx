@@ -7,7 +7,7 @@ import { GoComment } from 'react-icons/go';
 import { PiCheckCircle, PiKey, PiMapTrifold, PiSprayBottle, PiTag } from 'react-icons/pi';
 
 export default async function ReviewModal({ params }: { params: { id: string } }) {
-  const review = await getReviews(Number(params.id), 1, 10, {
+  const review = await getReviews(Number(params.id), 1, 10, 'recent', {
     next: { tags: [CACHE_TAGS.REVIEWS.DETAIL(Number(params.id))] },
   });
   const isAvailable = await getReviewAvailable(Number(params.id));
