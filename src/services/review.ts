@@ -22,12 +22,16 @@ export async function getReviews(
   sort: string,
 ): Promise<[ReviewSummarize, number]> {
   const orderBy = reviewSort(sort);
-
   const [reviews, aggregate] = await Promise.all([
     prisma.review.findMany({
       where: { roomId },
       ...{ skip, take },
-      orderBy,
+      orderBy: [
+        { ...orderBy },
+        {
+          id: 'desc',
+        },
+      ],
       select: {
         id: true,
         accuracy: true,
