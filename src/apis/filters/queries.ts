@@ -1,3 +1,4 @@
+import { CustomError } from '@/errors';
 import { FilterType } from '@/schemas/rooms';
 import { FilterRoomResponse } from '@/types/room';
 import { formatFilter } from '@/utils/formatFilter';
@@ -15,15 +16,23 @@ export async function getFilterRoom(
   page?: number,
   limit?: number,
 ): Promise<FilterRoomResponse> {
-  const params = formatFilter(filter);
+  try {
+    const params = formatFilter(filter);
 
-  const url = `/rooms${params.toString() ? `?${params.toString()}` : ''}${page ? `${params.toString() ? '&' : '?'}page=${page}` : ''}${limit ? `${page ? '&' : '?'}limit=${limit}` : ''}`;
+    const url = `/rooms${params.toString() ? `?${params.toString()}` : ''}${page ? `${params.toString() ? '&' : '?'}page=${page}` : ''}${limit ? `${page ? '&' : '?'}limit=${limit}` : ''}`;
 
-  const response = await httpClient.get<FilterRoomResponse>(url);
+    const response = await httpClient.get<FilterRoomResponse>(url);
 
-  if (!response.success) {
-    throw new Error(response.message);
+    if (!response.success && response.status) {
+      throw new CustomError(response.message, response.status);
+    }
+
+    return response.data;
+  } catch (error) {
+    if (error instanceof CustomError) {
+      throw error;
+    }
+
+    throw new CustomError('네트워크 에러 입니다. 잠시 후 다시 시도해주세요.', 500);
   }
-
-  return response.data;
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import { useReducer } from 'react';
 import { FilterType } from '@/schemas/rooms';
 import { CiCircleMinus, CiCirclePlus } from 'react-icons/ci';
@@ -23,6 +25,12 @@ interface RoomAndBedProps {
   bathroom?: RoomValue;
   handleFilter: (newState: RoomValue | null, type: keyof FilterType) => void;
 }
+
+const ROOM_TYPES = [
+  { key: 'bedroom' as const, label: '침실' },
+  { key: 'bed' as const, label: '침대' },
+  { key: 'bathroom' as const, label: '욕실' },
+] as const;
 
 export default function RoomAndBed({ bedroom, bed, bathroom, handleFilter }: RoomAndBedProps) {
   const initialState = {
@@ -81,87 +89,34 @@ export default function RoomAndBed({ bedroom, bed, bathroom, handleFilter }: Roo
         <span className="text-lg font-semibold">침실과 침대</span>
       </div>
       <div className="space-y-4">
-        <div className="flex flex-row items-center justify-between">
-          <span>침실</span>
-          <div className="flex w-40 flex-row items-center justify-between">
-            <CiCircleMinus
-              size={36}
-              color={state.bedroom === '상관없음' ? 'LightGray' : 'Gray'}
-              className="cursor-pointer"
-              onClick={() => {
-                handleRoomChange('bedroom', false);
-              }}
-              role="bedroom-minus-button"
-            />
-            <p className="px-4">
-              {state.bedroom}
-              {state.bedroom !== ROOM_DEFAULT && '+'}
-            </p>
-            <CiCirclePlus
-              size={36}
-              color={state.bedroom === ROOM_MAX ? 'LightGray' : 'Gray'}
-              className="cursor-pointer"
-              onClick={() => {
-                handleRoomChange('bedroom', true);
-              }}
-              role="bedroom-plus-button"
-            />
+        {ROOM_TYPES.map((room) => (
+          <div
+            key={room.key}
+            className="flex flex-row items-center justify-between"
+          >
+            <span>{room.label}</span>
+            <div className="flex w-40 flex-row items-center justify-between">
+              <CiCircleMinus
+                size={36}
+                color={state[room.key] === '상관없음' ? 'LightGray' : 'Gray'}
+                className="cursor-pointer"
+                onClick={() => handleRoomChange(room.key, false)}
+                role={`${room.key}-minus-button`}
+              />
+              <p className="px-4">
+                {state[room.key]}
+                {state[room.key] !== ROOM_DEFAULT && '+'}
+              </p>
+              <CiCirclePlus
+                size={36}
+                color={state[room.key] === ROOM_MAX ? 'LightGray' : 'Gray'}
+                className="cursor-pointer"
+                onClick={() => handleRoomChange(room.key, true)}
+                role={`${room.key}-plus-button`}
+              />
+            </div>
           </div>
-        </div>
-        <div className="flex flex-row items-center justify-between">
-          <span>침대</span>
-          <div className="flex w-40 flex-row items-center justify-between">
-            <CiCircleMinus
-              size={36}
-              color={state.bed === '상관없음' ? 'LightGray' : 'Gray'}
-              className="cursor-pointer"
-              onClick={() => {
-                handleRoomChange('bed', false);
-              }}
-              role="bed-minus-button"
-            />
-            <p className="px-4">
-              {state.bed}
-              {state.bed !== ROOM_DEFAULT && '+'}
-            </p>
-            <CiCirclePlus
-              size={36}
-              color={state.bed === ROOM_MAX ? 'LightGray' : 'Gray'}
-              className="cursor-pointer"
-              onClick={() => {
-                handleRoomChange('bed', true);
-              }}
-              role="bed-plus-button"
-            />
-          </div>
-        </div>
-        <div className="flex flex-row items-center justify-between">
-          <span>욕실</span>
-          <div className="flex w-40 flex-row items-center justify-between">
-            <CiCircleMinus
-              size={36}
-              color={state.bathroom === '상관없음' ? 'LightGray' : 'Gray'}
-              className="cursor-pointer"
-              onClick={() => {
-                handleRoomChange('bathroom', false);
-              }}
-              role="bathroom-minus-button"
-            />
-            <p className="px-4">
-              {state.bathroom}
-              {state.bathroom !== ROOM_DEFAULT && '+'}
-            </p>
-            <CiCirclePlus
-              size={36}
-              color={state.bathroom === ROOM_MAX ? 'LightGray' : 'Gray'}
-              className="cursor-pointer"
-              onClick={() => {
-                handleRoomChange('bathroom', true);
-              }}
-              role="bathroom-plus-button"
-            />
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
