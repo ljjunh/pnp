@@ -1,12 +1,13 @@
 'use client';
 
+import { useRef } from 'react';
 import RoomReviewCreateForm from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewCreateForm';
 import RoomReviewItem from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewItem';
 import { Loader2 } from 'lucide-react';
+import { ReviewSortType } from '@/types/review';
 import { GetReviewsResponse } from '@/apis/reviews/queries';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { useRoomReviews } from '@/hooks/useRoomReviews';
-import { IoIosArrowDown } from 'react-icons/io';
 import { IoSearch } from 'react-icons/io5';
 
 interface RoomReviewModalContentProps {
@@ -15,12 +16,18 @@ interface RoomReviewModalContentProps {
   isAvailable: string[];
 }
 
+const sortOptions = [
+  { value: 'recent', label: '최신순' },
+  { value: 'high', label: '평점 높은순' },
+  { value: 'low', label: '평점 낮은순' },
+] as const;
+
 export default function RoomReviewModalContent({
   review,
   roomId,
   isAvailable,
 }: RoomReviewModalContentProps) {
-  const { reviews, isLoading, hasNextPage, fetchNextPage } = useRoomReviews({
+  const { reviews, isLoading, hasNextPage, fetchNextPage, sortType, changeSort } = useRoomReviews({
     roomId,
     initialReviews: review.data.reviews,
   });
@@ -29,6 +36,13 @@ export default function RoomReviewModalContent({
     onIntersect: fetchNextPage,
     disabled: isLoading && !hasNextPage,
   });
+
+  const listRef = useRef<HTMLDivElement>(null);
+
+  const handleSortChange = (newSort: ReviewSortType) => {
+    listRef.current?.scrollTo(0, 0);
+    changeSort(newSort);
+  };
 
   return (
     <div className="flex w-[550px] flex-col pl-16">
@@ -40,10 +54,21 @@ export default function RoomReviewModalContent({
             <span className="font-semibold"> {review.data.count}</span>
             <span>개</span>
           </span>
-          <button className="flex items-center gap-2 rounded-full border border-neutral-03 px-2.5 py-1 text-xs">
-            최신순
-            <IoIosArrowDown size={20} />
-          </button>
+          <div className="relative flex gap-2">
+            {sortOptions.map((option) => (
+              <button
+                key={option.value}
+                onClick={() => handleSortChange(option.value)}
+                className={`flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs ${
+                  sortType === option.value
+                    ? 'border-black bg-black text-white'
+                    : 'border-neutral-03'
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="relative my-8">
@@ -60,7 +85,10 @@ export default function RoomReviewModalContent({
       </div>
 
       {/* 리뷰 리스트 - 스크롤 */}
-      <div className="flex-1 overflow-y-auto pr-4">
+      <div
+        ref={listRef}
+        className="flex-1 overflow-y-auto pr-4"
+      >
         <div className="space-y-8">
           {reviews.length > 0 ? (
             <>

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
-import { ReviewSummarize } from '@/types/review';
+import { ReviewSortType, ReviewSummarize } from '@/types/review';
 import { httpClient } from '@/apis/core/httpClient';
 import { CACHE_TAGS } from '@/constants/cacheTags';
 
@@ -28,13 +28,20 @@ export async function getReviews(
   roomId: number,
   page?: number,
   limit?: number,
+  sortType?: ReviewSortType,
   options?: { next?: NextFetchRequestConfig },
 ): Promise<GetReviewsResponse> {
   try {
-    const response = await httpClient.get<GetReviewsResponse>(
-      `/rooms/${roomId}/reviews${page ? `?page=${page}` : ''}${limit ? `${page ? '&' : '?'}limit=${limit}` : ''}`,
-      options,
-    );
+    const queryParams = new URLSearchParams();
+
+    if (page) queryParams.append('page', String(page));
+    if (limit) queryParams.append('limit', String(limit));
+    if (sortType) queryParams.append('sort', sortType);
+
+    const queryString = queryParams.toString();
+    const url = `/rooms/${roomId}/reviews${queryParams ? `?${queryString}` : ''}`;
+
+    const response = await httpClient.get<GetReviewsResponse>(url, options);
 
     if (!response.success) {
       switch (response.status) {
