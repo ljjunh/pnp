@@ -45,10 +45,12 @@ export async function GET(
       capacity: searchParams.get('capacity') ? Number(searchParams.get('capacity')) : undefined,
     });
 
+    const sort = searchParams.get('sort') || 'recent';
+
     const { page, limit } = getPaginationParams(request);
     const { skip, take } = getSkipTake(page, limit);
 
-    const [room, total] = await getFilterRoom(filterParams, skip, take);
+    const [room, total] = await getFilterRoom(filterParams, skip, take, sort);
 
     return CustomResponse.ok(createPaginationResponse(room, total, page, limit));
   } catch (error) {
