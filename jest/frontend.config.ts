@@ -66,6 +66,7 @@ const customJestConfig: Config = {
     '!src/app/**/default.tsx',
     '!src/app/**/loading.tsx',
     '!src/app/**/error.tsx',
+    '!src/app/**/not-found.tsx',
     '!src/app/**/route.ts',
     '!src/app/Providers.tsx',
     '!src/app/StoreProvider.tsx',
