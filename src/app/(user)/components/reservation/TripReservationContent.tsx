@@ -6,16 +6,27 @@ import { ReservationDetailInformation } from '@/app/(user)/components/reservatio
 import { RoomRules } from '@/app/(user)/components/reservation/RoomRules';
 import { TripRoomInformation } from '@/app/(user)/components/reservation/TripRoomInformation';
 import { Reservation } from '@/types/reservation';
+import { formatDate } from '@/utils/formatDate';
+import { formatTime } from '@/utils/formatTime';
 import { ROUTES } from '@/constants/routeURL';
 
 export default function TripReservationContent({ reservation }: { reservation: Reservation }) {
   return (
     <div className="flex h-full flex-col gap-3 overflow-y-scroll rounded-lg bg-white shadow-lg">
+      {/* 뒤로 가기 버튼 */}
       <div className="flex px-2 pt-3">
         <BackBtn url={ROUTES.USER.TRIPS} />
       </div>
       {/* 객실 정보 */}
-      <TripRoomInformation />
+      <TripRoomInformation
+        hostName={reservation.room.host.user.name}
+        checkIn={formatDate(reservation.checkIn, { showDay: true })}
+        checkInTime={formatTime(reservation.checkIn)}
+        checkOut={formatDate(reservation.checkOut, { showDay: true })}
+        checkOutTime={formatTime(reservation.checkOut)}
+        title={reservation.room.title}
+        images={reservation.room.images}
+      />
 
       <div className="border-b-8" />
 

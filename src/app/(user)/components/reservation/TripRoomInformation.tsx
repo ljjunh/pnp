@@ -3,31 +3,40 @@ import RoomCardCarousel from '@/components/common/Card/RoomCardCarousel';
 import { BiMessage } from 'react-icons/bi';
 import { BsHouseExclamation } from 'react-icons/bs';
 
-const images: ImageLink[] = [
-  { id: 1, imageLink: '/images/03.avif', orientation: 'LANDSCAPE' },
-  { id: 2, imageLink: '/images/02.avif', orientation: 'PORTRAIT' },
-  { id: 3, imageLink: '/images/01.avif', orientation: 'LANDSCAPE' },
-  { id: 4, imageLink: '/images/06.avif', orientation: 'PORTRAIT' },
-  { id: 5, imageLink: '/images/05.avif', orientation: 'LANDSCAPE' },
-  { id: 6, imageLink: '/images/04.avif', orientation: 'PORTRAIT' },
-];
+interface TripRoomInformationProps {
+  hostName: string | null;
+  checkIn: string;
+  checkInTime: string;
+  checkOut: string;
+  checkOutTime: string;
+  title: string;
+  images: ImageLink[];
+}
 
-export function TripRoomInformation() {
+export function TripRoomInformation({
+  hostName,
+  checkIn,
+  checkInTime,
+  checkOut,
+  checkOutTime,
+  title,
+  images,
+}: TripRoomInformationProps) {
   return (
     <>
       <div className="flex flex-col gap-5 px-4">
-        <h1 className="text-2xl font-medium">호스트 이름의 숙소</h1>
+        <h1 className="text-2xl font-medium">{hostName}의 숙소</h1>
         <RoomCardCarousel images={images} />
         <div className="flex justify-between text-gray-500">
           <div className="flex-1 border-r">
             <p className="text-black">체크인</p>
-            <p>1월 11일 (화)</p>
-            <p>오후 4:00</p>
+            <p>{checkIn}</p>
+            <p>{checkInTime}</p>
           </div>
           <div className="flex-1 text-right">
             <p className="text-black">체크아웃</p>
-            <p>1월 13일 (목)</p>
-            <p>오전 11:00</p>
+            <p>{checkOut}</p>
+            <p>{checkOutTime}</p>
           </div>
         </div>
         <hr />
@@ -40,7 +49,7 @@ export function TripRoomInformation() {
           <BiMessage className="size-6" />
           <div className="flex flex-col text-left">
             <h1 className="font-medium">호스트에게 메시지 보내기</h1>
-            <p className="line-clamp-1 text-xs text-gray-500">호스트 이름</p>
+            <p className="line-clamp-1 text-xs text-gray-500">{hostName}</p>
           </div>
         </div>
       </button>
@@ -50,9 +59,7 @@ export function TripRoomInformation() {
           <BsHouseExclamation className="size-6" />
           <div className="flex flex-col text-left">
             <h1 className="font-medium">숙소</h1>
-            <p className="line-clamp-1 text-xs text-gray-500">
-              고색역 도보 5분 넷플릭스 웨이브 쿠팡플레이 티빙 디지니플러스
-            </p>
+            <p className="line-clamp-1 text-xs text-gray-500">{title}</p>
           </div>
         </div>
       </button>
