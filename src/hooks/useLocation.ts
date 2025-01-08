@@ -71,7 +71,7 @@ export const useLocation = ({ latitude, longitude }: UseLocationProps) => {
 
   useEffect(() => {
     initLocation();
-  }, []);
+  }, [latitude, longitude]);
 
   return { location, isLoading, error };
 };

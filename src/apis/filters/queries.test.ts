@@ -89,6 +89,8 @@ describe('filter query test', () => {
       expect(error.statusCode).toBe(500);
     });
 
+    // *TODO sort 테스트 작성
+
     test('네트워크 에러 발생 시 에러를 던진다', async () => {
       const errorMockFilter = {
         ...mockFilter,

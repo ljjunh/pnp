@@ -65,11 +65,15 @@ export default function SearchFilter({ filter, sort }: SearchFilterProps) {
               description: response.message,
               variant: 'destructive',
             });
+
+            return;
           default:
             toast({
               title: response.message,
               variant: 'destructive',
             });
+
+            return;
         }
       }
 
