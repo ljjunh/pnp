@@ -116,7 +116,7 @@ export async function getRoom(roomId: number): Promise<Room> {
 
 /**
  * 숙소 스크랩 여부를 조회한다.
- *
+ *ㅞㅡ
  * @param {number} roomId 방 아이디
  * @param {string} userId 사용자 아이디
  *
@@ -302,15 +302,23 @@ export async function getFilterRoom(
   filter: FilterType,
   skip: number,
   take: number,
+  sort: string,
   userId: string | null = null,
 ): Promise<[FilterRoom[], number]> {
   const whereConditions = getWhereConditions(filter);
+  const orderBy = orderByRoom(sort);
 
   const [rooms, count] = await Promise.all([
     prisma.room.findMany({
       relationLoadStrategy: 'join',
       where: whereConditions,
       ...{ skip, take },
+      orderBy: [
+        orderBy,
+        {
+          id: 'desc',
+        },
+      ],
       select: {
         id: true,
         location: true,
@@ -725,3 +733,17 @@ export async function uploadRoomImages(roomId: number, userId: string, images: F
 
   await Promise.all(uploadImages);
 }
+
+const orderByRoom = (sort: string) => {
+  const orderBy: Prisma.RoomOrderByWithRelationInput = {};
+
+  if (sort === 'recent') {
+    orderBy.createdAt = 'desc';
+  } else if (sort === 'expensive') {
+    orderBy.price = 'asc';
+  } else if (sort === 'cheap') {
+    orderBy.price = 'desc';
+  }
+
+  return orderBy;
+};
