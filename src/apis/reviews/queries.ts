@@ -32,13 +32,16 @@ export async function getReviews(
   options?: { next?: NextFetchRequestConfig },
 ): Promise<GetReviewsResponse> {
   try {
-    const queryParams = new URLSearchParams();
+    let queryParams;
+    if (page || limit || sortType) {
+      // 파라미터가 하나라도 있을 때만 생성
+      queryParams = new URLSearchParams();
+      if (page) queryParams.append('page', String(page));
+      if (limit) queryParams.append('limit', String(limit));
+      if (sortType) queryParams.append('sort', sortType);
+    }
 
-    if (page) queryParams.append('page', String(page));
-    if (limit) queryParams.append('limit', String(limit));
-    if (sortType) queryParams.append('sort', sortType);
-
-    const queryString = queryParams.toString();
+    const queryString = queryParams?.toString();
     const url = `/rooms/${roomId}/reviews${queryParams ? `?${queryString}` : ''}`;
 
     const response = await httpClient.get<GetReviewsResponse>(url, options);

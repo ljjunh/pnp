@@ -17,6 +17,21 @@ describe('Reviews Query Test', () => {
       const result = await getReviews(1);
       expect(result).toEqual(mockReview);
     });
+
+    test('파라미터로 올바른 URL 요청을 보낸다', async () => {
+      let result = await getReviews(1, undefined, undefined, 'low');
+      expect(result).toEqual(mockReview);
+
+      result = await getReviews(1, undefined, 10);
+      expect(result).toEqual(mockReview);
+
+      result = await getReviews(1, 2, 10);
+      expect(result).toEqual(mockReview);
+
+      result = await getReviews(1);
+      expect(result).toEqual(mockReview);
+    });
+
     test('존재하지 않는 방일 경우 notFound를 호출한다.', async () => {
       await expect(getReviews(404)).rejects.toThrow();
       expect(notFound).toHaveBeenCalled();
