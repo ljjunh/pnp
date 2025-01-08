@@ -2,6 +2,7 @@ import { NotFoundError } from '@/errors';
 import { ForbiddenError } from '@/errors/errors';
 import { prisma } from '@/lib/server';
 import { CreateReviewInput, UpdateReviewInput } from '@/schemas/review';
+import { Prisma } from '@prisma/client';
 import { ReviewSummarize } from '@/types/review';
 
 /**
@@ -10,6 +11,7 @@ import { ReviewSummarize } from '@/types/review';
  * @param {number} roomId 방 아이디
  * @param {number} skip 건너뛸 리뷰 수
  * @param {number} take 가져올 리뷰 수
+ * @param {string} sort 정렬 방식
  *
  * @returns {Promise<[Review[], number]>} 리뷰 목록과 전체 리뷰 수
  */
@@ -17,12 +19,19 @@ export async function getReviews(
   roomId: number,
   skip: number,
   take: number,
+  sort: string,
 ): Promise<[ReviewSummarize, number]> {
+  const orderBy = reviewSort(sort);
   const [reviews, aggregate] = await Promise.all([
     prisma.review.findMany({
       where: { roomId },
-      orderBy: { createdAt: 'desc' },
       ...{ skip, take },
+      orderBy: [
+        { ...orderBy },
+        {
+          id: 'desc',
+        },
+      ],
       select: {
         id: true,
         accuracy: true,
@@ -119,18 +128,14 @@ export async function createReview(
   }
 
   // * 만약, 사용자가 해당 숙소에 예약한 이력이 없다면 리뷰를 작성할 수 없다.
-  const hasReservation = await prisma.reservation.findFirst({
+  const canReview = await prisma.review.count({
     where: {
+      orderNumber: data.orderNumber,
       userId,
-      roomId,
-      checkOut: {
-        lte: new Date(),
-      },
-      status: 'COMPLETED',
     },
   });
 
-  if (!hasReservation) {
+  if (canReview) {
     throw new ForbiddenError('리뷰를 작성할 권한이 없습니다.');
   }
 
@@ -362,6 +367,52 @@ export async function deleteReview(reviewId: number, userId: string): Promise<vo
   });
 }
 
+/**
+ * 현재 사용자가 리뷰를 작성할 수 있는지 확인한다.
+ *
+ * @param {string} userId 사용자 아이디
+ * @param {number} roomId 방 아이디
+ * @returns {string[]} 리뷰 작성 가능한 예약 번호 목록
+ */
+export const availableReview = async (userId: string, roomId: number): Promise<string[]> => {
+  // * 사용자가 이미 작성한 리뷰 목록을 조회한다.
+  const writtenReviews = await prisma.review.findMany({
+    where: {
+      userId,
+      roomId,
+    },
+    select: {
+      orderNumber: true,
+    },
+  });
+
+  // * 사용자가 작성한 리뷰 목록을 제외한 리뷰 작성 가능한 예약 목록을 조회한다.
+  const canReview = await prisma.reservation.findMany({
+    where: {
+      userId,
+      roomId,
+      // * 예약이 완료된 상태만 조회한다.
+      status: 'COMPLETED',
+      // * 리뷰 작성 가능한 기간을 설정한다. (체크아웃 후 30일 이내)
+      checkOut: {
+        gte: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000),
+      },
+      orderNumber: {
+        notIn: writtenReviews.map((review) => review.orderNumber ?? ''),
+      },
+    },
+    select: {
+      orderNumber: true,
+    },
+    // * 가장 오래된 예약부터 조회한다.
+    orderBy: {
+      createdAt: 'asc',
+    },
+  });
+
+  return canReview.map((reservation) => reservation.orderNumber);
+};
+
 interface ReviewCreate {
   accuracy: number;
   communication: number;
@@ -390,4 +441,18 @@ export const refinedAverage = (sum: number, count: number): number => {
     return 0;
   }
   return Number((sum / count).toFixed(1));
+};
+
+const reviewSort = (sort: string) => {
+  const orderBy: Prisma.ReviewOrderByWithRelationInput = {};
+
+  if (sort === 'recent') {
+    orderBy.createdAt = 'desc';
+  } else if (sort === 'high') {
+    orderBy.accuracy = 'desc';
+  } else if (sort === 'low') {
+    orderBy.accuracy = 'asc';
+  }
+
+  return orderBy;
 };

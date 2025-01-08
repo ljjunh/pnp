@@ -35,9 +35,10 @@ const INITIAL_FORM_STATE: ReviewFormState = {
 
 interface RoomReviewCreateFormProps {
   roomId: number;
+  isAvailable: string[];
 }
 
-export default function RoomReviewCreateForm({ roomId }: RoomReviewCreateFormProps) {
+export default function RoomReviewCreateForm({ roomId, isAvailable }: RoomReviewCreateFormProps) {
   const { toast } = useToast();
   const router = useRouter();
   const formRef = useRef<HTMLDivElement>(null);
@@ -76,11 +77,13 @@ export default function RoomReviewCreateForm({ roomId }: RoomReviewCreateFormPro
 
   const handleSubmit = async () => {
     if (!content.trim()) return;
+    if (isAvailable.length === 0) return;
 
     setFormState((prev) => ({ ...prev, isLoading: true }));
 
     const response = await createReview(roomId, {
       content: content.trim(),
+      orderNumber: isAvailable[0],
       ...ratings,
     });
     setFormState((prev) => ({ ...prev, isLoading: false }));

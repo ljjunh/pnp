@@ -84,6 +84,21 @@ export const filterSchema = z.object({
       message: '유효한 YYYY-MM-DD 형식이 아닙니다.',
     })
     .optional(),
+  guest: z
+    .number()
+    .min(1, { message: '게스트 수는 1명 이상이어야 합니다' })
+    .max(16, { message: '게스트 수는 16명 이하여야 합니다' })
+    .optional(),
+  baby: z
+    .number()
+    .min(0, { message: '유아 수는 0명 이상이어야 합니다' })
+    .max(5, { message: '유아 수는 5명 이하여야 합니다' })
+    .optional(),
+  pet: z
+    .number()
+    .min(0, { message: '반려동물 수는 0마리 이상이어야 합니다' })
+    .max(5, { message: '반려동물 수는 5마리 이하여야 합니다' })
+    .optional(),
 });
 
 export const priceFilterSchema = z.object({
@@ -126,6 +141,24 @@ export const updateRoomSchema = z.object({
   checkInType: z.string().optional(),
 });
 
+export const SearchSchema = z.object({
+  location: z.string().optional(),
+  capacity: z.number().optional(),
+  checkIn: z
+    .string()
+    .regex(/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/, {
+      message: '유효한 YYYY-MM-DD 형식이 아닙니다.',
+    })
+    .optional(),
+  checkOut: z
+    .string()
+    .regex(/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/, {
+      message: '유효한 YYYY-MM-DD 형식이 아닙니다.',
+    })
+    .optional(),
+});
+
 export type FilterType = z.infer<typeof filterSchema>;
 export type PriceFilter = z.infer<typeof priceFilterSchema>;
 export type UpdateRoom = z.infer<typeof updateRoomSchema>;
+export type SearchType = z.infer<typeof SearchSchema>;

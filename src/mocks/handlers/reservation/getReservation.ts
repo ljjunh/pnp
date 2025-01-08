@@ -2,10 +2,10 @@ import mockReservation from '@/mocks/fixtures/reservation.json';
 import { HttpResponse, http } from 'msw';
 
 export const getReservationHandler = http.get('/api/reservation/:orderNumber', ({ params }) => {
-  const { orderNumber } = params;
+  const orderNumber = Number(params.orderNumber);
 
   // notFound 에러 케이스
-  if (orderNumber === '404') {
+  if (orderNumber === 404) {
     return HttpResponse.json({
       success: false,
       status: 404,
@@ -14,7 +14,7 @@ export const getReservationHandler = http.get('/api/reservation/:orderNumber', (
   }
 
   // 인증 에러 케이스
-  if (orderNumber === '401') {
+  if (orderNumber === 401) {
     return HttpResponse.json({
       success: false,
       status: 401,
@@ -23,7 +23,7 @@ export const getReservationHandler = http.get('/api/reservation/:orderNumber', (
   }
 
   // 서버 에러 케이스
-  if (orderNumber === '500') {
+  if (orderNumber === 500) {
     return HttpResponse.json({
       success: false,
       status: 500,
@@ -32,7 +32,7 @@ export const getReservationHandler = http.get('/api/reservation/:orderNumber', (
   }
 
   // 네트워크 에러 케이스
-  if (orderNumber === '501') {
+  if (orderNumber === 501) {
     return new Response(null, { status: 500 });
   }
 

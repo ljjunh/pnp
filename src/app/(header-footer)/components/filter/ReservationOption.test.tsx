@@ -1,6 +1,6 @@
+import ReservationOption from '@/app/(header-footer)/components/filter/ReservationOption';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import ReservationOption from './ReservationOption';
 
 describe('ReservationOption 컴포넌트 테스트', () => {
   const mockReservationOption: string[] = [];

@@ -23,5 +23,6 @@ type Story = StoryObj<typeof RoomReviewCreateForm>;
 export const Default: Story = {
   args: {
     roomId: 1,
+    isAvailable: ['1111-1111-1111'],
   },
 };

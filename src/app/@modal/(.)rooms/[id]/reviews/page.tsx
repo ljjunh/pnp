@@ -1,15 +1,16 @@
-import RoomReviewCreateForm from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewCreateForm';
-import RoomReviewItem from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewItem';
+import RoomReviewModalContent from '@/app/@modal/(.)rooms/[id]/reviews/components/RoomReviewModalContent';
 import Modal from '@/components/common/Modal/Modal';
-import { GetReviewsResponse, getReviews } from '@/apis/reviews/queries';
+import { getReviewAvailable, getReviews } from '@/apis/reviews/queries';
 import { calculateAverageRating } from '@/utils/calculateAverageRating';
+import { CACHE_TAGS } from '@/constants/cacheTags';
 import { GoComment } from 'react-icons/go';
-import { IoIosArrowDown } from 'react-icons/io';
-import { IoSearch } from 'react-icons/io5';
 import { PiCheckCircle, PiKey, PiMapTrifold, PiSprayBottle, PiTag } from 'react-icons/pi';
 
 export default async function ReviewModal({ params }: { params: { id: string } }) {
-  const review: GetReviewsResponse = await getReviews(Number(params.id));
+  const review = await getReviews(Number(params.id), 1, 10, 'recent', {
+    next: { tags: [CACHE_TAGS.REVIEWS.DETAIL(Number(params.id))] },
+  });
+  const isAvailable = await getReviewAvailable(Number(params.id));
 
   const rating = calculateAverageRating([
     review.data.accuracy,
@@ -95,60 +96,11 @@ export default async function ReviewModal({ params }: { params: { id: string } }
             </div>
           </div>
         </div>
-
-        {/* 오른쪽 컬럼 */}
-        <div className="flex w-[550px] flex-col pl-16">
-          {/* 상단 영역 - 고정 */}
-          <div className="flex-none">
-            <div className="flex items-center justify-between">
-              <span className="text-2xl">
-                <span>후기</span>
-                <span className="font-semibold"> {review.data.count}</span>
-                <span>개</span>
-              </span>
-              <button className="flex items-center gap-2 rounded-full border border-neutral-03 px-2.5 py-1 text-xs">
-                최신순
-                <IoIosArrowDown size={20} />
-              </button>
-            </div>
-
-            <div className="relative my-8">
-              <input
-                type="text"
-                placeholder="후기 검색"
-                className="w-full rounded-full border border-neutral-07 px-4 py-2 pl-10 focus:border-2 focus:border-black focus:outline-none"
-              />
-              <IoSearch
-                className="absolute left-4 top-1/2 -translate-y-1/2"
-                size={20}
-              />
-            </div>
-          </div>
-
-          {/* 리뷰 리스트 - 스크롤 */}
-          <div className="flex-1 overflow-y-auto pr-4">
-            <div className="space-y-8">
-              {review.data.reviews.map((review) => (
-                <RoomReviewItem
-                  key={review.id}
-                  roomId={Number(params.id)}
-                  reviewId={review.id}
-                  accuracy={review.accuracy}
-                  communication={review.communication}
-                  cleanliness={review.cleanliness}
-                  location={review.location}
-                  checkIn={review.checkIn}
-                  value={review.value}
-                  content={review.content}
-                  createdAt={review.createdAt}
-                  user={review.user}
-                  isInterceptedRoute
-                />
-              ))}
-            </div>
-          </div>
-          <RoomReviewCreateForm roomId={Number(params.id)} />
-        </div>
+        <RoomReviewModalContent
+          review={review}
+          roomId={Number(params.id)}
+          isAvailable={isAvailable}
+        />
       </div>
     </Modal>
   );

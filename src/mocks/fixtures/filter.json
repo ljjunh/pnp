@@ -1,0 +1,18 @@
+{
+  "roomType": "Entire",
+  "minPrice": 10000,
+  "maxPrice": 50000,
+  "bedroom": 2,
+  "bed": 3,
+  "bathroom": 1,
+  "amenityArray": ["wifi", "parking"],
+  "option": ["selfCheckIn"],
+  "language": [1, 2],
+  "property": 1,
+  "location": "서울",
+  "checkIn": "2024-01-01",
+  "checkOut": "2024-01-05",
+  "guest": 2,
+  "baby": 1,
+  "pet": 1
+}

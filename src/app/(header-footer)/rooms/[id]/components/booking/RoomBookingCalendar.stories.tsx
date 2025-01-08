@@ -32,6 +32,17 @@ export const Default: StoryFn = () => {
 
   return (
     <RoomBookingCalendar
+      roomId={1}
+      initialDates={[
+        '2024.11.01',
+        '2024.11.02',
+        '2024.11.03',
+        '2024.11.04',
+        '2024.11.05',
+        '2024.11.06',
+        '2024.11.07',
+        '2024.11.08',
+      ]}
       isOpen={isOpen}
       onToggle={() => setIsOpen((prev) => !prev)}
       startDate={dateRange.startDate}

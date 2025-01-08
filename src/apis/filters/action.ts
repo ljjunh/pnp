@@ -3,8 +3,8 @@
 import { FilterType, PriceFilter } from '@/schemas/rooms';
 import { ActionResponse } from '@/types/action';
 import { PriceFilterRange } from '@/types/room';
+import { httpClient } from '@/apis/core/httpClient';
 import { formatFilter } from '@/utils/formatFilter';
-import { httpClient } from '../core/httpClient';
 
 /**
  * 가격 범위를 업데이트하는 서버 액션
@@ -16,7 +16,6 @@ export async function getFilterPrice({
   roomType,
   property,
 }: PriceFilter): Promise<ActionResponse<PriceFilterRange>> {
-  console.log('호출');
   try {
     const params = new URLSearchParams();
 
@@ -35,7 +34,7 @@ export async function getFilterPrice({
     if (!response.success) {
       return {
         success: false,
-        message: response.message || '가격 범위를 조회하는데 실패했습니다.',
+        message: response.message || '서버 에러가 발생하였습니다. 잠시후 다시 시도해주세요.',
         status: response.status,
       };
     }
@@ -72,7 +71,7 @@ export async function getFilterCount(filter: FilterType) {
     if (!response.success) {
       return {
         success: false,
-        message: response.message || '숙소 갯수를 조회하는 데 실패하였습니다.',
+        message: response.message || '서버 에러가 발생하였습니다. 잠시후 다시 시도해주세요.',
         status: response.status,
       };
     }

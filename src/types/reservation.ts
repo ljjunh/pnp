@@ -1,4 +1,12 @@
-import { Host, Reservation as PrismaReservation, Room, User } from '@prisma/client';
+import {
+  Host,
+  Reservation as PrismaReservation,
+  Room,
+  RoomImage,
+  Rule,
+  Tag,
+  User,
+} from '@prisma/client';
 
 export type ReservationParams = {
   orderNumber: string;
@@ -36,6 +44,8 @@ export type Reservation = Pick<
     | 'title'
     | 'thumbnail'
     | 'reviewsCount'
+    | 'latitude'
+    | 'longitude'
     | 'reviewsAverage'
     | 'propertyType'
     | 'price'
@@ -47,6 +57,9 @@ export type Reservation = Pick<
     host: Pick<Host, 'id' | 'isSuperHost' | 'isVerified'> & {
       user: Pick<User, 'id' | 'name' | 'image'>;
     };
+    images: RoomImage[];
+    rules: Rule[];
+    roomTags: Pick<Tag, 'id' | 'content'>[];
   };
 };
 

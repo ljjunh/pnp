@@ -4,6 +4,7 @@ import { prisma } from '@/lib/server';
 import { sendNotification } from '@/lib/server/notification';
 import { CreateReservationInput, ReservationAvailableInput } from '@/schemas';
 import { Reservation, ReservationTrip } from '@/types/reservation';
+import { extractProperty } from '@/utils/convertor';
 
 const CHECKIN_DEFAULT = '15:00';
 const CHECKOUT_DEFAULT = '11:00';
@@ -100,7 +101,7 @@ export async function getReservationByOrderNumber(
   userId: string,
   orderNumber: string,
 ): Promise<Reservation> {
-  const reservation = await prisma.reservation.findUnique({
+  const findReservation = await prisma.reservation.findUnique({
     relationLoadStrategy: 'join',
     where: {
       orderNumber: orderNumber,
@@ -122,6 +123,19 @@ export async function getReservationByOrderNumber(
           reviewsCount: true,
           price: true,
           checkIn: true,
+          latitude: true,
+          longitude: true,
+          images: true,
+          roomTags: {
+            select: {
+              tag: true,
+            },
+          },
+          rules: {
+            select: {
+              rule: true,
+            },
+          },
           checkOut: true,
           checkInType: true,
           capacity: true,
@@ -147,13 +161,22 @@ export async function getReservationByOrderNumber(
     },
   });
 
-  if (!reservation) {
+  if (!findReservation) {
     throw new NotFoundError('존재하지 않는 예약 정보입니다.');
   }
 
-  if (reservation.userId !== userId) {
+  if (findReservation.userId !== userId) {
     throw new ForbiddenError('해당 예약 정보에 접근할 권한이 없습니다.');
   }
+
+  const reservation: Reservation = {
+    ...findReservation,
+    room: {
+      ...findReservation.room,
+      roomTags: extractProperty(findReservation.room.roomTags, 'tag'),
+      rules: extractProperty(findReservation.room.rules, 'rule'),
+    },
+  };
 
   return reservation;
 }
@@ -273,23 +296,69 @@ export async function confirmReservation(userId: string, orderNumber: string) {
  *
  * @param {ReservationAvailableInput} data 예약 가능 여부 확인 데이터
  */
-export async function checkReservation(data: ReservationAvailableInput): Promise<boolean> {
-  const reservation = await prisma.reservation.findFirst({
+export async function checkReservation(data: ReservationAvailableInput): Promise<string[]> {
+  const start = new Date(data.year, data.month - 1, 1);
+  const end = new Date(data.year, data.month + 1, 0);
+
+  const reservations = await prisma.reservation.findMany({
     where: {
       roomId: data.roomId,
       status: {
         in: ['PAYMENT', 'CONFIRMED', 'PENDING'],
       },
-      checkIn: {
-        lte: data.checkIn,
-      },
-      checkOut: {
-        gte: data.checkOut,
-      },
+      OR: [
+        {
+          checkIn: {
+            gte: start,
+            lte: end,
+          },
+        },
+        {
+          checkOut: {
+            gte: start,
+            lte: end,
+          },
+        },
+      ],
+    },
+    select: {
+      checkIn: true,
+      checkOut: true,
     },
   });
 
-  return !reservation;
+  const dates = Array.from(
+    {
+      length:
+        new Date(data.year, data.month + 1, 0).getDate() +
+        new Date(data.year, data.month, 0).getDate(),
+    },
+    (_, i) => {
+      const firstMonthDays = new Date(data.year, data.month, 0).getDate();
+      if (i < firstMonthDays) {
+        return new Date(data.year, data.month - 1, i + 2).toISOString().split('T')[0];
+      } else {
+        return new Date(data.year, data.month, i - firstMonthDays + 2).toISOString().split('T')[0];
+      }
+    },
+  );
+
+  const reservationDates = reservations.flatMap((reservation) => {
+    const checkIn = new Date(reservation.checkIn);
+    const checkOut = new Date(reservation.checkOut);
+
+    const dates = [];
+    const currentDate = new Date(checkIn);
+
+    while (currentDate < checkOut) {
+      dates.push(currentDate.toISOString().split('T')[0]);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dates;
+  });
+
+  return dates.filter((date) => !reservationDates.includes(date));
 }
 
 /**

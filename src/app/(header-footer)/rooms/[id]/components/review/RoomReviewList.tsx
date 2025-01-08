@@ -4,6 +4,7 @@ import RoomReviewSummary from '@/app/(header-footer)/rooms/[id]/components/revie
 import { Room } from '@/types/room';
 import Button from '@/components/common/Button/Button';
 import { GetReviewsResponse, getReviews } from '@/apis/reviews/queries';
+import { CACHE_TAGS } from '@/constants/cacheTags';
 import { ROUTES } from '@/constants/routeURL';
 
 interface RoomReviewListProps {
@@ -17,7 +18,9 @@ export default async function RoomReviewList({
   reviewsCount,
   reviewsAverage,
 }: RoomReviewListProps) {
-  const review: GetReviewsResponse = await getReviews(roomId, 1, 6);
+  const review: GetReviewsResponse = await getReviews(roomId, 1, 6, 'recent', {
+    next: { tags: [CACHE_TAGS.REVIEWS.DETAIL(roomId)] },
+  });
 
   return (
     <section className="py-12">
@@ -32,33 +35,32 @@ export default async function RoomReviewList({
         value={review.data.value}
       />
       {reviewsCount > 0 && (
-        <div className="mt-10 border-b">
-          <div className="grid grid-cols-2 grid-rows-3 gap-10">
-            {review.data.reviews.map((review) => (
-              <RoomReviewItem
-                key={review.id}
-                roomId={roomId}
-                reviewId={review.id}
-                accuracy={review.accuracy}
-                communication={review.communication}
-                cleanliness={review.cleanliness}
-                location={review.location}
-                checkIn={review.checkIn}
-                value={review.value}
-                content={review.content}
-                createdAt={review.createdAt}
-                user={review.user}
-              />
-            ))}
-          </div>
-
-          <div className="py-10">
-            <Button variant="tertiary">
-              <Link href={ROUTES.ROOMS.REVIEWS(roomId)}>후기 {reviewsCount}개 모두 보기</Link>
-            </Button>
-          </div>
+        <div className="mt-10 grid grid-cols-2 grid-rows-3 gap-10">
+          {review.data.reviews.map((review) => (
+            <RoomReviewItem
+              key={review.id}
+              roomId={roomId}
+              reviewId={review.id}
+              accuracy={review.accuracy}
+              communication={review.communication}
+              cleanliness={review.cleanliness}
+              location={review.location}
+              checkIn={review.checkIn}
+              value={review.value}
+              content={review.content}
+              createdAt={review.createdAt}
+              user={review.user}
+            />
+          ))}
         </div>
       )}
+      <div className="border-b border-neutral-04 py-10">
+        <Button variant="tertiary">
+          <Link href={ROUTES.ROOMS.REVIEWS(roomId)}>
+            {reviewsCount > 0 ? `후기 ${reviewsCount} 개 모두 보기` : '첫 번째 후기를 작성해보세요'}
+          </Link>
+        </Button>
+      </div>
     </section>
   );
 }

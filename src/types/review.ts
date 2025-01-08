@@ -41,3 +41,5 @@ export interface RatingValues {
   location: number;
   value: number;
 }
+
+export type ReviewSortType = 'recent' | 'high' | 'low';

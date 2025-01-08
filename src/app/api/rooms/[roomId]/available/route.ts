@@ -3,13 +3,12 @@ import { BadRequestError, CustomError, ZodError } from '@/errors';
 import { CustomResponse } from '@/lib/server';
 import { reservationAvailableSchema } from '@/schemas';
 import { checkReservation } from '@/services/reservation';
-import { ReservationAvailable } from '@/types/reservation';
 import { RoomParams } from '@/types/room';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: RoomParams },
-): Promise<CustomResponse<ReservationAvailable | undefined>> {
+): Promise<CustomResponse<string[]>> {
   try {
     const { searchParams } = new URL(request.url);
     const roomId = Number(params.roomId);
@@ -17,26 +16,21 @@ export async function GET(
       throw new BadRequestError('유효하지 않은 ID 형식입니다.');
     }
 
-    const checkInParam = searchParams.get('checkIn');
-    const checkOutParam = searchParams.get('checkOut');
-    if (!checkInParam || !checkOutParam) {
-      throw new BadRequestError('체크인 날짜와 체크아웃 날짜는 필수 입력입니다');
+    const year = Number(searchParams.get('year'));
+    const month = Number(searchParams.get('month'));
+    if (Number.isNaN(year) || Number.isNaN(month)) {
+      throw new BadRequestError('년도와 월은 필수 입력입니다.');
     }
 
     const data = reservationAvailableSchema.parse({
       roomId,
-      checkIn: new Date(checkInParam),
-      checkOut: new Date(checkOutParam),
+      year,
+      month,
     });
 
-    const available = await checkReservation(data);
+    const dates = await checkReservation(data);
 
-    return CustomResponse.ok({
-      available: available,
-      roomId: data.roomId,
-      checkIn: data.checkIn,
-      checkOut: data.checkOut,
-    });
+    return CustomResponse.ok(dates);
   } catch (error) {
     console.error('예약 가능 여부 확인 중 에러 발생: ', {
       roomId: params.roomId,
