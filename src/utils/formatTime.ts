@@ -11,7 +11,7 @@
  * formatTimeOnly('2025-01-10T02:00:02.338Z');
  */
 
-export function formatTime(dateString: string) {
+export function formatTime(dateString: Date) {
   const date = new Date(dateString);
   const hour = date.getHours();
 
