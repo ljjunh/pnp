@@ -25,7 +25,7 @@ export function TripRoomInformation({
   return (
     <>
       <div className="flex flex-col gap-5 px-4">
-        <h1 className="text-2xl font-medium">{hostName}의 숙소</h1>
+        <h1 className="text-2xl font-medium">{hostName}님의 숙소</h1>
         <RoomCardCarousel images={images} />
         <div className="flex justify-between text-gray-500">
           <div className="flex-1 border-r">
