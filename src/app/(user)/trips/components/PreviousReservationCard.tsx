@@ -33,9 +33,9 @@ export function PreviousReservationCard({
           )}
         </figure>
         <div className="flex flex-col gap-1 text-neutral-400">
-          <address className="font-medium not-italic text-black">{location}</address>
-          <p>호스트: {hostName}님</p>
-          <time>
+          <address className="font-semibold not-italic text-black">{location}</address>
+          <p className="text-sm">호스트: {hostName}님</p>
+          <time className="text-sm">
             {checkIn} ~ {checkOut}
           </time>
         </div>

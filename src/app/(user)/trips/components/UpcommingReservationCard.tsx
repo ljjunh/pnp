@@ -32,8 +32,8 @@ export function UpcommingReservationCard({
             />
           )}
         </figure>
-        <div className="p-3">
-          <address className="not-italic">{location}</address>
+        <div className="p-3 text-neutral-400">
+          <address className="text-lg font-semibold not-italic text-black">{location}</address>
           <p>호스트: {hostName} 님</p>
           <time>
             {checkIn} ~ {checkOut}
