@@ -1,9 +1,16 @@
+import { revalidateTag } from 'next/cache';
 import { auth } from '@/auth';
 import { createReservation } from '@/apis/reservation/actions';
+import { CACHE_TAGS } from '@/constants/cacheTags';
 
 // @/auth의 auth를 모킹
 jest.mock('@/auth', () => ({
   auth: jest.fn(),
+}));
+
+// revalidateTag 모킹
+jest.mock('next/cache', () => ({
+  revalidateTag: jest.fn(),
 }));
 
 describe('Reservation Action Test', () => {
@@ -27,6 +34,8 @@ describe('Reservation Action Test', () => {
 
       expect(result.success).toBe(true);
       expect(result.status).toBe(201);
+      expect(revalidateTag).toHaveBeenCalledTimes(1);
+      expect(revalidateTag).toHaveBeenCalledWith(CACHE_TAGS.ROOMS.AVAILABLE(validInput.roomId));
       // 응답에 data 객체가 존재하는지 확인
       expect(result.data).toBeDefined();
       // data 객체 안에 orderNumber가 있는지 확인
