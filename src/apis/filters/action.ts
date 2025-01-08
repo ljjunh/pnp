@@ -3,8 +3,8 @@
 import { FilterType, PriceFilter } from '@/schemas/rooms';
 import { ActionResponse } from '@/types/action';
 import { PriceFilterRange } from '@/types/room';
+import { httpClient } from '@/apis/core/httpClient';
 import { formatFilter } from '@/utils/formatFilter';
-import { httpClient } from '../core/httpClient';
 
 /**
  * 가격 범위를 업데이트하는 서버 액션

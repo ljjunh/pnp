@@ -6,17 +6,17 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 
 const locations = [
   '서울',
+  '인천',
+  '대전',
+  '대구',
+  '광주',
   '부산',
-  '제주도',
+  '울산',
+  '세종',
+  '여수',
   '속초',
   '강릉',
   '전주',
-  '대구',
-  '경주',
-  '여수',
-  '서귀포',
-  '대전',
-  '인천',
 ];
 
 interface SearchLocationProps {
@@ -43,7 +43,14 @@ export default function SearchLocation({
   };
 
   return (
-    <Popover open={section === 'location'}>
+    <Popover
+      open={section === 'location'}
+      onOpenChange={(open) => {
+        if (!open) {
+          setSection(null);
+        }
+      }}
+    >
       <PopoverTrigger
         onClick={() => {
           setSection(section === 'location' ? null : 'location');

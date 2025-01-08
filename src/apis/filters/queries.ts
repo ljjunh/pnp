@@ -1,8 +1,8 @@
 import { CustomError } from '@/errors';
 import { FilterType } from '@/schemas/rooms';
 import { FilterRoomResponse } from '@/types/room';
+import { httpClient } from '@/apis/core/httpClient';
 import { formatFilter } from '@/utils/formatFilter';
-import { httpClient } from '../core/httpClient';
 
 /**
  *  필터 정보에 따른 방을 조회한다.

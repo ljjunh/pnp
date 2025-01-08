@@ -4,9 +4,9 @@ import { SearchType } from '@/schemas/rooms';
 import { addDays, format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
+import { Section } from '@/components/common/Header/ExpandedSearchBar';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Section } from './ExpandedSearchBar';
 
 interface SearchDateProps {
   section: string | null;
@@ -113,7 +113,14 @@ export default function SearchDate({
   };
 
   return (
-    <Popover open={isOpen && (section === 'checkIn' || section === 'checkOut')}>
+    <Popover
+      open={isOpen && (section === 'checkIn' || section === 'checkOut')}
+      onOpenChange={(open) => {
+        if (!open) {
+          setSection(null);
+        }
+      }}
+    >
       <PopoverTrigger asChild>
         <div className="flex flex-[1.4]">
           {/* 체크인 */}

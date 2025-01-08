@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { SearchType } from '@/schemas/rooms';
-import SearchDate from './SearchDate';
-import SearchGuest from './SearchGuest';
-import SearchLocation from './SearchLocation';
+import SearchDate from '@/components/common/Header/SearchDate';
+import SearchGuest from '@/components/common/Header/SearchGuest';
+import SearchLocation from '@/components/common/Header/SearchLocation';
 
 export type Section = 'location' | 'checkIn' | 'checkOut' | 'guests';
 
@@ -21,17 +21,13 @@ export default function ExpandedSearchBar() {
 
   const [section, setSection] = useState<Section | null>(null);
   const [filter, setFilter] = useState<SearchType>(searchData);
- 
+
   const handleSearchFilter = <K extends keyof SearchType>(
     newState: SearchType[K],
     type: keyof SearchType,
   ) => {
     setFilter((prev) => ({ ...prev, [type]: newState }));
   };
-
-  useEffect(() => {
-    console.log('filter', filter);
-  }, [filter]);
 
   return (
     <div
