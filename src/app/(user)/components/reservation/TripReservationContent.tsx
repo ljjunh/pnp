@@ -26,6 +26,7 @@ export default function TripReservationContent({ reservation }: { reservation: R
         checkOutTime={formatTime(reservation.checkOut)}
         title={reservation.room.title}
         images={reservation.room.images}
+        roomId={reservation.roomId}
       />
 
       <div className="border-b-8" />
