@@ -1,5 +1,5 @@
-import Filter from '@/app/(header-footer)/components/Filter';
-import RoomList from '@/app/(header-footer)/components/RoomList';
+import RoomBox from '@/app/(header-footer)/components/RoomBox';
+import Filter from '@/app/(header-footer)/components/filter/Filter';
 import { FilterType } from '@/schemas/rooms';
 import { FilterRoomResponse } from '@/types/room';
 import { getFilterRoom } from '@/apis/filters/queries';
@@ -18,7 +18,10 @@ export default async function Home({
   return (
     <>
       <Filter />
-      <RoomList rooms={filterRoom.data} />
+      <RoomBox
+        filter={filter}
+        filterRoom={filterRoom}
+      />
     </>
   );
 }

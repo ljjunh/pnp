@@ -1,4 +1,4 @@
-import Filter from '@/app/(header-footer)/components/Filter';
+import Filter from '@/app/(header-footer)/components/filter/Filter';
 import StoreProvider from '@/app/StoreProvider';
 import { Meta, StoryObj } from '@storybook/react';
 

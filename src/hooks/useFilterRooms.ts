@@ -1,4 +1,6 @@
-import { useCallback, useState } from 'react';
+'use client';
+
+import { useCallback, useEffect, useState } from 'react';
 import { FilterType } from '@/schemas/rooms';
 import { FilterRoom } from '@/types/room';
 import { getFilterRoom } from '@/apis/filters/queries';
@@ -17,6 +19,13 @@ export function useFilterRooms({ filter, initialRooms, hasNext, roomCount }: Use
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [hasNextPage, setHasNextPage] = useState<boolean>(hasNext);
   const { toast } = useToast();
+
+  // filter가 변경될 때 rooms를 초기화하고 첫 페이지부터 다시 시작
+  useEffect(() => {
+    setRooms(initialRooms);
+    setCurrentPage(1);
+    setHasNextPage(hasNext);
+  }, [filter, initialRooms, hasNext]);
 
   const fetchNextPage = useCallback(async () => {
     if (!hasNextPage || isLoading) return;
