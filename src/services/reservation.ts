@@ -4,6 +4,7 @@ import { prisma } from '@/lib/server';
 import { sendNotification } from '@/lib/server/notification';
 import { CreateReservationInput, ReservationAvailableInput } from '@/schemas';
 import { Reservation, ReservationTrip } from '@/types/reservation';
+import { extractProperty } from '@/utils/convertor';
 
 const CHECKIN_DEFAULT = '15:00';
 const CHECKOUT_DEFAULT = '11:00';
@@ -100,7 +101,7 @@ export async function getReservationByOrderNumber(
   userId: string,
   orderNumber: string,
 ): Promise<Reservation> {
-  const reservation = await prisma.reservation.findUnique({
+  const findReservation = await prisma.reservation.findUnique({
     relationLoadStrategy: 'join',
     where: {
       orderNumber: orderNumber,
@@ -122,6 +123,19 @@ export async function getReservationByOrderNumber(
           reviewsCount: true,
           price: true,
           checkIn: true,
+          latitude: true,
+          longitude: true,
+          images: true,
+          roomTags: {
+            select: {
+              tag: true,
+            },
+          },
+          rules: {
+            select: {
+              rule: true,
+            },
+          },
           checkOut: true,
           checkInType: true,
           capacity: true,
@@ -147,13 +161,22 @@ export async function getReservationByOrderNumber(
     },
   });
 
-  if (!reservation) {
+  if (!findReservation) {
     throw new NotFoundError('존재하지 않는 예약 정보입니다.');
   }
 
-  if (reservation.userId !== userId) {
+  if (findReservation.userId !== userId) {
     throw new ForbiddenError('해당 예약 정보에 접근할 권한이 없습니다.');
   }
+
+  const reservation: Reservation = {
+    ...findReservation,
+    room: {
+      ...findReservation.room,
+      roomTags: extractProperty(findReservation.room.roomTags, 'tag'),
+      rules: extractProperty(findReservation.room.rules, 'rule'),
+    },
+  };
 
   return reservation;
 }
