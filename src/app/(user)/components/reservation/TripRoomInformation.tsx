@@ -1,7 +1,7 @@
 import { ImageLink } from '@/types/room';
 import RoomCardCarousel from '@/components/common/Card/RoomCardCarousel';
+import { BiMessage } from 'react-icons/bi';
 import { BsHouseExclamation } from 'react-icons/bs';
-import { BiMessage } from "react-icons/bi";
 
 const images: ImageLink[] = [
   { id: 1, imageLink: '/images/03.avif', orientation: 'LANDSCAPE' },
@@ -15,7 +15,7 @@ const images: ImageLink[] = [
 export function TripRoomInformation() {
   return (
     <>
-      <div className="flex flex-col gap-5 px-4 pt-4">
+      <div className="flex flex-col gap-5 px-4">
         <h1 className="text-2xl font-medium">호스트 이름의 숙소</h1>
         <RoomCardCarousel images={images} />
         <div className="flex justify-between text-gray-500">
@@ -40,9 +40,7 @@ export function TripRoomInformation() {
           <BiMessage className="size-6" />
           <div className="flex flex-col text-left">
             <h1 className="font-medium">호스트에게 메시지 보내기</h1>
-            <p className="line-clamp-1 text-xs text-gray-500">
-              호스트 이름
-            </p>
+            <p className="line-clamp-1 text-xs text-gray-500">호스트 이름</p>
           </div>
         </div>
       </button>

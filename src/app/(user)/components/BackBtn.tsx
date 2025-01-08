@@ -1,11 +1,16 @@
+'use client';
+
 import Link from 'next/link';
-import { ROUTES } from '@/constants/routeURL';
 import { IoIosArrowBack } from 'react-icons/io';
 
-export function BackBtn() {
+interface BackBtnProps {
+  url: string;
+}
+
+export function BackBtn({ url }: BackBtnProps) {
   return (
     <Link
-      href={ROUTES.USER.WISHLISTS}
+      href={url}
       className="rounded-full p-1 hover:bg-gray-100"
     >
       <IoIosArrowBack className="size-6" />

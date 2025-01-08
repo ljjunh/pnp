@@ -1,13 +1,19 @@
+import { BackBtn } from '@/app/(user)/components/BackBtn';
 import { CustomerSupport } from '@/app/(user)/components/reservation/CustomerSupport';
 import { HostInformation } from '@/app/(user)/components/reservation/HostInformation';
 import { PaymentInformation } from '@/app/(user)/components/reservation/PaymentInformation';
 import { ReservationDetailInformation } from '@/app/(user)/components/reservation/ReservationDetailInformation';
 import { RoomRules } from '@/app/(user)/components/reservation/RoomRules';
-import { TripRoomInformation } from './TripRoomInformation';
+import { TripRoomInformation } from '@/app/(user)/components/reservation/TripRoomInformation';
+import { Reservation } from '@/types/reservation';
+import { ROUTES } from '@/constants/routeURL';
 
-export default function TripReservationContent() {
+export default function TripReservationContent({ reservation }: { reservation: Reservation }) {
   return (
-    <div className="h-full flex flex-col gap-3 overflow-y-scroll bg-white shadow-lg rounded-lg">
+    <div className="flex h-full flex-col gap-3 overflow-y-scroll rounded-lg bg-white shadow-lg">
+      <div className="flex px-2 pt-3">
+        <BackBtn url={ROUTES.USER.TRIPS} />
+      </div>
       {/* 객실 정보 */}
       <TripRoomInformation />
 
