@@ -1,13 +1,16 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import RoomDescriptionModalButton from '@/app/(header-footer)/rooms/[id]/components/information/RoomDescriptionModalButton';
 import { Room } from '@/types/room';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateText } from '@/utils/truncateText';
+import { ROUTES } from '@/constants/routeURL';
 import { ImTrophy } from 'react-icons/im';
 import { IoIosStar } from 'react-icons/io';
 
 interface RoomDescriptionProps {
+  roomId: Room['id'];
   location: Room['location'];
   roomTags: Room['roomTags'];
   description: Room['description'];
@@ -18,6 +21,7 @@ interface RoomDescriptionProps {
 }
 
 export default function RoomDescription({
+  roomId,
   location,
   roomTags,
   description,
@@ -48,13 +52,29 @@ export default function RoomDescription({
               <span>·</span>
             </span>
           )}
-          <span className="underline">후기 {reviewsCount ? reviewsCount : 0}개</span>
+          {reviewsCount > 0 && (
+            <Link
+              href={ROUTES.ROOMS.REVIEWS(roomId)}
+              className="underline"
+            >
+              후기 {reviewsCount}개
+            </Link>
+          )}
         </span>
       </section>
       {availableAmenities.length > 0 && (
         <section className="grid grid-cols-2 gap-4 border-b border-neutral-04 py-6">
           {availableAmenities.map((amenity) => (
-            <div key={amenity.id}>
+            <div
+              key={amenity.id}
+              className="flex gap-1"
+            >
+              <Image
+                src={`/icons/${amenity.icon}.svg`}
+                alt={amenity.title}
+                width={20}
+                height={20}
+              />
               <span className="text-sm text-shade-02">{amenity.title}</span>
             </div>
           ))}

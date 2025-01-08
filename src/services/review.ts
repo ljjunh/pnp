@@ -2,6 +2,7 @@ import { NotFoundError } from '@/errors';
 import { ForbiddenError } from '@/errors/errors';
 import { prisma } from '@/lib/server';
 import { CreateReviewInput, UpdateReviewInput } from '@/schemas/review';
+import { Prisma } from '@prisma/client';
 import { ReviewSummarize } from '@/types/review';
 
 /**
@@ -10,6 +11,7 @@ import { ReviewSummarize } from '@/types/review';
  * @param {number} roomId 방 아이디
  * @param {number} skip 건너뛸 리뷰 수
  * @param {number} take 가져올 리뷰 수
+ * @param {string} sort 정렬 방식
  *
  * @returns {Promise<[Review[], number]>} 리뷰 목록과 전체 리뷰 수
  */
@@ -17,12 +19,19 @@ export async function getReviews(
   roomId: number,
   skip: number,
   take: number,
+  sort: string,
 ): Promise<[ReviewSummarize, number]> {
+  const orderBy = reviewSort(sort);
   const [reviews, aggregate] = await Promise.all([
     prisma.review.findMany({
       where: { roomId },
-      orderBy: { createdAt: 'desc' },
       ...{ skip, take },
+      orderBy: [
+        { ...orderBy },
+        {
+          id: 'desc',
+        },
+      ],
       select: {
         id: true,
         accuracy: true,
@@ -432,4 +441,18 @@ export const refinedAverage = (sum: number, count: number): number => {
     return 0;
   }
   return Number((sum / count).toFixed(1));
+};
+
+const reviewSort = (sort: string) => {
+  const orderBy: Prisma.ReviewOrderByWithRelationInput = {};
+
+  if (sort === 'recent') {
+    orderBy.createdAt = 'desc';
+  } else if (sort === 'high') {
+    orderBy.accuracy = 'desc';
+  } else if (sort === 'low') {
+    orderBy.accuracy = 'asc';
+  }
+
+  return orderBy;
 };

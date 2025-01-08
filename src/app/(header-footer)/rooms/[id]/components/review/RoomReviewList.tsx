@@ -4,6 +4,7 @@ import RoomReviewSummary from '@/app/(header-footer)/rooms/[id]/components/revie
 import { Room } from '@/types/room';
 import Button from '@/components/common/Button/Button';
 import { GetReviewsResponse, getReviews } from '@/apis/reviews/queries';
+import { CACHE_TAGS } from '@/constants/cacheTags';
 import { ROUTES } from '@/constants/routeURL';
 
 interface RoomReviewListProps {
@@ -17,7 +18,9 @@ export default async function RoomReviewList({
   reviewsCount,
   reviewsAverage,
 }: RoomReviewListProps) {
-  const review: GetReviewsResponse = await getReviews(roomId, 1, 6);
+  const review: GetReviewsResponse = await getReviews(roomId, 1, 6, 'recent', {
+    next: { tags: [CACHE_TAGS.REVIEWS.DETAIL(roomId)] },
+  });
 
   return (
     <section className="py-12">

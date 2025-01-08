@@ -1,75 +1,74 @@
-import SearchButton from '@/components/common/Button/SearchButton';
+'use client';
 
-interface ExpandedSearchBarProps {
-  activeSection: Section | null;
-  onSectionChange: (section: Section | null) => void;
-}
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { SearchType } from '@/schemas/rooms';
+import SearchDate from './SearchDate';
+import SearchGuest from './SearchGuest';
+import SearchLocation from './SearchLocation';
 
-type Section = 'location' | 'checkIn' | 'checkOut' | 'guests';
+export type Section = 'location' | 'checkIn' | 'checkOut' | 'guests';
 
-export default function ExpandedSearchBar({
-  activeSection,
-  onSectionChange,
-}: ExpandedSearchBarProps) {
+export default function ExpandedSearchBar() {
+  const params = useSearchParams();
+
+  const searchData: SearchType = {
+    location: params.get('location') ?? undefined,
+    checkIn: params.get('checkIn') ?? undefined,
+    checkOut: params.get('checkOut') ?? undefined,
+    capacity: params.get('capacity') ? Number(params.get('capacity')) : 0,
+  };
+
+  const [section, setSection] = useState<Section | null>(null);
+  const [filter, setFilter] = useState<SearchType>(searchData);
+ 
+  const handleSearchFilter = <K extends keyof SearchType>(
+    newState: SearchType[K],
+    type: keyof SearchType,
+  ) => {
+    setFilter((prev) => ({ ...prev, [type]: newState }));
+  };
+
+  useEffect(() => {
+    console.log('filter', filter);
+  }, [filter]);
+
   return (
     <div
       role="search"
       aria-label="숙소 검색"
-      className={`w-full cursor-pointer rounded-full border-[1px] bg-white shadow-sm transition-all hover:shadow-md`}
+      className="mx-auto flex w-full max-w-[1000px] justify-center"
     >
-      <div className={`flex rounded-full ${activeSection ? 'bg-neutral-02' : ''}`}>
-        {/* 여행지 */}
-        <div
-          onClick={() => onSectionChange('location')}
-          className={`rounded-full py-3.5 pl-8 pr-12 transition-colors ${activeSection === 'location' ? 'rounded-full bg-shade-01 hover:bg-shade-01' : ''} ${activeSection ? 'hover:bg-neutral-04' : 'hover:bg-neutral-02'}`}
-        >
-          <div className="text-sm">여행지</div>
-          <input
-            type="text"
-            placeholder="여행지 검색"
-            className="text-md w-full bg-transparent text-neutral-07 outline-none placeholder:text-neutral-07"
-            readOnly={activeSection !== 'location'}
+      <div className="w-full cursor-pointer rounded-full border-[1px] bg-white shadow-sm transition-all hover:shadow-md">
+        <div className={`flex justify-between rounded-full ${section ? 'bg-neutral-02' : ''}`}>
+          {/* 여행지 */}
+          <SearchLocation
+            section={section}
+            location={filter.location}
+            setSection={setSection}
+            handleSearchFilter={handleSearchFilter}
           />
-        </div>
 
-        <div className="h-10 w-[1px] self-center bg-neutral-04" />
+          <div className="h-10 w-[1px] self-center bg-neutral-04" />
 
-        {/* 체크인 */}
-        <div
-          onClick={() => onSectionChange('checkIn')}
-          className={`rounded-full py-3.5 pl-6 pr-14 transition-colors ${activeSection === 'checkIn' ? 'rounded-full bg-shade-01 hover:bg-shade-01' : ''} ${activeSection ? 'hover:bg-neutral-04' : 'hover:bg-neutral-02'}`}
-        >
-          <div className="text-sm">체크인</div>
-          <div className="text-md text-neutral-07">날짜 추가</div>
-        </div>
+          {/* 체크인, 체크아웃 */}
+          <SearchDate
+            section={section}
+            setSection={setSection}
+            checkIn={filter.checkIn}
+            checkOut={filter.checkOut}
+            handleSearchFilter={handleSearchFilter}
+          />
 
-        <div className="h-10 w-[1px] self-center bg-neutral-04" />
+          <div className="h-10 w-[1px] self-center bg-neutral-04" />
 
-        {/* 체크아웃 */}
-        <div
-          onClick={() => onSectionChange('checkOut')}
-          className={`rounded-full py-3.5 pl-6 pr-14 transition-colors ${activeSection === 'checkOut' ? 'rounded-full bg-shade-01 hover:bg-shade-01' : ''} ${activeSection ? 'hover:bg-neutral-04' : 'hover:bg-neutral-02'}`}
-        >
-          <div className="text-sm">체크아웃</div>
-          <div className="text-md text-neutral-07">날짜 추가</div>
-        </div>
-
-        <div className="h-10 w-[1px] self-center bg-neutral-04" />
-
-        {/* 여행자 & 검색 버튼 */}
-        <div
-          onClick={() => onSectionChange('guests')}
-          className={`flex items-center rounded-full transition-colors ${
-            activeSection === 'guests' ? 'rounded-full bg-shade-01 hover:bg-shade-01' : ''
-          } ${activeSection ? 'hover:bg-neutral-04' : 'hover:bg-neutral-02'}`}
-        >
-          <div className="py-3.5 pl-6 pr-12">
-            <div className="text-sm">여행자</div>
-            <div className="text-md text-neutral-07">게스트 추가</div>
-          </div>
-          <div className="pr-2">
-            <SearchButton variant={activeSection ? 'expanded' : 'filtered'} />
-          </div>
+          {/* 여행자 & 검색 버튼 */}
+          <SearchGuest
+            section={section}
+            setSection={setSection}
+            filter={filter}
+            handleSearchFilter={handleSearchFilter}
+          />
         </div>
       </div>
     </div>

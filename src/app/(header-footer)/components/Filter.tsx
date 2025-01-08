@@ -12,6 +12,7 @@ import { BiCategory } from 'react-icons/bi';
 import { CiCircleChevLeft, CiCircleChevRight } from 'react-icons/ci';
 
 export default function Filter() {
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const params = useSearchParams();
   const propertyId = params.get('property');
 
@@ -47,9 +48,21 @@ export default function Filter() {
     }
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <>
-      <div className="flex h-[78px] w-full flex-row items-center justify-between">
+      <div
+        className={`flex h-[78px] w-full flex-row items-center justify-between ${isScrolled ? '' : 'mt-24'}`}
+      >
         <div className="relative flex flex-1 items-center overflow-hidden">
           {showLeftArrow && (
             <button

@@ -28,6 +28,7 @@ type Story = StoryObj<typeof RoomDescription>;
 
 export const Default: Story = {
   args: {
+    roomId: 1,
     location: '애월읍, 제주시',
     roomTags: [
       {

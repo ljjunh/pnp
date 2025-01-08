@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
-import { ReviewSummarize } from '@/types/review';
+import { ReviewSortType, ReviewSummarize } from '@/types/review';
 import { httpClient } from '@/apis/core/httpClient';
 import { CACHE_TAGS } from '@/constants/cacheTags';
 
@@ -21,23 +21,30 @@ export interface GetReviewsResponse {
  * @param roomId - 조회할 숙소의 ID
  * @param page - 페이지 번호 (기본값: 1)
  * @param limit - 페이지당 리뷰 수 (기본값: 10)
+ * @param options -Next.js 캐싱 설정을 위한 옵션 (서버 컴포넌트에서만 사용)
  * @returns 리뷰 목록과 페이지네이션 정보
  */
-
 export async function getReviews(
   roomId: number,
   page?: number,
   limit?: number,
+  sortType?: ReviewSortType,
+  options?: { next?: NextFetchRequestConfig },
 ): Promise<GetReviewsResponse> {
   try {
-    const response = await httpClient.get<GetReviewsResponse>(
-      `/rooms/${roomId}/reviews${page ? `?page=${page}` : ''}${limit ? `${page ? '&' : '?'}limit=${limit}` : ''}`,
-      {
-        next: {
-          tags: [CACHE_TAGS.REVIEWS.DETAIL(roomId)],
-        },
-      },
-    );
+    let queryParams;
+    if (page || limit || sortType) {
+      // 파라미터가 하나라도 있을 때만 생성
+      queryParams = new URLSearchParams();
+      if (page) queryParams.append('page', String(page));
+      if (limit) queryParams.append('limit', String(limit));
+      if (sortType) queryParams.append('sort', sortType);
+    }
+
+    const queryString = queryParams?.toString();
+    const url = `/rooms/${roomId}/reviews${queryParams ? `?${queryString}` : ''}`;
+
+    const response = await httpClient.get<GetReviewsResponse>(url, options);
 
     if (!response.success) {
       switch (response.status) {

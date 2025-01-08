@@ -67,12 +67,13 @@ export default function RoomReviewItem({
         <div className="flex items-center justify-between">
           <div className="flex gap-3">
             {user.image ? (
-              <div className="relative h-12 w-12">
+              <div className="relative h-12 w-12 overflow-hidden rounded-full">
                 <Image
                   src={user.image}
                   alt="user-image"
                   fill
-                  className="rounded-full object-cover"
+                  sizes="48px"
+                  className="object-cover"
                 />
               </div>
             ) : (

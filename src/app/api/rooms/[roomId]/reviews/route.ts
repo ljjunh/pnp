@@ -23,10 +23,12 @@ export async function GET(
       throw new BadRequestError('유효하지 않은 ID 형식입니다.');
     }
 
+    const searchParams = request.nextUrl.searchParams;
+    const sort = searchParams.get('sort') ?? 'recent';
     const { page, limit } = getPaginationParams(request);
     const { skip, take } = getSkipTake(page, limit);
 
-    const [reviews, total] = await getReviews(roomId, skip, take);
+    const [reviews, total] = await getReviews(roomId, skip, take, sort);
 
     return CustomResponse.ok(createPaginationResponse(reviews, total, page, limit));
   } catch (error) {
