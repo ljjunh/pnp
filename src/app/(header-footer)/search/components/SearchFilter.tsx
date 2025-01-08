@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import FilterModal from '@/app/(header-footer)/components/filter/FilterModal';
 import { cn } from '@/lib/utils';
 import { FilterType } from '@/schemas/rooms';
@@ -15,13 +15,41 @@ import { FaAngleDown } from 'react-icons/fa6';
 
 interface SearchFilterProps {
   filter: FilterType;
+  sort?: string;
 }
 
-export default function SearchFilter({ filter }: SearchFilterProps) {
+export default function SearchFilter({ filter, sort }: SearchFilterProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [sorting, setSorting] = useState<string>('정렬 기준');
+  const [sorting, setSorting] = useState(() => {
+    switch (sort) {
+      case 'expensive':
+        return '높은 가격 순';
+      case 'cheap':
+        return '낮은 가격 순';
+      default:
+        return '관련성 높은 순';
+    }
+  });
   const [filterCount, setFilterCount] = useState<number | null>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const { toast } = useToast();
+
+  const handleClick = () => {
+    setIsOpen(!isOpen);
+
+    const params = new URLSearchParams(searchParams);
+
+    if (sorting === '관련성 높은 순') {
+      params.set('sort', 'recent');
+    } else if (sorting === '높은 가격 순') {
+      params.set('sort', 'expensive');
+    } else if (sorting === '낮은 가격 순') {
+      params.set('sort', 'cheap');
+    }
+
+    router.push(`/search?${params.toString()}`, { scroll: false });
+  };
 
   useEffect(() => {
     if (!isOpen) return;
@@ -98,21 +126,20 @@ export default function SearchFilter({ filter }: SearchFilterProps) {
               <span
                 className={cn(
                   'cursor-not-allowed border-b border-neutral-03 text-neutral-03',
-                  !(sorting === '정렬 기준' || sorting === '관련성 높은 순') &&
-                    'cursor-pointer border-black text-black',
+                  sorting !== '관련성 높은 순' && 'cursor-pointer border-black text-black',
                 )}
-                onClick={() => setSorting('정렬 기준')}
+                onClick={() => setSorting('관련성 높은 순')}
               >
                 다시 설정
               </span>
-              <Link
+              <button
                 className="rounded-lg bg-black px-4 py-2 text-white"
-                href={'/search'}
+                onClick={handleClick}
               >
                 <span>
                   숙소 {filterCount !== null && filterCount > 1000 ? '1000+' : (filterCount ?? 0)}개
                 </span>
-              </Link>
+              </button>
             </div>
           </PopoverContent>
         </Popover>

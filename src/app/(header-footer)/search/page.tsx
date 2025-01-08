@@ -20,14 +20,22 @@ export default async function SearchResultPage({
   }
 
   // 6의 배수이면 됨
-  const filterRoom: FilterRoomResponse = await getFilterRoom(filter, 1, 18);
+  const filterRoom: FilterRoomResponse = await getFilterRoom(
+    filter,
+    1,
+    18,
+    searchParams.sort as string,
+  );
 
   return (
     <div>
       <div className="sticky top-[82px] z-10 bg-white">
         <SearchProperty />
         <hr />
-        <SearchFilter filter={filter} />
+        <SearchFilter
+          filter={filter}
+          sort={searchParams.sort as string}
+        />
         <hr />
       </div>
       <SearchResultBox

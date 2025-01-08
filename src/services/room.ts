@@ -116,7 +116,7 @@ export async function getRoom(roomId: number): Promise<Room> {
 
 /**
  * 숙소 스크랩 여부를 조회한다.
- *ㅞㅡ
+ *
  * @param {number} roomId 방 아이디
  * @param {string} userId 사용자 아이디
  *
