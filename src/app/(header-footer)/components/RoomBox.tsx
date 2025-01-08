@@ -12,14 +12,6 @@ interface RoomBoxProps {
 }
 
 export default function RoomBox({ filter, filterRoom }: RoomBoxProps) {
-  if (filterRoom.data.length === 0) {
-    return (
-      <div className="flex h-[500px] items-center justify-center">
-        <p>조건에 맞는 숙소가 없습니다.</p>
-      </div>
-    );
-  }
-
   const { rooms, isLoading, hasNextPage, fetchNextPage } = useFilterRooms({
     filter,
     initialRooms: filterRoom.data,
@@ -31,6 +23,14 @@ export default function RoomBox({ filter, filterRoom }: RoomBoxProps) {
     onIntersect: fetchNextPage,
     disabled: isLoading && !hasNextPage,
   });
+
+  if (filterRoom.data.length === 0) {
+    return (
+      <div className="flex h-[500px] items-center justify-center">
+        <p>조건에 맞는 숙소가 없습니다.</p>
+      </div>
+    );
+  }
 
   return (
     <div>

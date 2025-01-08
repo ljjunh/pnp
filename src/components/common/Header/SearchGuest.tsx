@@ -5,6 +5,7 @@ import { SearchType } from '@/schemas/rooms';
 import SearchButton from '@/components/common/Button/SearchButton';
 import { Section } from '@/components/common/Header/ExpandedSearchBar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { useToast } from '@/hooks/use-toast';
 import { CiCircleMinus, CiCirclePlus } from 'react-icons/ci';
 
 type GuestValue = number;
@@ -48,6 +49,7 @@ export default function SearchGuest({
 }: SearchGuestProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { toast } = useToast();
 
   const guestReducer = (state: State, action: Action) => {
     switch (action.type) {
@@ -112,6 +114,12 @@ export default function SearchGuest({
       !state.baby &&
       !state.pet
     ) {
+      toast({
+        title: '검색 조건을 입력해주세요',
+        description: '위치나 날짜, 게스트 수를 선택해주세요',
+        variant: 'default',
+      });
+
       return;
     }
 
@@ -182,6 +190,8 @@ export default function SearchGuest({
         <div
           className="pr-2"
           onClick={handleSearchClick}
+          aria-label="검색 실행"
+          role="button"
         >
           <SearchButton variant={section ? 'expanded' : 'filtered'} />
         </div>

@@ -57,7 +57,7 @@ export async function getFilterPrice({
 /**
  * 필터 정보에 따른 방의 갯수를 조회하는 서버 액션
  * @param {FilterType} filter 필터 정보
- *₩
+ *
  * @returns {Promise<ActionResponse<number>>} 방 정보
  */
 export async function getFilterCount(filter: FilterType) {

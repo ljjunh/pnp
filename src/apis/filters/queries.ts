@@ -18,12 +18,8 @@ export async function getFilterRoom(
   sort?: string,
 ): Promise<FilterRoomResponse> {
   try {
-    // BEFORE: 기존 코드
-    // const params = formatFilter(filter);
-    // const url = `/rooms${params.toString() ? `?${params.toString()}` : ''}${page ? `${params.toString() ? '&' : '?'}page=${page}` : ''}${limit ? `${page ? '&' : '?'}limit=${limit}` : ''}`;
-
-    // AFTER: 수정된 코드
     const params = formatFilter(filter);
+    
     // * params는 객체기 때문에 params 자체를 바꿀 수 없지만, 내부에 존재하는 실제 파라미터 값은 추가 가능함.
     params.append('page', page?.toString() ?? '1');
     params.append('limit', limit?.toString() ?? '10');

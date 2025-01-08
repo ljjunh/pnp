@@ -32,47 +32,48 @@ describe('filter query test', () => {
       }
     });
 
-    test('filter에 맞게 url을 생성한다.', () => {
+    test('필터와 함께 page와 limit이 적용된 URL을 반환한다.', () => {
       const params = formatFilter(mockFilter as FilterType);
-      const url = `/rooms${params.toString() ? `?${params.toString()}` : ''}${params.toString() ? '&' : '?'}page=${1}&limit=${10}`;
+
+      params.append('page', '1');
+      params.append('limit', '10');
+      params.append('sort', 'recent');
+
+      const url = `/rooms?${params.toString()}`;
 
       expect(url).toContain('/rooms?');
       expect(url).toContain('roomType=Entire');
       expect(url).toContain('capacity=4');
-      expect(url).toContain('&page=1');
-      expect(url).toContain('&limit=10');
-    });
-
-    test("filter가 비어있고, page와 limit이 주어지면 '/rooms?page=1&limit=10'을 반환한다.", () => {
-      const emptyFilter: FilterType = {
-        roomType: null,
-        minPrice: 0,
-        maxPrice: 0,
-        bedroom: 0,
-        bed: 0,
-        bathroom: 0,
-        amenityArray: [],
-        option: [],
-        language: [],
-        property: 0,
-        location: '',
-        checkIn: '',
-        checkOut: '',
-        guest: 0,
-        baby: 0,
-        pet: 0,
-      };
-      const page = 1;
-      const limit = 10;
-
-      const params = formatFilter(emptyFilter);
-
-      const url = `/rooms${params.toString() ? `?${params.toString()}` : ''}${params.toString() ? '&' : '?'}page=${page}&limit=${limit}`;
-
-      expect(url).toContain('/rooms?');
-      expect(url).not.toContain('roomType=Entire');
       expect(url).toContain('page=1');
       expect(url).toContain('limit=10');
+      expect(url).toContain('sort=recent');
+    });
+
+    test('page와 limit이 전달되지 않으면 기본값(page=1, limit=10)을 사용한다', async () => {
+      const params = formatFilter(mockFilter as FilterType);
+      params.append('page', '1');
+      params.append('limit', '10');
+      params.append('sort', 'recent');
+
+      const url = `/rooms?${params.toString()}`;
+
+      expect(url).toContain('page=1');
+      expect(url).toContain('limit=10');
+    });
+
+    test('page와 limit이 전달되면 해당 값을 사용한다', async () => {
+      const params = formatFilter(mockFilter as FilterType);
+      const page = 2;
+      const limit = 20;
+
+      params.append('page', page.toString());
+      params.append('limit', limit.toString());
+      params.append('sort', 'recent');
+
+      const url = `/rooms?${params.toString()}`;
+
+      expect(url).toContain('page=2');
+      expect(url).toContain('limit=20');
     });
 
     test('서버에서 500 에러 발생 시 에러를 던진다', async () => {

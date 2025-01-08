@@ -31,11 +31,15 @@ export const useLocation = ({ latitude, longitude }: UseLocationProps) => {
 
       // 위치 권한을 거부했을 때
       if (!navigator.geolocation) {
-        throw new Error('사용자의 위치를 가져오는 데 실패하였습니다.');
+        throw new Error('위치 정보 접근 권한이 거부되었습니다.');
       }
 
       const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject);
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          timeout: 10000,
+          maximumAge: 5000,
+          enableHighAccuracy: false,
+        });
       });
 
       setLocation({
@@ -43,8 +47,23 @@ export const useLocation = ({ latitude, longitude }: UseLocationProps) => {
         longitude: position.coords.longitude,
       });
     } catch (error) {
-      console.error(error);
-      setError('사용자의 위치를 가져오는 데 실패하였습니다.');
+      if (error instanceof GeolocationPositionError) {
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            setError('위치 정보 접근 권한이 거부되었습니다.');
+            break;
+          case error.POSITION_UNAVAILABLE:
+            setError('위치 정보를 사용할 수 없습니다.');
+            break;
+          case error.TIMEOUT:
+            setError('위치 정보 요청 시간이 초과되었습니다.');
+            break;
+          default:
+            setError('사용자의 위치를 가져오는 데 실패하였습니다.');
+        }
+      } else {
+        setError('사용자의 위치를 가져오는 데 실패하였습니다.');
+      }
     } finally {
       setIsLoading(false);
     }

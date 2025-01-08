@@ -1,19 +1,62 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import FilterModal from '@/app/(header-footer)/components/filter/FilterModal';
 import { cn } from '@/lib/utils';
+import { FilterType } from '@/schemas/rooms';
 import FilterButton from '@/components/common/Button/FilterButton';
 import ModalProvider from '@/components/common/ModalProvider/ModalProvider';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { getFilterCount } from '@/apis/filters/action';
+import { useToast } from '@/hooks/use-toast';
 import { MODAL_ID } from '@/constants/modal';
 import { FaAngleDown } from 'react-icons/fa6';
 
-export default function SearchFilter() {
+interface SearchFilterProps {
+  filter: FilterType;
+}
+
+export default function SearchFilter({ filter }: SearchFilterProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [sorting, setSorting] = useState<string>('정렬 기준');
-  
+  const [filterCount, setFilterCount] = useState<number | null>(null);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const changeCount = async () => {
+      const response = await getFilterCount(filter);
+
+      if (!response.success) {
+        switch (response.status) {
+          case 500:
+            toast({
+              title: '네트워크 에러',
+              description: response.message,
+              variant: 'destructive',
+            });
+          default:
+            toast({
+              title: response.message,
+              variant: 'destructive',
+            });
+        }
+      }
+
+      if (!response.data) {
+        setFilterCount(null);
+
+        return;
+      }
+
+      setFilterCount(response.data);
+    };
+
+    changeCount();
+  }, [filter, isOpen, toast]);
+
   return (
     <>
       <div className="sticky top-0 my-4 flex h-full flex-row items-center">
@@ -40,7 +83,8 @@ export default function SearchFilter() {
                 <input
                   type="radio"
                   name="sort"
-                  value="relevance"
+                  value={item}
+                  aria-label={`${item}으로 정렬`}
                   checked={sorting === item}
                   // 경고 방지
                   onChange={() => {}}
@@ -66,8 +110,7 @@ export default function SearchFilter() {
                 href={'/search'}
               >
                 <span>
-                  {/* 숙소 {filterCount !== null && filterCount > 1000 ? '1000+' : (filterCount ?? 0)}개 */}
-                  숙소 1000개 이상 표시
+                  숙소 {filterCount !== null && filterCount > 1000 ? '1000+' : (filterCount ?? 0)}개
                 </span>
               </Link>
             </div>

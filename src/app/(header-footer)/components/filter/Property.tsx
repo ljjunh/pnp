@@ -58,6 +58,8 @@ export default function Property({ propertyId, params }: PropertyProps) {
         <button
           className="absolute left-0 flex h-full items-center justify-center bg-gradient-to-r from-white via-white to-transparent px-2"
           onClick={() => scroll(-1)}
+          aria-label="이전 항목으로 스크롤"
+          onKeyDown={(e) => e.key === 'Enter' && scroll(-1)}
         >
           <CiCircleChevLeft size={30} />
         </button>
@@ -81,6 +83,8 @@ export default function Property({ propertyId, params }: PropertyProps) {
         <button
           onClick={() => scroll(1)}
           className="absolute right-0 flex h-full items-center justify-center bg-gradient-to-l from-white via-white to-transparent"
+          aria-label="다음 항목으로 스크롤"
+          onKeyDown={(e) => e.key === 'Enter' && scroll(1)}
         >
           <CiCircleChevRight size={30} />
         </button>
