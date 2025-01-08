@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { RoomRules } from './RoomRules';
 
 const meta = {
-  title: 'Reservations/RoomRules',
+  title: 'User/Reservations/RoomRules',
   component: RoomRules,
   parameters: {
     layout: 'centered',

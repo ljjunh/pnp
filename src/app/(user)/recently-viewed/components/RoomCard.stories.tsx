@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { RoomCard } from './RoomCard';
 
 const meta: Meta<typeof RoomCard> = {
-  title: 'Recently-viewed/RoomCard',
+  title: 'User/Recently-viewed/RoomCard',
   component: RoomCard,
   parameters: {
     layout: 'centered',

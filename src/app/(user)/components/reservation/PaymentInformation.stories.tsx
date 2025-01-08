@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { PaymentInformation } from './PaymentInformation';
 
 const meta = {
-  title: 'Reservations/PaymentInformation',
+  title: 'User/Reservations/PaymentInformation',
   component: PaymentInformation,
   parameters: {
     layout: 'centered',

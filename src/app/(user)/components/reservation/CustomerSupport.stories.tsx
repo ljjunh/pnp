@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { CustomerSupport } from './CustomerSupport';
 
 const meta = {
-  title: 'Reservations/CustomerSupport',
+  title: 'User/Reservations/CustomerSupport',
   component: CustomerSupport,
   parameters: {
     layout: 'centered',
