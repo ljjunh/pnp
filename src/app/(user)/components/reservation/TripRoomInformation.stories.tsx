@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { RoomInformation } from './RoomInformation';
+import { TripRoomInformation } from './TripRoomInformation';
 
 const meta = {
-  title: 'Reservations/RoomInformation',
-  component: RoomInformation,
+  title: 'Reservations/TripRoomInformation',
+  component: TripRoomInformation,
   parameters: {
     layout: 'centered',
   },
@@ -15,10 +15,10 @@ const meta = {
     ),
   ],
   tags: ['autodocs'],
-} satisfies Meta<typeof RoomInformation>;
+} satisfies Meta<typeof TripRoomInformation>;
 
 export default meta;
-type Story = StoryObj<typeof RoomInformation>;
+type Story = StoryObj<typeof TripRoomInformation>;
 
 // 기본 상태
 export const Default: Story = {};
