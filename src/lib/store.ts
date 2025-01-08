@@ -1,5 +1,5 @@
+import modalReducer, { ModalState } from '@/lib/features/modal/modalSlice';
 import { configureStore } from '@reduxjs/toolkit';
-import modalReducer, { ModalState } from './features/modal/modalSlice';
 
 // 세션 스토리지에서 상태 로드
 const loadState = () => {

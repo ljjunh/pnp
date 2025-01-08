@@ -1,28 +1,26 @@
-import Filter from '@/app/(header-footer)/components/Filter';
 import StoreProvider from '@/app/StoreProvider';
 import { Meta, StoryObj } from '@storybook/react';
+import SearchFilter from './SearchFilter';
 
 const meta = {
-  title: 'Filter/Filter',
-  component: Filter,
+  title: 'Search/SearchFilter',
+  component: SearchFilter,
   parameters: {
     layout: 'centered',
   },
   decorators: [
     (Story) => (
       <StoreProvider>
-        <div style={{ width: '800px' }}>
+        <div style={{ width: '400px' }}>
           <Story />
         </div>
       </StoreProvider>
     ),
   ],
-} satisfies Meta<typeof Filter>;
+} satisfies Meta<typeof SearchFilter>;
 
 export default meta;
 
-type Story = StoryObj<typeof Filter>;
+type Story = StoryObj<typeof SearchFilter>;
 
-export const Default: Story = {
-  args: {},
-};
+export const Default: Story = {};

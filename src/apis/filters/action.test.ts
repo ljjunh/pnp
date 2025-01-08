@@ -1,7 +1,7 @@
 import mockFilter from '@/mocks/fixtures/filter.json';
 import { FilterType, PriceFilter } from '@/schemas/rooms';
+import { getFilterCount, getFilterPrice } from '@/apis/filters/action';
 import { formatFilter } from '@/utils/formatFilter';
-import { getFilterCount, getFilterPrice } from './action';
 
 describe('filter action test', () => {
   describe('getFilterPrice test', () => {

@@ -1,12 +1,12 @@
 import { useReducer } from 'react';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { SearchType } from '@/schemas/rooms';
+import SearchButton from '@/components/common/Button/SearchButton';
+import { Section } from '@/components/common/Header/ExpandedSearchBar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { useToast } from '@/hooks/use-toast';
 import { CiCircleMinus, CiCirclePlus } from 'react-icons/ci';
-import SearchButton from '../Button/SearchButton';
-import { Section } from './ExpandedSearchBar';
 
 type GuestValue = number;
 const GUEST_MIN = 0 as const;
@@ -48,6 +48,8 @@ export default function SearchGuest({
   handleSearchFilter,
 }: SearchGuestProps) {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const { toast } = useToast();
 
   const guestReducer = (state: State, action: Action) => {
     switch (action.type) {
@@ -103,6 +105,24 @@ export default function SearchGuest({
   const handleSearchClick = () => {
     const newParams = new URLSearchParams(searchParams);
 
+    if (
+      !filter.location &&
+      !filter.checkIn &&
+      !filter.checkOut &&
+      !state.adult &&
+      !state.child &&
+      !state.baby &&
+      !state.pet
+    ) {
+      toast({
+        title: '검색 조건을 입력해주세요',
+        description: '위치나 날짜, 게스트 수를 선택해주세요',
+        variant: 'default',
+      });
+
+      return;
+    }
+
     if (filter.location) {
       newParams.set('location', filter.location);
     }
@@ -127,11 +147,24 @@ export default function SearchGuest({
       newParams.set('pet', state.pet.toString());
     }
 
-    return `/search${newParams.toString() ? `?${newParams.toString()}` : ''}`;
+    setSection(null);
+
+    if (!filter.location) {
+      router.push(`${newParams.toString() ? `?${newParams.toString()}` : ''}`);
+    } else {
+      router.push(`/search${newParams.toString() ? `?${newParams.toString()}` : ''}`);
+    }
   };
 
   return (
-    <Popover open={section === 'guests'}>
+    <Popover
+      open={section === 'guests'}
+      onOpenChange={(open) => {
+        if (!open) {
+          setSection(null);
+        }
+      }}
+    >
       <PopoverTrigger
         onClick={() => setSection(section === 'guests' ? null : 'guests')}
         className={cn(
@@ -154,12 +187,14 @@ export default function SearchGuest({
               : '게스트 추가'}
           </span>
         </div>
-        <Link
+        <div
           className="pr-2"
-          href={handleSearchClick()}
+          onClick={handleSearchClick}
+          aria-label="검색 실행"
+          role="button"
         >
           <SearchButton variant={section ? 'expanded' : 'filtered'} />
-        </Link>
+        </div>
       </PopoverTrigger>
       <PopoverContent
         align="end"

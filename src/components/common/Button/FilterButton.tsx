@@ -1,3 +1,5 @@
+'use client';
+
 import { useModal } from '@/hooks/useModal';
 import { MODAL_ID } from '@/constants/modal';
 import { RxHamburgerMenu } from 'react-icons/rx';

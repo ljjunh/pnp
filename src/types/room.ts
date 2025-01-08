@@ -60,6 +60,7 @@ export type CreateRoomResponse = {
 };
 
 export type FilterRoomResponse = {
+  config: any;
   data: FilterRoom[];
   page: {
     currentPage: number;
@@ -75,3 +76,5 @@ export type StoryFilterRoom = Omit<FilterRoom, 'latitude' | 'longitude'> & {
   latitude: number;
   longitude: number;
 };
+
+export type SortRoom = 'recent' | 'expensive' | 'cheap';

@@ -1,6 +1,6 @@
 import mockFilter from '@/mocks/fixtures/filter.json';
 import { FilterType } from '@/schemas/rooms';
-import { formatFilter } from './formatFilter';
+import { formatFilter } from '@/utils/formatFilter';
 
 describe('formatFilter test', () => {
   const emptyFilter: FilterType = {
