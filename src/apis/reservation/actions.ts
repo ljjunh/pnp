@@ -1,10 +1,12 @@
 'use server';
 
+import { revalidateTag } from 'next/cache';
 import { auth } from '@/auth';
 import { CreateReservationInput } from '@/schemas/reservation';
 import { ActionResponse } from '@/types/action';
 import { CreateReservationResponse } from '@/types/reservation';
 import { httpClient } from '@/apis/core/httpClient';
+import { CACHE_TAGS } from '@/constants/cacheTags';
 
 /**
  * 예약을 생성하는 서버 액션입니다.
@@ -36,6 +38,9 @@ export async function createReservation(
         status: response.status,
       };
     }
+
+    revalidateTag(CACHE_TAGS.ROOMS.AVAILABLE(input.roomId));
+
     // 성공 시 응답
     return {
       success: true,
