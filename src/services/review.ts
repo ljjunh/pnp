@@ -392,7 +392,7 @@ export const availableReview = async (userId: string, roomId: number): Promise<s
       userId,
       roomId,
       // * 예약이 완료된 상태만 조회한다.
-      status: 'COMPLETED',
+      // status: 'COMPLETED',
       // * 리뷰 작성 가능한 기간을 설정한다. (체크아웃 후 30일 이내)
       checkOut: {
         gte: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000),
