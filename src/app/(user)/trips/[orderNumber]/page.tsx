@@ -4,7 +4,6 @@ import { getReservation } from '@/apis/reservation/queries';
 
 export default async function ReservationDetail({ params }: { params: { orderNumber: string } }) {
   const reservation = await getReservation(params.orderNumber);
-  console.log(reservation);
 
   return (
     <main className="flex h-[calc(100vh-5rem)] w-full overflow-y-hidden">
