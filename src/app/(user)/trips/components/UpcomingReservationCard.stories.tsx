@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { UpcomingReservationCard } from './UpcomingReservationCard';
 
 const meta: Meta<typeof UpcomingReservationCard> = {
-  title: 'User/Trips/UpcommingReservationCard',
+  title: 'User/Trips/UpcomingReservationCard',
   component: UpcomingReservationCard,
   parameters: {
     layout: 'centered',
