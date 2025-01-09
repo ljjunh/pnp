@@ -1,8 +1,8 @@
 import { CustomError } from '@/errors';
 import { FilterType } from '@/schemas/rooms';
 import { FilterRoomResponse } from '@/types/room';
+import { httpClient } from '@/apis/core/httpClient';
 import { formatFilter } from '@/utils/formatFilter';
-import { httpClient } from '../core/httpClient';
 
 /**
  *  필터 정보에 따른 방을 조회한다.
@@ -15,11 +15,17 @@ export async function getFilterRoom(
   filter: FilterType,
   page?: number,
   limit?: number,
+  sort?: string,
 ): Promise<FilterRoomResponse> {
   try {
     const params = formatFilter(filter);
+    
+    // * params는 객체기 때문에 params 자체를 바꿀 수 없지만, 내부에 존재하는 실제 파라미터 값은 추가 가능함.
+    params.append('page', page?.toString() ?? '1');
+    params.append('limit', limit?.toString() ?? '10');
+    params.append('sort', sort ?? 'recent');
 
-    const url = `/rooms${params.toString() ? `?${params.toString()}` : ''}${page ? `${params.toString() ? '&' : '?'}page=${page}` : ''}${limit ? `${page ? '&' : '?'}limit=${limit}` : ''}`;
+    const url = `/rooms?${params.toString()}`;
 
     const response = await httpClient.get<FilterRoomResponse>(url);
 

@@ -20,8 +20,7 @@ import { RxCross2 } from 'react-icons/rx';
 export default function FilterModal() {
   const [filterCount, setFilterCount] = useState<number | null>(null);
   const { toast } = useToast();
-  const { modalState } = useModal(MODAL_ID.ROOM_FILTER);
-  const { handleCloseModal } = useModal(MODAL_ID.ROOM_FILTER);
+  const { modalState, handleCloseModal } = useModal(MODAL_ID.ROOM_FILTER);
   const params = useSearchParams();
 
   const paramFilter: FilterType = {
@@ -35,6 +34,12 @@ export default function FilterModal() {
     option: params.get('option')?.split(',') || [],
     language: params.get('language')?.split(',').map(Number) || [],
     property: params.get('property') ? Number(params.get('property')) : undefined,
+    location: params.get('location') || undefined,
+    checkIn: params.get('checkIn') || undefined,
+    checkOut: params.get('checkOut') || undefined,
+    guest: params.get('guest') ? Number(params.get('guest')) : undefined,
+    baby: params.get('baby') ? Number(params.get('baby')) : undefined,
+    pet: params.get('pet') ? Number(params.get('pet')) : undefined,
   };
 
   const [filter, setFilter] = useState<FilterType>(paramFilter);

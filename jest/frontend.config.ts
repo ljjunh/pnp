@@ -29,7 +29,7 @@ const customJestConfig: Config = {
   // 파일명이 .test.ts/tsx 또는 .spec.ts/tsx로 끝나는 파일
   testMatch: ['**/?(*.)+(spec|test).ts?(x)'],
 
-  // 테스트 제외 경로(.next, nodo_modules 폴더 제외)
+  // 테스트 제외 경로(.next, node_modules 폴더 제외)
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
 
   // 커버리지 설정

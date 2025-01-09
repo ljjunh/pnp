@@ -23,16 +23,15 @@ interface ResponseInterceptor {
 }
 
 export class HttpClient {
-  // 싱글톤 인스턴스를 저장하는 정적 변수
-  private static instance: HttpClient;
+  protected static instance: HttpClient;
   // API 기본 URL
-  private readonly baseURL = process.env.NEXT_PUBLIC_BASE_URL || '';
+  protected readonly baseURL = process.env.NEXT_PUBLIC_BASE_URL || '';
   // 요청/응답 인터셉터 배열
-  private requestInterceptors: RequestInterceptor[] = [];
-  private responseInterceptors: ResponseInterceptor[] = [];
+  protected requestInterceptors: RequestInterceptor[] = [];
+  protected responseInterceptors: ResponseInterceptor[] = [];
 
   // 생성자 private로 선언해서 외부에서 직접 인스턴스화 못하게
-  private constructor() {}
+  protected constructor() {}
 
   // 싱글톤 인스턴스를 얻는 메서드
   // 최초 호출시 인스턴스 생성 및 기본 인터셉터 설정
@@ -42,20 +41,6 @@ export class HttpClient {
       HttpClient.instance.setupDefaultInterceptors();
     }
     return HttpClient.instance;
-  }
-
-  private async getCookies(): Promise<string> {
-    if (typeof window !== 'undefined') {
-      return document.cookie;
-    }
-
-    if (process.env.NODE_ENV === 'test') {
-      return '';
-    }
-
-    const { getServerCookies } = await import('@/app/lib/server/cookies');
-
-    return getServerCookies();
   }
 
   // 요청 인터셉터 추가하는 메서드
@@ -69,7 +54,7 @@ export class HttpClient {
   }
 
   // 기본 인터셉터 설정
-  private setupDefaultInterceptors(): void {
+  protected setupDefaultInterceptors(): void {
     // 기본 요청 인터셉터
     this.addRequestInterceptor({
       onRequest: (config) => ({
@@ -89,7 +74,7 @@ export class HttpClient {
    * @param config - fetch API의 추가 설정
    * @returns - API 응답
    */
-  private async request<T>(
+  protected async request<T>(
     method: HttpMethod,
     url: string,
     data?: unknown,
@@ -102,7 +87,7 @@ export class HttpClient {
       cache: method === 'GET' ? 'force-cache' : undefined,
       headers: {
         ...config.headers,
-        Cookie: await this.getCookies(),
+        // Cookie: await this.getCookies(),
       },
     };
 
@@ -181,4 +166,49 @@ export class HttpClient {
   }
 }
 
+export class AuthHttpClient extends HttpClient {
+  protected static instance: AuthHttpClient;
+
+  private constructor() {
+    super();
+    this.setupDefaultInterceptors();
+  }
+
+  public static getInstance(): AuthHttpClient {
+    if (!AuthHttpClient.instance) {
+      AuthHttpClient.instance = new AuthHttpClient();
+    }
+    return AuthHttpClient.instance;
+  }
+
+  private async getCookies(): Promise<string> {
+    if (typeof window !== 'undefined') {
+      return document.cookie;
+    }
+
+    if (process.env.NODE_ENV === 'test') {
+      return '';
+    }
+
+    const { getServerCookies } = await import('@/app/lib/server/cookies');
+
+    return getServerCookies();
+  }
+  protected setupDefaultInterceptors(): void {
+    super.setupDefaultInterceptors();
+
+    this.addRequestInterceptor({
+      onRequest: async (config) => ({
+        ...config,
+        cache: 'no-store',
+        headers: {
+          ...config.headers,
+          Cookie: await this.getCookies(),
+        },
+      }),
+    });
+  }
+}
+
 export const httpClient = HttpClient.getInstance();
+export const authHttpClient = AuthHttpClient.getInstance();

@@ -128,14 +128,14 @@ export async function createReview(
   }
 
   // * 만약, 사용자가 해당 숙소에 예약한 이력이 없다면 리뷰를 작성할 수 없다.
-  const canReview = await prisma.review.count({
+  const alreadyReview = await prisma.review.count({
     where: {
       orderNumber: data.orderNumber,
       userId,
     },
   });
 
-  if (canReview) {
+  if (alreadyReview > 0) {
     throw new ForbiddenError('리뷰를 작성할 권한이 없습니다.');
   }
 
@@ -392,7 +392,7 @@ export const availableReview = async (userId: string, roomId: number): Promise<s
       userId,
       roomId,
       // * 예약이 완료된 상태만 조회한다.
-      status: 'COMPLETED',
+      // status: 'COMPLETED',
       // * 리뷰 작성 가능한 기간을 설정한다. (체크아웃 후 30일 이내)
       checkOut: {
         gte: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000),

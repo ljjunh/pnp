@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
 import { ReviewSortType, ReviewSummarize } from '@/types/review';
-import { httpClient } from '@/apis/core/httpClient';
+import { authHttpClient, httpClient } from '@/apis/core/httpClient';
 import { CACHE_TAGS } from '@/constants/cacheTags';
 
 export interface GetReviewsResponse {
@@ -84,7 +84,7 @@ export async function getReviews(
  */
 export async function getReviewAvailable(roomId: number): Promise<string[]> {
   try {
-    const response = await httpClient.get<string[]>(`/rooms/${roomId}/reviews/available`, {
+    const response = await authHttpClient.get<string[]>(`/rooms/${roomId}/reviews/available`, {
       next: {
         tags: [CACHE_TAGS.REVIEWS.AVAILABLE(roomId)],
       },

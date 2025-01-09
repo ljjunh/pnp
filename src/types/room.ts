@@ -75,3 +75,5 @@ export type StoryFilterRoom = Omit<FilterRoom, 'latitude' | 'longitude'> & {
   latitude: number;
   longitude: number;
 };
+
+export type SortRoom = 'recent' | 'expensive' | 'cheap';

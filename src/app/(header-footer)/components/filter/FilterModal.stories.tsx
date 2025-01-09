@@ -1,7 +1,7 @@
+import FilterModal from '@/app/(header-footer)/components/filter/FilterModal';
 import { makeStore } from '@/lib/store';
 import { Meta, StoryObj } from '@storybook/react';
 import { Provider } from 'react-redux';
-import FilterModal from './FilterModal';
 
 const store = makeStore();
 
