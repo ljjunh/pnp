@@ -8,4 +8,6 @@ export const REGISTER_STEP = {
   AMENITIES: '/register/amenities',
   PHOTOS: '/register/photos',
   TITLE: '/register/title',
+  DESCRIPTION: '/register/description',
+  THIRD_STEP: '/register/third-step',
 };

@@ -18,14 +18,14 @@ const mockData = [
   { title: '전주옛날집', location: '대한민국 서울 서초구 강남대로' },
 ];
 
-enum LocationStep {
+enum LOCATION_STEP {
   'INPUT',
   'CONFIRM',
   'LOCATION_CHECK',
 }
 
 export default function Location() {
-  const [step, setStep] = useState(LocationStep.INPUT);
+  const [step, setStep] = useState(LOCATION_STEP.INPUT);
   const [isClick, setIsClick] = useState<boolean>(false);
   const [text, setText] = useState<string>('');
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -46,24 +46,24 @@ export default function Location() {
   }, []);
 
   const handleNextStep = () => {
-    if (step === LocationStep.INPUT) {
-      setStep(LocationStep.CONFIRM);
-    } else if (step === LocationStep.CONFIRM) {
-      setStep(LocationStep.LOCATION_CHECK);
+    if (step === LOCATION_STEP.INPUT) {
+      setStep(LOCATION_STEP.CONFIRM);
+    } else if (step === LOCATION_STEP.CONFIRM) {
+      setStep(LOCATION_STEP.LOCATION_CHECK);
     }
   };
 
   const handlePrevStep = () => {
-    if (step === LocationStep.CONFIRM) {
-      setStep(LocationStep.INPUT);
-    } else if (step === LocationStep.LOCATION_CHECK) {
-      setStep(LocationStep.CONFIRM);
+    if (step === LOCATION_STEP.CONFIRM) {
+      setStep(LOCATION_STEP.INPUT);
+    } else if (step === LOCATION_STEP.LOCATION_CHECK) {
+      setStep(LOCATION_STEP.CONFIRM);
     }
   };
 
   return (
     <div className="px-80 py-11">
-      {step === LocationStep.INPUT && (
+      {step === LOCATION_STEP.INPUT && (
         <>
           <p className="pb-3 text-3xl">숙소 위치는 어디인가요?</p>
           <p className="pb-10 text-lg text-neutral-07">
@@ -132,7 +132,7 @@ export default function Location() {
           </div>
         </>
       )}
-      {step === LocationStep.CONFIRM && (
+      {step === LOCATION_STEP.CONFIRM && (
         <div className="w-4/5">
           <p className="pb-3 text-3xl">주소 확인</p>
           <p className="pb-10 text-lg text-neutral-07">
@@ -199,7 +199,7 @@ export default function Location() {
           />
         </div>
       )}
-      {step === LocationStep.LOCATION_CHECK && (
+      {step === LOCATION_STEP.LOCATION_CHECK && (
         <div>
           <p className="pb-3 text-3xl">핀이 놓인 위치가 정확한가요?</p>
           <p className="pb-10 text-lg text-neutral-07">

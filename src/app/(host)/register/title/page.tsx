@@ -14,6 +14,7 @@ export default function Title() {
       <input
         className="mt-8 h-48 w-full rounded-xl border-[1.5px] border-neutral-07 p-4 align-text-top text-xl focus:border-black focus:outline-none"
         type="text"
+        maxLength={32}
         onChange={(e) => setInputValue(e.target.value)}
       />
       <span className="mt-4 font-semibold text-neutral-08">{inputValue.length}/32</span>
