@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
 import { Room } from '@/types/room';
-import { httpClient } from '@/apis/core/httpClient';
+import { authHttpClient, httpClient } from '@/apis/core/httpClient';
 import { CACHE_TAGS } from '@/constants/cacheTags';
 
 /**
@@ -48,7 +48,7 @@ export async function getRoom(roomId: number): Promise<Room> {
  */
 export async function getScrap(roomId: number): Promise<boolean> {
   try {
-    const response = await httpClient.get<boolean>(`/rooms/${roomId}/scrap`, {
+    const response = await authHttpClient.get<boolean>(`/rooms/${roomId}/scrap`, {
       next: {
         tags: [CACHE_TAGS.ROOMS.SCRAP(roomId)],
       },

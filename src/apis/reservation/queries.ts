@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
 import { Reservation } from '@/types/reservation';
-import { httpClient } from '@/apis/core/httpClient';
+import { authHttpClient } from '@/apis/core/httpClient';
 
 /**
  * 특정 예약 정보를 조회합니다.
@@ -10,7 +10,7 @@ import { httpClient } from '@/apis/core/httpClient';
  */
 export async function getReservation(orderNumber: string): Promise<Reservation> {
   try {
-    const response = await httpClient.get<Reservation>(`/reservation/${orderNumber}`);
+    const response = await authHttpClient.get<Reservation>(`/reservation/${orderNumber}`);
 
     if (!response.success) {
       switch (response.status) {
