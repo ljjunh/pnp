@@ -1,3 +1,5 @@
+'use client';
+
 import { BackBtn } from '@/app/(user)/components/BackBtn';
 import { CustomerSupport } from '@/app/(user)/components/reservation/CustomerSupport';
 import { HostInformation } from '@/app/(user)/components/reservation/HostInformation';
@@ -13,10 +15,12 @@ import { ROUTES } from '@/constants/routeURL';
 export default function TripReservationContent({ reservation }: { reservation: Reservation }) {
   return (
     <div className="flex h-full flex-col gap-3 overflow-y-scroll rounded-lg bg-white shadow-lg">
+
       {/* 뒤로 가기 버튼 */}
       <div className="flex px-2 pt-3">
         <BackBtn url={ROUTES.USER.TRIPS} />
       </div>
+
       {/* 객실 정보 */}
       <TripRoomInformation
         hostName={reservation.room.host.user.name}
@@ -28,7 +32,6 @@ export default function TripReservationContent({ reservation }: { reservation: R
         images={reservation.room.images}
         roomId={reservation.roomId}
       />
-
       <div className="border-b-8" />
 
       {/* 예약 상세 정보 */}
@@ -38,7 +41,6 @@ export default function TripReservationContent({ reservation }: { reservation: R
         checkIn={formatDate(reservation.checkIn)}
         checkOut={formatDate(reservation.checkOut)}
       />
-
       <div className="border-b-8" />
 
       {/* 이용 규칙 */}
@@ -48,7 +50,6 @@ export default function TripReservationContent({ reservation }: { reservation: R
         checkOut={reservation.room.checkOut}
         rules={reservation.room.rules}
       />
-
       <div className="border-b-8" />
 
       {/* 호스트 정보 */}
@@ -57,12 +58,10 @@ export default function TripReservationContent({ reservation }: { reservation: R
         hostImage={reservation.room.host.user.image}
         isSuperHost={reservation.room.host.isSuperHost}
       />
-
       <div className="border-b-8" />
 
       {/* 결제 정보 */}
       <PaymentInformation totalPrice={reservation.totalPrice} />
-
       <div className="border-b-8" />
 
       {/* 고객 지원 */}

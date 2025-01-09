@@ -1,7 +1,7 @@
+import { RoomRulesDetailModalButton } from '@/app/(user)/components/reservation/RoomRulesDetailModalButton';
 import { Room } from '@/types/room';
 import { BsHouseExclamation } from 'react-icons/bs';
 import { IoIosArrowForward } from 'react-icons/io';
-import { RoomRulesDetailModalButton } from './RoomRulesDetailModalButton';
 
 interface RoomRulesProps {
   checkInType: Room['checkInType'];

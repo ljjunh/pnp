@@ -8,14 +8,17 @@ export default async function ReservationDetail({ params }: { params: { orderNum
 
   return (
     <main className="flex h-[calc(100vh-5rem)] w-full overflow-y-hidden">
+      {/* 예약 정보 */}
       <section className="h-full w-[30%] bg-neutral-100 px-2 pt-3">
         <TripReservationContent reservation={reservation} />
       </section>
-      <section className="w-[70%] h-full">
+
+      {/* 지도 */}
+      <section className="h-full w-[70%]">
         <GoogleMapView
           lat={Number(reservation.room.latitude)}
           lng={Number(reservation.room.longitude)}
-          height='100%'
+          height="100%"
         />
       </section>
     </main>
