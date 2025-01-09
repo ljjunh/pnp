@@ -21,4 +21,8 @@ export default meta;
 type Story = StoryObj<typeof PaymentInformation>;
 
 // 기본 상태
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    totalPrice: 55000,
+  },
+};

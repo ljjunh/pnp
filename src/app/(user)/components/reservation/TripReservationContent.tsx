@@ -56,7 +56,7 @@ export default function TripReservationContent({ reservation }: { reservation: R
       <div className="border-b-8" />
 
       {/* 결제 정보 */}
-      <PaymentInformation />
+      <PaymentInformation totalPrice={reservation.totalPrice} />
 
       <div className="border-b-8" />
 
