@@ -1,28 +1,31 @@
 'use client';
 
 import { useReducer } from 'react';
-import Link from 'next/link';
 import { CiCircleMinus, CiCirclePlus } from 'react-icons/ci';
 
-const MIN_VALUE = 1 as const;
+const MIN_VALUE = 0 as const;
 const MAX_VALUE = 50 as const;
+const BATHROOM_INCREMENT = 0.5 as const;
 
 interface State {
   guest: number;
   bedroom: number;
   bed: number;
+  bathroom: number;
 }
 
 type Action =
   | { type: 'GUEST'; payload: number }
   | { type: 'BEDROOM'; payload: number }
-  | { type: 'BED'; payload: number };
+  | { type: 'BED'; payload: number }
+  | { type: 'BATHROOM'; payload: number };
 
 export default function Info() {
   const initialState = {
     guest: MIN_VALUE,
     bedroom: MIN_VALUE,
     bed: MIN_VALUE,
+    bathroom: MIN_VALUE,
   };
 
   function infoReducer(state: State, action: Action) {
@@ -33,6 +36,8 @@ export default function Info() {
         return { ...state, bedroom: action.payload };
       case 'BED':
         return { ...state, bed: action.payload };
+      case 'BATHROOM':
+        return { ...state, bathroom: action.payload };
       default:
         return state;
     }
@@ -44,6 +49,18 @@ export default function Info() {
     const nowValue = state[type];
 
     const changeValue = () => {
+      if (type === 'bathroom') {
+        if (nowValue === MIN_VALUE) {
+          return isIncrement ? nowValue + BATHROOM_INCREMENT : MIN_VALUE;
+        }
+
+        if (nowValue === MAX_VALUE) {
+          return isIncrement ? MAX_VALUE : nowValue - BATHROOM_INCREMENT;
+        }
+
+        return isIncrement ? nowValue + BATHROOM_INCREMENT : nowValue - BATHROOM_INCREMENT;
+      }
+
       if (nowValue === MIN_VALUE) {
         return isIncrement ? nowValue + 1 : MIN_VALUE;
       }
@@ -59,10 +76,10 @@ export default function Info() {
   };
 
   return (
-    <div className="py-11">
-      <p className="pb-3 text-3xl">기본 사항 작성하기</p>
-      <div className="mt-4 space-y-8">
-        <p>숙박 가능한 인원은 몇 명 인가요?</p>
+    <div className="flex h-full w-full flex-col items-start justify-center px-80">
+      <p className="pb-3 text-3xl">숙소 기본 정보를 알려주세요</p>
+      <div className="mt-4 w-full space-y-8 text-lg">
+        <p>침대 유형과 같은 세부 사항은 나중에 추가하실 수 있습니다.</p>
         <div className="space-y-4">
           <div className="flex flex-row items-center justify-between">
             <span>게스트</span>
@@ -138,42 +155,31 @@ export default function Info() {
               />
             </div>
           </div>
-        </div>
-      </div>
-      <div className="mt-8">
-        <p>모든 침실에 잠금 장치가 설치되어 있나요?</p>
-        <div className="mt-4 flex flex-col space-y-4">
-          <div>
-            <input
-              type="radio"
-              id="yes"
-              name="lock"
-              value="yes"
-              className="mr-2"
-            />
-            <label htmlFor="yes">예</label>
+          <hr />
+          <div className="flex flex-row items-center justify-between">
+            <span>욕실</span>
+            <div className="flex w-40 flex-row items-center justify-between">
+              <CiCircleMinus
+                size={36}
+                color={state.bathroom === MIN_VALUE ? 'LightGray' : 'Gray'}
+                className="cursor-pointer"
+                onClick={() => {
+                  handleChange('bathroom', false);
+                }}
+                role="bathroom-minus-button"
+              />
+              <p className="px-4">{state.bathroom}</p>
+              <CiCirclePlus
+                size={36}
+                color={state.bathroom === MAX_VALUE ? 'LightGray' : 'Gray'}
+                className="cursor-pointer"
+                onClick={() => {
+                  handleChange('bathroom', true);
+                }}
+                role="bathroom-plus-button"
+              />
+            </div>
           </div>
-          <div>
-            <input
-              type="radio"
-              id="no"
-              name="lock"
-              value="no"
-              className="mr-2"
-            />
-            <label htmlFor="no">아니요</label>
-          </div>
-        </div>
-      </div>
-      <div className="fixed bottom-0 left-0 right-0 flex h-20 items-center justify-center border-t border-neutral-04 bg-white">
-        <div className="flex w-full flex-row items-center justify-between px-20">
-          <Link
-            href={'..'}
-            className="border-b border-black text-base"
-          >
-            뒤로
-          </Link>
-          <button className="rounded-xl bg-black px-8 py-3 text-white">다음</button>
         </div>
       </div>
     </div>

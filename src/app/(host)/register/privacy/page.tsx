@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { BiCategory } from 'react-icons/bi';
-import Link from 'next/link';
 
 export default function Privacy() {
   const [privacy, setPrivacy] = useState<string | null>(null);
@@ -11,7 +10,7 @@ export default function Privacy() {
   const selected = 'border-black bg-neutral-02 border-2';
 
   return (
-    <div className="my-40 flex items-center justify-center">
+    <div className="flex h-full items-center justify-center">
       <div className="w-[600px]">
         <p className="pb-11 text-3xl">게스트가 사용할 숙소 유형</p>
         <div className="flex flex-col gap-4">
@@ -59,17 +58,6 @@ export default function Privacy() {
             </div>
             <BiCategory size={24} />
           </div>
-        </div>
-      </div>
-      <div className="fixed bottom-0 left-0 right-0 flex h-20 items-center justify-center border-t border-neutral-04 bg-white">
-        <div className="flex w-full flex-row items-center justify-between px-20">
-          <Link
-            href={'..'}
-            className="border-b border-black text-base"
-          >
-            뒤로
-          </Link>
-          <button className="rounded-xl bg-black px-8 py-3 text-white">다음</button>
         </div>
       </div>
     </div>

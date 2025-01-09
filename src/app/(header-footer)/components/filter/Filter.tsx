@@ -26,7 +26,7 @@ export default function Filter() {
   return (
     <>
       <div
-        className={`sticky top-[82px] z-10 flex h-[78px] w-full flex-row items-center justify-between bg-white ${isScrolled ? '' : 'mt-24'}`}
+        className={`sticky top-[82px] flex h-[78px] w-full flex-row items-center justify-between bg-white ${isScrolled ? '' : 'mt-24'}`}
       >
         <Property
           propertyId={propertyId}

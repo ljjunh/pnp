@@ -62,7 +62,7 @@ export default function Location() {
   };
 
   return (
-    <div className="py-11">
+    <div className="px-80 py-11">
       {step === LocationStep.INPUT && (
         <>
           <p className="pb-3 text-3xl">숙소 위치는 어디인가요?</p>
@@ -225,7 +225,7 @@ export default function Location() {
           </div>
         </div>
       )}
-      <div className="fixed bottom-0 left-0 right-0 flex h-20 items-center justify-center border-t border-neutral-04 bg-white">
+      {/* <div className="fixed bottom-0 left-0 right-0 flex h-20 items-center justify-center border-t border-neutral-04 bg-white">
         <div className="flex w-full flex-row items-center justify-between px-20">
           <button
             className="border-b border-black text-base"
@@ -240,7 +240,7 @@ export default function Location() {
             다음
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

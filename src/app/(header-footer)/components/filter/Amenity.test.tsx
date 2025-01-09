@@ -2,11 +2,11 @@ import Amenity from '@/app/(header-footer)/components/filter/Amenity';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
+  AMENITY_LIST,
   CHARACTERISTIC_AMENITIES,
   ESSENTIAL_AMENITIES,
   LOCATION_AMENITIES,
   SAFETY_AMENITIES,
-  TAG_LIST,
 } from '@/constants/amenity';
 
 const AMENITY_DATA = {
@@ -76,25 +76,25 @@ describe('Amenity 컴포넌트 테스트', () => {
 
     // 필수 편의시설 태그 확인
     const essentialTags = AMENITY_DATA.ESSENTIAL_AMENITIES.map((amenity) =>
-      screen.getAllByText(TAG_LIST[amenity].name),
+      screen.getAllByText(AMENITY_LIST[amenity].name),
     );
     expect(essentialTags).toHaveLength(10);
 
     // 특징 편의시설 태그 확인
     const characteristicTags = AMENITY_DATA.CHARACTERISTIC_AMENITIES.map((amenity) =>
-      screen.getAllByText(TAG_LIST[amenity].name),
+      screen.getAllByText(AMENITY_LIST[amenity].name),
     );
     expect(characteristicTags).toHaveLength(11);
 
     // 위치 편의시설 태그 확인
     const locationTags = AMENITY_DATA.LOCATION_AMENITIES.map((amenity) =>
-      screen.getAllByText(TAG_LIST[amenity].name),
+      screen.getAllByText(AMENITY_LIST[amenity].name),
     );
     expect(locationTags).toHaveLength(2);
 
     // 안전 편의시설 태그 확인
     const safetyTags = AMENITY_DATA.SAFETY_AMENITIES.map((amenity) =>
-      screen.getAllByText(TAG_LIST[amenity].name),
+      screen.getAllByText(AMENITY_LIST[amenity].name),
     );
     expect(safetyTags).toHaveLength(2);
   });
