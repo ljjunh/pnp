@@ -26,14 +26,12 @@ export function PreviousReservationCard({
     <Link href={ROUTES.USER.TRIPS_DETAIL(orderNumber)}>
       <article className="flex cursor-pointer gap-3">
         <figure className="relative w-20">
-          {thumbnail && (
-            <Image
-              src={thumbnail}
-              alt="숙소 이미지"
-              fill
-              className="rounded-lg object-cover"
-            />
-          )}
+          <Image
+            src={thumbnail ?? '/images/no-thumbnail.png'}
+            alt="숙소 사진"
+            fill
+            className="rounded-t-2xl object-cover"
+          />
         </figure>
         <div className="flex flex-col gap-1 text-neutral-400">
           <address className="font-semibold not-italic text-black">{location}</address>

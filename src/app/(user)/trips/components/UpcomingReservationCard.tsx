@@ -26,14 +26,12 @@ export function UpcomingReservationCard({
     <Link href={ROUTES.USER.TRIPS_DETAIL(orderNumber)}>
       <article className="rounded-2xl shadow-lg">
         <figure className="relative aspect-square">
-          {thumbnail && (
-            <Image
-              src={thumbnail}
-              alt="숙소 사진"
-              fill
-              className="rounded-t-2xl object-cover"
-            />
-          )}
+          <Image
+            src={thumbnail ?? '/images/no-thumbnail.png'}
+            alt="숙소 사진"
+            fill
+            className="rounded-t-2xl object-cover"
+          />
         </figure>
         <div className="p-3 text-neutral-400">
           <address className="text-lg font-semibold not-italic text-black">{location}</address>
