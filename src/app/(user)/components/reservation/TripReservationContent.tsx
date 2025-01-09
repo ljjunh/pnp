@@ -32,7 +32,12 @@ export default function TripReservationContent({ reservation }: { reservation: R
       <div className="border-b-8" />
 
       {/* 예약 상세 정보 */}
-      <ReservationDetailInformation />
+      <ReservationDetailInformation
+        guestNumber={reservation.guestNumber}
+        orderNumber={reservation.orderNumber}
+        checkIn={formatDate(reservation.checkIn)}
+        checkOut={formatDate(reservation.checkOut)}
+      />
 
       <div className="border-b-8" />
 
