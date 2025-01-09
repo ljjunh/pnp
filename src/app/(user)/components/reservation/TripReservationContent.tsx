@@ -42,7 +42,12 @@ export default function TripReservationContent({ reservation }: { reservation: R
       <div className="border-b-8" />
 
       {/* 이용 규칙 */}
-      <RoomRules />
+      <RoomRules
+        checkInType={reservation.room.checkInType}
+        checkIn={reservation.room.checkIn}
+        checkOut={reservation.room.checkOut}
+        rules={reservation.room.rules}
+      />
 
       <div className="border-b-8" />
 
