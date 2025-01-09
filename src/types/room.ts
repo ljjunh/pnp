@@ -60,7 +60,6 @@ export type CreateRoomResponse = {
 };
 
 export type FilterRoomResponse = {
-  config: any;
   data: FilterRoom[];
   page: {
     currentPage: number;
