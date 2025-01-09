@@ -20,4 +20,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof HostInformation>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    hostName: '도영',
+    hostImage: 'https://a0.muscache.com/im/pictures/user/00eb8ef3-5385-46c8-9687-3b1186c98bb9.jpg',
+    isSuperHost: true,
+  },
+};

@@ -47,7 +47,11 @@ export default function TripReservationContent({ reservation }: { reservation: R
       <div className="border-b-8" />
 
       {/* 호스트 정보 */}
-      <HostInformation />
+      <HostInformation
+        hostName={reservation.room.host.user.name}
+        hostImage={reservation.room.host.user.image}
+        isSuperHost={reservation.room.host.isSuperHost}
+      />
 
       <div className="border-b-8" />
 
