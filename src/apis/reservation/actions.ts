@@ -5,7 +5,7 @@ import { auth } from '@/auth';
 import { CreateReservationInput } from '@/schemas/reservation';
 import { ActionResponse } from '@/types/action';
 import { CreateReservationResponse } from '@/types/reservation';
-import { httpClient } from '@/apis/core/httpClient';
+import { authHttpClient } from '@/apis/core/httpClient';
 import { CACHE_TAGS } from '@/constants/cacheTags';
 
 /**
@@ -28,7 +28,7 @@ export async function createReservation(
     }
 
     // API 요청
-    const response = await httpClient.post<CreateReservationResponse>('/reservation', input);
+    const response = await authHttpClient.post<CreateReservationResponse>('/reservation', input);
 
     // API에서 명시적으로 처리되는 에러
     if (!response.success) {
