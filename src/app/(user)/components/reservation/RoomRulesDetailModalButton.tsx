@@ -4,6 +4,7 @@ import { Room } from '@/types/room';
 import ModalProvider from '@/components/common/ModalProvider/ModalProvider';
 import { useModal } from '@/hooks/useModal';
 import { MODAL_ID } from '@/constants/modal';
+import { DEFAULT_CHECK_IN_TIME, DEFAULT_CHECK_OUT_TIME } from '@/constants/reservation';
 import { IoMdTime } from 'react-icons/io';
 import { PiDoorOpen } from 'react-icons/pi';
 import { RxCross2 } from 'react-icons/rx';
@@ -43,6 +44,7 @@ export function RoomRulesDetailModalButton({
           <div className="mx-2 mb-4 mt-2 inline-block rounded-full p-2 hover:bg-neutral-01">
             <RxCross2
               onClick={handleCloseModal}
+              onKeyDown={(e) => e.key === 'ESC' && handleCloseModal()}
               aria-label="모달 닫기"
               className="cursor-pointer"
               role="button"
@@ -60,11 +62,11 @@ export function RoomRulesDetailModalButton({
                 <h2 className="py-4 text-lg">체크인 및 체크아웃</h2>
                 <div className="flex items-center gap-4 border-b py-6 text-shade-02">
                   <IoMdTime size={25} />
-                  체크인 시간: {checkIn ? checkIn : '15:00'} 이후
+                  체크인 시간: {checkIn ? checkIn : DEFAULT_CHECK_IN_TIME} 이후
                 </div>
                 <div className="flex items-center gap-4 border-b py-6 text-shade-02">
                   <IoMdTime size={25} />
-                  체크아웃 시간: {checkOut ? checkOut : '11:00'} 이전
+                  체크아웃 시간: {checkOut ? checkOut : DEFAULT_CHECK_OUT_TIME} 이전
                 </div>
                 {checkInType && (
                   <div className="flex items-center gap-4 py-6 text-shade-02">

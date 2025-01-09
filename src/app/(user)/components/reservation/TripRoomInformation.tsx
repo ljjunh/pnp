@@ -47,29 +47,25 @@ export function TripRoomInformation({
         <hr />
       </div>
 
-      <button>
-        <Link href={ROUTES.USER.MESSAGES}>
-          <div className="flex gap-3 px-4 py-4 hover:bg-gray-100">
-            <BiMessage className="size-6" />
-            <div className="flex flex-col text-left">
-              <h1 className="font-medium">호스트에게 메시지 보내기</h1>
-              <p className="line-clamp-1 text-xs text-gray-500">{hostName}</p>
-            </div>
+      <Link href={ROUTES.USER.MESSAGES}>
+        <div className="flex gap-3 px-4 py-4 hover:bg-gray-100">
+          <BiMessage className="size-6" />
+          <div className="flex flex-col text-left">
+            <h1 className="font-medium">호스트에게 메시지 보내기</h1>
+            <p className="line-clamp-1 text-xs text-gray-500">{hostName}</p>
           </div>
-        </Link>
-      </button>
+        </div>
+      </Link>
 
-      <button>
-        <Link href={ROUTES.ROOMS.DETAIL(roomId)}>
-          <div className="flex gap-3 px-4 py-4 hover:bg-gray-100">
-            <BsHouseExclamation className="size-6" />
-            <div className="flex flex-col text-left">
-              <h1 className="font-medium">숙소</h1>
-              <p className="line-clamp-1 text-xs text-gray-500">{title}</p>
-            </div>
+      <Link href={ROUTES.ROOMS.DETAIL(roomId)}>
+        <div className="flex gap-3 px-4 py-4 hover:bg-gray-100">
+          <BsHouseExclamation className="size-6" />
+          <div className="flex flex-col text-left">
+            <h1 className="font-medium">숙소</h1>
+            <p className="line-clamp-1 text-xs text-gray-500">{title}</p>
           </div>
-        </Link>
-      </button>
+        </div>
+      </Link>
     </>
   );
 }

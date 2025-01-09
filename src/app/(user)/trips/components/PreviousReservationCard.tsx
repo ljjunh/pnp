@@ -30,7 +30,7 @@ export function PreviousReservationCard({
             src={thumbnail ?? '/images/no-thumbnail.png'}
             alt="숙소 사진"
             fill
-            className="rounded-t-2xl object-cover"
+            className="rounded-lg object-cover"
           />
         </figure>
         <div className="flex flex-col gap-1 text-neutral-400">

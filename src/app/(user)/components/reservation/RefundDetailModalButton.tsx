@@ -33,6 +33,7 @@ export function RefundDetailModalButton({ checkIn, checkOut }: RefundDetailModal
           <div className="mb-4 mt-2 inline-block rounded-full p-2 hover:bg-neutral-01">
             <RxCross2
               onClick={handleCloseModal}
+              onKeyDown={(e) => e.key === 'ESC' && handleCloseModal()}
               aria-label="모달 닫기"
               className="cursor-pointer"
               role="button"
