@@ -1,10 +1,10 @@
 import { Help } from '@/app/(user)/trips/components/Help';
 import { NoReservation } from '@/app/(user)/trips/components/NoReservation';
 import { PreviousReservationCard } from '@/app/(user)/trips/components/PreviousReservationCard';
+import { UpcommingReservationCard } from '@/app/(user)/trips/components/UpcommingReservationCard';
 import { getReservationTrip } from '@/apis/trips/queries';
-import { formatDate } from '@/utils/formatDate';
-import { UpcommingReservationCard } from './components/UpcommingReservationCard';
 import { categorizeReservations } from '@/utils/categorizeReservation';
+import { formatDate } from '@/utils/formatDate';
 
 export const dynamic = 'force-dynamic'; // 동적 렌더링
 
@@ -36,7 +36,6 @@ export default async function Trips() {
             </div>
           </section>
         ) : (
-
           // 에약된 여행 일정 없는 경우
           <NoReservation />
         )}

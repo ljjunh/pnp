@@ -1,30 +1,31 @@
 import Link from 'next/link';
-import { ImageLink } from '@/types/room';
+import { ImageLink, Room } from '@/types/room';
+import { User } from '@/types/user';
 import RoomCardCarousel from '@/components/common/Card/RoomCardCarousel';
 import { ROUTES } from '@/constants/routeURL';
 import { BiMessage } from 'react-icons/bi';
 import { BsHouseExclamation } from 'react-icons/bs';
 
 interface TripRoomInformationProps {
-  hostName: string | null;
+  hostName: User['name'];
+  roomId: Room['id'];
+  title: Room['title'];
+  images: ImageLink[];
   checkIn: string;
   checkInTime: string;
   checkOut: string;
   checkOutTime: string;
-  title: string;
-  images: ImageLink[];
-  roomId: number;
 }
 
 export function TripRoomInformation({
   hostName,
+  roomId,
+  title,
+  images,
   checkIn,
   checkInTime,
   checkOut,
   checkOutTime,
-  title,
-  images,
-  roomId,
 }: TripRoomInformationProps) {
   return (
     <>
@@ -47,15 +48,15 @@ export function TripRoomInformation({
       </div>
 
       <button>
-      <Link href={ROUTES.USER.MESSAGES}>
-        <div className="flex gap-3 px-4 py-4 hover:bg-gray-100">
-          <BiMessage className="size-6" />
-          <div className="flex flex-col text-left">
-            <h1 className="font-medium">호스트에게 메시지 보내기</h1>
-            <p className="line-clamp-1 text-xs text-gray-500">{hostName}</p>
+        <Link href={ROUTES.USER.MESSAGES}>
+          <div className="flex gap-3 px-4 py-4 hover:bg-gray-100">
+            <BiMessage className="size-6" />
+            <div className="flex flex-col text-left">
+              <h1 className="font-medium">호스트에게 메시지 보내기</h1>
+              <p className="line-clamp-1 text-xs text-gray-500">{hostName}</p>
+            </div>
           </div>
-        </div>
-      </Link>
+        </Link>
       </button>
 
       <button>

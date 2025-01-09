@@ -1,23 +1,26 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { Reservation } from '@/types/reservation';
+import { Room } from '@/types/room';
+import { User } from '@/types/user';
 import { ROUTES } from '@/constants/routeURL';
 
 interface PreviousReservationCardProps {
-  thumbnail: string | null;
-  location: string;
-  hostName: string | null;
+  hostName: User['name'];
+  thumbnail: Room['thumbnail'];
+  location: Room['location'];
+  orderNumber: Reservation['orderNumber'];
   checkIn: string;
   checkOut: string;
-  orderNumber: string;
 }
 
 export function PreviousReservationCard({
+  hostName,
   thumbnail,
   location,
-  hostName,
+  orderNumber,
   checkIn,
   checkOut,
-  orderNumber,
 }: PreviousReservationCardProps) {
   return (
     <Link href={ROUTES.USER.TRIPS_DETAIL(orderNumber)}>
