@@ -1,3 +1,4 @@
+import { revalidateTag } from 'next/cache';
 import { NextRequest } from 'next/server';
 import { auth } from '@/auth';
 import { BadRequestError, CustomError, UnAuthorizedError, ZodError } from '@/errors';
@@ -5,6 +6,7 @@ import { CustomResponse } from '@/lib/server';
 import { updateReviewSchema } from '@/schemas/review';
 import { deleteReview, updateReview } from '@/services/review';
 import { ReviewParams } from '@/types/review';
+import { CACHE_TAGS } from '@/constants/cacheTags';
 
 export const dynamic = 'force-dynamic';
 
@@ -58,7 +60,9 @@ export async function DELETE(
     }
 
     const reviewId = Number(params.reviewId);
+    const roomId = Number(params.roomId);
     await deleteReview(reviewId, session.user.id);
+    revalidateTag(CACHE_TAGS.ROOMS.DETAIL(roomId));
 
     return CustomResponse.deleted();
   } catch (error) {
