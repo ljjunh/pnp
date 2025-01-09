@@ -1,7 +1,7 @@
 import { Help } from '@/app/(user)/trips/components/Help';
 import { NoReservation } from '@/app/(user)/trips/components/NoReservation';
 import { PreviousReservationCard } from '@/app/(user)/trips/components/PreviousReservationCard';
-import { UpcommingReservationCard } from '@/app/(user)/trips/components/UpcommingReservationCard';
+import { UpcomingReservationCard } from '@/app/(user)/trips/components/UpcomingReservationCard';
 import { getReservationTrip } from '@/apis/trips/queries';
 import { categorizeReservations } from '@/utils/categorizeReservation';
 import { formatDate } from '@/utils/formatDate';
@@ -23,7 +23,7 @@ export default async function Trips() {
             <h3 className="mb-2 mt-12 text-xl font-medium">다가오는 여행</h3>
             <div className="mb-12 grid w-full grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {upcomingReservations.map((reservation) => (
-                <UpcommingReservationCard
+                <UpcomingReservationCard
                   key={reservation.id}
                   thumbnail={reservation.room.thumbnail}
                   location={reservation.room.location}

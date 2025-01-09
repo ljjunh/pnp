@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { UpcommingReservationCard } from './UpcommingReservationCard';
+import { UpcomingReservationCard } from './UpcomingReservationCard';
 
-const meta: Meta<typeof UpcommingReservationCard> = {
+const meta: Meta<typeof UpcomingReservationCard> = {
   title: 'User/Trips/UpcommingReservationCard',
-  component: UpcommingReservationCard,
+  component: UpcomingReservationCard,
   parameters: {
     layout: 'centered',
   },
@@ -18,7 +18,7 @@ const meta: Meta<typeof UpcommingReservationCard> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof UpcommingReservationCard>;
+type Story = StoryObj<typeof UpcomingReservationCard>;
 
 export const Default: Story = {
   args: {

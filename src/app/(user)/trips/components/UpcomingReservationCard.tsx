@@ -5,7 +5,7 @@ import { Room } from '@/types/room';
 import { User } from '@/types/user';
 import { ROUTES } from '@/constants/routeURL';
 
-interface UpcommingReservationCardProps {
+interface UpcomingReservationCardProps {
   hostName: User['name'];
   thumbnail: Room['thumbnail'];
   location: Room['location'];
@@ -14,14 +14,14 @@ interface UpcommingReservationCardProps {
   checkOut: string;
 }
 
-export function UpcommingReservationCard({
+export function UpcomingReservationCard({
   hostName,
   thumbnail,
   location,
   orderNumber,
   checkIn,
   checkOut,
-}: UpcommingReservationCardProps) {
+}: UpcomingReservationCardProps) {
   return (
     <Link href={ROUTES.USER.TRIPS_DETAIL(orderNumber)}>
       <article className="rounded-2xl shadow-lg">
