@@ -5,7 +5,7 @@ import { Room } from '@/types/room';
 import { User } from '@/types/user';
 import { ROUTES } from '@/constants/routeURL';
 
-interface PreviousReservationCardProps {
+interface UpcomingReservationCardProps {
   hostName: User['name'];
   thumbnail: Room['thumbnail'];
   location: Room['location'];
@@ -14,29 +14,29 @@ interface PreviousReservationCardProps {
   checkOut: string;
 }
 
-export function PreviousReservationCard({
+export function UpcomingReservationCard({
   hostName,
   thumbnail,
   location,
   orderNumber,
   checkIn,
   checkOut,
-}: PreviousReservationCardProps) {
+}: UpcomingReservationCardProps) {
   return (
     <Link href={ROUTES.USER.TRIPS_DETAIL(orderNumber)}>
-      <article className="flex cursor-pointer gap-3">
-        <figure className="relative w-20">
+      <article className="rounded-2xl shadow-lg">
+        <figure className="relative aspect-square">
           <Image
             src={thumbnail ?? '/images/no-thumbnail.png'}
             alt="숙소 사진"
             fill
-            className="rounded-lg object-cover"
+            className="rounded-t-2xl object-cover"
           />
         </figure>
-        <div className="flex flex-col gap-1 text-neutral-400">
-          <address className="font-semibold not-italic text-black">{location}</address>
-          <p className="text-sm">호스트: {hostName}님</p>
-          <time className="text-sm">
+        <div className="p-3 text-neutral-400">
+          <address className="text-lg font-semibold not-italic text-black">{location}</address>
+          <p>호스트: {hostName} 님</p>
+          <time>
             {checkIn} ~ {checkOut}
           </time>
         </div>

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { PaymentInformation } from './PaymentInformation';
 
 const meta = {
-  title: 'MESSAGES/PaymentInformation',
+  title: 'User/Reservations/PaymentInformation',
   component: PaymentInformation,
   parameters: {
     layout: 'centered',
@@ -21,4 +21,8 @@ export default meta;
 type Story = StoryObj<typeof PaymentInformation>;
 
 // 기본 상태
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    totalPrice: 55000,
+  },
+};

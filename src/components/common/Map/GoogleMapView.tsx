@@ -21,7 +21,13 @@ export default function GoogleMapView({
 }: MapProps) {
   const { isLoaded } = useGoogleMaps();
 
-  if (!isLoaded) return <Skeleton className="h-[480px] w-full rounded-xl" />;
+  if (!isLoaded)
+    return (
+      <Skeleton
+        className="w-full rounded-xl"
+        style={{ height }}
+      />
+    );
   return (
     <GoogleMap
       zoom={zoom}

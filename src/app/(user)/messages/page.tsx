@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ReservationContent } from '@/app/(user)/components/reservation/ReservationContent';
+// import { ReservationContent } from '@/app/(user)/components/reservation/ReservationContent';
 import { ReservationHeader } from '@/app/(user)/components/reservation/ReservationHeader';
 import { AllMessageFilter } from '@/app/(user)/messages/components/AllMessageFilter';
 import { AllMessageHeader } from '@/app/(user)/messages/components/AllMessageHeader';
@@ -86,7 +86,7 @@ export default function Messages() {
         <ReservationHeader toggleReservation={toggleReservation} />
 
         {/* 예약 관련 숙소 정보 보내주기 */}
-        <ReservationContent />
+        {/* <ReservationContent /> */}
       </section>
     </div>
   );

@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { BackBtn } from '@/app/(user)/recently-viewed/components/BackBtn';
+import { BackBtn } from '@/app/(user)/components/BackBtn';
 import { EditBtn } from '@/app/(user)/recently-viewed/components/EditBtn';
 import { RoomCard } from '@/app/(user)/recently-viewed/components/RoomCard';
+import { ROUTES } from '@/constants/routeURL';
 
 export default function RecentlyViewed() {
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -16,7 +17,7 @@ export default function RecentlyViewed() {
     <div className="flex w-full justify-center">
       <div className="w-full max-w-screen-2xl px-20 py-6">
         <div className="flex w-full items-center justify-between">
-          <BackBtn />
+          <BackBtn url={ROUTES.USER.WISHLISTS} />
           <EditBtn
             isEdit={isEdit}
             toggleIsEdit={toggleIsEdit}

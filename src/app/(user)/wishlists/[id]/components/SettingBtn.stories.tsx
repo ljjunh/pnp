@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { SettingBtn } from './SettingBtn';
 
 const meta = {
-  title: 'WishlistDetail/SettingBtn',
+  title: 'User/WishlistDetail/SettingBtn',
   component: SettingBtn,
   parameters: {
     layout: 'centered',

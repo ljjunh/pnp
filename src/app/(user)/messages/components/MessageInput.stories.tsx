@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { MessageInput } from './MessageInput';
 
 const meta = {
-  title: 'MESSAGES/MessageInput',
+  title: 'User/Messages/MessageInput',
   component: MessageInput,
   parameters: {
     layout: 'centered',
