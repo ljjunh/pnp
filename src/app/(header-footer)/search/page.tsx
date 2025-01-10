@@ -14,6 +14,22 @@ export default async function SearchResultPage({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const filter: FilterType = getParamFilter(searchParams);
+  // const ref = useRef<HTMLDivElement>(null);
+
+  // useEffect(() => {
+  //   const resize = () => {
+  //     if (ref.current) {
+  //       ref.current.style.top = document.querySelector('header')?.offsetHeight + 'px';
+  //     }
+  //   }
+  //   window.addEventListener('scroll', resize);
+  //   window.addEventListener('resize', resize);
+
+  //   return () => {
+  //     window.removeEventListener('scroll', resize);
+  //     window.removeEventListener('resize', resize);
+  //   }
+  // }, [])
 
   if (!filter.location) {
     redirect(`/?${formatFilter(filter).toString()}`);
