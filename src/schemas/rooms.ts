@@ -130,6 +130,7 @@ export const updateRoomSchema = z.object({
   longitude: latitude.optional(),
   location: z.string().optional(),
   capacity: z.number().optional(),
+  propertyType: z.string().optional(),
   price: price,
   bedRoom: bedroom,
   bed: bed,
