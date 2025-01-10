@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { AllMessageHeader } from './AllMessageHeader';
 
 const meta = {
-  title: 'MESSAGES/AllMessageHeader',
+  title: 'User/Messages/AllMessageHeader',
   component: AllMessageHeader,
   parameters: {
     layout: 'centered',

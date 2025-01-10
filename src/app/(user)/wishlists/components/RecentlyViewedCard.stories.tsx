@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { RecentlyViewedCard } from './RecentlyViewedCard';
 
 const meta: Meta<typeof RecentlyViewedCard> = {
-  title: 'Wishlists/RecentlyViewedCard',
+  title: 'User/Wishlists/RecentlyViewedCard',
   component: RecentlyViewedCard,
   parameters: {
     layout: 'centered',

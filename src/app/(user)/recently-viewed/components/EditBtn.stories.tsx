@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { EditBtn } from './EditBtn';
 
 const meta: Meta<typeof EditBtn> = {
-  title: 'Recently-viewed/EditBtn',
+  title: 'User/Recently-viewed/EditBtn',
   component: EditBtn,
   parameters: {
     layout: 'centered',

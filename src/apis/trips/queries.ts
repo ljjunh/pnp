@@ -1,6 +1,6 @@
 import { CustomError } from '@/errors';
 import { ReservationTrip } from '@/types/reservation';
-import { httpClient } from '@/apis/core/httpClient';
+import { authHttpClient } from '@/apis/core/httpClient';
 
 /**
  * 예약된 여행 정보를 조회합니다.
@@ -10,7 +10,7 @@ import { httpClient } from '@/apis/core/httpClient';
 
 export async function getReservationTrip(): Promise<ReservationTrip[]> {
   try {
-    const response = await httpClient.get<ReservationTrip[]>('/reservation');
+    const response = await authHttpClient.get<ReservationTrip[]>('/reservation');
 
     if (!response.success && response.status) {
       throw new CustomError(response.message, response.status);

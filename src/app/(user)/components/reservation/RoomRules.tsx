@@ -1,16 +1,31 @@
+import { RoomRulesDetailModalButton } from '@/app/(user)/components/reservation/RoomRulesDetailModalButton';
+import { Room } from '@/types/room';
 import { BsHouseExclamation } from 'react-icons/bs';
 import { IoIosArrowForward } from 'react-icons/io';
 
-export function RoomRules() {
+interface RoomRulesProps {
+  checkInType: Room['checkInType'];
+  checkIn: Room['checkIn'];
+  checkOut: Room['checkOut'];
+  rules: Room['rules'];
+}
+
+export function RoomRules({ checkInType, checkIn, checkOut, rules }: RoomRulesProps) {
   return (
     <div className="flex flex-col gap-5 px-4">
       <h2 className="text-xl font-medium">숙소 이용 규칙 및 안내</h2>
       <div>
         <h3 className="font-bold">숙소 이용규칙</h3>
-        <p>셀프 체크인:스마트 도어록</p>
-        <p>게스트 정원 1명</p>
-        <p>반려동물 동반 불가</p>
-        <p className="cursor-pointer underline">더 보기</p>
+        {checkInType && <p>체크인: {checkInType}</p>}
+        {rules.slice(0, 2).map((rule) => (
+          <p key={rule.id}>{rule.title}</p>
+        ))}
+        <RoomRulesDetailModalButton
+          checkInType={checkInType}
+          checkIn={checkIn}
+          checkOut={checkOut}
+          rules={rules}
+        />
       </div>
       <div className="-mx-4 px-4 hover:bg-gray-100">
         <hr />

@@ -3,7 +3,7 @@ import { filterItems } from '@/types/message';
 import { AllMessageFilter } from './AllMessageFilter';
 
 const meta = {
-  title: 'MESSAGES/AllMessageFilter',
+  title: 'User/Messages/AllMessageFilter',
   component: AllMessageFilter,
   parameters: {
     layout: 'centered',

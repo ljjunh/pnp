@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { MessageHeader } from './MessageHeader';
 
 const meta = {
-  title: 'MESSAGES/MessageHeader',
+  title: 'User/Messages/MessageHeader',
   component: MessageHeader,
   parameters: {
     layout: 'centered',

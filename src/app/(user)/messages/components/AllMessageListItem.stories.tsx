@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { AllMessageListItem } from './AllMessageListItem';
 
 const meta = {
-  title: 'MESSAGES/AllMessageListItem',
+  title: 'User/Messages/AllMessageListItem',
   component: AllMessageListItem,
   parameters: {
     layout: 'centered',

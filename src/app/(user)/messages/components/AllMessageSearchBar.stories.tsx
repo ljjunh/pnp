@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { AllMessageSearchBar } from './AllMessageSearchBar';
 
 const meta = {
-  title: 'MESSAGES/AllMessageSearchBar',
+  title: 'User/Messages/AllMessageSearchBar',
   component: AllMessageSearchBar,
   parameters: {
     layout: 'centered',
