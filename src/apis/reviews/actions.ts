@@ -37,6 +37,8 @@ export async function createReview(
         status: response.status,
       };
     }
+    // 숙소 상세정보 캐시 무효화
+    revalidateTag(CACHE_TAGS.ROOMS.DETAIL(roomId));
     // 해당 숙소 리뷰 캐시 무효화
     revalidateTag(CACHE_TAGS.REVIEWS.DETAIL(roomId));
     // 해당 숙소 리뷰 권한 캐시 무효화
@@ -87,7 +89,8 @@ export async function deleteReview(roomId: number, reviewId: number): Promise<Ac
         status: response.status,
       };
     }
-
+    // 숙소 상세정보 캐시 무효화
+    revalidateTag(CACHE_TAGS.ROOMS.DETAIL(roomId));
     // 해당 숙소 리뷰 캐시 무효화
     revalidateTag(CACHE_TAGS.REVIEWS.DETAIL(roomId));
     // 해당 숙소 리뷰 권한 캐시 무효화

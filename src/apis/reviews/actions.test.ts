@@ -38,7 +38,8 @@ describe('Review Action Test', () => {
 
       expect(result.success).toBe(true);
       expect(result.status).toBe(201);
-      expect(revalidateTag).toHaveBeenCalledTimes(2);
+      expect(revalidateTag).toHaveBeenCalledTimes(3);
+      expect(revalidateTag).toHaveBeenCalledWith(CACHE_TAGS.ROOMS.DETAIL(201));
       expect(revalidateTag).toHaveBeenCalledWith(CACHE_TAGS.REVIEWS.DETAIL(201));
       expect(revalidateTag).toHaveBeenCalledWith(CACHE_TAGS.REVIEWS.AVAILABLE(201));
     });
@@ -162,7 +163,8 @@ describe('Review Action Test', () => {
 
       expect(result.success).toBe(true);
       expect(result.status).toBe(204);
-      expect(revalidateTag).toHaveBeenCalledTimes(2);
+      expect(revalidateTag).toHaveBeenCalledTimes(3);
+      expect(revalidateTag).toHaveBeenCalledWith(CACHE_TAGS.ROOMS.DETAIL(roomId));
       expect(revalidateTag).toHaveBeenCalledWith(CACHE_TAGS.REVIEWS.DETAIL(roomId));
       expect(revalidateTag).toHaveBeenCalledWith(CACHE_TAGS.REVIEWS.AVAILABLE(roomId));
     });

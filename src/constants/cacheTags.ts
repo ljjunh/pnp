@@ -1,6 +1,7 @@
 export const CACHE_TAGS = {
   ROOMS: {
-    SCRAP: (roomId: number) => `rooms/${roomId}:detail`,
+    DETAIL: (roomId: number) => `rooms/${roomId}:detail`,
+    SCRAP: (roomId: number) => `rooms/${roomId}:scrap`,
     AVAILABLE: (roomId: number) => `rooms/${roomId}/available`,
   },
   REVIEWS: {
