@@ -1,4 +1,5 @@
 export const REGISTER_STEP = {
+  START: '/register',
   FIRST_STEP: '/register/first-step',
   STRUCTURE: '/register/structure',
   PRIVACY: '/register/privacy',
@@ -10,4 +11,7 @@ export const REGISTER_STEP = {
   TITLE: '/register/title',
   DESCRIPTION: '/register/description',
   THIRD_STEP: '/register/third-step',
+  VISIBILITY: '/register/visibility',
+  PRICE: '/register/price',
+  SAFETY: '/register/safety',
 };

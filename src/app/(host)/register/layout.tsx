@@ -1,7 +1,12 @@
+import { ReactNode } from 'react';
 import RegisterFooter from '../components/RegisterFooter';
 import RegisterHeader from '../components/RegisterHeader';
 
-export default function RegisterLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+interface RegisterLayoutProps {
+  children: ReactNode;
+}
+
+export default function RegisterLayout({ children }: RegisterLayoutProps) {
   return (
     <>
       <RegisterHeader />

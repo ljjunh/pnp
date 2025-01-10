@@ -41,6 +41,7 @@ export default function DescriptionTagSelect() {
                 checkList.includes(description) ? 'border-black' : 'border-neutral-03',
               )}
               onClick={() => handleClick(description)}
+              key={`${description}-${index}`}
             >
               <span className="text-sm">{description}</span>
             </div>
