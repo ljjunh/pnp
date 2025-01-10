@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { NoReservation } from './NoReservation';
 
 const meta: Meta<typeof NoReservation> = {
-  title: 'Trips/NoReservation',
+  title: 'User/Trips/NoReservation',
   component: NoReservation,
   parameters: {
     layout: 'padded',

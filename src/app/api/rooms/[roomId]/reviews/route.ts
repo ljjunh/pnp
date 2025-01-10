@@ -1,4 +1,3 @@
-import { revalidateTag } from 'next/cache';
 import { NextRequest } from 'next/server';
 import { auth } from '@/auth';
 import { BadRequestError, CustomError, UnAuthorizedError, ZodError } from '@/errors';
@@ -12,7 +11,6 @@ import {
 import { createReviewSchema } from '@/schemas/review';
 import { createReview, getReviews } from '@/services/review';
 import { ReviewParams, ReviewSummarize } from '@/types/review';
-import { CACHE_TAGS } from '@/constants/cacheTags';
 
 export async function GET(
   request: NextRequest,
@@ -59,7 +57,6 @@ export async function POST(request: NextRequest, { params }: { params: ReviewPar
     const data = createReviewSchema.parse(await request.json());
 
     await createReview(roomId, session.user.id, data);
-    revalidateTag(CACHE_TAGS.ROOMS.DETAIL(roomId));
     return CustomResponse.createEmpty();
   } catch (error) {
     console.error('리뷰 생성 중 에러 발생: ', {

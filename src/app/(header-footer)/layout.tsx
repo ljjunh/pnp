@@ -5,7 +5,7 @@ export default function MainLayout({ children }: Readonly<{ children: React.Reac
   return (
     <>
       <Header />
-      <main className="px-30 pt-20 lg:px-60">{children}</main>
+      <main className="px-30 isolate pt-20 lg:px-60">{children}</main>
       <Toaster />
     </>
   );

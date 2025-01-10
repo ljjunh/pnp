@@ -46,7 +46,7 @@ export function RoomInformation() {
       {/* onClick 숙소 상세 페이지로 */}
       <button>
         <div className="flex gap-3 px-4 py-4 hover:bg-gray-100">
-          <BsHouseExclamation className="size-8" />
+          <BsHouseExclamation className="size-6" />
           <div className="flex flex-col text-left">
             <h1 className="font-medium">숙소</h1>
             <p className="line-clamp-1 text-xs text-gray-500">

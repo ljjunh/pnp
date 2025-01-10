@@ -1,13 +1,13 @@
 import { makeStore } from '@/lib/store';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Provider } from 'react-redux';
-import { RoomRules } from './RoomRules';
+import { RoomRulesDetailModalButton } from './RoomRulesDetailModalButton';
 
 const meta = {
-  title: 'User/Reservations/RoomRules',
-  component: RoomRules,
+  title: 'User/Reservations/RoomRulesDetailModalButton',
+  component: RoomRulesDetailModalButton,
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
   },
   decorators: [
     (Story) => {
@@ -15,20 +15,17 @@ const meta = {
 
       return (
         <Provider store={store}>
-          <div className="h-full w-[480px] border bg-white p-4">
-            <Story />
-          </div>
+          <Story />
         </Provider>
       );
     },
   ],
-  tags: ['autodocs'],
-} satisfies Meta<typeof RoomRules>;
+} satisfies Meta<typeof RoomRulesDetailModalButton>;
 
 export default meta;
-type Story = StoryObj<typeof RoomRules>;
 
-// 기본 상태
+type Story = StoryObj<typeof RoomRulesDetailModalButton>;
+
 export const Default: Story = {
   args: {
     checkInType: '셀프 체크인',

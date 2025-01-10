@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ReservationHeader } from './ReservationHeader';
 
 const meta = {
-  title: 'MESSAGES/ReservationHeader',
+  title: 'User/Reservations/ReservationHeader',
   component: ReservationHeader,
   parameters: {
     layout: 'centered',

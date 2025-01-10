@@ -44,26 +44,28 @@ export default function RoomCardCarousel({ images, liked = false, onLike }: Room
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         className="object-cover transition-transform duration-300 ease-in-out"
       />
-      {/* 좋아요 버튼 */}
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          onLike?.();
-        }}
-        className="absolute right-3 top-3 z-10 hover:scale-105"
-      >
-        {liked ? (
-          <AiFillHeart
-            size={24}
-            className="text-primary-02"
-          />
-        ) : (
-          <AiOutlineHeart
-            size={24}
-            className="text-white"
-          />
-        )}
-      </button>
+      {/* 좋아요 버튼 (onLike prop 전달될때만 렌더링) */}
+      {onLike && (
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            onLike?.();
+          }}
+          className="absolute right-3 top-3 z-10 hover:scale-105"
+        >
+          {liked ? (
+            <AiFillHeart
+              size={24}
+              className="text-primary-02"
+            />
+          ) : (
+            <AiOutlineHeart
+              size={24}
+              className="text-white"
+            />
+          )}
+        </button>
+      )}
       {/* 네비게이션 버튼(호버일때만 표시) */}
       {isHovered && (
         <>
