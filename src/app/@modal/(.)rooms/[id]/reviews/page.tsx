@@ -21,6 +21,29 @@ export default async function ReviewModal({ params }: { params: { id: string } }
     review.data.value,
   ]);
 
+  const reviewAverages = review.data.reviews.map((r) =>
+    calculateAverageRating([
+      r.accuracy,
+      r.communication,
+      r.cleanliness,
+      r.location,
+      r.checkIn,
+      r.value,
+    ]),
+  );
+
+  const scoreDistribution =
+    review.data.reviews.length === 0
+      ? { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
+      : Object.fromEntries(
+          [5, 4, 3, 2, 1].map((score) => [
+            score,
+            (reviewAverages.filter((avg) => Math.floor(avg) === score).length /
+              reviewAverages.length) *
+              100,
+          ]),
+        );
+
   return (
     <Modal>
       <div className="flex h-[80vh] px-16 py-6">
@@ -43,7 +66,7 @@ export default async function ReviewModal({ params }: { params: { id: string } }
                 <div className="h-1 flex-1 overflow-hidden rounded-lg bg-neutral-03">
                   <div
                     className="h-1 rounded-lg bg-shade-02"
-                    style={{ width: num === 5 ? '90%' : '10%' }}
+                    style={{ width: `${scoreDistribution[num]}%` }}
                   />
                 </div>
               </div>

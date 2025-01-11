@@ -35,7 +35,7 @@ export default async function RoomReviewList({
         value={review.data.value}
       />
       {reviewsCount > 0 && (
-        <div className="mt-10 grid grid-cols-2 grid-rows-3 gap-10">
+        <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-2">
           {review.data.reviews.map((review) => (
             <RoomReviewItem
               key={review.id}
