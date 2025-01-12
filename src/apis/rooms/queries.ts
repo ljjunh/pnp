@@ -12,7 +12,11 @@ import { CACHE_TAGS } from '@/constants/cacheTags';
  */
 export async function getRoom(roomId: number): Promise<Room> {
   try {
-    const response = await httpClient.get<Room>(`/rooms/${roomId}`);
+    const response = await httpClient.get<Room>(`/rooms/${roomId}`, {
+      next: {
+        tags: [CACHE_TAGS.ROOMS.DETAIL(roomId)],
+      },
+    });
     if (!response.success) {
       switch (response.status) {
         case 404:
