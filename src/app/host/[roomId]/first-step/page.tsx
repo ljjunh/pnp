@@ -19,8 +19,13 @@ export default function FirstStep() {
         autoPlay
         muted
         className="h-3/5 w-3/5 object-cover"
+        aria-label="숙소 등록 1단계 소개 영상"
       >
-        <source src="https://stream.media.muscache.com/zFaydEaihX6LP01x8TSCl76WHblb01Z01RrFELxyCXoNek.mp4?v_q=high" />
+        <source
+          src="https://stream.media.muscache.com/zFaydEaihX6LP01x8TSCl76WHblb01Z01RrFELxyCXoNek.mp4?v_q=high"
+          type="video/mp4"
+        />
+        <p>브라우저가 비디오를 지원하지 않습니다.</p>
       </video>
     </div>
   );

@@ -52,34 +52,28 @@ export default function Info() {
 
   const [state, dispatch] = useReducer(infoReducer, initialState);
 
+  const calculateNewValue = (
+    type: keyof State,
+    currentValue: number,
+    isIncrement: boolean,
+  ): number => {
+    const isBathroom = type === 'bathroom';
+    const increment = isBathroom ? BATHROOM_INCREMENT : 1;
+
+    if (currentValue === MIN_VALUE) {
+      return isIncrement ? currentValue + increment : MIN_VALUE;
+    }
+
+    if (currentValue === MAX_VALUE) {
+      return isIncrement ? MAX_VALUE : currentValue - increment;
+    }
+
+    return isIncrement ? currentValue + increment : currentValue - increment;
+  };
+
   const handleChange = (type: keyof State, isIncrement: boolean) => {
-    const nowValue = state[type];
-
-    const changeValue = () => {
-      if (type === 'bathroom') {
-        if (nowValue === MIN_VALUE) {
-          return isIncrement ? nowValue + BATHROOM_INCREMENT : MIN_VALUE;
-        }
-
-        if (nowValue === MAX_VALUE) {
-          return isIncrement ? MAX_VALUE : nowValue - BATHROOM_INCREMENT;
-        }
-
-        return isIncrement ? nowValue + BATHROOM_INCREMENT : nowValue - BATHROOM_INCREMENT;
-      }
-
-      if (nowValue === MIN_VALUE) {
-        return isIncrement ? nowValue + 1 : MIN_VALUE;
-      }
-
-      if (nowValue === MAX_VALUE) {
-        return isIncrement ? MAX_VALUE : MAX_VALUE - 1;
-      }
-
-      return isIncrement ? nowValue + 1 : nowValue - 1;
-    };
-
-    dispatch({ type: type.toUpperCase() as Action['type'], payload: changeValue() });
+    const newValue = calculateNewValue(type, state[type], isIncrement);
+    dispatch({ type: type.toUpperCase() as Action['type'], payload: newValue });
   };
 
   return (
@@ -106,17 +100,23 @@ export default function Info() {
                   <CiCircleMinus
                     size={36}
                     color={state[key] === MIN_VALUE ? 'LightGray' : 'Gray'}
-                    className="cursor-pointer"
+                    className="cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                     onClick={() => handleChange(key, false)}
                     role={`${key}-minus-button`}
+                    tabIndex={0}
+                    aria-label={`${label} 감소`}
+                    onKeyDown={(e) => e.key === 'Enter' && handleChange(key, false)}
                   />
                   <p className="px-4">{state[key]}</p>
                   <CiCirclePlus
                     size={36}
                     color={state[key] === MAX_VALUE ? 'LightGray' : 'Gray'}
-                    className="cursor-pointer"
+                    className="cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                     onClick={() => handleChange(key, true)}
                     role={`${key}-plus-button`}
+                    tabIndex={0}
+                    aria-label={`${label} 증가`}
+                    onKeyDown={(e) => e.key === 'Enter' && handleChange(key, true)}
                   />
                 </div>
               </div>

@@ -7,10 +7,13 @@ export default function Title() {
         최대 32자까지 입력할 수 있습니다.
       </span>
       <input
-        className="mt-8 h-48 w-full rounded-xl border-[1.5px] border-neutral-07 p-4 align-text-top text-xl focus:border-black focus:outline-none"
+        className="mt-8 h-24 w-full rounded-xl border-[1.5px] border-neutral-07 p-4 text-xl focus:border-black focus:outline-none"
         type="text"
         name="title"
         maxLength={32}
+        aria-label="숙소 이름"
+        placeholder="숙소 이름을 입력해주세요"
+        required
       />
       <input
         type="hidden"

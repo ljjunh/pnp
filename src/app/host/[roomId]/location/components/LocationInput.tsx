@@ -3,6 +3,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import GoogleMapView from '@/components/common/Map/GoogleMapView';
+import { useToast } from '@/hooks/use-toast';
 import { useLocation } from '@/hooks/useLocation';
 import { LOCATION_STEP } from '@/constants/registerStep';
 import { FaLocationArrow } from 'react-icons/fa';
@@ -38,6 +39,7 @@ export default function LocationInput({
   setLocationDetail,
 }: LocationInputProps) {
   const { setCurrentStep } = useContext(RegisterContext);
+  const { toast } = useToast();
   const [isSearchClick, setIsSearchClick] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const { location, fetchLocation, isLoading } = useLocation({});
@@ -142,7 +144,11 @@ export default function LocationInput({
         setCurrentStep(LOCATION_STEP.CONFIRM);
       }
     } catch (error) {
-      console.error('Geocoding error:', error);
+      toast({
+        title: '위치 정보 조회 실패',
+        description: '현재 위치를 기본 위치인 서울로 설정합니다.',
+        variant: 'destructive',
+      });
       setCurrentStep(LOCATION_STEP.CONFIRM);
     }
   };

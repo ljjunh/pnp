@@ -33,6 +33,7 @@ export default function Location() {
   });
 
   useEffect(() => {
+    // if문 뺄지말지 고민
     if (!currentStep) {
       setIsInnerStep(true);
       setCurrentStep(LOCATION_STEP.INPUT);

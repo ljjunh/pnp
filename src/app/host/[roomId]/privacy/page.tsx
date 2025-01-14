@@ -25,10 +25,11 @@ export default function Privacy() {
               privacy === null && selected,
             )}
             onClick={() => setPrivacy(null)}
+            aria-label="공간 전체: 게스트가 숙소 전체를 단독으로 사용합니다."
           >
             <div className="flex flex-col">
               <span className="text-lg">공간 전체</span>
-              <span className="text-sm">게스트가 숙소 전체를 단독으로 사용합니다</span>
+              <span className="text-sm">게스트가 숙소 전체를 단독으로 사용합니다.</span>
             </div>
             <BiCategory size={24} />
           </div>
@@ -38,6 +39,7 @@ export default function Privacy() {
               privacy === 'Private' && selected,
             )}
             onClick={() => setPrivacy('Private')}
+            aria-label="방: 단독으로 사용하는 개인실이 있고, 공용 공간도 있는 형태입니다."
           >
             <div className="flex flex-col">
               <span className="text-lg">방</span>
@@ -53,6 +55,7 @@ export default function Privacy() {
               privacy === 'Entire' && selected,
             )}
             onClick={() => setPrivacy('Entire')}
+            aria-label="호스텔 내 다인실: 게스트는 연중무휴 직원이 상주하는 전문 숙박시설인 호스텔 내부 다인실에서 머무릅니다"
           >
             <div className="flex flex-col">
               <span className="text-lg">호스텔 내 다인실</span>

@@ -1,7 +1,13 @@
+import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
+import { ROUTES } from '@/constants/routeURL';
 
 export default async function Finish() {
   const session = await auth();
+
+  if (!session) {
+    redirect(ROUTES.LOGIN);
+  }
 
   return (
     <div className="flex h-full items-center justify-center">

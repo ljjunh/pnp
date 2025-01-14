@@ -1,12 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { cn } from '@/lib/utils';
-import { AMENITY_LIST, POPULAR, SAFETY, SPECIAL } from '@/constants/amenity';
+import { POPULAR, SAFETY, SPECIAL } from '@/constants/amenity';
+import AmenityItem from './components/AmenityItem';
 
 export default function Amenities() {
   const [amenities, setAmenities] = useState<string[]>([]);
-  const selected = 'border-black bg-neutral-02 border-2';
 
   const handleSelect = (content: string) => {
     if (amenities.includes(content)) {
@@ -28,17 +27,12 @@ export default function Amenities() {
           <p className="text-xl font-semibold">다음 인기 편의시설이 있나요?</p>
           <div className="grid grid-cols-3 gap-4">
             {POPULAR.map((content, index) => (
-              <div
-                className={cn(
-                  'flex cursor-pointer flex-col space-y-1.5 rounded-xl border border-neutral-03 p-6 hover:border-black hover:bg-neutral-02',
-                  amenities.includes(content) ? selected : '',
-                )}
+              <AmenityItem
                 key={`${content}-${index}`}
-                onClick={() => handleSelect(content)}
-              >
-                {AMENITY_LIST[content].icon}
-                <span className="whitespace-nowrap text-lg">{AMENITY_LIST[content].name}</span>
-              </div>
+                content={content}
+                isClicked={amenities.includes(content)}
+                handleSelect={handleSelect}
+              />
             ))}
           </div>
         </div>
@@ -46,17 +40,12 @@ export default function Amenities() {
           <p className="text-xl font-semibold">특별히 내세울 만한 편의시설이 있나요?</p>
           <div className="grid grid-cols-3 gap-4">
             {SPECIAL.map((content, index) => (
-              <div
-                className={cn(
-                  'flex cursor-pointer flex-col space-y-1.5 rounded-xl border border-neutral-03 p-6 hover:border-black hover:bg-neutral-02',
-                  amenities.includes(content) ? selected : '',
-                )}
+              <AmenityItem
                 key={`${content}-${index}`}
-                onClick={() => handleSelect(content)}
-              >
-                {AMENITY_LIST[content].icon}
-                <span className="whitespace-nowrap text-lg">{AMENITY_LIST[content].name}</span>
-              </div>
+                content={content}
+                isClicked={amenities.includes(content)}
+                handleSelect={handleSelect}
+              />
             ))}
           </div>
         </div>
@@ -64,17 +53,12 @@ export default function Amenities() {
           <p className="text-xl font-semibold">다음과 같은 안전 관련 물품이 있나요?</p>
           <div className="grid grid-cols-3 gap-4">
             {SAFETY.map((content, index) => (
-              <div
-                className={cn(
-                  'flex cursor-pointer flex-col space-y-1.5 rounded-xl border border-neutral-03 p-6 hover:border-black hover:bg-neutral-02',
-                  amenities.includes(content) ? selected : '',
-                )}
+              <AmenityItem
                 key={`${content}-${index}`}
-                onClick={() => handleSelect(content)}
-              >
-                {AMENITY_LIST[content].icon}
-                <span className="whitespace-nowrap text-lg">{AMENITY_LIST[content].name}</span>
-              </div>
+                content={content}
+                isClicked={amenities.includes(content)}
+                handleSelect={handleSelect}
+              />
             ))}
           </div>
         </div>

@@ -8,10 +8,16 @@ export default function PriceModalCloseButton() {
   const { handleCloseModal } = useModal(MODAL_ID.ROOM_PRICE_INFO);
 
   return (
-    <FaXmark
-      size={40}
+    <button
+      type="button"
       onClick={handleCloseModal}
-      className="absolute left-0 top-0 cursor-pointer p-2 hover:rounded-full hover:bg-neutral-01"
-    />
+      aria-label="가격 정보 모달 닫기"
+      className="absolute left-0 top-0 p-1 hover:rounded-full hover:bg-neutral-01"
+    >
+      <FaXmark
+        size={24}
+        aria-hidden="true"
+      />
+    </button>
   );
 }

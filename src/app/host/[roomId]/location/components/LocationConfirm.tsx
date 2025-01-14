@@ -21,7 +21,6 @@ export default function LocationConfirm({
   setLocationDetail,
 }: LocationConfirmProps) {
   const { setCurrentStep } = useContext(RegisterContext);
-  console.log('locationDetail', locationDetail);
 
   useEffect(() => {
     if (!latitude || !longitude) {
@@ -55,6 +54,8 @@ export default function LocationConfirm({
           placeholder="도/특별·광역시"
           value={locationDetail.state}
           onChange={(e) => handleInputChange('state', e.target.value)}
+          aria-label="도/특별·광역시"
+          aria-required="true"
           required
         />
         <input
@@ -63,6 +64,8 @@ export default function LocationConfirm({
           placeholder="도시"
           value={locationDetail.city}
           onChange={(e) => handleInputChange('city', e.target.value)}
+          aria-label="도시"
+          aria-required="false"
         />
         <input
           type="text"
@@ -70,6 +73,8 @@ export default function LocationConfirm({
           placeholder="군/구(해당하는 경우)"
           value={locationDetail.district}
           onChange={(e) => handleInputChange('district', e.target.value)}
+          aria-label="군/구(해당하는 경우)"
+          aria-required="false"
         />
         <input
           type="text"
@@ -77,6 +82,8 @@ export default function LocationConfirm({
           placeholder="도로명 주소"
           value={locationDetail.roadAddress}
           onChange={(e) => handleInputChange('roadAddress', e.target.value)}
+          aria-label="도로명 주소"
+          aria-required="true"
           required
         />
         <input
@@ -85,6 +92,8 @@ export default function LocationConfirm({
           placeholder="아파트 층수/호수, 건물명(해당하는 경우)"
           value={locationDetail.buildingName}
           onChange={(e) => handleInputChange('buildingName', e.target.value)}
+          aria-label="아파트 층수/호수, 건물명(해당하는 경우)"
+          aria-required="false"
         />
         <input
           type="text"
@@ -92,6 +101,8 @@ export default function LocationConfirm({
           placeholder="우편번호(해당하는 경우)"
           value={locationDetail.postalCode}
           onChange={(e) => handleInputChange('postalCode', e.target.value)}
+          aria-label="우편번호(해당하는 경우)"
+          aria-required="false"
         />
       </div>
 

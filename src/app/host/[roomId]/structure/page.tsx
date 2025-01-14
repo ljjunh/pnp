@@ -26,12 +26,16 @@ export default function Structure() {
       <div className="grid grid-cols-3 gap-4">
         {Object.values(PROPERTY).map((content, index) => (
           <div
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === 'Enter' && setProperty(content)}
             className={cn(
               'flex cursor-pointer flex-col space-y-1.5 rounded-xl border border-neutral-03 p-6 hover:border-black hover:bg-neutral-02',
               content === property ? selected : '',
             )}
             key={`${content}-${index}`}
             onClick={() => setProperty(content)}
+            aria-pressed={content === property}
           >
             <BiCategory size={24} />
             <span className="whitespace-nowrap text-lg">{content}</span>

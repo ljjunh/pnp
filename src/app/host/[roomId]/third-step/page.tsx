@@ -15,8 +15,12 @@ export default function ThirdStep() {
         autoPlay
         muted
         className="h-3/5 w-3/5 object-cover"
+        aria-label="숙소 등록 3단계 소개 영상"
       >
-        <source src="https://stream.media.muscache.com/KeNKUpa01dRaT5g00SSBV95FqXYkqf01DJdzn01F1aT00vCI.mp4?v_q=high" />
+        <source
+          src="https://stream.media.muscache.com/KeNKUpa01dRaT5g00SSBV95FqXYkqf01DJdzn01F1aT00vCI.mp4?v_q=high"
+          type="video/mp4"
+        />
       </video>
       <input
         type="hidden"

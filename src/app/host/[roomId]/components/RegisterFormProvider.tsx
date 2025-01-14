@@ -46,18 +46,24 @@ export default function RegisterFormProvider({ children }: { children: ReactNode
         router.push(ROUTES.REGISTER_STEP(roomId).STRUCTURE);
         return;
       case 'structure':
-        const structure = formData.get('structure') as string;
-        updateData = { structure };
+        {
+          const structure = formData.get('structure') as string;
+          updateData = { structure };
+        }
         break;
       case 'privacy':
-        const privacy = formData.get('privacy') as string;
-        updateData = { roomType: privacy };
+        {
+          const privacy = formData.get('privacy') as string;
+          updateData = { roomType: privacy };
+        }
         break;
       case 'location':
-        const location = formData.get('location') as string;
-        const latitude = Number(formData.get('latitude'));
-        const longitude = Number(formData.get('longitude'));
-        updateData = { location, latitude, longitude };
+        {
+          const location = formData.get('location') as string;
+          const latitude = Number(formData.get('latitude'));
+          const longitude = Number(formData.get('longitude'));
+          updateData = { location, latitude, longitude };
+        }
         break;
       case 'info':
         // const capacity = Number(formData.get('guest'));
@@ -79,19 +85,25 @@ export default function RegisterFormProvider({ children }: { children: ReactNode
         router.push(ROUTES.REGISTER_STEP(roomId).TITLE);
         return;
       case 'title':
-        const title = formData.get('title') as string;
-        updateData = { title };
+        {
+          const title = formData.get('title') as string;
+          updateData = { title };
+        }
         break;
       case 'description':
-        const description = formData.get('description') as string;
-        updateData = { description };
+        {
+          const description = formData.get('description') as string;
+          updateData = { description };
+        }
         break;
       case 'third':
         router.push(ROUTES.REGISTER_STEP(roomId).PRICE);
         return;
       case 'price':
-        const price = Number(formData.get('price'));
-        updateData = { price };
+        {
+          const price = Number(formData.get('price'));
+          updateData = { price };
+        }
         break;
       case 'safety':
         router.push(ROUTES.REGISTER_STEP(roomId).FINISH);

@@ -28,6 +28,8 @@ export default function PriceInput() {
           name="price"
           min={1}
           max={10000000}
+          aria-label="숙소 1박 가격"
+          aria-describedby="price-description"
           required
         />
         <label
@@ -53,12 +55,12 @@ export default function PriceInput() {
               </div>
               <div className="flex justify-between">
                 <span>게스트 서비스 수수료</span>
-                <span>₩{Math.floor(price * 0.1).toLocaleString()}</span>
+                <span>₩{Math.round(price * 0.1).toLocaleString()}</span>
               </div>
               <hr />
               <div className="flex justify-between font-semibold">
                 <span>게스트 지불 요금</span>
-                <span>₩{Math.floor(price * 1.1).toLocaleString()}</span>
+                <span>₩{(price + Math.round(price * 0.1)).toLocaleString()}</span>
               </div>
             </div>
             <div className="flex justify-between rounded-xl border-2 border-neutral-03 px-3 py-4 text-lg">
@@ -69,7 +71,7 @@ export default function PriceInput() {
           <AccordionTrigger className="text-lg">
             {open === 'price'
               ? '접기'
-              : `게스트 지불 요금: ₩${Math.floor(price * 1.1).toLocaleString()}`}
+              : `게스트 지불 요금: ₩${(price + Math.round(price * 0.1)).toLocaleString()}`}
           </AccordionTrigger>
         </AccordionItem>
       </Accordion>

@@ -22,8 +22,12 @@ export default function SecondStep() {
         autoPlay
         muted
         className="h-3/5 w-3/5 object-cover"
+        aria-label="숙소 등록 2단계 소개 영상"
       >
-        <source src="https://stream.media.muscache.com/H0101WTUG2qWbyFhy02jlOggSkpsM9H02VOWN52g02oxhDVM.mp4?v_q=high" />
+        <source
+          src="https://stream.media.muscache.com/H0101WTUG2qWbyFhy02jlOggSkpsM9H02VOWN52g02oxhDVM.mp4?v_q=high"
+          type="video/mp4"
+        />
       </video>
     </div>
   );

@@ -5,10 +5,11 @@ export default function Description() {
       <span className="text-lg text-neutral-07">
         숙소의 특징과 장점을 알려주세요. 최대 500자까지 작성할 수 있습니다.
       </span>
-      <input
-        className="mt-8 h-48 w-full rounded-xl border-[1.5px] border-neutral-07 p-4 align-text-top text-lg focus:border-black focus:outline-none"
-        type="text"
+      <textarea
+        className="mt-8 h-48 w-full resize-none rounded-xl border-[1.5px] border-neutral-07 p-4 align-text-top text-lg focus:border-black focus:outline-none"
         name="description"
+        aria-label="숙소 설명"
+        required
         minLength={10}
         maxLength={500}
       />
