@@ -4,6 +4,7 @@ type RoomListType = {
   [key: string]: {
     icon: JSX.Element;
     name: string;
+    id?: number; // TODO 내일 추가하기 -> id 값으로 조회 하기
   };
 };
 
@@ -26,7 +27,7 @@ export const CHARACTERISTIC_AMENITIES: string[] = [
   'SYSTEM_MAPS_CAR_RENTAL',
   'SYSTEM_EV_CHARGER',
   'SYSTEM_CRIB',
-  'SYSTEM_CALENDAR', // kingsize bed 인데 일단 없어서 이거 넣어둠
+  'SYSTEM_CALENDAR', // king size bed 인데 일단 없어서 이거 넣어둠
   'SYSTEM_GYM',
   'SYSTEM_GRILL',
   'SYSTEM_BREAKFAST',
@@ -40,7 +41,41 @@ export const SAFETY_AMENITIES: string[] = ['SYSTEM_DETECTOR_SMOKE', 'SYSTEM_DETE
 
 export const RESERVATION: string[] = ['SYSTEM_BUZZER', 'SYSTEM_KEY', 'SYSTEM_PETS'];
 
-export const TAG_LIST: RoomListType = {
+export const POPULAR: string[] = [
+  'SYSTEM_WI_FI',
+  'SYSTEM_TV',
+  'SYSTEM_COOKING_BASICS',
+  'SYSTEM_WASHER',
+  'SYSTEM_MAPS_CAR_RENTAL',
+  'SYSTEM_SNOWFLAKE',
+  'SYSTEM_WORKSPACE',
+];
+
+export const SPECIAL: string[] = [
+  'SYSTEM_POOL',
+  'SYSTEM_JACUZZI',
+  'SYSTEM_PATIO_BALCONY',
+  'SYSTEM_GRILL',
+  'SYSTEM_ROOFTOP_DECK',
+  'SYSTEM_FIREPIT',
+  'SYSTEM_POOL_TABLE',
+  'SYSTEM_FIREPLACE',
+  'SYSTEM_PIANO',
+  'SYSTEM_GYM',
+  'SYSTEM_VIEW_OCEAN',
+  'SYSTEM_BEACH',
+  'SYSTEM_SKI',
+  'SYSTEM_SHOWER',
+];
+
+export const SAFETY: string[] = [
+  'SYSTEM_DETECTOR_SMOKE',
+  'SYSTEM_FIRST_AID_KIT',
+  'SYSTEM_FIRE_EXTINGUISHER',
+  'SYSTEM_DETECTOR_CO',
+];
+
+export const AMENITY_LIST: RoomListType = {
   SYSTEM_WI_FI: {
     icon: (
       <Image
@@ -56,7 +91,7 @@ export const TAG_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_COOKING_BASICS.svg"
-        alt="와이파이"
+        alt="주방"
         width={24}
         height={24}
       />
@@ -67,7 +102,7 @@ export const TAG_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_WASHER.svg"
-        alt="와이파이"
+        alt="세탁기"
         width={24}
         height={24}
       />
@@ -78,7 +113,7 @@ export const TAG_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_DRYER.svg"
-        alt="와이파이"
+        alt="건조기"
         width={24}
         height={24}
       />
@@ -89,7 +124,7 @@ export const TAG_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_SNOWFLAKE.svg"
-        alt="와이파이"
+        alt="에어컨"
         width={24}
         height={24}
       />
@@ -100,7 +135,7 @@ export const TAG_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_THERMOMETER.svg"
-        alt="와이파이"
+        alt="난방"
         width={24}
         height={24}
       />
@@ -111,7 +146,7 @@ export const TAG_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_WORKSPACE.svg"
-        alt="와이파이"
+        alt="업무 전용 공간"
         width={24}
         height={24}
       />
@@ -122,7 +157,7 @@ export const TAG_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_TV.svg"
-        alt="와이파이"
+        alt="TV"
         width={24}
         height={24}
       />
@@ -133,7 +168,7 @@ export const TAG_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_HAIRDRYER.svg"
-        alt="와이파이"
+        alt="헤어드라이어"
         width={24}
         height={24}
       />
@@ -144,7 +179,7 @@ export const TAG_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_IRON.svg"
-        alt="와이파이"
+        alt="다리미"
         width={24}
         height={24}
       />
@@ -155,7 +190,7 @@ export const TAG_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_POOL.svg"
-        alt="와이파이"
+        alt="수영장"
         width={24}
         height={24}
       />
@@ -166,7 +201,7 @@ export const TAG_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_JACUZZI.svg"
-        alt="와이파이"
+        alt="대형 욕조"
         width={24}
         height={24}
       />
@@ -177,7 +212,7 @@ export const TAG_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_MAPS_CAR_RENTAL.svg"
-        alt="와이파이"
+        alt="무료 주차 공간"
         width={24}
         height={24}
       />
@@ -188,7 +223,7 @@ export const TAG_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_EV_CHARGER.svg"
-        alt="와이파이"
+        alt="전기차 충전시설"
         width={24}
         height={24}
       />
@@ -199,7 +234,7 @@ export const TAG_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_CRIB.svg"
-        alt="와이파이"
+        alt="아기 침대"
         width={24}
         height={24}
       />
@@ -210,7 +245,7 @@ export const TAG_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_CALENDAR.svg"
-        alt="와이파이"
+        alt="킹사이즈 침대"
         width={24}
         height={24}
       />
@@ -348,5 +383,104 @@ export const TAG_LIST: RoomListType = {
       />
     ),
     name: '반려동물 동반 가능',
+  },
+  SYSTEM_PATIO_BALCONY: {
+    icon: (
+      <Image
+        src="/icons/SYSTEM_PATIO_BALCONY.svg"
+        alt="파티오"
+        width={24}
+        height={24}
+      />
+    ),
+    name: '파티오',
+  },
+  SYSTEM_ROOFTOP_DECK: {
+    icon: (
+      <Image
+        src="/icons/SYSTEM_ROOFTOP_DECK.svg"
+        alt="야외 식사 공간"
+        width={24}
+        height={24}
+      />
+    ),
+    name: '야외 식사 공간',
+  },
+  SYSTEM_FIREPIT: {
+    icon: (
+      <Image
+        src="/icons/SYSTEM_FIREPIT.svg"
+        alt="화로"
+        width={24}
+        height={24}
+      />
+    ),
+    name: '화로',
+  },
+  SYSTEM_POOL_TABLE: {
+    icon: (
+      <Image
+        src="/icons/SYSTEM_POOL_TABLE.svg"
+        alt="당구대"
+        width={24}
+        height={24}
+      />
+    ),
+    name: '당구대',
+  },
+  SYSTEM_PIANO: {
+    icon: (
+      <Image
+        src="/icons/SYSTEM_PIANO.svg"
+        alt="피아노"
+        width={24}
+        height={24}
+      />
+    ),
+    name: '피아노',
+  },
+  SYSTEM_SKI: {
+    icon: (
+      <Image
+        src="/icons/SYSTEM_SKI.svg"
+        alt="스키 타고 출입"
+        width={24}
+        height={24}
+      />
+    ),
+    name: '스키 타고 출입',
+  },
+  SYSTEM_SHOWER: {
+    icon: (
+      <Image
+        src="/icons/SYSTEM_SHOWER.svg"
+        alt="야외 샤워 시설"
+        width={24}
+        height={24}
+      />
+    ),
+    name: '야외 샤워 시설',
+  },
+  SYSTEM_FIRST_AID_KIT: {
+    icon: (
+      <Image
+        src="/icons/SYSTEM_FIRST_AID_KIT.svg"
+        alt="구급 상자"
+        width={24}
+        height={24}
+      />
+    ),
+    name: '구급 상자',
+  },
+  SYSTEM_FIRE_EXTINGUISHER: {
+    icon: (
+      <Image
+        src="/icons/SYSTEM_FIRE_EXTINGUISHER.svg"
+        alt="소화기"
+        width={24}
+        height={24}
+      />
+    ),
+    name: '소화기',
   },
 };

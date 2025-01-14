@@ -6,6 +6,8 @@ export const MODAL_ID = {
   ROOM_SAFETY: 'room-safety-modal',
   ROOM_CANCELLATION: 'room-cancellation-modal',
   ROOM_GALLERY: 'room-gallery-modal',
+  ROOM_PHOTOS: 'room-photos-modal',
+  ROOM_PRICE_INFO: 'room-price-info-modal',
   REFUND_DETAIL: 'trip-refund-detail-modal',
-  TRIP_ROOM_RULES: 'trip-room-rules-modal'
+  TRIP_ROOM_RULES: 'trip-room-rules-modal',
 } as const;
