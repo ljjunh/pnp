@@ -17,6 +17,10 @@ export default function AmenityItem({ content, isClicked, handleSelect }: Amenit
         isClicked && selected,
       )}
       onClick={() => handleSelect(content)}
+      role="button"
+      tabIndex={0}
+      aria-pressed={isClicked}
+      onKeyDown={(e) => e.key === 'Enter' && handleSelect(content)}
     >
       {AMENITY_LIST[content].icon}
       <span className="whitespace-nowrap text-lg">{AMENITY_LIST[content].name}</span>

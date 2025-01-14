@@ -78,6 +78,9 @@ export default function PriceInput() {
       <span
         className="mt-6 cursor-pointer border-b border-neutral-07 text-neutral-07"
         onClick={handleOpenModal}
+        role="button"
+        tabIndex={0}
+        aria-haspopup="dialog"
       >
         요금 책정에 대해 자세히 알아보기
       </span>
