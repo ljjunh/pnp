@@ -625,6 +625,7 @@ export async function updateRoom(roomId: number, userId: string, data: UpdateRoo
     ...(data.checkIn && { checkIn: data.checkIn }),
     ...(data.checkOut && { checkOut: data.checkOut }),
     ...(data.checkInType && { checkInType: data.checkInType }),
+    ...(data.propertyType && { propertyType: data.propertyType }),
     ...(data.amenities && {
       amenities: {
         connectOrCreate: data.amenities.map((amenityId) => ({
