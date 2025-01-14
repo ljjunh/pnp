@@ -1,17 +1,10 @@
-export const REGISTER_STEP = {
-  START: '/register',
-  FIRST_STEP: '/register/first-step',
-  STRUCTURE: '/register/structure',
-  PRIVACY: '/register/privacy',
-  LOCATION: '/register/location',
-  INFO: '/register/info',
-  SECOND_STEP: '/register/second-step',
-  AMENITIES: '/register/amenities',
-  PHOTOS: '/register/photos',
-  TITLE: '/register/title',
-  DESCRIPTION: '/register/description',
-  THIRD_STEP: '/register/third-step',
-  VISIBILITY: '/register/visibility',
-  PRICE: '/register/price',
-  SAFETY: '/register/safety',
-};
+export enum LOCATION_STEP {
+  'INPUT',
+  'CONFIRM',
+  'LOCATION_CHECK',
+}
+
+export enum PHOTO_STEP {
+  UPLOAD,
+  SELECT,
+}

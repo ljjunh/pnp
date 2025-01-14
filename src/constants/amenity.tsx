@@ -4,6 +4,7 @@ type RoomListType = {
   [key: string]: {
     icon: JSX.Element;
     name: string;
+    id?: number; // TODO 내일 추가하기 -> id 값으로 조회 하기
   };
 };
 
@@ -90,7 +91,7 @@ export const AMENITY_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_COOKING_BASICS.svg"
-        alt="와이파이"
+        alt="주방"
         width={24}
         height={24}
       />
@@ -101,7 +102,7 @@ export const AMENITY_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_WASHER.svg"
-        alt="와이파이"
+        alt="세탁기"
         width={24}
         height={24}
       />
@@ -112,7 +113,7 @@ export const AMENITY_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_DRYER.svg"
-        alt="와이파이"
+        alt="건조기"
         width={24}
         height={24}
       />
@@ -123,7 +124,7 @@ export const AMENITY_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_SNOWFLAKE.svg"
-        alt="와이파이"
+        alt="에어컨"
         width={24}
         height={24}
       />
@@ -134,7 +135,7 @@ export const AMENITY_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_THERMOMETER.svg"
-        alt="와이파이"
+        alt="난방"
         width={24}
         height={24}
       />
@@ -145,7 +146,7 @@ export const AMENITY_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_WORKSPACE.svg"
-        alt="와이파이"
+        alt="업무 전용 공간"
         width={24}
         height={24}
       />
@@ -156,7 +157,7 @@ export const AMENITY_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_TV.svg"
-        alt="와이파이"
+        alt="TV"
         width={24}
         height={24}
       />
@@ -167,7 +168,7 @@ export const AMENITY_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_HAIRDRYER.svg"
-        alt="와이파이"
+        alt="헤어드라이어"
         width={24}
         height={24}
       />
@@ -178,7 +179,7 @@ export const AMENITY_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_IRON.svg"
-        alt="와이파이"
+        alt="다리미"
         width={24}
         height={24}
       />
@@ -189,7 +190,7 @@ export const AMENITY_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_POOL.svg"
-        alt="와이파이"
+        alt="수영장"
         width={24}
         height={24}
       />
@@ -200,7 +201,7 @@ export const AMENITY_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_JACUZZI.svg"
-        alt="와이파이"
+        alt="대형 욕조"
         width={24}
         height={24}
       />
@@ -211,7 +212,7 @@ export const AMENITY_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_MAPS_CAR_RENTAL.svg"
-        alt="와이파이"
+        alt="무료 주차 공간"
         width={24}
         height={24}
       />
@@ -222,7 +223,7 @@ export const AMENITY_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_EV_CHARGER.svg"
-        alt="와이파이"
+        alt="전기차 충전시설"
         width={24}
         height={24}
       />
@@ -233,7 +234,7 @@ export const AMENITY_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_CRIB.svg"
-        alt="와이파이"
+        alt="아기 침대"
         width={24}
         height={24}
       />
@@ -244,7 +245,7 @@ export const AMENITY_LIST: RoomListType = {
     icon: (
       <Image
         src="/icons/SYSTEM_CALENDAR.svg"
-        alt="와이파이"
+        alt="킹사이즈 침대"
         width={24}
         height={24}
       />

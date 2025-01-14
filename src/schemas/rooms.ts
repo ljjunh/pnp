@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { PROPERTY } from '@/constants/property';
-import { latitude } from './type';
+import { latitude, longitude } from './type';
 
 const roomType = z.enum(['Entire', 'Private']).optional().nullable();
 
@@ -127,7 +127,7 @@ export const updateRoomSchema = z.object({
     .optional(),
   roomType: roomType,
   latitude: latitude.optional(),
-  longitude: latitude.optional(),
+  longitude: longitude.optional(),
   location: z.string().optional(),
   capacity: z.number().optional(),
   price: price,

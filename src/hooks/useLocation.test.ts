@@ -47,7 +47,10 @@ describe('useLocation test', () => {
 
     expect(result.current.isLoading).toBe(true);
     expect(result.current.error).toBeNull();
-    expect(result.current.location).toBeUndefined();
+    expect(result.current.location).toEqual({
+      latitude: 37.5642135,
+      longitude: 127.0016985,
+    }); // 처음에는 초기값인 서울의 값이 들어가야 함
 
     await act(async () => {
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -75,7 +78,10 @@ describe('useLocation test', () => {
 
     expect(result.current.error).toBe('사용자의 위치를 가져오는 데 실패하였습니다.');
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.location).toBeUndefined();
+    expect(result.current.location).toEqual({
+      latitude: 37.5642135,
+      longitude: 127.0016985,
+    }); // 실패하면 서울값이 들어가야 함
   });
 
   test('위치 권한이 거부된 경우 적절한 에러 메시지를 반환해야 한다', async () => {
@@ -95,7 +101,10 @@ describe('useLocation test', () => {
 
     expect(result.current.error).toBe('위치 정보 접근 권한이 거부되었습니다.');
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.location).toBeUndefined();
+    expect(result.current.location).toEqual({
+      latitude: 37.5642135,
+      longitude: 127.0016985,
+    }); // 실패하면 서울값이 들어가야 함
   });
 
   test('위치 정보를 사용할 수 없는 경우 적절한 에러 메시지를 반환해야 한다', async () => {
@@ -115,7 +124,10 @@ describe('useLocation test', () => {
 
     expect(result.current.error).toBe('위치 정보를 사용할 수 없습니다.');
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.location).toBeUndefined();
+    expect(result.current.location).toEqual({
+      latitude: 37.5642135,
+      longitude: 127.0016985,
+    }); // 실패하면 서울값이 들어가야 함
   });
 
   test('위치 정보 요청이 타임아웃된 경우 적절한 에러 메시지를 반환해야 한다', async () => {
@@ -133,7 +145,31 @@ describe('useLocation test', () => {
 
     expect(result.current.error).toBe('위치 정보 요청 시간이 초과되었습니다.');
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.location).toBeUndefined();
+    expect(result.current.location).toEqual({
+      latitude: 37.5642135,
+      longitude: 127.0016985,
+    }); // 실패하면 서울값이 들어가야 함
+  });
+
+  test('에러 코드가 GeolocationPositionError에 해당하지 않은 에러가 발생했을 때는 기본 에러 메시지를 반환해야 한다.', async () => {
+    const unKnownError = new CustomGeolocationPositionError(999);
+
+    mockGeolocation.getCurrentPosition.mockImplementation((_, errorCallback) =>
+      errorCallback(unKnownError),
+    );
+
+    const { result } = renderHook(() => useLocation({}));
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    });
+
+    expect(result.current.error).toBe('사용자의 위치를 가져오는 데 실패하였습니다.');
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.location).toEqual({
+      latitude: 37.5642135,
+      longitude: 127.0016985,
+    }); // 실패하면 서울값이 들어가야 함
   });
 
   test('알 수 없는 에러가 발생한 경우 기본 에러 메시지를 반환해야 한다', async () => {
@@ -149,6 +185,9 @@ describe('useLocation test', () => {
 
     expect(result.current.error).toBe('사용자의 위치를 가져오는 데 실패하였습니다.');
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.location).toBeUndefined();
+    expect(result.current.location).toEqual({
+      latitude: 37.5642135,
+      longitude: 127.0016985,
+    }); // 실패하면 서울값이 들어가야 함
   });
 });
