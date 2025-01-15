@@ -1,4 +1,4 @@
-insert into pnp.room_amenities (id, room_id, amenity_id)
+insert into pnp.room_amenities (room_amenity_id, room_id, amenity_id)
 values  (1, 1, 1),
         (2, 1, 2),
         (3, 1, 3),

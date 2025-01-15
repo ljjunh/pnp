@@ -1,4 +1,4 @@
-insert into pnp.room_rules (id, room_id, rule_id)
+insert into pnp.room_rules (room_rule_id, room_id, rule_id)
 values  (1, 1, 1),
         (2, 2, 1),
         (3, 2, 2),

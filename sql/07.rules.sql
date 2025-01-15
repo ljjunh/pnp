@@ -1,4 +1,4 @@
-insert into pnp.rules (id, category, title, icon)
+insert into pnp.rules (rule_id, category, title, icon)
 values  (1, '숙박 중', '게스트 정원 2명', 'SYSTEM_FAMILY'),
         (2, '숙박 중', '반려동물 동반 불가', 'SYSTEM_NO_PETS'),
         (3, '숙박 중', '파티나 이벤트 금지', 'SYSTEM_NO_EVENTS'),

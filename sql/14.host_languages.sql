@@ -1,4 +1,4 @@
-insert into pnp.host_languages (id, host_id, language_id)
+insert into pnp.user_languages (id, user_id, language_id)
 values  (1, 2, 1),
         (2, 2, 2),
         (3, 2, 3),

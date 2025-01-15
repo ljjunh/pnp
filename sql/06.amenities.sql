@@ -1,4 +1,4 @@
-insert into pnp.amenities (id, category, title, sub_title, icon, available)
+insert into pnp.amenities (amenity_id, category, title, sub_title, icon, available)
 values  (1, '욕실', '헤어드라이어', null, 'SYSTEM_HAIRDRYER', 1),
         (2, '욕실', '샴푸', null, 'SYSTEM_SHAMPOO', 1),
         (3, '욕실', '바디워시', null, 'SYSTEM_SOAP', 1),

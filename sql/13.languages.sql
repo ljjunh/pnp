@@ -1,4 +1,4 @@
-insert into pnp.languages (id, content)
+insert into pnp.languages (language_id, content)
 values  (6, '독일어'),
         (11, '러시아어'),
         (7, '스페인어'),
