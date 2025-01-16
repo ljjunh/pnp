@@ -16,7 +16,6 @@ export default function RegisterFormProvider({ children }: { children: ReactNode
   const { isInnerStep, currentStep, setCurrentStep } = useContext(RegisterContext);
 
   const handleRegisterAction = async (formData: FormData) => {
-    console.log('formData :', formData);
     const step = formData.get('step') as string;
 
     // 내부 단계 있는 것들 이렇게 처리 -> 마지막 단계가 아니라면 server action 타면 안됨
@@ -111,8 +110,6 @@ export default function RegisterFormProvider({ children }: { children: ReactNode
         router.push(ROUTES.HOST);
         return;
     }
-
-    console.log('updateData :', updateData);
 
     const response = await updateRoomRegister(Number(roomId), updateData);
 
