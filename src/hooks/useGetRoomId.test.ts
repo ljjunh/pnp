@@ -28,7 +28,7 @@ describe('useGetRoomId test', () => {
   test('숙소 등록에 성공했을 때 roomId로 이동한다', async () => {
     (createRoomId as jest.Mock).mockResolvedValue({
       success: true,
-      data: { roomId: '1' },
+      data: { roomId: 1 },
     });
 
     const { result } = renderHook(() => useGetRoomId());
