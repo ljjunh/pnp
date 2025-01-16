@@ -1,5 +1,5 @@
+import RegisterHeader from '@/app/host/[roomId]/components/RegisterHeader';
 import { Meta, StoryObj } from '@storybook/react';
-import RegisterHeader from './RegisterHeader';
 
 const meta = {
   title: 'Register/RegisterHeader',

@@ -1,5 +1,5 @@
+import RegisterFooter from '@/app/host/[roomId]/components/RegisterFooter';
 import { Meta, StoryObj } from '@storybook/react';
-import RegisterFooter from './RegisterFooter';
 
 const meta = {
   title: 'Register/RegisterFooter',

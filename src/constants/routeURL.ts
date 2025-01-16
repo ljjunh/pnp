@@ -19,7 +19,7 @@ export const ROUTES = {
   RESERVATION: (orderNumber: string) => `/reservation/${orderNumber}`,
   HOST: '/host',
   REGISTER_STEP: (roomId: string) => ({
-    START: `/host/${roomId}/`,
+    START: `/host/${roomId}`,
     FIRST_STEP: `/host/${roomId}/first-step`,
     STRUCTURE: `/host/${roomId}/structure`,
     PRIVACY: `/host/${roomId}/privacy`,

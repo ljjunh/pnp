@@ -3,7 +3,7 @@
 import { auth } from '@/auth';
 import { ActionResponse } from '@/types/action';
 import { CreateRoomResponse } from '@/types/room';
-import { authHttpClient } from '../core/httpClient';
+import { authHttpClient } from '@/apis/core/httpClient';
 
 /**
  * 숙소 데이터를 업데이트 하는 함수
@@ -91,6 +91,7 @@ export async function updateRoomRegister(
 /**
  * roomId를 생성하는 함수
  */
+// TODO: validation zod 사용해서 처리
 export async function createRoomId(): Promise<ActionResponse<CreateRoomResponse>> {
   try {
     const session = await auth();
@@ -107,6 +108,12 @@ export async function createRoomId(): Promise<ActionResponse<CreateRoomResponse>
 
     if (!response.success) {
       switch (response.status) {
+        case 401:
+          return {
+            success: response.success,
+            message: response.message,
+            status: response.status,
+          };
         case 429:
           return {
             success: response.success,

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { FilterType } from '@/schemas/rooms';
 import { FilterRoom } from '@/types/room';
 import { getFilterRoom } from '@/apis/filters/queries';
-import { useToast } from './use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 interface UseFilterRoomsProps {
   filter: FilterType;

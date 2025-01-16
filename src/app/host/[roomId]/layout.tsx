@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
-import RegisterContextProvider from './components/RegisterContext';
-import RegisterFooter from './components/RegisterFooter';
-import RegisterFormProvider from './components/RegisterFormProvider';
-import RegisterHeader from './components/RegisterHeader';
+import RegisterContextProvider from '@/app/host/[roomId]/components/RegisterContext';
+import RegisterFooter from '@/app/host/[roomId]/components/RegisterFooter';
+import RegisterFormProvider from '@/app/host/[roomId]/components/RegisterFormProvider';
+import RegisterHeader from '@/app/host/[roomId]/components/RegisterHeader';
 
 interface RegisterLayoutProps {
   children: ReactNode;

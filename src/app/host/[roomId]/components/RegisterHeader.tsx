@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import RegisterQuestion from './RegisterQuestion';
-import RegisterSave from './RegisterSave';
+import RegisterQuestion from '@/app/host/[roomId]/components/RegisterQuestion';
+import RegisterSave from '@/app/host/[roomId]/components/RegisterSave';
 
 export default function RegisterHeader() {
   return (
@@ -14,7 +14,7 @@ export default function RegisterHeader() {
         height="32"
         alt="register logo"
       />
-      <div className='flex space-x-4'>
+      <div className="flex space-x-4">
         <RegisterQuestion />
         <RegisterSave />
       </div>

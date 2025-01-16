@@ -1,7 +1,7 @@
+import PriceInfoModal from '@/app/host/[roomId]/price/components/PriceInfoModal';
+import PriceInput from '@/app/host/[roomId]/price/components/PriceInput';
 import ModalProvider from '@/components/common/ModalProvider/ModalProvider';
 import { MODAL_ID } from '@/constants/modal';
-import PriceInfoModal from './components/PriceInfoModal';
-import PriceInput from './components/PriceInput';
 
 export default function Price() {
   return (

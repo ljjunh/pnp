@@ -49,11 +49,16 @@ describe('filter query test', () => {
       expect(url).toContain('sort=recent');
     });
 
-    test('page와 limit이 전달되지 않으면 기본값(page=1, limit=10)을 사용한다', async () => {
+    test('page와 limit, sort가 전달되지 않으면 기본값(page=1, limit=10, sort=recent)을 사용한다', async () => {
       const params = formatFilter(mockFilter as FilterType);
-      params.append('page', '1');
-      params.append('limit', '10');
-      params.append('sort', 'recent');
+
+      const page: number | undefined = undefined;
+      const limit: number | undefined = undefined;
+      const sort: string | undefined = undefined;
+
+      params.append('page', (page ?? 1).toString());
+      params.append('limit', (limit ?? 10).toString());
+      params.append('sort', sort ?? 'recent');
 
       const url = `/rooms?${params.toString()}`;
 

@@ -77,7 +77,7 @@ describe('filter action test', () => {
       const params = formatFilter(mockFilter as FilterType);
       const url = `/rooms/count${params.toString() ? `?${params.toString()}` : ''}`;
 
-      expect(url).toContain('/rooms/count');
+      expect(url).toContain('/rooms/count?');
       expect(url).toContain('roomType=Entire');
       expect(url).toContain('minPrice=10000');
     });
@@ -96,9 +96,21 @@ describe('filter action test', () => {
       };
 
       const params = formatFilter(emptyFilter);
+
+      expect(params.toString()).toBe('');
+
       const url = `/rooms/count${params.toString() ? `?${params.toString()}` : ''}`;
 
       expect(url).toBe('/rooms/count');
+      expect(url).not.toContain('?');
+    });
+
+    test('params가 빈 문자열일 때 기본 URL을 생성한다', () => {
+      const params = '';
+      const url = `/rooms/count${params?.toString() ? `?${params.toString()}` : ''}`;
+
+      expect(url).toBe('/rooms/count');
+      expect(url).not.toContain('?');
     });
 
     test('서버에서 500 에러 발생 시 에러를 던진다.', async () => {

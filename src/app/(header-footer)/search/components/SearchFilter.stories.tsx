@@ -1,6 +1,6 @@
+import SearchFilter from '@/app/(header-footer)/search/components/SearchFilter';
 import StoreProvider from '@/app/StoreProvider';
 import { Meta, StoryObj } from '@storybook/react';
-import SearchFilter from './SearchFilter';
 
 const meta = {
   title: 'Search/SearchFilter',

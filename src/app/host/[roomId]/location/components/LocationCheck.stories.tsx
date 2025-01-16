@@ -1,5 +1,5 @@
+import LocationCheck from '@/app/host/[roomId]/location/components/LocationCheck';
 import { Meta, StoryObj } from '@storybook/react';
-import LocationCheck from './LocationCheck';
 
 const meta = {
   title: 'Register/Location/LocationCheck',
