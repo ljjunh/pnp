@@ -42,7 +42,7 @@ export default function Filter() {
           propertyId={propertyId}
           params={params}
         />
-        <FilterButton />
+        <FilterButton params={params} />
       </div>
       <ModalProvider modalId={MODAL_ID.ROOM_FILTER}>
         <FilterModal />

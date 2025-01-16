@@ -1,5 +1,4 @@
 import Amenity from '@/app/(header-footer)/components/filter/Amenity';
-import { FilterType } from '@/schemas/rooms';
 import type { Meta, StoryObj } from '@storybook/react';
 import { ESSENTIAL_AMENITIES } from '@/constants/amenity';
 
@@ -25,8 +24,6 @@ type Story = StoryObj<typeof Amenity>;
 export const Default: Story = {
   args: {
     amenityArray: ESSENTIAL_AMENITIES,
-    handleFilter: (newState: string[], type: keyof FilterType) => {
-      console.log(newState, type);
-    },
+    handleFilter: () => {},
   },
 };

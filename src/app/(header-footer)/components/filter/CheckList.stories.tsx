@@ -24,8 +24,6 @@ export const Default: Story = {
   args: {
     id: 1,
     title: '한국어',
-    handleClick: (id: number) => {
-      console.log(id);
-    },
+    handleClick: () => {},
   },
 };
