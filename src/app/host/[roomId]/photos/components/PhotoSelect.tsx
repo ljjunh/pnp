@@ -1,7 +1,7 @@
+import PhotoBox from '@/app/host/[roomId]/photos/components/PhotoBox';
 import { useModal } from '@/hooks/useModal';
 import { MODAL_ID } from '@/constants/modal';
 import { FaPlus } from 'react-icons/fa6';
-import PhotoBox from './PhotoBox';
 
 export default function PhotoSelect() {
   const { handleOpenModal } = useModal(MODAL_ID.ROOM_PHOTOS);

@@ -1,4 +1,4 @@
-import PriceModalCloseButton from "./PriceModalCloseButton";
+import PriceModalCloseButton from '@/app/host/[roomId]/price/components/PriceModalCloseButton';
 
 export default function PriceInfoModal() {
   return (

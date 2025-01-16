@@ -1,5 +1,5 @@
+import PhotoUploadButton from '@/app/host/[roomId]/photos/components/PhotoUploadButton';
 import { MdAddPhotoAlternate } from 'react-icons/md';
-import PhotoUploadButton from './PhotoUploadButton';
 
 export default function PhotoUpload() {
   return (

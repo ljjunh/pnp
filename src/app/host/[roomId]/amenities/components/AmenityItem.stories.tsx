@@ -1,5 +1,5 @@
+import AmenityItem from '@/app/host/[roomId]/amenities/components/AmenityItem';
 import { Meta, StoryObj } from '@storybook/react';
-import AmenityItem from './AmenityItem';
 
 const meta = {
   title: 'Register/Amenities/AmenityItem',

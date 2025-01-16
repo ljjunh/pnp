@@ -1,7 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
-import { useContext } from 'react';
+import { ReactNode, useContext } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { RegisterContext } from '@/app/host/[roomId]/components/RegisterContext';
 import { updateRoomRegister } from '@/apis/register/action';
@@ -36,7 +35,7 @@ export default function RegisterFormProvider({ children }: { children: ReactNode
 
     // *TODO: photo 추가
 
-    let updateData = undefined;
+    let updateData;
 
     switch (step) {
       case 'start':
@@ -117,6 +116,7 @@ export default function RegisterFormProvider({ children }: { children: ReactNode
 
     const response = await updateRoomRegister(Number(roomId), updateData);
 
+    // code: title 객체 만들어서 한 번에 처리
     if (!response.success) {
       switch (response.status) {
         case 400:

@@ -1,6 +1,6 @@
 import StoreProvider from '@/app/StoreProvider';
+import PriceModalCloseButton from '@/app/host/[roomId]/price/components/PriceModalCloseButton';
 import { Meta, StoryObj } from '@storybook/react';
-import PriceModalCloseButton from './PriceModalCloseButton';
 
 const meta = {
   title: 'Register/Price/PriceModalCloseButton',

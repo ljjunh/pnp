@@ -1,5 +1,5 @@
+import RegisterSave from '@/app/host/[roomId]/components/RegisterSave';
 import { Meta, StoryObj } from '@storybook/react';
-import RegisterSave from './RegisterSave';
 
 const meta = {
   title: 'Register/RegisterSave',

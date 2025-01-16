@@ -3,8 +3,8 @@ import filterRoom from '@/mocks/fixtures/filterRoom.json';
 import { FilterType } from '@/schemas/rooms';
 import { act, renderHook } from '@testing-library/react';
 import { getFilterRoom } from '@/apis/filters/queries';
-import { useToast } from './use-toast';
-import { useFilterRooms } from './useFilterRooms';
+import { useToast } from '@/hooks/use-toast';
+import { useFilterRooms } from '@/hooks/useFilterRooms';
 
 // getFilterRoom 모킹
 jest.mock('@/apis/filters/queries', () => ({
@@ -12,7 +12,7 @@ jest.mock('@/apis/filters/queries', () => ({
 }));
 
 // toast 모킹
-jest.mock('./use-toast', () => ({
+jest.mock('@/hooks/use-toast', () => ({
   useToast: jest.fn(),
 }));
 

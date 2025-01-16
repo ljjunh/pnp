@@ -1,11 +1,11 @@
 'use client';
 
 import { use, useEffect, useState } from 'react';
+import { RegisterContext } from '@/app/host/[roomId]/components/RegisterContext';
+import LocationCheck from '@/app/host/[roomId]/location/components/LocationCheck';
+import LocationConfirm from '@/app/host/[roomId]/location/components/LocationConfirm';
+import LocationInput from '@/app/host/[roomId]/location/components/LocationInput';
 import { LOCATION_STEP } from '@/constants/registerStep';
-import { RegisterContext } from '../components/RegisterContext';
-import LocationCheck from './components/LocationCheck';
-import LocationConfirm from './components/LocationConfirm';
-import LocationInput from './components/LocationInput';
 
 export interface LocationDetail {
   country: string;

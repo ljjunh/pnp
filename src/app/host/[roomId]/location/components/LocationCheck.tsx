@@ -1,6 +1,6 @@
+import { LocationDetail } from '@/app/host/[roomId]/location/page';
 import GoogleMapView from '@/components/common/Map/GoogleMapView';
 import { FaLocationDot } from 'react-icons/fa6';
-import { LocationDetail } from '../page';
 
 interface LocationInputProps {
   latitude?: number;

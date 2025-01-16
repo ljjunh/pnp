@@ -1,5 +1,5 @@
+import RegisterQuestion from '@/app/host/[roomId]/components/RegisterQuestion';
 import { Meta, StoryObj } from '@storybook/react';
-import RegisterQuestion from './RegisterQuestion';
 
 const meta = {
   title: 'Register/RegisterQuestion',

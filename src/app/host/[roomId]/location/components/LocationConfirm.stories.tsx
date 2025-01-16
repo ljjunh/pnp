@@ -1,5 +1,5 @@
+import LocationConfirm from '@/app/host/[roomId]/location/components/LocationConfirm';
 import { Meta, StoryObj } from '@storybook/react';
-import LocationConfirm from './LocationConfirm';
 
 const meta = {
   title: 'Register/Location/LocationConfirm',

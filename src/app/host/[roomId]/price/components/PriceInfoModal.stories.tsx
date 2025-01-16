@@ -1,6 +1,6 @@
 import StoreProvider from '@/app/StoreProvider';
+import PriceInfoModal from '@/app/host/[roomId]/price/components/PriceInfoModal';
 import { Meta, StoryObj } from '@storybook/react';
-import PriceInfoModal from './PriceInfoModal';
 
 const meta = {
   title: 'Register/Price/PriceInfoModal',

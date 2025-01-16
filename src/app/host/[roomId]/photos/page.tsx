@@ -1,11 +1,11 @@
 'use client';
 
 // import { useState } from 'react';
+// import PhotoSelect from '@/app/host/[roomId]/photos/components/PhotoSelect';
+import PhotoUpload from '@/app/host/[roomId]/photos/components/PhotoUpload';
+import PhotoUploadModal from '@/app/host/[roomId]/photos/components/PhotoUploadModal';
 import ModalProvider from '@/components/common/ModalProvider/ModalProvider';
 import { MODAL_ID } from '@/constants/modal';
-// import PhotoSelect from './components/PhotoSelect';
-import PhotoUpload from './components/PhotoUpload';
-import PhotoUploadModal from './components/PhotoUploadModal';
 
 export default function Photos() {
   // const [step, setStep] = useState<PHOTO_STEP>(PHOTO_STEP.SELECT);

@@ -1,6 +1,8 @@
 'use client';
 
 import { useContext, useEffect, useRef, useState } from 'react';
+import { RegisterContext } from '@/app/host/[roomId]/components/RegisterContext';
+import { LocationDetail } from '@/app/host/[roomId]/location/page';
 import { cn } from '@/lib/utils';
 import GoogleMapView from '@/components/common/Map/GoogleMapView';
 import { useToast } from '@/hooks/use-toast';
@@ -9,8 +11,6 @@ import { LOCATION_STEP } from '@/constants/registerStep';
 import { FaLocationArrow } from 'react-icons/fa';
 import { FaLocationDot } from 'react-icons/fa6';
 import { HiBuildingOffice2 } from 'react-icons/hi2';
-import { RegisterContext } from '../../components/RegisterContext';
-import { LocationDetail } from '../page';
 
 const mockData = [
   {
