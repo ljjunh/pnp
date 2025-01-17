@@ -2,7 +2,7 @@ drop database pnp;
 create database pnp;
 use pnp;
 
-create table if not exists accounts
+create table pnp.accounts
 (
     account_id          bigint auto_increment
         primary key,
@@ -16,7 +16,7 @@ create table if not exists accounts
         unique (provider, provider_account_id)
 );
 
-create table if not exists amenities
+create table pnp.amenities
 (
     available  bit          not null,
     amenity_id bigint auto_increment
@@ -27,7 +27,10 @@ create table if not exists amenities
     title      varchar(255) not null
 );
 
-create table if not exists languages
+create index idx_icon
+    on pnp.amenities (icon);
+
+create table pnp.languages
 (
     language_id int auto_increment
         primary key,
@@ -36,7 +39,7 @@ create table if not exists languages
         unique (content)
 );
 
-create table if not exists payments
+create table pnp.payments
 (
     amount            int                                                 not null,
     id                int auto_increment
@@ -61,7 +64,7 @@ create table if not exists payments
         unique (transaction_id)
 );
 
-create table if not exists profiles
+create table pnp.profiles
 (
     is_super_host   bit          not null,
     is_verified     bit          not null,
@@ -89,7 +92,7 @@ create table if not exists profiles
         unique (user_id)
 );
 
-create table if not exists reservations
+create table pnp.reservations
 (
     capacity       int                                                                                            not null,
     days           int                                                                                            not null,
@@ -108,7 +111,7 @@ create table if not exists reservations
         unique (order_number)
 );
 
-create table if not exists reviews
+create table pnp.reviews
 (
     accuracy      int          not null,
     check_in      int          not null,
@@ -131,7 +134,7 @@ create table if not exists reviews
         unique (order_number)
 );
 
-create table if not exists room_amenities
+create table pnp.room_amenities
 (
     room_amenity_id int auto_increment
         primary key,
@@ -141,7 +144,7 @@ create table if not exists room_amenities
         unique (room_id, amenity_id)
 );
 
-create table if not exists room_images
+create table pnp.room_images
 (
     room_id       bigint                         null,
     room_image_id bigint auto_increment
@@ -151,7 +154,7 @@ create table if not exists room_images
     orientation   enum ('LANDSCAPE', 'PORTRAIT') not null
 );
 
-create table if not exists room_rules
+create table pnp.room_rules
 (
     room_rule_id int auto_increment
         primary key,
@@ -161,7 +164,15 @@ create table if not exists room_rules
         unique (room_id, rule_id)
 );
 
-create table if not exists rooms
+create table pnp.room_tags
+(
+    room_id     bigint null,
+    room_tag_id bigint auto_increment
+        primary key,
+    tag_id      bigint null
+);
+
+create table pnp.rooms
 (
     bathroom        int    default 0                           not null,
     bed             int    default 0                           not null,
@@ -197,7 +208,7 @@ create table if not exists rooms
         unique (airbnb_link)
 );
 
-create table if not exists rules
+create table pnp.rules
 (
     rule_id  bigint auto_increment
         primary key,
@@ -206,7 +217,7 @@ create table if not exists rules
     title    varchar(255) not null
 );
 
-create table if not exists tags
+create table pnp.tags
 (
     tag_id  bigint auto_increment
         primary key,
@@ -215,7 +226,7 @@ create table if not exists tags
         unique (content)
 );
 
-create table if not exists user_languages
+create table pnp.user_languages
 (
     id          int auto_increment
         primary key,
@@ -225,7 +236,7 @@ create table if not exists user_languages
         unique (user_id, language_id)
 );
 
-create table if not exists user_tags
+create table pnp.user_tags
 (
     tag_id      bigint null,
     user_id     bigint null,
@@ -235,7 +246,7 @@ create table if not exists user_tags
         unique (user_id, tag_id)
 );
 
-create table if not exists users
+create table pnp.users
 (
     created_at     datetime(6)  not null,
     email_verified datetime(6)  null,
