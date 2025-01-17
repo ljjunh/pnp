@@ -10,9 +10,30 @@ services:
       - MYSQL_USER=pnp
       - MYSQL_PASSWORD=pnp
     ports:
-      - "3306:3306"
+      - '3306:3306'
     volumes:
       - database:/var/lib/mysql
+    networks:
+      - pnp-network
+
+  server:
+    container_name: server
+    image: sunsuking/pnp-server:latest
+    ports:
+      - '8080:8080'
+    depends_on:
+      - db
+    networks:
+      - pnp-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
+      - AWS_S3_BUCKET=${AWS_S3_BUCKET}
 
 volumes:
   database:
+
+networks:
+  pnp-network:
+    driver: bridge
