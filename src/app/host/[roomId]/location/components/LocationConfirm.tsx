@@ -1,11 +1,11 @@
 'use client';
 
 import { useContext, useEffect } from 'react';
+import { RegisterContext } from '@/app/host/[roomId]/components/RegisterContext';
+import { LocationDetail } from '@/app/host/[roomId]/location/page';
 import { Switch } from '@radix-ui/react-switch';
 import GoogleMapView from '@/components/common/Map/GoogleMapView';
 import { LOCATION_STEP } from '@/constants/registerStep';
-import { RegisterContext } from '../../components/RegisterContext';
-import { LocationDetail } from '../page';
 
 interface LocationConfirmProps {
   latitude?: number;

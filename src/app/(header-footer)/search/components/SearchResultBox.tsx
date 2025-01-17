@@ -1,7 +1,7 @@
 import SearchResultLocation from '@/app/(header-footer)/search/components/SearchResultLocation';
+import SearchResultRoomList from '@/app/(header-footer)/search/components/SearchResultRoomList';
 import { FilterType } from '@/schemas/rooms';
 import { FilterRoomResponse } from '@/types/room';
-import SearchResultRoomList from './SearchResultRoomList';
 
 interface SearchResultBoxProps {
   filter: FilterType;

@@ -1,4 +1,4 @@
-import RoomRegisterButton from './components/RoomRegisterButton';
+import RoomRegisterButton from '@/app/host/components/RoomRegisterButton';
 
 export default function HostPage() {
   return (

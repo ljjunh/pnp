@@ -1,5 +1,5 @@
+import SearchProperty from '@/app/(header-footer)/search/components/SearchProperty';
 import { Meta, StoryObj } from '@storybook/react';
-import SearchProperty from './SearchProperty';
 
 const meta = {
   title: 'Search/SearchProperty',

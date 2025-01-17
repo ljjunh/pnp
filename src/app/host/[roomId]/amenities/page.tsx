@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import AmenityItem from '@/app/host/[roomId]/amenities/components/AmenityItem';
 import { POPULAR, SAFETY, SPECIAL } from '@/constants/amenity';
-import AmenityItem from './components/AmenityItem';
 
 export default function Amenities() {
   const [amenities, setAmenities] = useState<string[]>([]);

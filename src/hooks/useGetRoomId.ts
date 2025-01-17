@@ -65,6 +65,6 @@ export default function useGetRoomId() {
       setIsLoading(false);
     }
   };
-  
+
   return { getRoomId, isLoading };
 }

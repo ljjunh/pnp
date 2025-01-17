@@ -10,10 +10,9 @@ export default function Title() {
         className="mt-8 h-24 w-full rounded-xl border-[1.5px] border-neutral-07 p-4 text-xl focus:border-black focus:outline-none"
         type="text"
         name="title"
-        maxLength={32}
+        // maxLength={32}
         aria-label="숙소 이름"
         placeholder="숙소 이름을 입력해주세요"
-        required
       />
       <input
         type="hidden"

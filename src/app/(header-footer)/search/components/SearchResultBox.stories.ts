@@ -3,7 +3,7 @@ import filterRoom from '@/mocks/fixtures/filterRoom.json';
 import { FilterType } from '@/schemas/rooms';
 import { Meta, StoryObj } from '@storybook/react';
 import { FilterRoomResponse } from '@/types/room';
-import SearchResultBox from './SearchResultBox';
+import SearchResultBox from '@/app/(header-footer)/search/components/SearchResultBox';
 
 const meta = {
   title: 'Search/SearchResultBox',

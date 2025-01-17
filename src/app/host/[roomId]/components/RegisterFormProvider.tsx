@@ -1,7 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
-import { useContext } from 'react';
+import { ReactNode, useContext } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { RegisterContext } from '@/app/host/[roomId]/components/RegisterContext';
 import { updateRoomRegister } from '@/apis/register/action';
@@ -17,7 +16,6 @@ export default function RegisterFormProvider({ children }: { children: ReactNode
   const { isInnerStep, currentStep, setCurrentStep } = useContext(RegisterContext);
 
   const handleRegisterAction = async (formData: FormData) => {
-    console.log('formData :', formData);
     const step = formData.get('step') as string;
 
     // 내부 단계 있는 것들 이렇게 처리 -> 마지막 단계가 아니라면 server action 타면 안됨
@@ -36,7 +34,7 @@ export default function RegisterFormProvider({ children }: { children: ReactNode
 
     // *TODO: photo 추가
 
-    let updateData = undefined;
+    let updateData;
 
     switch (step) {
       case 'start':
@@ -113,10 +111,9 @@ export default function RegisterFormProvider({ children }: { children: ReactNode
         return;
     }
 
-    console.log('updateData :', updateData);
-
     const response = await updateRoomRegister(Number(roomId), updateData);
 
+    // code: title 객체 만들어서 한 번에 처리
     if (!response.success) {
       switch (response.status) {
         case 400:

@@ -21,7 +21,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 interface PriceRangeProps {
   roomType?: 'Entire' | 'Private' | null;
   property?: number | null;
-  handleFilter: (newState: number, type: keyof FilterType) => void;
+  handleFilter: (newState: number | undefined, type: keyof FilterType) => void;
 }
 
 export default function PriceRange({ roomType, property, handleFilter }: PriceRangeProps) {
@@ -71,10 +71,14 @@ export default function PriceRange({ roomType, property, handleFilter }: PriceRa
 
       setPriceRange(response.data);
       setRange([response.data.minPrice, response.data.maxPrice]);
+
+      // filter에 minPrice, maxPrice도 없애주기
+      handleFilter(undefined, 'minPrice');
+      handleFilter(undefined, 'maxPrice');
     };
 
     fetchFilterPrice();
-  }, [roomType, property, toast, modalState]);
+  }, [roomType, property, toast, modalState, handleFilter]);
 
   const { minPrice, maxPrice, distribution } = priceRange;
 

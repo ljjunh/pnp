@@ -92,7 +92,7 @@ export default function SearchFilter({ filter, sort }: SearchFilterProps) {
   return (
     <>
       <div className="sticky top-0 my-4 flex h-full flex-row items-center">
-        <FilterButton />
+        <FilterButton params={searchParams} />
         <div className="mr-3 h-8 w-[1px] bg-neutral-03" />
         <Popover
           open={isOpen}

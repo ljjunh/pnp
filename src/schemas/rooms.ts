@@ -1,6 +1,6 @@
+import { latitude, longitude } from '@/schemas/type';
 import { z } from 'zod';
 import { PROPERTY } from '@/constants/property';
-import { latitude, longitude } from './type';
 
 const roomType = z.enum(['Entire', 'Private']).optional().nullable();
 

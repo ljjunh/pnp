@@ -1,5 +1,5 @@
+import RoomRegisterButton from '@/app/host/components/RoomRegisterButton';
 import { Meta, StoryObj } from '@storybook/react';
-import RoomRegisterButton from './RoomRegisterButton';
 
 const meta = {
   title: 'Register/RoomRegisterButton',

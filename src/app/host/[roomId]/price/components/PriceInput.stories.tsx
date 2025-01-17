@@ -1,6 +1,6 @@
 import StoreProvider from '@/app/StoreProvider';
+import PriceInput from '@/app/host/[roomId]/price/components/PriceInput';
 import { Meta, StoryObj } from '@storybook/react';
-import PriceInput from './PriceInput';
 
 const meta = {
   title: 'Register/Price/PriceInput',

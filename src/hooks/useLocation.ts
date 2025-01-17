@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useToast } from './use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 interface Location {
   latitude: number;
@@ -45,7 +45,7 @@ export const useLocation = ({ latitude, longitude }: UseLocationProps) => {
 
       const position = await new Promise<GeolocationPosition>((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject, {
-          timeout: 1000 * 30,
+          timeout: 1000 * 3,
           maximumAge: 1000 * 60 * 60,
           enableHighAccuracy: false,
         });

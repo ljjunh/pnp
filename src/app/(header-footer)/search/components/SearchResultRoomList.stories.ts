@@ -1,9 +1,9 @@
+import SearchResultRoomList from '@/app/(header-footer)/search/components/SearchResultRoomList';
 import filter from '@/mocks/fixtures/filter.json';
 import filterRoom from '@/mocks/fixtures/filterRoom.json';
 import { FilterType } from '@/schemas/rooms';
 import { Meta, StoryObj } from '@storybook/react';
 import { FilterRoom } from '@/types/room';
-import SearchResultRoomList from './SearchResultRoomList';
 
 const meta = {
   title: 'Search/SearchResultRoomList',
