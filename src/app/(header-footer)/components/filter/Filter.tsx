@@ -12,7 +12,7 @@ export default function Filter() {
   const ref = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const params = useSearchParams();
-  const propertyId = params.get('property');
+  const propertyType = params.get('property');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,7 +39,7 @@ export default function Filter() {
         className={`sticky top-[82px] z-10 flex h-[78px] w-full flex-row items-center justify-between bg-white ${isScrolled ? '' : 'mt-24'}`}
       >
         <Property
-          propertyId={propertyId}
+          propertyType={propertyType}
           params={params}
         />
         <FilterButton params={params} />

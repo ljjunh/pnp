@@ -22,21 +22,28 @@ export default async function RoomReviewList({
     next: { tags: [CACHE_TAGS.REVIEWS.DETAIL(roomId)] },
   });
 
+  // TODO: api에서 summary가 안넘어옴
   return (
     <section className="py-12">
       <RoomReviewSummary
         reviewsCount={reviewsCount}
         reviewsAverage={reviewsAverage}
-        cleanliness={review.data.cleanliness}
-        accuracy={review.data.accuracy}
-        checkIn={review.data.checkIn}
-        communication={review.data.communication}
-        location={review.data.location}
-        value={review.data.value}
+        // cleanliness={review.content.cleanliness}
+        // accuracy={review.content.accuracy}
+        // checkIn={review.content.checkIn}
+        // communication={review.content.communication}
+        // location={review.content.location}
+        // value={review.content.value}
+        cleanliness={0}
+        accuracy={0}
+        checkIn={0}
+        communication={0}
+        location={0}
+        value={0}
       />
       {reviewsCount > 0 && (
         <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-2">
-          {review.data.reviews.map((review) => (
+          {review.content.map((review) => (
             <RoomReviewItem
               key={review.id}
               roomId={roomId}

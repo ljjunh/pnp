@@ -1,4 +1,4 @@
-import { Amenity, Room as PrismaRoom, RoomImage, Rule, Tag } from '@prisma/client';
+import { AmenitySchema, RoomImageSchema, RoomSchema, RuleSchema, TagSchema } from '@/types/table';
 import { HostWithUser } from './user';
 
 export type RoomParams = {
@@ -9,10 +9,10 @@ export type RoomLocationParams = {
   location: string;
 };
 
-export type ImageLink = Pick<RoomImage, 'id' | 'imageLink' | 'orientation'>;
+export type ImageLink = Pick<RoomImageSchema, 'id' | 'imageLink' | 'orientation'>;
 
 export type Room = Pick<
-  PrismaRoom,
+  RoomSchema,
   | 'id'
   | 'airbnbLink'
   | 'title'
@@ -31,15 +31,15 @@ export type Room = Pick<
   | 'checkOut'
   | 'checkInType'
 > & {
-  roomTags: Pick<Tag, 'id' | 'content'>[];
+  tags: Pick<TagSchema, 'id' | 'content'>[];
   images: ImageLink[];
-  rules: Rule[];
-  host: HostWithUser;
-  amenities: Amenity[];
+  rules: RuleSchema[];
+  profile: HostWithUser;
+  amenities: AmenitySchema[];
 };
 
 export type FilterRoom = Pick<
-  PrismaRoom,
+  RoomSchema,
   'id' | 'location' | 'price' | 'latitude' | 'longitude' | 'reviewsAverage'
 > & {
   images: ImageLink[];
@@ -49,7 +49,7 @@ export type FilterRoom = Pick<
 export type PriceFilterRange = {
   minPrice: number;
   maxPrice: number;
-  distribution: {
+  distributions: {
     distance: string;
     count: number;
   }[];
@@ -60,12 +60,12 @@ export type CreateRoomResponse = {
 };
 
 export type FilterRoomResponse = {
-  data: FilterRoom[];
+  content: FilterRoom[];
   page: {
-    currentPage: number;
-    pageSize: number;
+    size: number;
+    number: number;
+    totalElements: number;
     totalPages: number;
-    totalItems: number;
     hasNextPage: boolean;
     hasPrevPage: boolean;
   };

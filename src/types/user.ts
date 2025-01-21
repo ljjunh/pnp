@@ -1,16 +1,16 @@
-import { Host as PrismaHost, Tag as PrismaTag, User as PrismaUser } from '@prisma/client';
+import { ProfileSchema, TagSchema, UserSchema } from '@/types/table';
 
 export interface UserParams {
   userId: string;
 }
 
-export type Tag = Pick<PrismaTag, 'content'>;
-export type User = Pick<PrismaUser, 'id' | 'email' | 'image' | 'name'>;
+export type Tag = Pick<TagSchema, 'content'>;
+export type User = Pick<UserSchema, 'id' | 'email' | 'image' | 'name'>;
 export type Host = Pick<
-  PrismaHost,
+  ProfileSchema,
   'id' | 'isSuperHost' | 'isVerified' | 'hostStartedAt' | 'reviewsAverage' | 'reviewsCount'
 > & {
-  hostTags: Tag[];
+  tags: Tag[];
 };
 
 export type HostWithUser = Host & {
@@ -19,7 +19,7 @@ export type HostWithUser = Host & {
 
 export type UserWithHost = User & {
   host: Pick<
-    PrismaHost,
+    ProfileSchema,
     | 'isSuperHost'
     | 'isVerified'
     | 'hostStartedAt'

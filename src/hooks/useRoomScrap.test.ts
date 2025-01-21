@@ -1,4 +1,3 @@
-import { useSession } from 'next-auth/react';
 import { act, renderHook } from '@testing-library/react';
 import { createScrap, deleteScrap } from '@/apis/rooms/actions';
 import { useRoomScrap } from '@/hooks/useRoomScrap';

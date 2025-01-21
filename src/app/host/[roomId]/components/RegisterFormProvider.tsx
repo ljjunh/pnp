@@ -8,6 +8,13 @@ import { useToast } from '@/hooks/use-toast';
 import { LOCATION_STEP } from '@/constants/registerStep';
 import { ROUTES } from '@/constants/routeURL';
 
+const TOAST_TITLE = {
+  400: '업데이트 실패',
+  401: '로그인 필요',
+  403: '권한 없음',
+  404: '숙소 없음',
+};
+
 export default function RegisterFormProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
   const router = useRouter();
@@ -113,43 +120,20 @@ export default function RegisterFormProvider({ children }: { children: ReactNode
 
     const response = await updateRoomRegister(Number(roomId), updateData);
 
-    // code: title 객체 만들어서 한 번에 처리
     if (!response.success) {
-      switch (response.status) {
-        case 400:
-          toast({
-            title: '업데이트 실패',
-            description: response.message,
-            variant: 'destructive',
-          });
-          break;
-        case 401:
-          toast({
-            title: '로그인 필요',
-            description: response.message,
-            variant: 'destructive',
-          });
-          break;
-        case 403:
-          toast({
-            title: '권한 없음',
-            description: response.message,
-            variant: 'destructive',
-          });
-          break;
-        case 404:
-          toast({
-            title: '숙소 없음',
-            description: response.message,
-            variant: 'destructive',
-          });
-          break;
-        default:
-          toast({
-            title: response.message,
-            variant: 'destructive',
-          });
+      if ([400, 401, 403, 404].includes(response.status)) {
+        toast({
+          title: TOAST_TITLE[response.status as keyof typeof TOAST_TITLE],
+          description: response.message,
+          variant: 'destructive',
+        });
+      } else {
+        toast({
+          title: response.message,
+          variant: 'destructive',
+        });
       }
+
       return;
     }
 

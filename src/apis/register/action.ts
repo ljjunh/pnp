@@ -1,6 +1,6 @@
 'use server';
 
-import { auth } from '@/auth';
+import {cookies} from 'next/headers';
 import { ActionResponse } from '@/types/action';
 import { CreateRoomResponse } from '@/types/room';
 import { authHttpClient } from '@/apis/core/httpClient';
@@ -16,9 +16,10 @@ export async function updateRoomRegister(
   updateData?: Record<string, string | string[] | number>,
 ): Promise<ActionResponse> {
   try {
-    const session = await auth();
+    const cookieStore = cookies();
+    const authenticated = Boolean(cookieStore.get('authenticated')?.value || 'false');
 
-    if (!session) {
+    if (!authenticated) {
       return {
         success: false,
         message: '로그인이 필요합니다.',
@@ -94,9 +95,11 @@ export async function updateRoomRegister(
 // TODO: validation zod 사용해서 처리
 export async function createRoomId(): Promise<ActionResponse<CreateRoomResponse>> {
   try {
-    const session = await auth();
+    // FIXME: 인증
+    const cookieStore = cookies();
+    const accessToken = cookieStore.get('access_token')?.value;
 
-    if (!session) {
+    if (!accessToken) {
       return {
         success: false,
         message: '로그인이 필요합니다.',

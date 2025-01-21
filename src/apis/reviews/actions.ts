@@ -1,11 +1,11 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { auth } from '@/auth';
 import { CreateReviewInput, UpdateReviewInput } from '@/schemas';
 import { ActionResponse } from '@/types/action';
 import { authHttpClient } from '@/apis/core/httpClient';
 import { CACHE_TAGS } from '@/constants/cacheTags';
+import { cookies } from 'next/headers';
 
 /**
  * 숙소에 대한 리뷰를 작성하는 서버 액션 입니다.
@@ -19,8 +19,10 @@ export async function createReview(
 ): Promise<ActionResponse> {
   try {
     // 세션 체크
-    const session = await auth();
-    if (!session) {
+    const cookieStore = cookies();
+    const accessToken = cookieStore.get('access_token')?.value;
+
+    if (!accessToken) {
       return {
         success: false,
         message: '로그인이 필요합니다.',
@@ -68,9 +70,10 @@ export async function createReview(
  */
 export async function deleteReview(roomId: number, reviewId: number): Promise<ActionResponse> {
   try {
-    const session = await auth();
+    const cookieStore = cookies();
+    const accessToken = cookieStore.get('access_token')?.value;
 
-    if (!session) {
+    if (!accessToken) {
       return {
         success: false,
         message: '로그인이 필요합니다.',
@@ -125,8 +128,10 @@ export async function updateReview(
 ): Promise<ActionResponse> {
   try {
     // 세션 체크
-    const session = await auth();
-    if (!session) {
+    const cookieStore = cookies();
+    const accessToken = cookieStore.get('access_token')?.value;
+
+    if (!accessToken) {
       return {
         success: false,
         message: '로그인이 필요합니다.',

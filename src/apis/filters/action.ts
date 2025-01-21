@@ -10,7 +10,7 @@ import { formatFilter } from '@/utils/formatFilter';
  * 가격 범위를 업데이트하는 서버 액션
  *
  * @param {"Entire" | "Private" | null} roomType
- * @param {number} property
+ * @param {string} property
  */
 export async function getFilterPrice({
   roomType,
@@ -24,8 +24,10 @@ export async function getFilterPrice({
     }
 
     if (property) {
-      params.append('property', property.toString());
+      params.append('propertyType', property.toString());
     }
+
+    console.log(params);
 
     const url = `/rooms/price${params.toString() ? `?${params.toString()}` : ''}`;
 

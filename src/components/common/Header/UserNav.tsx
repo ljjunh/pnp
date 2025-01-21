@@ -1,16 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import UserButton from '@/components/common/Header/UserButton';
 import UserMenu from '@/components/common/Header/UserMenu';
 import { ROUTES } from '@/constants/routeURL';
 import { BiGlobe } from 'react-icons/bi';
+import { useSession } from '@/hooks/useSession';
 
 export default function UserNav() {
   const [isOpen, setIsOpen] = useState(false);
-  const { status, data: session } = useSession();
+  const { authenticated, user } = useSession();
 
   const toggleOpen = () => {
     setIsOpen((prev) => !prev);
@@ -33,12 +33,12 @@ export default function UserNav() {
       </button>
 
       <UserButton
-        isLoggedIn={status === 'authenticated'}
+        isLoggedIn={authenticated}
         onClick={toggleOpen}
-        profileImage={session?.user?.image || undefined}
+        profileImage={user?.image || undefined}
       />
       <UserMenu
-        isLoggedIn={status === 'authenticated'}
+        isLoggedIn={authenticated}
         isOpen={isOpen}
         onToggleOpen={toggleOpen}
       />

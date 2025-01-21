@@ -11,7 +11,7 @@ export default function Structure() {
         value="structure"
       />
       <div className="grid grid-cols-3 gap-4">
-        {Object.values(PROPERTY).map((content, index) => (
+        {PROPERTY.map((content, index) => (
           <div
             key={`${content}-${index}`}
             className="relative"

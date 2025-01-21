@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import RoomReviewDeleteButton from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewDeleteButton';
 import RoomReviewEditForm from '@/app/(header-footer)/rooms/[id]/components/review/RoomReviewEditForm';
 import { RatingValues, Review } from '@/types/review';
+import { useSession } from '@/hooks/useSession';
 import { calculateAverageRating } from '@/utils/calculateAverageRating';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { formatRelativeDate } from '@/utils/formatRelativeDate';
@@ -40,7 +40,8 @@ export default function RoomReviewItem({
   user,
   isInterceptedRoute = false,
 }: RoomReviewItemProps) {
-  const { data: session } = useSession();
+  // !FIXME: session 수정
+  const { user: session } = useSession();
   const [isEditing, setIsEditing] = useState(false);
 
   const initialRatings: RatingValues = {
@@ -60,6 +61,8 @@ export default function RoomReviewItem({
     checkIn,
     value,
   ]);
+
+  // TODO: api에서 user 안에 host 정보가 안넘어옴
 
   return (
     <div>
@@ -82,11 +85,13 @@ export default function RoomReviewItem({
             <div>
               <div className="font-semibold">{user.name}</div>
               <div className="text-sm text-shade-02">
-                에어비앤비 가입 기간 {formatElapsedTime(new Date(user.host.hostStartedAt))}
+                {/* TODO: 나중에 살리기 */}
+                {/* 에어비앤비 가입 기간 {formatElapsedTime(new Date(user.host.hostStartedAt))} */}
+                에어비앤비 가입 기간 {formatElapsedTime(new Date())}
               </div>
             </div>
           </div>
-          {session?.user.id === user.id && isInterceptedRoute && (
+          {session?.id === user.id && isInterceptedRoute && (
             <div className="flex gap-2 text-sm text-neutral-07">
               <button
                 onClick={() => setIsEditing(true)}
@@ -113,7 +118,9 @@ export default function RoomReviewItem({
             ))}
           </div>
           <span className="text-neutral-07">·</span>
-          <div>{formatRelativeDate(new Date(createdAt))}</div>
+          {/* TODO 날짜 형태 수정 필요. */}
+          {/* <div>{formatRelativeDate(new Date(createdAt))}</div> */}
+          <div>{formatRelativeDate(new Date())}</div>
         </div>
       </div>
       {isEditing ? (

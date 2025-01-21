@@ -7,11 +7,11 @@ import { BiCategory } from 'react-icons/bi';
 import { CiCircleChevLeft, CiCircleChevRight } from 'react-icons/ci';
 
 interface PropertyProps {
-  propertyId: string | null;
+  propertyType: string | null;
   params: URLSearchParams;
 }
 
-export default function Property({ propertyId, params }: PropertyProps) {
+export default function Property({ propertyType, params }: PropertyProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState<boolean>(false);
   const [showRightArrow, setShowRightArrow] = useState<boolean>(true);
@@ -68,10 +68,10 @@ export default function Property({ propertyId, params }: PropertyProps) {
         ref={scrollRef}
         className="flex flex-1 flex-row items-center gap-6 overflow-x-auto scrollbar-hide"
       >
-        {Object.values(PROPERTY).map((content, index) => (
+        {PROPERTY.map((content, index) => (
           <Link
             href={`?${handleParams(index)}`}
-            className={`flex w-16 flex-shrink-0 cursor-pointer flex-col items-center justify-center space-y-1.5 hover:text-black ${propertyId === index.toString() ? 'text-black' : 'text-gray-500'}`}
+            className={`flex w-16 flex-shrink-0 cursor-pointer flex-col items-center justify-center space-y-1.5 hover:text-black ${propertyType === content ? 'text-black' : 'text-gray-500'}`}
             key={`${content}-${index}`}
           >
             <BiCategory size={24} />

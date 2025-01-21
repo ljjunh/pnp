@@ -35,7 +35,7 @@ export function useFilterRooms({ filter, initialRooms, hasNext, roomCount }: Use
       const nextPage = currentPage + 1;
       const response = await getFilterRoom(filter, nextPage, roomCount);
 
-      setRooms((prev) => [...prev, ...response.data]);
+      setRooms((prev) => [...prev, ...response.content]);
       setCurrentPage(nextPage);
       setHasNextPage(response.page.hasNextPage);
     } catch (error) {
