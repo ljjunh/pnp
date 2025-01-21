@@ -9,7 +9,7 @@ import { IoIosArrowForward, IoIosStar } from 'react-icons/io';
 import { MdVerifiedUser } from 'react-icons/md';
 
 interface RoomHostProps {
-  host: Room['host'];
+  host: Room['profile'];
 }
 
 export default function RoomHost({ host }: RoomHostProps) {
@@ -105,7 +105,7 @@ export default function RoomHost({ host }: RoomHostProps) {
               </div>
             )}
             <div className="my-2 text-lg font-semibold">호스트 상세 정보</div>
-            {host.hostTags.map((tag) => (
+            {host.tags.map((tag) => (
               <div
                 key={tag.content}
                 className="text-shade-02"

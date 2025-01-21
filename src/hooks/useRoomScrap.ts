@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { createScrap, deleteScrap } from '@/apis/rooms/actions';
 import { useToast } from '@/hooks/use-toast';
 import { ROUTES } from '@/constants/routeURL';
+import { useSession } from './useSession';
 
 interface RoomScrapProps {
   roomId: number;
@@ -28,7 +28,7 @@ interface RoomScrapProps {
  */
 export function useRoomScrap({ roomId, initialIsScrap }: RoomScrapProps) {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { authenticated } = useSession();
   const { toast } = useToast();
   const [isScrap, setIsScrap] = useState(initialIsScrap);
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +38,7 @@ export function useRoomScrap({ roomId, initialIsScrap }: RoomScrapProps) {
   };
 
   const validateSession = () => {
-    if (!session) {
+    if (!authenticated) {
       router.push(ROUTES.LOGIN);
       return false;
     }

@@ -1,7 +1,7 @@
 'use server';
 
+import {cookies} from 'next/headers';
 import { revalidateTag } from 'next/cache';
-import { auth } from '@/auth';
 import { CreateReservationInput } from '@/schemas/reservation';
 import { ActionResponse } from '@/types/action';
 import { CreateReservationResponse } from '@/types/reservation';
@@ -17,9 +17,10 @@ export async function createReservation(
   input: CreateReservationInput,
 ): Promise<ActionResponse<CreateReservationResponse>> {
   try {
-    // 세션 체크
-    const session = await auth();
-    if (!session) {
+    const cookieStore = cookies();
+    const authenticated = Boolean(cookieStore.get('authenticated')?.value || 'false');
+
+    if (!authenticated) {
       return {
         success: false,
         message: '로그인이 필요합니다.',

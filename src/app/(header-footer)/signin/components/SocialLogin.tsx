@@ -1,6 +1,13 @@
+import Link from 'next/link';
 import { SocialLoginFormBtn } from '@/app/(header-footer)/signin/components/SocialLoginFormBtn';
-import { googleLogin, kakaoLogin } from '@/apis/signin/action';
 import { MESSAGES, SOCIAL_LOGIN_BUTTON } from '@/constants/login';
+
+// TODO: 로그인 redirect uri 이전 페이지로 수정
+
+const GOOGLE_LOGIN_URL =
+  'http://localhost:8080/auth/authorization/google?oauth_redirect_uri=http://localhost:3000';
+const KAKAO_LOGIN_URL =
+  'http://localhost:8080/auth/authorization/kakao?oauth_redirect_uri=http://localhost:3000';
 
 export function SocialLogin() {
   return (
@@ -18,13 +25,13 @@ export function SocialLogin() {
 
       {/* 소셜 로그인 버튼들 */}
       <nav className="space-y-3">
-        <form action={googleLogin}>
+        <Link href={GOOGLE_LOGIN_URL}>
           <SocialLoginFormBtn text={SOCIAL_LOGIN_BUTTON.GOOGLE} />
-        </form>
+        </Link>
 
-        <form action={kakaoLogin}>
+        <Link href={KAKAO_LOGIN_URL}>
           <SocialLoginFormBtn text={SOCIAL_LOGIN_BUTTON.KAKAO} />
-        </form>
+        </Link>
       </nav>
     </>
   );

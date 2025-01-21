@@ -12,9 +12,9 @@ import { IoIosStar } from 'react-icons/io';
 interface RoomDescriptionProps {
   roomId: Room['id'];
   location: Room['location'];
-  roomTags: Room['roomTags'];
+  roomTags: Room['tags'];
   description: Room['description'];
-  host: Room['host'];
+  host: Room['profile'];
   reviewsCount: Room['reviewsCount'];
   reviewsAverage: Room['reviewsAverage'];
   amenities: Room['amenities'];
@@ -32,6 +32,7 @@ export default function RoomDescription({
 }: RoomDescriptionProps) {
   const availableAmenities = amenities.filter((amenity) => amenity.available === true).slice(0, 6);
 
+  // TODO: tag 확인
   return (
     <>
       <section className="flex flex-col border-b border-neutral-04 py-8">

@@ -26,9 +26,9 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
         <div className="col-span-3">
           <RoomDescription
             location={room.location}
-            roomTags={room.roomTags}
+            roomTags={room.tags}
             description={room.description}
-            host={room.host}
+            host={room.profile}
             reviewsCount={room.reviewsCount}
             reviewsAverage={room.reviewsAverage}
             amenities={room.amenities}
@@ -56,7 +56,7 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
         reviewsAverage={room.reviewsAverage}
       />
       <RoomAmenities amenities={room.amenities} />
-      <RoomHost host={room.host} />
+      <RoomHost host={room.profile} />
       <RoomRules
         checkIn={room.checkIn}
         checkOut={room.checkOut}

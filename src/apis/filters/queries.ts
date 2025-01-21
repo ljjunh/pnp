@@ -28,7 +28,8 @@ export async function getFilterRoom(
     const url = `/rooms?${params.toString()}`;
 
     const response = await httpClient.get<FilterRoomResponse>(url);
-
+    response.data.page.hasNextPage = response.data.page.totalPages > response.data.page.size;
+    response.data.page.hasPrevPage = response.data.page.number >= 0;
     if (!response.success && response.status) {
       throw new CustomError(response.message, response.status);
     }

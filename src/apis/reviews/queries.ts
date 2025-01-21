@@ -1,16 +1,18 @@
 import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
-import { ReviewSortType, ReviewSummarize } from '@/types/review';
+import { Review, ReviewSortType } from '@/types/review';
 import { authHttpClient, httpClient } from '@/apis/core/httpClient';
 import { CACHE_TAGS } from '@/constants/cacheTags';
 
 export interface GetReviewsResponse {
-  data: ReviewSummarize;
+  content: Review[];
+  average: number;
+  count: number;
   page: {
-    currentPage: number;
-    pageSize: number;
+    size: number;
+    number: number;
+    totalElements: number;
     totalPages: number;
-    totalItems: number;
     hasNextPage: boolean;
     hasPrevPage: boolean;
   };
@@ -45,7 +47,10 @@ export async function getReviews(
     const url = `/rooms/${roomId}/reviews${queryParams ? `?${queryString}` : ''}`;
 
     const response = await httpClient.get<GetReviewsResponse>(url, options);
-
+    // TODO: 여기 수정
+    response.data.page.hasNextPage = response.data.page.totalPages > response.data.page.size;
+    response.data.page.hasPrevPage = response.data.page.number >= 0;
+    
     if (!response.success) {
       switch (response.status) {
         case 404:

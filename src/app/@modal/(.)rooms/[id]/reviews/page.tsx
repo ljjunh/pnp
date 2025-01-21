@@ -12,16 +12,17 @@ export default async function ReviewModal({ params }: { params: { id: string } }
   });
   const isAvailable = await getReviewAvailable(Number(params.id));
 
+  // TODO: api에서 summary가 안넘어옴
   const rating = calculateAverageRating([
-    review.data.accuracy,
-    review.data.communication,
-    review.data.cleanliness,
-    review.data.location,
-    review.data.checkIn,
-    review.data.value,
+    review.content.accuracy,
+    review.content.communication,
+    review.content.cleanliness,
+    review.content.location,
+    review.content.checkIn,
+    review.content.value,
   ]);
 
-  const reviewAverages = review.data.reviews.map((r) =>
+  const reviewAverages = review.content.reviews.map((r) =>
     calculateAverageRating([
       r.accuracy,
       r.communication,
@@ -33,7 +34,7 @@ export default async function ReviewModal({ params }: { params: { id: string } }
   );
 
   const scoreDistribution =
-    review.data.reviews.length === 0
+    review.content.reviews.length === 0
       ? { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
       : Object.fromEntries(
           [5, 4, 3, 2, 1].map((score) => [
@@ -80,42 +81,42 @@ export default async function ReviewModal({ params }: { params: { id: string } }
                 <PiSprayBottle size={25} />
                 <span>청결도</span>
               </div>
-              <div>{review.data.cleanliness.toFixed(1)}</div>
+              <div>{review.content.cleanliness.toFixed(1)}</div>
             </div>
             <div className="flex items-center justify-between border-b border-neutral-03 py-3 text-sm">
               <div className="flex items-center gap-4">
                 <PiCheckCircle size={25} />
                 <span>정확도</span>
               </div>
-              <div>{review.data.accuracy.toFixed(1)}</div>
+              <div>{review.content.accuracy.toFixed(1)}</div>
             </div>
             <div className="flex items-center justify-between border-b border-neutral-03 py-3 text-sm">
               <div className="flex items-center gap-4">
                 <PiKey size={25} />
                 <span>체크인</span>
               </div>
-              <div>{review.data.checkIn.toFixed(1)}</div>
+              <div>{review.content.checkIn.toFixed(1)}</div>
             </div>
             <div className="flex items-center justify-between border-b border-neutral-03 py-3 text-sm">
               <div className="flex items-center gap-4">
                 <GoComment size={25} />
                 <span>의사소통</span>
               </div>
-              <div>{review.data.communication.toFixed(1)}</div>
+              <div>{review.content.communication.toFixed(1)}</div>
             </div>
             <div className="flex items-center justify-between border-b border-neutral-03 py-3 text-sm">
               <div className="flex items-center gap-4">
                 <PiMapTrifold size={25} />
                 <span>위치</span>
               </div>
-              <div>{review.data.location.toFixed(1)}</div>
+              <div>{review.content.location.toFixed(1)}</div>
             </div>
             <div className="flex items-center justify-between py-2 text-sm">
               <div className="flex items-center gap-4">
                 <PiTag size={25} />
                 <span>가격 대비 만족도</span>
               </div>
-              <div>{review.data.value.toFixed(1)}</div>
+              <div>{review.content.value.toFixed(1)}</div>
             </div>
           </div>
         </div>

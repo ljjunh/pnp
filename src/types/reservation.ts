@@ -1,12 +1,12 @@
 import {
-  Host,
-  Reservation as PrismaReservation,
-  Room,
-  RoomImage,
-  Rule,
-  Tag,
-  User,
-} from '@prisma/client';
+  ProfileSchema,
+  ReservationSchema,
+  RoomImageSchema,
+  RoomSchema,
+  RuleSchema,
+  TagSchema,
+  UserSchema,
+} from '@/types/table';
 
 export type ReservationParams = {
   orderNumber: string;
@@ -18,18 +18,18 @@ export type CreateReservationResponse = {
 };
 
 export type ReservationTrip = Pick<
-  PrismaReservation,
+  ReservationSchema,
   'id' | 'orderNumber' | 'status' | 'checkIn' | 'checkOut'
 > & {
-  room: Pick<Room, 'id' | 'title' | 'thumbnail' | 'location'> & {
-    host: Pick<Host, 'id'> & {
-      user: Pick<User, 'name' | 'image'>;
+  room: Pick<RoomSchema, 'id' | 'title' | 'thumbnail' | 'location'> & {
+    host: Pick<ProfileSchema, 'id'> & {
+      user: Pick<UserSchema, 'name' | 'image'>;
     };
   };
 };
 
 export type Reservation = Pick<
-  PrismaReservation,
+  ReservationSchema,
   | 'userId'
   | 'roomId'
   | 'checkIn'
@@ -40,7 +40,7 @@ export type Reservation = Pick<
   | 'days'
 > & {
   room: Pick<
-    Room,
+    RoomSchema,
     | 'title'
     | 'thumbnail'
     | 'reviewsCount'
@@ -54,12 +54,12 @@ export type Reservation = Pick<
     | 'checkInType'
     | 'capacity'
   > & {
-    host: Pick<Host, 'id' | 'isSuperHost' | 'isVerified'> & {
-      user: Pick<User, 'id' | 'name' | 'image'>;
+    host: Pick<ProfileSchema, 'id' | 'isSuperHost' | 'isVerified'> & {
+      user: Pick<UserSchema, 'id' | 'name' | 'image'>;
     };
-    images: RoomImage[];
-    rules: Rule[];
-    roomTags: Pick<Tag, 'id' | 'content'>[];
+    images: RoomImageSchema[];
+    rules: RuleSchema[];
+    roomTags: Pick<TagSchema, 'id' | 'content'>[];
   };
 };
 

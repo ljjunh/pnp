@@ -1,4 +1,4 @@
-import { BaseResponse } from '@/lib/server/response';
+import { BaseResponse } from '@/types/response';
 
 // HTTP 요청 메서드 타입 정의
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';

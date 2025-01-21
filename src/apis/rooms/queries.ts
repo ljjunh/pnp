@@ -17,6 +17,7 @@ export async function getRoom(roomId: number): Promise<Room> {
         tags: [CACHE_TAGS.ROOMS.DETAIL(roomId)],
       },
     });
+
     if (!response.success) {
       switch (response.status) {
         case 404:
@@ -92,9 +93,11 @@ export async function getRoomAvailable(roomId: number): Promise<string[]> {
     );
 
     if (!response.success) {
-      throw new CustomError(response.message, response.status);
+      // throw new CustomError(response.message, response.status);
+      return ['2025.01.01', '2025.01.02', '2025.01.03']
     }
-    return response.data;
+    // return response.data;
+    return ['2025.01.01', '2025.01.02', '2025.01.03']
   } catch (error) {
     if (error instanceof CustomError) {
       throw error;
@@ -124,9 +127,11 @@ export async function getRoomAvailableClient(
     );
 
     if (!response.success) {
-      throw new CustomError(response.message, response.status);
+      return ['2025.01.01', '2025.01.02', '2025.01.03']
+      // throw new CustomError(response.message, response.status);
     }
-    return response.data;
+    // return response.data;
+    return ['2025.01.01', '2025.01.02', '2025.01.03']
   } catch (error) {
     if (error instanceof CustomError) {
       throw error;

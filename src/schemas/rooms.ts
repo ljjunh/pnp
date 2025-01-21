@@ -49,13 +49,11 @@ const language = z
     message: '언어는 숫자의 배열이어야 합니다',
   });
 
-const validPropertyValues = Object.keys(PROPERTY).map(Number);
-
 const property = z
-  .number({ message: '건물 유형은 숫자여야 합니다.' })
+  .string({ message: '건물 유형은 숫자여야 합니다.' })
   .nullable()
   .optional()
-  .refine((value) => value === null || value === undefined || validPropertyValues.includes(value), {
+  .refine((value) => value === null || value === undefined || PROPERTY.includes(value), {
     message: '유효하지 않은 건물 유형입니다.',
   });
 

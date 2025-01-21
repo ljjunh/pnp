@@ -33,7 +33,7 @@ export default function FilterModal() {
     amenityArray: params.get('amenities')?.split(',') || [],
     option: params.get('option')?.split(',') || [],
     language: params.get('language')?.split(',').map(Number) || [],
-    property: params.get('property') ? Number(params.get('property')) : undefined,
+    property: params.get('property') ? params.get('property') : undefined,
     location: params.get('location') || undefined,
     checkIn: params.get('checkIn') || undefined,
     checkOut: params.get('checkOut') || undefined,

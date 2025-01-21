@@ -20,7 +20,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 interface PriceRangeProps {
   roomType?: 'Entire' | 'Private' | null;
-  property?: number | null;
+  property?: string | null;
   handleFilter: (newState: number | undefined, type: keyof FilterType) => void;
 }
 
@@ -30,7 +30,7 @@ export default function PriceRange({ roomType, property, handleFilter }: PriceRa
   const [priceRange, setPriceRange] = useState<PriceFilterRange>({
     minPrice: 0,
     maxPrice: 0,
-    distribution: [],
+    distributions: [],
   });
 
   // roomType이 변경될 때마다 가격 범위를 조회
@@ -80,18 +80,18 @@ export default function PriceRange({ roomType, property, handleFilter }: PriceRa
     fetchFilterPrice();
   }, [roomType, property, toast, modalState, handleFilter]);
 
-  const { minPrice, maxPrice, distribution } = priceRange;
+  const { minPrice, maxPrice, distributions } = priceRange;
 
   const [range, setRange] = useState([minPrice, maxPrice]);
   const sliderRef = useRef<HTMLDivElement>(null);
 
   const data = {
-    labels: distribution.map((item) => item.distance),
+    labels: distributions.map((item) => item.distance),
     datasets: [
       {
-        data: distribution.map((item) => item.count),
-        backgroundColor: distribution.map((_, index) => {
-          const percentage = (index / (distribution.length - 1)) * 100;
+        data: distributions.map((item) => item.count),
+        backgroundColor: distributions.map((_, index) => {
+          const percentage = (index / (distributions.length - 1)) * 100;
 
           return percentage >= ((range[0] - minPrice) / (maxPrice - minPrice)) * 100 &&
             percentage <= ((range[1] - minPrice) / (maxPrice - minPrice)) * 100

@@ -1,8 +1,8 @@
 import RoomCancellationModalButton from '@/app/(header-footer)/rooms/[id]/components/information/RoomCancellationModalButton';
 import RoomRulesModalButton from '@/app/(header-footer)/rooms/[id]/components/information/RoomRulesModalButton';
 import RoomSafetyModalButton from '@/app/(header-footer)/rooms/[id]/components/information/RoomSafetyModalButton';
-import { Rule } from '@prisma/client';
 import { Room } from '@/types/room';
+import { RuleSchema } from '@/types/table';
 
 interface RoomRulesProps {
   checkIn: Room['checkIn'];
@@ -19,7 +19,7 @@ export default function RoomRules({
   checkInType,
   amenities,
 }: RoomRulesProps) {
-  const guestCapacityRule: Rule | undefined = rules.find((rule) =>
+  const guestCapacityRule: RuleSchema | undefined = rules.find((rule) =>
     rule.title.includes('게스트 정원'),
   );
   const safetyAmenities: Room['amenities'] = amenities.filter(

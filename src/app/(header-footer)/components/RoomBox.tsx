@@ -14,7 +14,7 @@ interface RoomBoxProps {
 export default function RoomBox({ filter, filterRoom }: RoomBoxProps) {
   const { rooms, isLoading, hasNextPage, fetchNextPage } = useFilterRooms({
     filter,
-    initialRooms: filterRoom.data,
+    initialRooms: filterRoom.content,
     hasNext: filterRoom.page.hasNextPage,
     roomCount: 36,
   });
@@ -24,7 +24,7 @@ export default function RoomBox({ filter, filterRoom }: RoomBoxProps) {
     disabled: isLoading && !hasNextPage,
   });
 
-  if (filterRoom.data.length === 0) {
+  if (filterRoom.content.length === 0) {
     return (
       <div className="flex h-[500px] items-center justify-center">
         <p>조건에 맞는 숙소가 없습니다.</p>
