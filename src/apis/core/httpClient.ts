@@ -17,21 +17,27 @@ interface RequestInterceptor {
   ): Promise<NextFetchRequestConfig> | NextFetchRequestConfig;
 }
 
+interface NextFetchResponseConfig extends NextFetchRequestConfig {
+  url: string;
+  status: number;
+}
+
 // 응답 인터셉터 인터페이스
 interface ResponseInterceptor {
   onResponse<T>(response: BaseResponse<T>): Promise<BaseResponse<T>> | BaseResponse<T>;
+  onError<T>(config: NextFetchResponseConfig): Promise<BaseResponse<T>> | BaseResponse<T>;
 }
 
 export class HttpClient {
-  protected static instance: HttpClient;
+  private static instance: HttpClient;
   // API 기본 URL
-  protected readonly baseURL = process.env.NEXT_PUBLIC_BASE_URL || '';
+  private readonly baseURL = process.env.NEXT_PUBLIC_BASE_URL || '';
   // 요청/응답 인터셉터 배열
-  protected requestInterceptors: RequestInterceptor[] = [];
-  protected responseInterceptors: ResponseInterceptor[] = [];
+  private requestInterceptors: RequestInterceptor[] = [];
+  private responseInterceptors: ResponseInterceptor[] = [];
 
   // 생성자 private로 선언해서 외부에서 직접 인스턴스화 못하게
-  protected constructor() {}
+  private constructor() {}
 
   // 싱글톤 인스턴스를 얻는 메서드
   // 최초 호출시 인스턴스 생성 및 기본 인터셉터 설정
@@ -54,13 +60,14 @@ export class HttpClient {
   }
 
   // 기본 인터셉터 설정
-  protected setupDefaultInterceptors(): void {
+  private setupDefaultInterceptors(): void {
     // 기본 요청 인터셉터
     this.addRequestInterceptor({
       onRequest: (config) => ({
         ...config,
         headers: {
           ...config.headers,
+          'Content-Type': 'application/json',
         },
       }),
     });
@@ -84,10 +91,10 @@ export class HttpClient {
     let fetchConfig: NextFetchRequestConfig = {
       ...config,
       method,
+      credentials: 'include',
       cache: method === 'GET' ? 'force-cache' : undefined,
       headers: {
         ...config.headers,
-        // Cookie: await this.getCookies(),
       },
     };
 
@@ -121,9 +128,20 @@ export class HttpClient {
       }
     }
 
+    // 응답 config 생성
+    const responseConfig = {
+      ...fetchConfig,
+      status: response.status,
+      url: `${this.baseURL}${url}`,
+    };
+
     // 모든 응답 인터셉터 순차적 실행
     for (const interceptor of this.responseInterceptors) {
-      result = await interceptor.onResponse(result);
+      if (response.ok) {
+        result = await interceptor.onResponse(result);
+      } else if (response.status === 401) {
+        result = await interceptor.onError(responseConfig);
+      }
     }
 
     return result;
@@ -166,49 +184,86 @@ export class HttpClient {
   }
 }
 
-export class AuthHttpClient extends HttpClient {
-  protected static instance: AuthHttpClient;
+const httpClient = HttpClient.getInstance();
 
-  private constructor() {
-    super();
-    this.setupDefaultInterceptors();
-  }
-
-  public static getInstance(): AuthHttpClient {
-    if (!AuthHttpClient.instance) {
-      AuthHttpClient.instance = new AuthHttpClient();
-    }
-    return AuthHttpClient.instance;
-  }
-
-  private async getCookies(): Promise<string> {
+httpClient.addRequestInterceptor({
+  onRequest: async (config) => {
     if (typeof window !== 'undefined') {
-      return document.cookie;
+      // client 컴포넌트일 때 세션에서 accessToken 추가
+      const { accessToken } = await import('@/store/useAuthStore');
+
+      config.headers = {
+        ...config.headers,
+        Authorization: `Bearer ${accessToken}`,
+      };
+    } else {
+      // server 컴포넌트일 때 쿠키에서 accessToken 추가
+      const { getToken } = await import('@/app/lib/server/cookies');
+
+      const { accessToken } = await getToken();
+
+      config.headers = {
+        ...config.headers,
+        Authorization: `Bearer ${accessToken}`,
+      };
+    }
+    return config;
+  },
+});
+
+httpClient.addResponseInterceptor({
+  // 성공 응답일때는 그대로 리턴
+  onResponse: async (response) => {
+    return response;
+  },
+
+  // 에러 응답
+  onError: async (config) => {
+    let cookie;
+
+    // 쿠키 얻어오기
+    if (typeof window !== 'undefined') {
+      cookie = document.cookie;
+    } else {
+      const { getServerCookies } = await import('@/app/lib/server/cookies');
+      cookie = await getServerCookies();
     }
 
-    if (process.env.NODE_ENV === 'test') {
-      return '';
-    }
+    try {
+      // refresh 요청
+      const refreshResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/refresh`, {
+        method: 'POST',
+        // 쿠키를 담아서 요청
+        headers: {
+          Cookie: cookie,
+        },
+        credentials: 'include',
+      });
 
-    const { getServerCookies } = await import('@/app/lib/server/cookies');
+      // 새로운 accessToken을 받아옴
+      const {
+        data: { accessToken },
+      } = await refreshResponse.json();
 
-    return getServerCookies();
-  }
-  protected setupDefaultInterceptors(): void {
-    super.setupDefaultInterceptors();
-
-    this.addRequestInterceptor({
-      onRequest: async (config) => ({
-        ...config,
-        cache: 'no-store',
+      // 새로운 accessToken을 가지고 재요청
+      const originalResponse = await fetch(config.url, {
         headers: {
           ...config.headers,
-          Cookie: await this.getCookies(),
+          Authorization: `Bearer ${accessToken}`,
         },
-      }),
-    });
-  }
-}
+      });
 
-export const httpClient = HttpClient.getInstance();
-export const authHttpClient = AuthHttpClient.getInstance();
+      return await originalResponse.json();
+    } catch (error) {
+      console.error(error);
+      // refresh 실패했을 때는 401 에러로 리턴
+      return {
+        success: false,
+        status: 401,
+        message: '401 에러 발생',
+      };
+    }
+  },
+});
+
+export default httpClient;

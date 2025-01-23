@@ -2,8 +2,9 @@ import { act, renderHook } from '@testing-library/react';
 import { createScrap, deleteScrap } from '@/apis/rooms/actions';
 import { useRoomScrap } from '@/hooks/useRoomScrap';
 import { ROUTES } from '@/constants/routeURL';
+import { useSession } from './useSession';
 
-jest.mock('next-auth/react', () => ({
+jest.mock('@/hooks/useSession', () => ({
   useSession: jest.fn(),
 }));
 

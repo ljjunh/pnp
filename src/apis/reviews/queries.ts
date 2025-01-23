@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
 import { Review, ReviewSortType } from '@/types/review';
-import { authHttpClient, httpClient } from '@/apis/core/httpClient';
+import httpClient from '@/apis/core/httpClient';
 import { CACHE_TAGS } from '@/constants/cacheTags';
 
 export interface GetReviewsResponse {
@@ -50,7 +50,7 @@ export async function getReviews(
     // TODO: 여기 수정
     response.data.page.hasNextPage = response.data.page.totalPages > response.data.page.size;
     response.data.page.hasPrevPage = response.data.page.number >= 0;
-    
+
     if (!response.success) {
       switch (response.status) {
         case 404:
@@ -89,7 +89,7 @@ export async function getReviews(
  */
 export async function getReviewAvailable(roomId: number): Promise<string[]> {
   try {
-    const response = await authHttpClient.get<string[]>(`/rooms/${roomId}/reviews/available`, {
+    const response = await httpClient.get<string[]>(`/rooms/${roomId}/reviews/available`, {
       next: {
         tags: [CACHE_TAGS.REVIEWS.AVAILABLE(roomId)],
       },

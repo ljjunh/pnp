@@ -3,7 +3,7 @@
 import {cookies} from 'next/headers';
 import { ActionResponse } from '@/types/action';
 import { CreateRoomResponse } from '@/types/room';
-import { authHttpClient } from '@/apis/core/httpClient';
+import httpClient from '@/apis/core/httpClient';
 
 /**
  * 숙소 데이터를 업데이트 하는 함수
@@ -35,7 +35,7 @@ export async function updateRoomRegister(
       };
     }
 
-    const response = await authHttpClient.patch(`/rooms/${roomId}`, updateData);
+    const response = await httpClient.patch(`/rooms/${roomId}`, updateData);
 
     if (!response.success) {
       switch (response.status) {
@@ -107,7 +107,7 @@ export async function createRoomId(): Promise<ActionResponse<CreateRoomResponse>
       };
     }
 
-    const response = await authHttpClient.post<CreateRoomResponse>('/rooms');
+    const response = await httpClient.post<CreateRoomResponse>('/rooms');
 
     if (!response.success) {
       switch (response.status) {

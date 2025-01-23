@@ -43,8 +43,6 @@ export default async function SearchResultPage({
     searchParams.sort as string,
   );
 
-  console.log("filterRoom", filterRoom)
-
   return (
     <div>
       <div className="sticky top-[82px] z-10 bg-white">
