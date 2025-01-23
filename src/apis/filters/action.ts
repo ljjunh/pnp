@@ -3,7 +3,7 @@
 import { FilterType, PriceFilter } from '@/schemas/rooms';
 import { ActionResponse } from '@/types/action';
 import { PriceFilterRange } from '@/types/room';
-import { httpClient } from '@/apis/core/httpClient';
+import httpClient from '@/apis/core/httpClient';
 import { formatFilter } from '@/utils/formatFilter';
 
 /**
@@ -26,8 +26,6 @@ export async function getFilterPrice({
     if (property) {
       params.append('propertyType', property.toString());
     }
-
-    console.log(params);
 
     const url = `/rooms/price${params.toString() ? `?${params.toString()}` : ''}`;
 

@@ -1,11 +1,11 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
+import { cookies } from 'next/headers';
 import { CreateReviewInput, UpdateReviewInput } from '@/schemas';
 import { ActionResponse } from '@/types/action';
-import { authHttpClient } from '@/apis/core/httpClient';
+import httpClient from '@/apis/core/httpClient';
 import { CACHE_TAGS } from '@/constants/cacheTags';
-import { cookies } from 'next/headers';
 
 /**
  * 숙소에 대한 리뷰를 작성하는 서버 액션 입니다.
@@ -30,7 +30,7 @@ export async function createReview(
       };
     }
     // API 요청
-    const response = await authHttpClient.post<null>(`/rooms/${roomId}/reviews`, formData);
+    const response = await httpClient.post<null>(`/rooms/${roomId}/reviews`, formData);
     // API에서 명시적으로 처리되는 에러
     if (!response.success) {
       return {
@@ -82,7 +82,7 @@ export async function deleteReview(roomId: number, reviewId: number): Promise<Ac
     }
 
     // API 요청
-    const response = await authHttpClient.delete<null>(`/rooms/${roomId}/reviews/${reviewId}`);
+    const response = await httpClient.delete<null>(`/rooms/${roomId}/reviews/${reviewId}`);
 
     // API에서 명시적으로 처리되는 에러
     if (!response.success) {
@@ -139,10 +139,7 @@ export async function updateReview(
       };
     }
     // API 요청
-    const response = await authHttpClient.patch<null>(
-      `/rooms/${roomId}/reviews/${reviewId}`,
-      formData,
-    );
+    const response = await httpClient.patch<null>(`/rooms/${roomId}/reviews/${reviewId}`, formData);
 
     // API에서 명시적으로 처리되는 에러
     if (!response.success) {

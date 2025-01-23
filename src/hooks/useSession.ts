@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getCookie, hasCookie } from 'cookies-next';
+import { getCookie } from 'cookies-next';
 import { User } from '@/types/user';
 import { useAuthStore } from '@/store/useAuthStore';
 

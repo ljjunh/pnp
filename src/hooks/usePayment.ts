@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import PortOne, { PaymentRequest } from '@portone/browser-sdk/v2';
-import { httpClient } from '@/apis/core/httpClient';
+import httpClient from '@/apis/core/httpClient';
 
 interface RequestPaymentProps {
   orderId: string;

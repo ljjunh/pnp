@@ -40,7 +40,6 @@ export default function RoomReviewItem({
   user,
   isInterceptedRoute = false,
 }: RoomReviewItemProps) {
-  // !FIXME: session 수정
   const { user: session } = useSession();
   const [isEditing, setIsEditing] = useState(false);
 

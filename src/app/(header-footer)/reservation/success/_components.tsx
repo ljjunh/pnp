@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { httpClient } from '@/apis/core/httpClient';
+import httpClient from '@/apis/core/httpClient';
 
 export default function Success() {
   const searchParams = useSearchParams();

@@ -1,9 +1,9 @@
 'use server';
 
-import {cookies} from 'next/headers';
 import { revalidateTag } from 'next/cache';
+import { cookies } from 'next/headers';
 import { ActionResponse } from '@/types/action';
-import { authHttpClient } from '@/apis/core/httpClient';
+import httpClient from '@/apis/core/httpClient';
 import { CACHE_TAGS } from '@/constants/cacheTags';
 
 /**
@@ -24,7 +24,7 @@ export async function createScrap(roomId: number): Promise<ActionResponse> {
       };
     }
 
-    const response = await authHttpClient.post<null>(`/rooms/${roomId}/scrap`);
+    const response = await httpClient.post<null>(`/rooms/${roomId}/scrap`);
 
     if (!response.success) {
       return {
@@ -68,7 +68,7 @@ export async function deleteScrap(roomId: number): Promise<ActionResponse> {
       };
     }
 
-    const response = await authHttpClient.delete(`/rooms/${roomId}/scrap`);
+    const response = await httpClient.delete(`/rooms/${roomId}/scrap`);
 
     if (!response.success) {
       return {
