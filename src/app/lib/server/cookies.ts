@@ -8,3 +8,12 @@ export async function getServerCookies() {
 
   return allCookies.map((cookie) => `${cookie.name}=${cookie.value}`).join('; ');
 }
+
+export async function getToken() {
+  const cookieStore = cookies();
+
+  return {
+    accessToken: cookieStore.get('access_token'),
+    refreshToken: cookieStore.get('refresh_token')
+  }
+}
