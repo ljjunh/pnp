@@ -1,7 +1,7 @@
 import { CustomError } from '@/errors';
 import { FilterType } from '@/schemas/rooms';
 import { FilterRoomResponse } from '@/types/room';
-import { httpClient } from '@/apis/core/httpClient';
+import httpClient from '@/apis/core/httpClient';
 import { formatFilter } from '@/utils/formatFilter';
 
 /**

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { CustomError } from '@/errors';
 import { Room } from '@/types/room';
-import { authHttpClient, httpClient } from '@/apis/core/httpClient';
+import httpClient from '@/apis/core/httpClient';
 import { CACHE_TAGS } from '@/constants/cacheTags';
 
 /**
@@ -29,6 +29,7 @@ export async function getRoom(roomId: number): Promise<Room> {
 
     return response.data;
   } catch (error) {
+    console.log(error);
     // 위에서 던진 CustomError는 그대로 다시 throw
     if (error instanceof CustomError) {
       throw error;
@@ -53,7 +54,7 @@ export async function getRoom(roomId: number): Promise<Room> {
  */
 export async function getScrap(roomId: number): Promise<boolean> {
   try {
-    const response = await authHttpClient.get<boolean>(`/rooms/${roomId}/scrap`, {
+    const response = await httpClient.get<boolean>(`/rooms/${roomId}/scrap`, {
       next: {
         tags: [CACHE_TAGS.ROOMS.SCRAP(roomId)],
       },
@@ -94,10 +95,10 @@ export async function getRoomAvailable(roomId: number): Promise<string[]> {
 
     if (!response.success) {
       // throw new CustomError(response.message, response.status);
-      return ['2025.01.01', '2025.01.02', '2025.01.03']
+      return ['2025.01.01', '2025.01.02', '2025.01.03'];
     }
     // return response.data;
-    return ['2025.01.01', '2025.01.02', '2025.01.03']
+    return ['2025.01.01', '2025.01.02', '2025.01.03'];
   } catch (error) {
     if (error instanceof CustomError) {
       throw error;
@@ -127,11 +128,11 @@ export async function getRoomAvailableClient(
     );
 
     if (!response.success) {
-      return ['2025.01.01', '2025.01.02', '2025.01.03']
+      return ['2025.01.01', '2025.01.02', '2025.01.03'];
       // throw new CustomError(response.message, response.status);
     }
     // return response.data;
-    return ['2025.01.01', '2025.01.02', '2025.01.03']
+    return ['2025.01.01', '2025.01.02', '2025.01.03'];
   } catch (error) {
     if (error instanceof CustomError) {
       throw error;

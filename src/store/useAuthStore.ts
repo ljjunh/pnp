@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-interface authState {
+interface AuthState {
   accessToken: string | null;
   setAccessToken: (accessToken: string) => void;
   clearTokens: () => void;
 }
 
-export const useAuthStore = create<authState, [['zustand/persist', unknown]]>(
+export const useAuthStore = create<AuthState, [['zustand/persist', unknown]]>(
   persist(
     (set) => ({
       accessToken: null,
@@ -20,3 +20,6 @@ export const useAuthStore = create<authState, [['zustand/persist', unknown]]>(
     },
   ),
 );
+
+const { accessToken } = useAuthStore.getState();
+export { accessToken };
