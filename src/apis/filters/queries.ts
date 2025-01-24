@@ -18,6 +18,8 @@ export async function getFilterRoom(
   sort?: string,
 ): Promise<FilterRoomResponse> {
   try {
+    console.log(`page: ${page}, limit: ${limit}, sort: ${sort}`);
+
     const params = formatFilter(filter);
 
     // * params는 객체기 때문에 params 자체를 바꿀 수 없지만, 내부에 존재하는 실제 파라미터 값은 추가 가능함.
@@ -25,17 +27,24 @@ export async function getFilterRoom(
     params.append('limit', (limit ?? 10).toString());
     params.append('sort', sort ?? 'recent');
 
+    console.log(`params: ${params}`);
+
     const url = `/rooms?${params.toString()}`;
 
     const response = await httpClient.get<FilterRoomResponse>(url);
     response.data.page.hasNextPage = response.data.page.totalPages > response.data.page.size;
     response.data.page.hasPrevPage = response.data.page.number >= 0;
+
     if (!response.success && response.status) {
       throw new CustomError(response.message, response.status);
     }
 
+    console.log(`response data content: ${response.data.content}`);
+    console.log(`response data page: ${response.data.page}`);
+
     return response.data;
   } catch (error) {
+    console.log(`error: ${error}`);
     if (error instanceof CustomError) {
       throw error;
     }
