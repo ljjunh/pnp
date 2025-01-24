@@ -33,6 +33,7 @@ export function useFilterRooms({ filter, initialRooms, hasNext, roomCount }: Use
     try {
       setIsLoading(true);
       const nextPage = currentPage + 1;
+
       const response = await getFilterRoom(filter, nextPage, roomCount);
 
       setRooms((prev) => [...prev, ...response.content]);
