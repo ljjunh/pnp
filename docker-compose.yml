@@ -21,6 +21,8 @@ services:
     image: sunsuking/pnp-server:latest
     ports:
       - '8080:8080'
+    volumes:
+      - swagger:/app
     depends_on:
       - db
     networks:
@@ -31,8 +33,29 @@ services:
       - AWS_SECRET_KEY=${AWS_SECRET_KEY}
       - AWS_S3_BUCKET=${AWS_S3_BUCKET}
 
+  redis:
+    container_name: redis
+    image: redis:6.2
+    ports:
+      - '6379:6379'
+    networks:
+      - pnp-network
+
+  swagger:
+    container_name: swagger
+    image: swaggerapi/swagger-ui
+    ports:
+      - '5050:8080'
+    networks:
+      - pnp-network
+    volumes:
+      - swagger:/app
+    environment:
+      - SWAGGER_JSON=/app/swagger.yaml
+
 volumes:
   database:
+  swagger:
 
 networks:
   pnp-network:

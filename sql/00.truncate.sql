@@ -164,6 +164,16 @@ create table pnp.room_rules
         unique (room_id, rule_id)
 );
 
+create table pnp.room_scraps
+(
+    room_scrap_id bigint auto_increment
+        primary key,
+    room_id       bigint null,
+    user_id       bigint null,
+    constraint unique_room_scraps_room_id_user_id
+        unique (room_id, user_id)
+);
+
 create table pnp.room_tags
 (
     room_id     bigint null,
