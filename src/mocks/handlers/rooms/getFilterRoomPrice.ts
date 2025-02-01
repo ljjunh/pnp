@@ -9,8 +9,7 @@ export const getFilterRoomPriceHandler = http.get('/api/rooms/price', ({ request
     return HttpResponse.json({
       success: false,
       status: 500,
-      message:
-        '서버 에러가 발생하였습니다. 잠시후 다시 시도해주세요.',
+      message: '서버 에러가 발생하였습니다. 잠시후 다시 시도해주세요.',
     });
   }
 
@@ -24,7 +23,6 @@ export const getFilterRoomPriceHandler = http.get('/api/rooms/price', ({ request
     return HttpResponse.json({
       success: false,
       status: 500,
-      message: '',
     });
   }
 

@@ -107,7 +107,6 @@ export class HttpClient {
     if (data && method !== 'GET') {
       fetchConfig.body = JSON.stringify(data);
     }
-
     // fetch 요청 실행
     const response = await fetch(`${this.baseURL}${url}`, fetchConfig);
     let result;
@@ -208,6 +207,7 @@ httpClient.addRequestInterceptor({
         Authorization: `Bearer ${accessToken}`,
       };
     }
+
     return config;
   },
 });
@@ -232,7 +232,7 @@ httpClient.addResponseInterceptor({
 
     try {
       // refresh 요청
-      const refreshResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/refresh`, {
+      const refreshResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/refresh`, {
         method: 'POST',
         // 쿠키를 담아서 요청
         headers: {
@@ -248,6 +248,7 @@ httpClient.addResponseInterceptor({
 
       // 새로운 accessToken을 가지고 재요청
       const originalResponse = await fetch(config.url, {
+        ...config,
         headers: {
           ...config.headers,
           Authorization: `Bearer ${accessToken}`,

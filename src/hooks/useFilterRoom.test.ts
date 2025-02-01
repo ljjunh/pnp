@@ -43,10 +43,10 @@ describe('useFilterRoom test', () => {
   });
 
   test('fetchNextPage 함수가 호출되면, 방을 불러와야 한다.', async () => {
-    const mockNextData = filterRoom.data;
+    const mockNextData = filterRoom.content;
 
     (getFilterRoom as jest.Mock).mockResolvedValue({
-      data: mockNextData,
+      data: { content: mockNextData },
       page: { hasNextPage: false },
     });
 

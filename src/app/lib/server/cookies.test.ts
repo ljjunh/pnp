@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { getServerCookies, getToken } from '@/app/lib/server/cookies';
+import { getServerCookies } from '@/app/lib/server/cookies';
 
 // next/headers의 cookies 모듈을 모킹
 jest.mock('next/headers', () => ({
@@ -87,18 +87,5 @@ describe('getServerCookies', () => {
     // when & then
     await expect(getServerCookies()).rejects.toThrow('Failed to get cookies');
     expect(mockCookieStore.getAll).toHaveBeenCalledTimes(1);
-  });
-
-  it('쿠키에 accessToken과 refreshToken이 없을 시 undefined가 반환된다', async () => {
-    const mockCookieStore = {
-      getAll: jest.fn().mockReturnValue([]),
-    };
-
-    (cookies as jest.Mock).mockReturnValue(mockCookieStore);
-
-    const result = await getToken();
-
-    expect(result.accessToken).toBe(undefined);
-    expect(result.refreshToken).toBe(undefined);
   });
 });

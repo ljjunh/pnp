@@ -24,15 +24,15 @@ export const ROUTES = {
     STRUCTURE: `/host/${roomId}/structure`,
     PRIVACY: `/host/${roomId}/privacy`,
     LOCATION: `/host/${roomId}/location`,
-    INFO: `/host/${roomId}/info`, // db 갈아 엎고 그 뒤에
+    INFO: `/host/${roomId}/info`,
     SECOND_STEP: `/host/${roomId}/second-step`,
-    AMENITIES: `/host/${roomId}/amenities`, // 내일
+    AMENITIES: `/host/${roomId}/amenities`,
     PHOTOS: `/host/${roomId}/photos`, // 나중에
     TITLE: `/host/${roomId}/title`,
     DESCRIPTION: `/host/${roomId}/description`,
     THIRD_STEP: `/host/${roomId}/third-step`,
     PRICE: `/host/${roomId}/price`,
-    SAFETY: `/host/${roomId}/safety`, // 내일
+    SAFETY: `/host/${roomId}/safety`,
     FINISH: `/host/${roomId}/finish`,
   }),
 };

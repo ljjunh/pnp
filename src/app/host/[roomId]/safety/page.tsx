@@ -1,4 +1,6 @@
 export default function Safety() {
+  // 보안카메라 10
+  // 소음 측정기 690
   return (
     <div className="flex h-full w-full flex-col items-start justify-center space-y-6 px-80">
       <p className="text-3xl font-semibold">안전 관련 정보 공유하기</p>

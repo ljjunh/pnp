@@ -1,5 +1,5 @@
 import { CustomError } from '@/errors';
-import mockFilter from '@/mocks/fixtures/filter.json';
+import mockFilterData from '@/mocks/fixtures/filter.json';
 import { FilterType } from '@/schemas/rooms';
 import { getFilterRoom } from '@/apis/filters/queries';
 import { formatFilter } from '@/utils/formatFilter';
@@ -9,18 +9,20 @@ describe('filter query test', () => {
     jest.clearAllMocks();
   });
 
+  const mockFilter = mockFilterData as unknown as FilterType;
+
   describe('getFilterRoom test', () => {
     test('성공적으로 필터링된 방 정보를 가져온다', async () => {
       const result = await getFilterRoom(mockFilter as FilterType);
 
-      expect(result).toHaveProperty('data');
+      expect(result).toHaveProperty('content');
       expect(result).toHaveProperty('page');
 
-      expect(Array.isArray(result.data)).toBeTruthy();
-      expect(result.data.length).toBeGreaterThan(0);
+      expect(Array.isArray(result.content)).toBeTruthy();
+      expect(result.content.length).toBeGreaterThan(0);
 
-      if (result.data.length > 0) {
-        const room = result.data[0];
+      if (result.content.length > 0) {
+        const room = result.content[0];
         expect(room).toHaveProperty('id');
         expect(room).toHaveProperty('location');
         expect(room).toHaveProperty('price');
@@ -82,24 +84,22 @@ describe('filter query test', () => {
     });
 
     test('서버에서 500 에러 발생 시 에러를 던진다', async () => {
-      const errorMockFilter = {
+      const errorMockFilter: FilterType = {
         ...mockFilter,
-        property: 500,
+        property: '500',
       };
 
-      const error = await getFilterRoom(errorMockFilter as FilterType).catch((e) => e);
+      const error = await getFilterRoom(errorMockFilter).catch((e) => e);
 
       expect(error).toBeInstanceOf(CustomError);
       expect(error.message).toBe('서버 에러 입니다. 잠시 후 다시 시도해주세요.');
       expect(error.statusCode).toBe(500);
     });
 
-    // *TODO sort 테스트 작성
-
     test('네트워크 에러 발생 시 에러를 던진다', async () => {
       const errorMockFilter = {
         ...mockFilter,
-        property: 501,
+        property: '501',
       };
 
       const error = await getFilterRoom(errorMockFilter as FilterType).catch((e) => e);

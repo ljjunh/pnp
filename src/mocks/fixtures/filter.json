@@ -8,7 +8,7 @@
   "amenityArray": ["wifi", "parking"],
   "option": ["selfCheckIn"],
   "language": [1, 2],
-  "property": 1,
+  "property": "1",
   "location": "서울",
   "checkIn": "2024-01-01",
   "checkOut": "2024-01-05",

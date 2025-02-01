@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useEffect, useState } from 'react';
 import { getCookie } from 'cookies-next';
 import { User } from '@/types/user';
@@ -6,13 +8,20 @@ import { useAuthStore } from '@/store/useAuthStore';
 export function useSession() {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<User | undefined>();
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const { setAccessToken, accessToken } = useAuthStore();
 
   useEffect(() => {
-    if (accessToken) {
+    const cookieToken = getCookie('accessToken');
+
+    if (cookieToken || accessToken) {
       setAuthenticated(true);
+      if (cookieToken) {
+        setAccessToken(cookieToken);
+      }
+    } else {
+      setAuthenticated(false);
     }
-  }, []);
+  }, [accessToken, setAccessToken]);
 
   useEffect(() => {
     if (authenticated) {
@@ -23,12 +32,12 @@ export function useSession() {
   const refetch = useCallback(async () => {
     const request = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
       headers: {
-        Authorization: `Bearer ${getCookie('access_token')}`,
+        Authorization: `Bearer ${getCookie('accessToken')}`,
       },
     });
     const response = await request.json();
     setUser(() => response.data);
-  }, [user]);
+  }, []);
 
   return { authenticated, user, refetch };
 }

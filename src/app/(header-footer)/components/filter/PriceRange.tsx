@@ -28,10 +28,13 @@ export default function PriceRange({ roomType, property, handleFilter }: PriceRa
   const { toast } = useToast();
   const { modalState } = useModal(MODAL_ID.ROOM_FILTER);
   const [priceRange, setPriceRange] = useState<PriceFilterRange>({
-    minPrice: 0,
-    maxPrice: 0,
+    min: 0,
+    max: 0,
     distributions: [],
   });
+  const { min, max, distributions } = priceRange;
+
+  const [range, setRange] = useState([min, max]);
 
   // roomType이 변경될 때마다 가격 범위를 조회
   useEffect(() => {
@@ -70,19 +73,16 @@ export default function PriceRange({ roomType, property, handleFilter }: PriceRa
       }
 
       setPriceRange(response.data);
-      setRange([response.data.minPrice, response.data.maxPrice]);
+      setRange([response.data.min, response.data.max]);
 
       // filter에 minPrice, maxPrice도 없애주기
-      handleFilter(undefined, 'minPrice');
-      handleFilter(undefined, 'maxPrice');
+      handleFilter(response.data.min, 'minPrice');
+      handleFilter(response.data.max, 'maxPrice');
     };
 
     fetchFilterPrice();
-  }, [roomType, property, toast, modalState, handleFilter]);
+  }, [roomType, property, modalState]);
 
-  const { minPrice, maxPrice, distributions } = priceRange;
-
-  const [range, setRange] = useState([minPrice, maxPrice]);
   const sliderRef = useRef<HTMLDivElement>(null);
 
   const data = {
@@ -93,8 +93,8 @@ export default function PriceRange({ roomType, property, handleFilter }: PriceRa
         backgroundColor: distributions.map((_, index) => {
           const percentage = (index / (distributions.length - 1)) * 100;
 
-          return percentage >= ((range[0] - minPrice) / (maxPrice - minPrice)) * 100 &&
-            percentage <= ((range[1] - minPrice) / (maxPrice - minPrice)) * 100
+          return percentage >= ((range[0] - min) / (max - min)) * 100 &&
+            percentage <= ((range[1] - min) / (max - min)) * 100
             ? '#FF385C'
             : '#DDDDDD';
         }),
@@ -131,7 +131,7 @@ export default function PriceRange({ roomType, property, handleFilter }: PriceRa
         0,
         Math.min(100, ((e.clientX - sliderRect.left) / sliderWidth) * 100),
       );
-      const value = Math.round(((maxPrice - minPrice) * percentage) / 100 + minPrice);
+      const value = Math.round(((max - min) * percentage) / 100 + min);
 
       setRange((prev) =>
         isMin ? [Math.min(value, prev[1]), prev[1]] : [prev[0], Math.max(value, prev[0])],
@@ -173,19 +173,19 @@ export default function PriceRange({ roomType, property, handleFilter }: PriceRa
           <div
             className="absolute h-1 rounded-full bg-primary-02"
             style={{
-              left: `${((range[0] - minPrice) / (maxPrice - minPrice)) * 100}%`,
-              right: `${100 - ((range[1] - minPrice) / (maxPrice - minPrice)) * 100}%`,
+              left: `${((range[0] - min) / (max - min)) * 100}%`,
+              right: `${100 - ((range[1] - min) / (max - min)) * 100}%`,
             }}
           />
         </div>
         <div
           className="absolute -top-[2px] -ml-3 h-6 w-6 cursor-pointer rounded-full border-2 border-neutral-03 bg-white"
-          style={{ left: `${((range[0] - minPrice) / (maxPrice - minPrice)) * 100}%` }}
+          style={{ left: `${((range[0] - min) / (max - min)) * 100}%` }}
           onMouseDown={(e) => handleMouseDown(e, true)}
         />
         <div
           className="absolute -top-[2px] -ml-3 h-6 w-6 cursor-pointer rounded-full border-2 border-neutral-03 bg-white"
-          style={{ left: `${((range[1] - minPrice) / (maxPrice - minPrice)) * 100}%` }}
+          style={{ left: `${((range[1] - min) / (max - min)) * 100}%` }}
           onMouseDown={(e) => handleMouseDown(e, false)}
         />
       </div>

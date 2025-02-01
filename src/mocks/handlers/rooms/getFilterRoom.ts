@@ -24,7 +24,7 @@ export const getFilterRoomHandler = http.get('/api/rooms', ({ request }) => {
     status: 200,
     message: 'OK',
     data: {
-      data: mockFilterRoom.data,
+      content: mockFilterRoom.content,
       page: mockFilterRoom.page,
     },
   });

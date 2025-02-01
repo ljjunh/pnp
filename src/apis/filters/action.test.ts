@@ -31,10 +31,11 @@ describe('filter action test', () => {
     test('서버에서 500 에러 발생 시 에러를 던진다.', async () => {
       const errorMockFilter = {
         ...mockPriceFilter,
-        property: 500,
+        property: '500',
       };
 
       const error = await getFilterPrice(errorMockFilter);
+
 
       expect(error.message).toBe('서버 에러가 발생하였습니다. 잠시후 다시 시도해주세요.');
       expect(error.status).toBe(500);
@@ -43,7 +44,7 @@ describe('filter action test', () => {
     test('네트워크 에러 발생 시 에러를 던진다.', async () => {
       const errorMockFilter = {
         ...mockPriceFilter,
-        property: 501,
+        property: '501',
       };
 
       const error = await getFilterPrice(errorMockFilter);
@@ -57,7 +58,7 @@ describe('filter action test', () => {
     test('서버 응답에 message가 없을 때 기본 메시지를 반환한다', async () => {
       const errorMockFilter = {
         ...mockPriceFilter,
-        property: 502,
+        property: '502',
       };
 
       const error = await getFilterPrice(errorMockFilter);
@@ -116,7 +117,7 @@ describe('filter action test', () => {
     test('서버에서 500 에러 발생 시 에러를 던진다.', async () => {
       const errorMockFilter = {
         ...mockFilter,
-        property: 500,
+        property: '500',
       };
 
       const error = await getFilterCount(errorMockFilter as FilterType);
@@ -130,7 +131,7 @@ describe('filter action test', () => {
     test('네트워크 에러 발생 시 에러를 던진다.', async () => {
       const errorMockFilter = {
         ...mockFilter,
-        property: 501,
+        property: '501',
       };
 
       const error = await getFilterCount(errorMockFilter as FilterType);
@@ -144,7 +145,7 @@ describe('filter action test', () => {
     test('서버 응답에 message가 없을 때 기본 메시지를 반환한다', async () => {
       const errorMockFilter = {
         ...mockFilter,
-        property: 502,
+        property: '502',
       };
 
       const error = await getFilterCount(errorMockFilter as FilterType);
