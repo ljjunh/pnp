@@ -89,7 +89,7 @@ export async function updateRoomRegister(
 }
 
 /**
- * roomId를 조회하는 함수
+ * roomId를 생성하는 함수
  */
 export async function createRoomId(): Promise<ActionResponse<number>> {
   try {

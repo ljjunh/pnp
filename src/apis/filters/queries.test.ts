@@ -91,8 +91,6 @@ describe('filter query test', () => {
 
       const error = await getFilterRoom(errorMockFilter).catch((e) => e);
 
-      console.log('error', error);
-
       expect(error).toBeInstanceOf(CustomError);
       expect(error.message).toBe('서버 에러 입니다. 잠시 후 다시 시도해주세요.');
       expect(error.statusCode).toBe(500);

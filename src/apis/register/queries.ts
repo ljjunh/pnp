@@ -1,10 +1,8 @@
 import { CustomError } from '@/errors';
-import httpClient from '../core/httpClient';
+import httpClient from '@/apis/core/httpClient';
 
 /**
  * 등록 준비 중인 숙소의 id를 조회한다.
- *
- * 없으면 0 return
  */
 export async function getProgressRoomId(): Promise<number> {
   try {
@@ -12,6 +10,11 @@ export async function getProgressRoomId(): Promise<number> {
 
     if (!response.success) {
       throw new CustomError(response.message, response.status);
+    }
+
+    // data가 없으면 에러로 간주
+    if (!response.data) {
+      throw new CustomError('등록 중인 숙소 조회에 실패하였습니다.', 400);
     }
 
     return response.data;

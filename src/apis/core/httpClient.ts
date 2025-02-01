@@ -107,7 +107,6 @@ export class HttpClient {
     if (data && method !== 'GET') {
       fetchConfig.body = JSON.stringify(data);
     }
-    console.log(fetchConfig);
     // fetch 요청 실행
     const response = await fetch(`${this.baseURL}${url}`, fetchConfig);
     let result;
@@ -116,7 +115,6 @@ export class HttpClient {
     try {
       // body가 있는 응답의 경우 JSON으로 파싱
       result = await response.json();
-      console.log('로그 여기: ', result);
     } catch {
       // body가 없는 성공 응답(204 No Content, 304 Not Modified 등)을 BaseResponse로 처리
       if (response.ok) {
