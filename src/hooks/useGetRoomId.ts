@@ -54,7 +54,7 @@ export default function useGetRoomId() {
       }
 
       // 성공했을 때 숙소 등록 첫 단계로 이동
-      router.push(ROUTES.REGISTER_STEP(String(response.data.roomId)).START);
+      router.push(ROUTES.REGISTER_STEP(String(response.data)).START);
     } catch (error) {
       toast({
         title: '숙소 등록에 실패했습니다.',

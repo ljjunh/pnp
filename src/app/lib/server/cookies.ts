@@ -13,7 +13,7 @@ export async function getToken() {
   const cookieStore = cookies();
 
   return {
-    accessToken: cookieStore.get('access_token'),
-    refreshToken: cookieStore.get('refresh_token')
-  }
+    accessToken: cookieStore.get('accessToken')?.value,
+    refreshToken: cookieStore.get('refreshToken')?.value,
+  };
 }

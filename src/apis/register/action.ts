@@ -1,8 +1,7 @@
 'use server';
 
-import {cookies} from 'next/headers';
+import { cookies } from 'next/headers';
 import { ActionResponse } from '@/types/action';
-import { CreateRoomResponse } from '@/types/room';
 import httpClient from '@/apis/core/httpClient';
 
 /**
@@ -17,9 +16,9 @@ export async function updateRoomRegister(
 ): Promise<ActionResponse> {
   try {
     const cookieStore = cookies();
-    const authenticated = Boolean(cookieStore.get('authenticated')?.value || 'false');
+    const accessToken = cookieStore.get('accessToken')?.value;
 
-    if (!authenticated) {
+    if (!accessToken) {
       return {
         success: false,
         message: '로그인이 필요합니다.',
@@ -90,14 +89,12 @@ export async function updateRoomRegister(
 }
 
 /**
- * roomId를 생성하는 함수
+ * roomId를 조회하는 함수
  */
-// TODO: validation zod 사용해서 처리
-export async function createRoomId(): Promise<ActionResponse<CreateRoomResponse>> {
+export async function createRoomId(): Promise<ActionResponse<number>> {
   try {
-    // FIXME: 인증
     const cookieStore = cookies();
-    const accessToken = cookieStore.get('access_token')?.value;
+    const accessToken = cookieStore.get('accessToken')?.value;
 
     if (!accessToken) {
       return {
@@ -107,7 +104,7 @@ export async function createRoomId(): Promise<ActionResponse<CreateRoomResponse>
       };
     }
 
-    const response = await httpClient.post<CreateRoomResponse>('/rooms');
+    const response = await httpClient.post<number>('/rooms');
 
     if (!response.success) {
       switch (response.status) {

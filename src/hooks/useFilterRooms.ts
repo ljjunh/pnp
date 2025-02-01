@@ -40,6 +40,7 @@ export function useFilterRooms({ filter, initialRooms, hasNext, roomCount }: Use
       setCurrentPage(nextPage);
       setHasNextPage(response.page.hasNextPage);
     } catch (error) {
+      console.log('error', error);
       toast({
         title: '방 목록을 불러오는 데 실패하였습니다. 잠시 후 다시 시도해주세요.',
         variant: 'destructive',

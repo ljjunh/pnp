@@ -120,7 +120,7 @@ describe('register action test', () => {
     });
   });
 
-  describe('getRoomId test', () => {
+  describe('createRoomId test', () => {
     test('성공적으로 roomId를 생성한다', async () => {
       (auth as jest.Mock).mockResolvedValue({ user: { id: 1 } });
 

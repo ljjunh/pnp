@@ -20,7 +20,7 @@ export async function getFilterPrice({
     const params = new URLSearchParams();
 
     if (roomType) {
-      params.append('roomType', roomType);
+      params.append('roomType', roomType.toUpperCase());
     }
 
     if (property) {

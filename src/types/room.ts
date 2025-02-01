@@ -47,8 +47,8 @@ export type FilterRoom = Pick<
 };
 
 export type PriceFilterRange = {
-  minPrice: number;
-  maxPrice: number;
+  min: number;
+  max: number;
   distributions: {
     distance: string;
     count: number;

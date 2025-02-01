@@ -29,7 +29,6 @@ export async function getRoom(roomId: number): Promise<Room> {
 
     return response.data;
   } catch (error) {
-    console.log(error);
     // 위에서 던진 CustomError는 그대로 다시 throw
     if (error instanceof CustomError) {
       throw error;
