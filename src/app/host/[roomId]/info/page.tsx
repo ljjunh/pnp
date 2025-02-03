@@ -1,6 +1,7 @@
 'use client';
 
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
+import { useRoomStore } from '@/store/useRoomStore';
 import { CiCircleMinus, CiCirclePlus } from 'react-icons/ci';
 
 const MIN_VALUE = 1 as const;
@@ -28,8 +29,15 @@ const INFO_ITEMS = [
 ] as const;
 
 export default function Info() {
+  const { room } = useRoomStore();
+
+  // 하이드레이션 완료
+  useEffect(() => {
+    useRoomStore.persist.hasHydrated(); 
+  }, [useRoomStore.persist.hasHydrated()]);
+
   const initialState = {
-    guest: MIN_VALUE,
+    guest: room?.capacity || MIN_VALUE,
     bedroom: MIN_VALUE,
     bed: MIN_VALUE,
     bathroom: MIN_VALUE,

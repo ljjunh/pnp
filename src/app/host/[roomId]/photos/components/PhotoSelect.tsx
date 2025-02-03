@@ -1,10 +1,36 @@
+import { useContext, useEffect } from 'react';
+import { RegisterContext } from '@/app/host/[roomId]/components/RegisterContext';
 import PhotoBox from '@/app/host/[roomId]/photos/components/PhotoBox';
 import { useModal } from '@/hooks/useModal';
 import { MODAL_ID } from '@/constants/modal';
+import { PHOTO_STEP } from '@/constants/registerStep';
 import { FaPlus } from 'react-icons/fa6';
+import { Image } from '../page';
 
-export default function PhotoSelect() {
+interface PhotoSelectProps {
+  images: Image;
+  setImages: (images: Image) => void;
+}
+
+export default function PhotoSelect({ images, setImages }: PhotoSelectProps) {
+  const { setCurrentStep } = useContext(RegisterContext);
   const { handleOpenModal } = useModal(MODAL_ID.ROOM_PHOTOS);
+
+  // image배열이 비어있으면 upload 단계로 이동
+  useEffect(() => {
+    if (images.imageUrls.length === 0) {
+      setCurrentStep(PHOTO_STEP.UPLOAD);
+      return;
+    }
+  }, []);
+
+  const handleDeleteImage = (id: number) => {
+    setImages({
+      imageFiles: images.imageFiles.filter((_, index) => index !== id),
+      imageUrls: images.imageUrls.filter((_, index) => index !== id),
+      serverUrls: images.serverUrls.filter((_, index) => index !== id),
+    });
+  };
 
   return (
     <>
@@ -21,12 +47,22 @@ export default function PhotoSelect() {
       </div>
       <div className="grid grid-cols-2 gap-4 px-20 pt-10">
         <div className="col-span-2">
-          <PhotoBox main />
+          <PhotoBox
+            imageUrl={images.imageUrls[0]}
+            id={0}
+            handleDeleteImage={handleDeleteImage}
+            main
+          />
         </div>
         <div className="col-span-2 grid grid-cols-2 gap-4">
-          <PhotoBox />
-          <PhotoBox />
-          <PhotoBox />
+          {images.imageUrls.slice(1).map((imageUrl, index) => (
+            <PhotoBox
+              key={`${imageUrl}-${index}`}
+              id={index + 1}
+              imageUrl={imageUrl}
+              handleDeleteImage={handleDeleteImage}
+            />
+          ))}
           <PhotoBox last />
         </div>
       </div>

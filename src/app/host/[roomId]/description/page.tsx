@@ -1,4 +1,16 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useRoomStore } from '@/store/useRoomStore';
+
 export default function Description() {
+  const { room } = useRoomStore();
+
+  // 하이드레이션 완료
+  useEffect(() => {
+    useRoomStore.persist.hasHydrated();
+  }, [useRoomStore.persist.hasHydrated()]);
+
   return (
     <div className="flex h-full w-full flex-col items-start justify-center px-80">
       <p className="mb-4 text-3xl font-semibold">숙소 설명 작성하기</p>
@@ -12,6 +24,7 @@ export default function Description() {
         required
         minLength={10}
         maxLength={500}
+        defaultValue={room?.description}
       />
       <input
         type="hidden"

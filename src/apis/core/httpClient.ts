@@ -189,8 +189,8 @@ httpClient.addRequestInterceptor({
   onRequest: async (config) => {
     if (typeof window !== 'undefined') {
       // client 컴포넌트일 때 세션에서 accessToken 추가
-      const { useStore } = await import('@/store');
-      const accessToken = useStore.getState().accessToken;
+      const { useAuthStore } = await import('@/store/useAuthStore');
+      const accessToken = useAuthStore.getState().accessToken;
 
       config.headers = {
         ...config.headers,

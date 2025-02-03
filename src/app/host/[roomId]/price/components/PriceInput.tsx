@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRoomStore } from '@/store/useRoomStore';
 import {
   Accordion,
   AccordionContent,
@@ -15,6 +16,14 @@ export default function PriceInput() {
   const [price, setPrice] = useState<number>(0);
   const [open, setOpen] = useState<string>('');
   const { handleOpenModal } = useModal(MODAL_ID.ROOM_PRICE_INFO);
+  const { room } = useRoomStore();
+
+  // 하이드레이션 완료
+  useEffect(() => {
+    if (useRoomStore.persist.hasHydrated()) {
+      setPrice(room?.price || 0);
+    }
+  }, [useRoomStore.persist.hasHydrated()]);
 
   return (
     <div className="mx-auto flex flex-col items-center justify-center py-20">
@@ -31,6 +40,7 @@ export default function PriceInput() {
           aria-label="숙소 1박 가격"
           aria-describedby="price-description"
           required
+          defaultValue={room?.price}
         />
         <label
           className="flex cursor-pointer items-center justify-center rounded-full border border-neutral-02 p-2"

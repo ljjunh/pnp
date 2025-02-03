@@ -1,7 +1,9 @@
 'use server';
 
 import { cookies } from 'next/headers';
+import NotFound from '@/app/not-found';
 import { ActionResponse } from '@/types/action';
+import { RegisterResponse } from '@/types/room';
 import httpClient from '@/apis/core/httpClient';
 
 /**
@@ -12,8 +14,8 @@ import httpClient from '@/apis/core/httpClient';
  */
 export async function updateRoomRegister(
   roomId: number,
-  updateData?: Record<string, string | string[] | number>,
-): Promise<ActionResponse> {
+  updateData?: Record<string, string | string[] | number | number[]>,
+): Promise<ActionResponse<RegisterResponse>> {
   try {
     const cookieStore = cookies();
     const accessToken = cookieStore.get('accessToken')?.value;
@@ -34,32 +36,18 @@ export async function updateRoomRegister(
       };
     }
 
-    const response = await httpClient.patch(`/rooms/${roomId}`, updateData);
+    const response = await httpClient.patch<RegisterResponse>(`/rooms/${roomId}`, updateData);
 
     if (!response.success) {
       switch (response.status) {
-        case 400:
+        case 400 | 401 | 403 | 404:
+          // 400: '유효하지 않은 ID 형식입니다.' '예약이 존재하는 숙소는 수정할 수 없습니다.'
+          // 401: '인증되지 않은 요청입니다.'
+          // 403: '본인의 숙소만 수정할 수 있습니다.'
+          // 404: '존재하지 않는 리소스입니다'
           return {
             success: response.success,
-            message: response.message, // '유효하지 않은 ID 형식입니다.' '예약이 존재하는 숙소는 수정할 수 없습니다.'
-            status: response.status,
-          };
-        case 401:
-          return {
-            success: response.success,
-            message: response.message, // '인증되지 않은 요청입니다.'
-            status: response.status,
-          };
-        case 403:
-          return {
-            success: response.success,
-            message: response.message, // '본인의 숙소만 수정할 수 있습니다.'
-            status: response.status,
-          };
-        case 404:
-          return {
-            success: response.success,
-            message: response.message, // '존재하지 않는 리소스입니다'
+            message: response.message,
             status: response.status,
           };
         // 500 에러 -> 서버 에러
@@ -78,6 +66,7 @@ export async function updateRoomRegister(
       success: response.success,
       status: response.status,
       message: response.message,
+      data: response.data,
     };
   } catch (error) {
     return {
@@ -146,3 +135,119 @@ export async function createRoomId(): Promise<ActionResponse<number>> {
     };
   }
 }
+
+/**
+ * 이미지 업로드 url을 생성하고 받아오는 함수
+ */
+export async function createImageUrl(
+  roomId: number,
+  imageUrl: string[],
+): Promise<ActionResponse<string[]>> {
+  try {
+    const cookieStore = cookies();
+    const accessToken = cookieStore.get('accessToken')?.value;
+
+    if (!accessToken) {
+      return {
+        success: false,
+        message: '로그인이 필요합니다.',
+        status: 401,
+      };
+    }
+
+    const response = await httpClient.post<string[]>(`/rooms/${roomId}/images`, {
+      images: imageUrl,
+    });
+
+    if (!response.success) {
+      switch (response.status) {
+        case 404:
+          NotFound();
+        default: // 403, 500
+          return {
+            success: false,
+            message:
+              response.message || '이미지 업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+            status: response.status,
+          };
+      }
+    }
+
+    // 성공 시 응답
+    return {
+      success: true,
+      status: response.status,
+      data: response.data,
+    };
+  } catch (error) {
+    // 네트워크 에러
+    return {
+      success: false,
+      message:
+        '네트워크 문제로 이미지 업로드에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.',
+      status: 500,
+    };
+  }
+}
+
+/**
+ * s3 url을 백엔드로 보내주는 함수
+ */
+export const sendS3Url = async (
+  roomId: number,
+  imageUrl: string[],
+): Promise<ActionResponse<RegisterResponse>> => {
+  try {
+    const cookieStore = cookies();
+    const accessToken = cookieStore.get('accessToken')?.value;
+
+    if (!accessToken) {
+      return {
+        success: false,
+        message: '로그인이 필요합니다.',
+        status: 401,
+      };
+    }
+
+    const response = await httpClient.put<RegisterResponse>(`/rooms/${roomId}/images`, {
+      images: imageUrl,
+    });
+
+    if (!response.success) {
+      switch (response.status) {
+        case 404:
+          NotFound();
+        default: // 403, 500
+          return {
+            success: false,
+            message:
+              response.message || '이미지 업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+            status: response.status,
+          };
+      }
+    }
+
+    // 데이터가 없을 경우 500 에러로 간주
+    if (!response.data) {
+      return {
+        success: false,
+        message: response.message || '이미지 업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+        status: 500,
+      };
+    }
+
+    return {
+      success: true,
+      status: response.status,
+      data: response.data,
+    };
+  } catch (error) {
+    // 네트워크 에러
+    return {
+      success: false,
+      message:
+        '네트워크 문제로 이미지 업로드에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.',
+      status: 500,
+    };
+  }
+};

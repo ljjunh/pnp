@@ -1,6 +1,27 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRoomStore } from '@/store/useRoomStore';
+
 export default function Safety() {
-  // 보안카메라 10
-  // 소음 측정기 690
+  const [safety, setSafety] = useState<number[]>([]);
+  const { room } = useRoomStore();
+
+  // 하이드레이션 완료
+  useEffect(() => {
+    if (useRoomStore.persist.hasHydrated()) {
+      const initialSafety = room?.amenities
+        .filter((amenity) => amenity.id === 10 || amenity.id === 690)
+        .map((amenity) => amenity.id);
+
+      setSafety(initialSafety || []);
+    }
+  }, [useRoomStore.persist.hasHydrated()]);
+
+  const handleCheckboxChange = (id: number, checked: boolean) => {
+    setSafety((prev) => (checked ? [...prev, id] : prev.filter((item) => item !== id)));
+  };
+
   return (
     <div className="flex h-full w-full flex-col items-start justify-center space-y-6 px-80">
       <p className="text-3xl font-semibold">안전 관련 정보 공유하기</p>
@@ -15,7 +36,9 @@ export default function Safety() {
         <input
           type="checkbox"
           id="camera"
+          checked={safety.includes(10)}
           className="h-6 w-6 cursor-pointer accent-black"
+          onChange={(e) => handleCheckboxChange(10, e.target.checked)}
         />
       </div>
       <div className="flex w-full flex-row justify-between">
@@ -28,7 +51,9 @@ export default function Safety() {
         <input
           type="checkbox"
           id="noise"
+          checked={safety.includes(690)}
           className="h-6 w-6 cursor-pointer accent-black"
+          onChange={(e) => handleCheckboxChange(690, e.target.checked)}
         />
       </div>
       <hr className="w-full border-neutral-06" />
@@ -47,6 +72,11 @@ export default function Safety() {
         type="hidden"
         name="step"
         value="safety"
+      />
+      <input
+        type="hidden"
+        name="safety"
+        value={safety.join(',')}
       />
     </div>
   );
