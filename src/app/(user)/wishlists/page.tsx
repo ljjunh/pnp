@@ -1,16 +1,23 @@
 import { RecentlyViewedCard } from '@/app/(user)/wishlists/components/RecentlyViewedCard';
 import { WishlistsCard } from '@/app/(user)/wishlists/components/WishlistsCard';
+import { getRecentView, getScrapList } from '@/apis/wishlists/queries';
 
-const images = [
-  '/images/05.avif',
-  '/images/02.avif',
-  '/images/04.avif',
-  '/images/01.avif',
-  '/images/03.avif',
-  '/images/06.avif',
-];
+// const images = [
+//   '/images/05.avif',
+//   '/images/02.avif',
+//   '/images/04.avif',
+//   '/images/01.avif',
+//   '/images/03.avif',
+//   '/images/06.avif',
+// ];
 
-export default function Wishlists() {
+export default async function Wishlists() {
+  const recentViews = await getRecentView();
+  const scrapList = await getScrapList();
+
+  console.log(recentViews);
+  console.log(scrapList);
+
   return (
     <div className="flex w-full justify-center">
       <div className="flex w-full max-w-screen-2xl flex-col gap-8 px-20 py-12">
@@ -19,12 +26,7 @@ export default function Wishlists() {
           {/* 최근 조회 */}
           <RecentlyViewedCard />
           {/* 위시리스트 폴더 */}
-          {images.map((image, index) => (
-            <WishlistsCard
-              key={index}
-              image={image}
-            />
-          ))}
+          <WishlistsCard image={scrapList[0]?.thumbnail || '/images/05.avif'} />
         </div>
       </div>
     </div>
