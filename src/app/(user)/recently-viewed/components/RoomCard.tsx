@@ -1,10 +1,12 @@
+import { RecentViewResponse } from '@/types/recent';
 import Image from 'next/image';
 
 interface RoomCardProps {
   isEdit: boolean;
+  recentView: RecentViewResponse;
 }
 
-export function RoomCard({ isEdit }: RoomCardProps) {
+export function RoomCard({ isEdit, recentView }: RoomCardProps) {
   return (
     <div>
       <div className="relative aspect-square">
@@ -14,15 +16,15 @@ export function RoomCard({ isEdit }: RoomCardProps) {
           </div>
         )}
         <Image
-          src="/images/05.avif"
+          src={recentView.thumbnail!}
           alt="숙소 사진"
           fill
           className="rounded-2xl object-cover"
         />
       </div>
       <div className="mt-2">
-        <h3 className="text-base">호스트 이름의 집</h3>
-        <p className="text-sm text-neutral-500">침대 1개 ㆍ 침실 1개</p>
+        <h3 className="text-base">{recentView.location}</h3>
+        <p className="text-sm text-neutral-500 overflow-hidden whitespace-nowrap text-overflow-ellipsis">{recentView.title}</p>
       </div>
     </div>
   );
