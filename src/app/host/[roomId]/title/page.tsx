@@ -1,15 +1,19 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRoomStore } from '@/store/useRoomStore';
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { useRegisterRoom } from '@/hooks/useRegisterRoom';
 
 export default function Title() {
-  const { room } = useRoomStore();
+  const { roomId } = useParams();
+  const { room } = useRegisterRoom(Number(roomId));
+  const [title, setTitle] = useState<string>('');
 
-  // 하이드레이션 완료
   useEffect(() => {
-    useRoomStore.persist.hasHydrated();
-  }, [useRoomStore.persist.hasHydrated()]);
+    if (room) {
+      setTitle(room?.title);
+    }
+  }, [room]);
 
   return (
     <div className="flex h-full w-full flex-col items-start justify-center px-80">
@@ -24,7 +28,7 @@ export default function Title() {
         name="title"
         aria-label="숙소 이름"
         placeholder="숙소 이름을 입력해주세요"
-        defaultValue={room?.title}
+        defaultValue={title}
       />
       <input
         type="hidden"

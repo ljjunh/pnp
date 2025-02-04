@@ -22,7 +22,7 @@ export default function PhotoSelect({ images, setImages }: PhotoSelectProps) {
       setCurrentStep(PHOTO_STEP.UPLOAD);
       return;
     }
-  }, []);
+  }, [images, setCurrentStep]);
 
   const handleDeleteImage = (id: number) => {
     setImages({

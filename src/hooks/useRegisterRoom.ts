@@ -9,6 +9,7 @@ export function useRegisterRoom(roomId: number) {
   const [room, setRoom] = useState<RegisterResponse | undefined>();
   const { room: initialRoom } = useRoomStore();
   const accessToken = useAuthStore((state) => state.accessToken);
+  const hasHydrated = useRoomStore.persist.hasHydrated();
 
   const getRoom = useCallback(async () => {
     const request = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/rooms/${roomId}`, {
@@ -18,18 +19,19 @@ export function useRegisterRoom(roomId: number) {
     });
 
     const response = await request.json();
-    response.data.isScrapped = false;
 
     setRoom(() => response.data);
-  }, []);
+  }, [accessToken, roomId]);
 
   useEffect(() => {
-    if (initialRoom) {
-      setRoom(initialRoom);
-    } else {
-      getRoom();
+    if (hasHydrated) {
+      if (initialRoom) {
+        setRoom(initialRoom);
+      } else {
+        getRoom();
+      }
     }
-  }, []);
+  }, [hasHydrated, getRoom, initialRoom]);
 
   return { room };
 }

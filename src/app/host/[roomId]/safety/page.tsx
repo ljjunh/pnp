@@ -1,22 +1,23 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRoomStore } from '@/store/useRoomStore';
+import { useParams } from 'next/navigation';
+import { useRegisterRoom } from '@/hooks/useRegisterRoom';
 
 export default function Safety() {
   const [safety, setSafety] = useState<number[]>([]);
-  const { room } = useRoomStore();
+  const { roomId } = useParams();
+  const { room } = useRegisterRoom(Number(roomId));
 
-  // 하이드레이션 완료
   useEffect(() => {
-    if (useRoomStore.persist.hasHydrated()) {
+    if (room) {
       const initialSafety = room?.amenities
         .filter((amenity) => amenity.id === 10 || amenity.id === 690)
         .map((amenity) => amenity.id);
 
       setSafety(initialSafety || []);
     }
-  }, [useRoomStore.persist.hasHydrated()]);
+  }, [room]);
 
   const handleCheckboxChange = (id: number, checked: boolean) => {
     setSafety((prev) => (checked ? [...prev, id] : prev.filter((item) => item !== id)));

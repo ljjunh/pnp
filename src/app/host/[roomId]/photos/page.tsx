@@ -35,7 +35,7 @@ export default function Photos() {
       setIsInnerStep(true);
       setCurrentStep(PHOTO_STEP.UPLOAD);
     }
-  }, []);
+  }, [currentStep, setIsInnerStep, setCurrentStep]);
 
   useEffect(() => {
     return () => {

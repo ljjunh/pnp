@@ -1,21 +1,22 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import AmenityItem from '@/app/host/[roomId]/amenities/components/AmenityItem';
-import { useRoomStore } from '@/store/useRoomStore';
+import { useRegisterRoom } from '@/hooks/useRegisterRoom';
 import { POPULAR, SAFETY, SPECIAL } from '@/constants/amenity';
 
 export default function Amenities() {
-  const { room } = useRoomStore();
   const [amenities, setAmenities] = useState<number[]>([]);
+  const { roomId } = useParams();
+  const { room } = useRegisterRoom(Number(roomId));
 
-  // 하이드레이션 완료
   useEffect(() => {
-    if (useRoomStore.persist.hasHydrated()) {
+    if (room) {
       const initialAmenities = room?.amenities.map((amenity) => amenity.id) || [];
       setAmenities(initialAmenities);
     }
-  }, [useRoomStore.persist.hasHydrated()]);
+  }, [room]);
 
   const handleSelect = (id: number) => {
     if (amenities.includes(id)) {
