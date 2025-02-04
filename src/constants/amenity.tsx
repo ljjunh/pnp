@@ -8,6 +8,11 @@ type RoomListType = {
   };
 };
 
+type AmenityType = {
+  id: number;
+  name: string;
+};
+
 export const ESSENTIAL_AMENITIES: string[] = [
   'SYSTEM_WI_FI',
   'SYSTEM_COOKING_BASICS',
@@ -41,38 +46,113 @@ export const SAFETY_AMENITIES: string[] = ['SYSTEM_DETECTOR_SMOKE', 'SYSTEM_DETE
 
 export const RESERVATION: string[] = ['SYSTEM_BUZZER', 'SYSTEM_KEY', 'SYSTEM_PETS'];
 
-export const POPULAR: string[] = [
-  'SYSTEM_WI_FI', // 14
-  'SYSTEM_TV', // 6
-  'SYSTEM_COOKING_BASICS', // 74
-  'SYSTEM_WASHER', // 152
-  'SYSTEM_MAPS_CAR_RENTAL', // 23
-  'SYSTEM_SNOWFLAKE', // 7
-  'SYSTEM_WORKSPACE', // 15
+export const POPULAR: AmenityType[] = [
+  {
+    id: 14,
+    name: 'SYSTEM_WI_FI',
+  },
+  {
+    id: 6,
+    name: 'SYSTEM_TV',
+  },
+  {
+    id: 74,
+    name: 'SYSTEM_COOKING_BASICS',
+  },
+  {
+    id: 152,
+    name: 'SYSTEM_WASHER',
+  },
+  {
+    id: 23,
+    name: 'SYSTEM_MAPS_CAR_RENTAL',
+  },
+  {
+    id: 7,
+    name: 'SYSTEM_SNOWFLAKE',
+  },
+  {
+    id: 15,
+    name: 'SYSTEM_WORKSPACE',
+  },
 ];
 
-export const SPECIAL: string[] = [
-  'SYSTEM_POOL', // 89
-  'SYSTEM_JACUZZI', // 55
-  'SYSTEM_PATIO_BALCONY', // 125
-  'SYSTEM_GRILL', // 105
-  'SYSTEM_ROOFTOP_DECK', // 21
-  'SYSTEM_FIREPIT', // 184
-  'SYSTEM_POOL_TABLE', // 631
-  'SYSTEM_FIREPLACE', // 179
-  'SYSTEM_PIANO', // 213
-  'SYSTEM_GYM', // 168
-  'SYSTEM_VIEW_OCEAN', // 30
-  'SYSTEM_BEACH', // 20
-  'SYSTEM_SKI', // 960
-  'SYSTEM_SHOWER', // 96
+export const SPECIAL: AmenityType[] = [
+  {
+    id: 89,
+    name: 'SYSTEM_POOL',
+  },
+  {
+    id: 55,
+    name: 'SYSTEM_JACUZZI',
+  },
+  {
+    id: 125,
+    name: 'SYSTEM_PATIO_BALCONY',
+  },
+  {
+    id: 105,
+    name: 'SYSTEM_GRILL',
+  },
+  {
+    id: 21,
+    name: 'SYSTEM_ROOFTOP_DECK',
+  },
+  {
+    id: 184,
+    name: 'SYSTEM_FIREPIT',
+  },
+  {
+    id: 631,
+    name: 'SYSTEM_POOL_TABLE',
+  },
+  {
+    id: 179,
+    name: 'SYSTEM_FIREPLACE',
+  },
+  {
+    id: 213,
+    name: 'SYSTEM_PIANO',
+  },
+  {
+    id: 168,
+    name: 'SYSTEM_GYM',
+  },
+  {
+    id: 30,
+    name: 'SYSTEM_VIEW_OCEAN',
+  },
+  {
+    id: 20,
+    name: 'SYSTEM_BEACH',
+  },
+  {
+    id: 960,
+    name: 'SYSTEM_SKI',
+  },
+  {
+    id: 96,
+    name: 'SYSTEM_SHOWER',
+  },
 ];
 
-export const SAFETY: string[] = [
-  'SYSTEM_DETECTOR_SMOKE', // 38
-  'SYSTEM_FIRST_AID_KIT', // 41
-  'SYSTEM_FIRE_EXTINGUISHER', // 40
-  'SYSTEM_DETECTOR_CO', // 39
+export const SAFETY: AmenityType[] = [
+  {
+    id: 38,
+    name: 'SYSTEM_DETECTOR_SMOKE',
+  },
+  {
+    id: 41,
+    name: 'SYSTEM_FIRST_AID_KIT',
+  },
+  {
+    id: 40,
+    name: 'SYSTEM_FIRE_EXTINGUISHER',
+  },
+  {
+    id: 39,
+    name: 'SYSTEM_DETECTOR_CO',
+  },
 ];
 
 export const AMENITY_LIST: RoomListType = {

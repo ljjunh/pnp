@@ -1,10 +1,12 @@
 'use client';
 
-import { use, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import { RegisterContext } from '@/app/host/[roomId]/components/RegisterContext';
 import LocationCheck from '@/app/host/[roomId]/location/components/LocationCheck';
 import LocationConfirm from '@/app/host/[roomId]/location/components/LocationConfirm';
 import LocationInput from '@/app/host/[roomId]/location/components/LocationInput';
+import { useRegisterRoom } from '@/hooks/useRegisterRoom';
 import { LOCATION_STEP } from '@/constants/registerStep';
 
 export interface LocationDetail {
@@ -18,10 +20,12 @@ export interface LocationDetail {
 }
 
 export default function Location() {
-  const { currentStep, setIsInnerStep, setCurrentStep } = use(RegisterContext);
+  const { currentStep, setIsInnerStep, setCurrentStep } = useContext(RegisterContext);
+  const { roomId } = useParams();
+  const { room } = useRegisterRoom(Number(roomId));
   const [searchLocation, setSearchLocation] = useState<string>('');
-  const [latitude, setLatitude] = useState<number>(); // 초기값: 서울
-  const [longitude, setLongitude] = useState<number>();
+  const [latitude, setLatitude] = useState<number>(room?.latitude || 37.5665); // 초기값: 서울
+  const [longitude, setLongitude] = useState<number>(room?.longitude || 126.978);
   const [locationDetail, setLocationDetail] = useState<LocationDetail>({
     country: '한국',
     state: '',
@@ -33,7 +37,6 @@ export default function Location() {
   });
 
   useEffect(() => {
-    // if문 뺄지말지 고민
     if (!currentStep) {
       setIsInnerStep(true);
       setCurrentStep(LOCATION_STEP.INPUT);

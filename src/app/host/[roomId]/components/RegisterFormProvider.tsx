@@ -3,9 +3,11 @@
 import { ReactNode, useContext } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { RegisterContext } from '@/app/host/[roomId]/components/RegisterContext';
+import { useRoomStore } from '@/store/useRoomStore';
 import { updateRoomRegister } from '@/apis/register/action';
 import { useToast } from '@/hooks/use-toast';
-import { LOCATION_STEP } from '@/constants/registerStep';
+import { useImageUpdate } from '@/hooks/useImageUpdate';
+import { LOCATION_STEP, PHOTO_STEP } from '@/constants/registerStep';
 import { ROUTES } from '@/constants/routeURL';
 
 const TOAST_TITLE = {
@@ -21,6 +23,8 @@ export default function RegisterFormProvider({ children }: { children: ReactNode
   const params = useParams();
   const roomId = params.roomId as string;
   const { isInnerStep, currentStep, setCurrentStep } = useContext(RegisterContext);
+  const { imageUpdate } = useImageUpdate(Number(roomId));
+  const { setRoom, clearRoom } = useRoomStore();
 
   const handleRegisterAction = async (formData: FormData) => {
     const step = formData.get('step') as string;
@@ -39,7 +43,14 @@ export default function RegisterFormProvider({ children }: { children: ReactNode
       }
     }
 
-    // *TODO: photo 추가
+    if (step === 'photos') {
+      if (isInnerStep) {
+        if (currentStep === PHOTO_STEP.UPLOAD) {
+          setCurrentStep(PHOTO_STEP.SELECT);
+          return;
+        }
+      }
+    }
 
     let updateData;
 
@@ -71,23 +82,28 @@ export default function RegisterFormProvider({ children }: { children: ReactNode
         }
         break;
       case 'info':
-        // const capacity = Number(formData.get('guest'));
-        // const bedroom = Number(formData.get('bedroom'));
-        // const bed = Number(formData.get('bed'));
-        // const bathroom = Number(formData.get('bathroom'));
-        // updateData = { capacity, bedroom, bed, bathroom };
-        router.push(ROUTES.REGISTER_STEP(roomId).SECOND_STEP);
-        return;
+        {
+          const capacity = Number(formData.get('guest'));
+          const bedroom = Number(formData.get('bedroom'));
+          const bed = Number(formData.get('bed'));
+          const bathroom = Number(formData.get('bathroom'));
+          updateData = { capacity, bedroom, bed, bathroom };
+        }
+        break;
       case 'second':
         router.push(ROUTES.REGISTER_STEP(roomId).AMENITIES);
         return;
       case 'amenities':
-        // const amenities = formData.get('amenities')?.toString().split(',') || [];
-        // updateData = { amenities };
-        router.push(ROUTES.REGISTER_STEP(roomId).PHOTOS);
-        return;
+        {
+          const amenities = formData.get('amenities')?.toString().split(',').map(Number) || [];
+          updateData = { amenities };
+        }
+        break;
       case 'photos':
-        router.push(ROUTES.REGISTER_STEP(roomId).TITLE);
+        {
+          const images = formData.getAll('images') as File[];
+          await imageUpdate(images);
+        }
         return;
       case 'title':
         {
@@ -111,9 +127,13 @@ export default function RegisterFormProvider({ children }: { children: ReactNode
         }
         break;
       case 'safety':
-        router.push(ROUTES.REGISTER_STEP(roomId).FINISH);
-        return;
+        {
+          const safety = formData.get('safety')?.toString().split(',').map(Number) || [];
+          updateData = { amenities: safety };
+        }
+        break;
       case 'finish':
+        clearRoom();
         router.push(ROUTES.HOST);
         return;
     }
@@ -137,7 +157,20 @@ export default function RegisterFormProvider({ children }: { children: ReactNode
       return;
     }
 
-    // 성공 시에는 다음 단계로 이동
+    // return data가 없을 경우 에러로 간주
+    if (!response.data) {
+      toast({
+        title: '숙소 업데이트 실패',
+        description: '숙소 업데이트에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+        variant: 'destructive',
+      });
+
+      return;
+    }
+
+    // 성공 시에는 zustand room 수정하고 다음 단계로 이동
+    setRoom(response.data);
+
     switch (step) {
       case 'structure':
         router.push(ROUTES.REGISTER_STEP(roomId).PRIVACY);

@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import {
   Accordion,
   AccordionContent,
@@ -8,6 +9,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { useModal } from '@/hooks/useModal';
+import { useRegisterRoom } from '@/hooks/useRegisterRoom';
 import { MODAL_ID } from '@/constants/modal';
 import { BiSolidPencil } from 'react-icons/bi';
 
@@ -15,6 +17,14 @@ export default function PriceInput() {
   const [price, setPrice] = useState<number>(0);
   const [open, setOpen] = useState<string>('');
   const { handleOpenModal } = useModal(MODAL_ID.ROOM_PRICE_INFO);
+  const { roomId } = useParams();
+  const { room } = useRegisterRoom(Number(roomId));
+
+  useEffect(() => {
+    if (room) {
+      setPrice(room?.price || 0);
+    }
+  }, [room]);
 
   return (
     <div className="mx-auto flex flex-col items-center justify-center py-20">
@@ -31,6 +41,7 @@ export default function PriceInput() {
           aria-label="숙소 1박 가격"
           aria-describedby="price-description"
           required
+          defaultValue={room?.price}
         />
         <label
           className="flex cursor-pointer items-center justify-center rounded-full border border-neutral-02 p-2"

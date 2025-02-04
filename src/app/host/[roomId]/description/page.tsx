@@ -1,4 +1,20 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { useRegisterRoom } from '@/hooks/useRegisterRoom';
+
 export default function Description() {
+  const { roomId } = useParams();
+  const { room } = useRegisterRoom(Number(roomId));
+  const [description, setDescription] = useState<string>('');
+
+  useEffect(() => {
+    if (room) {
+      setDescription(room?.description || '');
+    }
+  }, [room]);
+
   return (
     <div className="flex h-full w-full flex-col items-start justify-center px-80">
       <p className="mb-4 text-3xl font-semibold">숙소 설명 작성하기</p>
@@ -12,6 +28,7 @@ export default function Description() {
         required
         minLength={10}
         maxLength={500}
+        defaultValue={description}
       />
       <input
         type="hidden"

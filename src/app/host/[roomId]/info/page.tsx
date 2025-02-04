@@ -1,6 +1,8 @@
 'use client';
 
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
+import { useParams } from 'next/navigation';
+import { useRegisterRoom } from '@/hooks/useRegisterRoom';
 import { CiCircleMinus, CiCirclePlus } from 'react-icons/ci';
 
 const MIN_VALUE = 1 as const;
@@ -28,6 +30,9 @@ const INFO_ITEMS = [
 ] as const;
 
 export default function Info() {
+  const { roomId } = useParams();
+  const { room } = useRegisterRoom(Number(roomId));
+
   const initialState = {
     guest: MIN_VALUE,
     bedroom: MIN_VALUE,
@@ -51,6 +56,12 @@ export default function Info() {
   };
 
   const [state, dispatch] = useReducer(infoReducer, initialState);
+
+  useEffect(() => {
+    if (room) {
+      dispatch({ type: 'GUEST' as Action['type'], payload: room.capacity });
+    }
+  }, [room]);
 
   const calculateNewValue = (
     type: keyof State,

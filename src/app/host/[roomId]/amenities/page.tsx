@@ -1,17 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import AmenityItem from '@/app/host/[roomId]/amenities/components/AmenityItem';
+import { useRegisterRoom } from '@/hooks/useRegisterRoom';
 import { POPULAR, SAFETY, SPECIAL } from '@/constants/amenity';
 
 export default function Amenities() {
-  const [amenities, setAmenities] = useState<string[]>([]);
+  const [amenities, setAmenities] = useState<number[]>([]);
+  const { roomId } = useParams();
+  const { room } = useRegisterRoom(Number(roomId));
 
-  const handleSelect = (content: string) => {
-    if (amenities.includes(content)) {
-      setAmenities(amenities.filter((amenity) => amenity !== content));
+  useEffect(() => {
+    if (room) {
+      const initialAmenities = room?.amenities.map((amenity) => amenity.id) || [];
+      setAmenities(initialAmenities);
+    }
+  }, [room]);
+
+  const handleSelect = (id: number) => {
+    if (amenities.includes(id)) {
+      setAmenities(amenities.filter((amenityId) => amenityId !== id));
     } else {
-      setAmenities([...amenities, content]);
+      setAmenities([...amenities, id]);
     }
   };
 
@@ -29,8 +40,9 @@ export default function Amenities() {
             {POPULAR.map((content, index) => (
               <AmenityItem
                 key={`${content}-${index}`}
-                content={content}
-                isClicked={amenities.includes(content)}
+                id={content.id}
+                content={content.name}
+                isClicked={amenities.includes(content.id)}
                 handleSelect={handleSelect}
               />
             ))}
@@ -42,8 +54,9 @@ export default function Amenities() {
             {SPECIAL.map((content, index) => (
               <AmenityItem
                 key={`${content}-${index}`}
-                content={content}
-                isClicked={amenities.includes(content)}
+                id={content.id}
+                content={content.name}
+                isClicked={amenities.includes(content.id)}
                 handleSelect={handleSelect}
               />
             ))}
@@ -55,8 +68,9 @@ export default function Amenities() {
             {SAFETY.map((content, index) => (
               <AmenityItem
                 key={`${content}-${index}`}
-                content={content}
-                isClicked={amenities.includes(content)}
+                id={content.id}
+                content={content.name}
+                isClicked={amenities.includes(content.id)}
                 handleSelect={handleSelect}
               />
             ))}
@@ -71,7 +85,7 @@ export default function Amenities() {
       <input
         type="hidden"
         name="amenities"
-        value={amenities}
+        value={amenities.join(',')}
       />
     </div>
   );

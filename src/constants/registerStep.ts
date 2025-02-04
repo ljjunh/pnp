@@ -5,6 +5,6 @@ export enum LOCATION_STEP {
 }
 
 export enum PHOTO_STEP {
-  UPLOAD,
-  SELECT,
+  'UPLOAD',
+  'SELECT',
 }
