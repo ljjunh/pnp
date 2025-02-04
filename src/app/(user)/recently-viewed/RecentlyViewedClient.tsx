@@ -31,6 +31,7 @@ export function RecentlyViewedClient({ recentViews }: RecentlyViewedClientProps)
         <h1 className="my-6 text-3xl font-medium">최근 조회</h1>
         {/* 최근 조회 리스트 날짜별로 매핑해서 나열 */}
         <div>
+          {/* 날짜 갈아 끼우기 */}
           <h3 className="font-medium">날짜</h3>
           <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {recentViews.map((recentView) => (
