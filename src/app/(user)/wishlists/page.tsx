@@ -2,21 +2,9 @@ import { RecentlyViewedCard } from '@/app/(user)/wishlists/components/RecentlyVi
 import { WishlistsCard } from '@/app/(user)/wishlists/components/WishlistsCard';
 import { getRecentView, getScrapList } from '@/apis/wishlists/queries';
 
-// const images = [
-//   '/images/05.avif',
-//   '/images/02.avif',
-//   '/images/04.avif',
-//   '/images/01.avif',
-//   '/images/03.avif',
-//   '/images/06.avif',
-// ];
-
 export default async function Wishlists() {
   const recentViews = await getRecentView();
   const scrapList = await getScrapList();
-
-  console.log(recentViews);
-  console.log(scrapList);
 
   return (
     <div className="flex w-full justify-center">
@@ -24,7 +12,7 @@ export default async function Wishlists() {
         <h1 className="text-3xl font-medium">위시리스트</h1>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {/* 최근 조회 */}
-          <RecentlyViewedCard />
+          <RecentlyViewedCard thumbnail={recentViews[0]?.thumbnail || '/images/05.avif'}/>
           {/* 위시리스트 폴더 */}
           <WishlistsCard image={scrapList[0]?.thumbnail || '/images/05.avif'} />
         </div>
