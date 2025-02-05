@@ -14,7 +14,7 @@ export default async function Wishlists() {
           {/* 최근 조회 */}
           <RecentlyViewedCard thumbnail={recentViews[0]?.thumbnail || '/images/05.avif'}/>
           {/* 위시리스트 폴더 */}
-          <WishlistsCard image={scrapList[0]?.thumbnail || '/images/05.avif'} />
+          {scrapList.length > 0 && <WishlistsCard thumbnail={scrapList[0].thumbnail!} scrapListLength={scrapList.length}/>}
         </div>
       </div>
     </div>
