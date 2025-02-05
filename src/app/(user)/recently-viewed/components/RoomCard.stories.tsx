@@ -25,6 +25,16 @@ type Story = StoryObj<typeof RoomCard>;
 export const View: Story = {
   args: {
     isEdit: false,
+    recentView:{
+      id:1,
+      title:'어서오세요',
+      description:'description',
+      location: '광주',
+      price: 10000,
+      thumbnail: '/images/05.avif',
+      images:[],
+      scraped:false
+    }
   },
 };
 
@@ -32,5 +42,15 @@ export const View: Story = {
 export const Edit: Story = {
   args: {
     isEdit: true,
+    recentView:{
+      id:1,
+      title:'어서오세요',
+      description:'description',
+      location: '광주',
+      price: 10000,
+      thumbnail: '/images/05.avif',
+      images:[],
+      scraped:false
+    }
   },
 };
