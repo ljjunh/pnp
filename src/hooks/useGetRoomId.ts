@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { CustomError } from '@/errors';
 import { createRoomId } from '@/apis/register/action';
 import { getProgressRoomId } from '@/apis/register/queries';
 import { useToast } from '@/hooks/use-toast';
@@ -59,7 +58,7 @@ export default function useGetRoomId() {
       if (!response.data) {
         toast({
           title: '숙소 등록에 실패했습니다.',
-          description: '숙소 등록에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+          description: '숙소 등록에 실패했습니다. 잠시 후 다시 시도해주세요.',
           variant: 'destructive',
         });
 
@@ -69,10 +68,7 @@ export default function useGetRoomId() {
       // 성공했을 때 숙소 등록 첫 단계로 이동
       router.push(ROUTES.REGISTER_STEP(String(response.data)).START);
     } catch (error) {
-      if (error instanceof CustomError) {
-        handleError(error.statusCode, error.message);
-        return;
-      }
+      handleError(500, '숙소 정보를 얻어오는 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.');
     } finally {
       setIsLoading(false);
     }

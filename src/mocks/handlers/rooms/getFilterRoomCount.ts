@@ -2,7 +2,7 @@ import { HttpResponse, http } from 'msw';
 
 export const getFilterRoomCountHandler = http.get('/api/rooms/count', ({ request }) => {
   const url = new URL(request.url);
-  const property = url.searchParams.get('property');
+  const property = url.searchParams.get('propertyType');
 
   // 서버 에러 케이스
   if (property === '500') {

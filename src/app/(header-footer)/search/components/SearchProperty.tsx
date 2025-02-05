@@ -47,7 +47,7 @@ export default function SearchProperty() {
         </Link>
         <hr className="mx-5 h-4/5 border border-neutral-03" />
         <Property
-          propertyId={propertyId}
+          propertyType={propertyId}
           params={params}
         />
       </div>

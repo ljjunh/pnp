@@ -39,6 +39,7 @@ export async function getFilterRoom(
 
     return response.data;
   } catch (error) {
+    console.log('query error', error);
     if (error instanceof CustomError) {
       throw error;
     }

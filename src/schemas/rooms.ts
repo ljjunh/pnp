@@ -50,7 +50,7 @@ const language = z
   });
 
 const property = z
-  .string({ message: '건물 유형은 숫자여야 합니다.' })
+  .string({ message: '건물 유형은 문자열이어야 합니다.' })
   .nullable()
   .optional()
   .refine((value) => value === null || value === undefined || PROPERTY.includes(value), {

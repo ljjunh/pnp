@@ -24,7 +24,7 @@ type Story = StoryObj<typeof PriceRange>;
 export const Default: Story = {
   args: {
     roomType: 'Entire',
-    property: 1,
+    property: '1',
     handleFilter: (newState: number | undefined, type: keyof FilterType) => {
       console.log(newState, type);
     },
