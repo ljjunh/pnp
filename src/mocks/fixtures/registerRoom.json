@@ -1,0 +1,159 @@
+{
+  "id": 1,
+  "airbnbLink": "https://airbnb.com/1",
+  "title": "숙소 이름",
+  "description": "숙소 설명",
+  "seoTitle": "숙소 이름",
+  "seoDescription": "숙소 설명",
+  "thumbnail": "https://thumbnail.com/1",
+  "reviewsCount": 10,
+  "reviewsAverage": 4.5,
+  "location": "서울시 강남구",
+  "price": 100000,
+  "capacity": 2,
+  "latitude": 37.123456,
+  "longitude": 127.123456,
+  "checkIn": "15:00",
+  "checkOut": "11:00",
+  "checkInType": "SELF",
+  "images": [
+    {
+      "id": 1,
+      "imageLink": "https://image.com/1",
+      "orientation": "PORTRAIT"
+    },
+    {
+      "id": 2,
+      "imageLink": "https://image.com/2",
+      "orientation": "PORTRAIT"
+    },
+    {
+      "id": 3,
+      "imageLink": "https://image.com/3",
+      "orientation": "PORTRAIT"
+    },
+    {
+      "id": 4,
+      "imageLink": "https://image.com/4",
+      "orientation": "PORTRAIT"
+    },
+    {
+      "id": 5,
+      "imageLink": "https://image.com/5",
+      "orientation": "PORTRAIT"
+    }
+  ],
+  "rules": [
+    {
+      "title": "체크인 시간",
+      "id": 1,
+      "category": "CHECK_IN",
+      "icon": "RULE_CHECK_IN"
+    },
+    {
+      "title": "체크인 시간",
+      "id": 2,
+      "category": "CHECK_IN",
+      "icon": "RULE_CHECK_IN"
+    },
+    {
+      "title": "체크인 시간",
+      "id": 3,
+      "category": "CHECK_IN",
+      "icon": "RULE_CHECK_IN"
+    },
+    {
+      "title": "체크인 시간",
+      "id": 4,
+      "category": "CHECK_IN",
+      "icon": "RULE_CHECK_IN"
+    },
+    {
+      "title": "체크인 시간",
+      "id": 5,
+      "category": "CHECK_IN",
+      "icon": "RULE_CHECK_IN"
+    }
+  ],
+  "profile": {
+    "id": 1,
+    "isSuperHost": true,
+    "isVerified": true,
+    "hostStartedAt": "2025-02-03T10:35:04.718863133",
+    "reviewsAverage": 4.5,
+    "reviewsCount": 10,
+    "tags": [
+      {
+        "id": 1,
+        "content": "태그"
+      },
+      {
+        "id": 2,
+        "content": "태그"
+      },
+      {
+        "id": 3,
+        "content": "태그"
+      }
+    ],
+    "user": {
+      "userId": 1,
+      "name": "유저",
+      "email": "test@test.com",
+      "image": "https://image.com/1"
+    }
+  },
+  "tags": [
+    {
+      "id": 1,
+      "content": "태그"
+    },
+    {
+      "id": 2,
+      "content": "태그"
+    }
+  ],
+  "amenities": [
+    {
+      "title": "편의 시설",
+      "id": 1,
+      "category": "편의 시설",
+      "icon": "AMENITY_WIFI",
+      "subTitle": "와이파이",
+      "available": true
+    },
+    {
+      "title": "편의 시설",
+      "id": 2,
+      "category": "편의 시설",
+      "icon": "AMENITY_WIFI",
+      "subTitle": "와이파이",
+      "available": true
+    },
+    {
+      "title": "편의 시설",
+      "id": 3,
+      "category": "편의 시설",
+      "icon": "AMENITY_WIFI",
+      "subTitle": "와이파이",
+      "available": true
+    },
+    {
+      "title": "편의 시설",
+      "id": 4,
+      "category": "편의 시설",
+      "icon": "AMENITY_WIFI",
+      "subTitle": "와이파이",
+      "available": true
+    },
+    {
+      "title": "편의 시설",
+      "id": 5,
+      "category": "편의 시설",
+      "icon": "AMENITY_WIFI",
+      "subTitle": "와이파이",
+      "available": true
+    }
+  ],
+  "scraped": true
+}

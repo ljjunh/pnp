@@ -5,13 +5,6 @@ export const getFilterRoomHandler = http.get('/api/rooms', ({ request }) => {
   const url = new URL(request.url);
   const property = url.searchParams.get('propertyType');
 
-  return HttpResponse.json({
-    success: true,
-    status: 200,
-    message: 'OK',
-    data: `url: ${url}`,
-  });
-
   // 서버 에러 케이스
   if (property === '500') {
     return HttpResponse.json({
