@@ -10,7 +10,8 @@ const meta: Meta<typeof WishlistsCard> = {
   },
   tags: ['autodocs'],
   args: {
-    image: '/images/05.avif',
+    thumbnail: '/images/05.avif',
+    scrapListLength: 5,
   },
 };
 
@@ -23,22 +24,6 @@ export const Default: Story = {
     (Story) => (
       <div className="w-80">
         <Story />
-      </div>
-    ),
-  ],
-};
-
-// 그리드 레이아웃
-export const GridLayout: Story = {
-  decorators: [
-    (Story) => (
-      <div className="w-screen">
-        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          <Story args={{ image: '/images/01.avif' }} />
-          <Story args={{ image: '/images/02.avif' }} />
-          <Story args={{ image: '/images/03.avif' }} />
-          <Story args={{ image: '/images/04.avif' }} />
-        </div>
       </div>
     ),
   ],
