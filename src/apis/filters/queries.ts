@@ -29,13 +29,18 @@ export async function getFilterRoom(
 
     const response = await httpClient.get<FilterRoomResponse>(url);
 
-    response.data.page.hasNextPage =
-      response.data.page.totalElements > response.data.page.size * response.data.page.number;
-    response.data.page.hasPrevPage = response.data.page.number >= 0;
-
     if (!response.success) {
       throw new CustomError(response.message, response.status);
     }
+
+    // 데이터가 없으면 500 에러로 간주
+    if (!response.data) {
+      throw new CustomError('방 정보를 불러오는데 실패했습니다.', 500);
+    }
+
+    response.data.page.hasNextPage =
+      response.data.page.totalElements > response.data.page.size * response.data.page.number;
+    response.data.page.hasPrevPage = response.data.page.number >= 0;
 
     return response.data;
   } catch (error) {
