@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { CustomError } from '@/errors';
 import { RecentViewResponse } from '@/types/recent';
-import { ScrapListResponse } from '@/types/scraps';
+import { ScrapResponse } from '@/types/scrap';
 import httpClient from '@/apis/core/httpClient';
 import { ROUTES } from '@/constants/routeURL';
 
@@ -15,7 +15,7 @@ export async function getRecentView(): Promise<RecentViewResponse[]> {
   } catch (error) {
     if (error instanceof CustomError) {
       // 로그인 페이지로 리다이렉트
-      if(error.statusCode === 401){
+      if (error.statusCode === 401) {
         redirect(ROUTES.LOGIN);
       }
       throw error;
@@ -27,9 +27,9 @@ export async function getRecentView(): Promise<RecentViewResponse[]> {
   }
 }
 
-export async function getScrapList(): Promise<ScrapListResponse[]> {
+export async function getScrapList(): Promise<ScrapResponse[]> {
   try {
-    const response = await httpClient.get<ScrapListResponse[]>('/users/scraps');
+    const response = await httpClient.get<ScrapResponse[]>('/users/scraps');
     if (!response.success) {
       throw new CustomError(response.message, response.status);
     }
@@ -37,7 +37,7 @@ export async function getScrapList(): Promise<ScrapListResponse[]> {
   } catch (error) {
     if (error instanceof CustomError) {
       // 로그인 페이지로 리다이렉트
-      if(error.statusCode === 401){
+      if (error.statusCode === 401) {
         redirect(ROUTES.LOGIN);
       }
       throw error;
