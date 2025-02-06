@@ -7,6 +7,12 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
+  args: {
+      scrapId: 1,
+      scrapThumbnail: 'images/05.avif',
+      scrapLocation: '광주',
+      scrapTitle: '어서오세요',
+  },
   decorators: [
     (Story) => (
       <div className="w-screen mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
