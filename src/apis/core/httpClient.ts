@@ -187,29 +187,29 @@ const httpClient = HttpClient.getInstance();
 
 httpClient.addRequestInterceptor({
   onRequest: async (config) => {
-    // if (typeof window !== 'undefined') {
-    //   // client 컴포넌트일 때 세션에서 accessToken 추가
-    //   const { useAuthStore } = await import('@/store/useAuthStore');
-    //   const accessToken = useAuthStore.getState().accessToken;
+    if (typeof window !== 'undefined') {
+      // client 컴포넌트일 때 세션에서 accessToken 추가
+      const { useAuthStore } = await import('@/store/useAuthStore');
+      const accessToken = useAuthStore.getState().accessToken;
 
-    //   if (accessToken) {
-    //     config.headers = {
-    //       ...config.headers,
-    //       Authorization: `Bearer ${accessToken}`,
-    //     };
-    //   }
-    // } else {
-    // server 컴포넌트일 때 쿠키에서 accessToken 추가
-    const { getToken } = await import('@/app/lib/server/cookies');
+      if (accessToken) {
+        config.headers = {
+          ...config.headers,
+          Authorization: `Bearer ${accessToken}`,
+        };
+      }
+    } else {
+      // server 컴포넌트일 때 쿠키에서 accessToken 추가
+      const { getToken } = await import('@/app/lib/server/cookies');
 
-    const { accessToken } = await getToken();
+      const { accessToken } = await getToken();
 
-    if (accessToken) {
-      config.headers = {
-        ...config.headers,
-        Authorization: `Bearer ${accessToken}`,
-      };
-      // }
+      if (accessToken) {
+        config.headers = {
+          ...config.headers,
+          Authorization: `Bearer ${accessToken}`,
+        };
+      }
     }
 
     return config;
