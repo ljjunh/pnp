@@ -63,17 +63,14 @@ export const useImageUpdate = (roomId: number) => {
 
         if (!sendResponse.success) {
           throw new CustomError(
-            sendResponse.message || '이미지 업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+            '이미지 업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.',
             sendResponse.status,
           );
         }
 
         // 데이터가 없을 경우 500 에러로 간주
         if (!sendResponse.data) {
-          throw new CustomError(
-            sendResponse.message || '이미지 업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.',
-            500,
-          );
+          throw new CustomError('이미지 업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.', 500);
         }
 
         return sendResponse.data;
