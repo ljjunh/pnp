@@ -34,11 +34,11 @@ describe('filter query test', () => {
       }
     });
 
-    test('필터와 함께 page와 limit이 적용된 URL을 반환한다.', () => {
+    test('필터와 함께 page와 size이 적용된 URL을 반환한다.', () => {
       const params = formatFilter(mockFilter as FilterType);
 
       params.append('page', '1');
-      params.append('limit', '10');
+      params.append('size', '10');
       params.append('sort', 'recent');
 
       const url = `/rooms?${params.toString()}`;
@@ -47,40 +47,40 @@ describe('filter query test', () => {
       expect(url).toContain('roomType=Entire');
       expect(url).toContain('capacity=4');
       expect(url).toContain('page=1');
-      expect(url).toContain('limit=10');
+      expect(url).toContain('size=10');
       expect(url).toContain('sort=recent');
     });
 
-    test('page와 limit, sort가 전달되지 않으면 기본값(page=1, limit=10, sort=recent)을 사용한다', async () => {
+    test('page와 size, sort가 전달되지 않으면 기본값(page=1, size=10, sort=recent)을 사용한다', async () => {
       const params = formatFilter(mockFilter as FilterType);
 
       const page: number | undefined = undefined;
-      const limit: number | undefined = undefined;
+      const size: number | undefined = undefined;
       const sort: string | undefined = undefined;
 
       params.append('page', (page ?? 1).toString());
-      params.append('limit', (limit ?? 10).toString());
+      params.append('size', (size ?? 10).toString());
       params.append('sort', sort ?? 'recent');
 
       const url = `/rooms?${params.toString()}`;
 
       expect(url).toContain('page=1');
-      expect(url).toContain('limit=10');
+      expect(url).toContain('size=10');
     });
 
-    test('page와 limit이 전달되면 해당 값을 사용한다', async () => {
+    test('page와 size이 전달되면 해당 값을 사용한다', async () => {
       const params = formatFilter(mockFilter as FilterType);
       const page = 2;
-      const limit = 20;
+      const size = 20;
 
       params.append('page', page.toString());
-      params.append('limit', limit.toString());
+      params.append('size', size.toString());
       params.append('sort', 'recent');
 
       const url = `/rooms?${params.toString()}`;
 
       expect(url).toContain('page=2');
-      expect(url).toContain('limit=20');
+      expect(url).toContain('size=20');
     });
 
     test("서버에서 데이터를 가져오지 못하면 '방 정보를 불러오는데 실패했습니다.' 에러를 던진다", async () => {
