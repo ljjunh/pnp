@@ -83,6 +83,30 @@ describe('filter query test', () => {
       expect(url).toContain('limit=20');
     });
 
+    test("서버에서 데이터를 가져오지 못하면 '방 정보를 불러오는데 실패했습니다.' 에러를 던진다", async () => {
+      const errorMockFilter: FilterType = {
+        ...mockFilter,
+        property: '200',
+      };
+
+      const error = await getFilterRoom(errorMockFilter).catch((e) => e);
+
+      expect(error).toBeInstanceOf(CustomError);
+      expect(error.message).toBe('방 정보를 불러오는데 실패했습니다.');
+      expect(error.statusCode).toBe(500);
+    });
+
+    test('response.success가 false일 때 에러를 던진다', async () => {
+      const errorMockFilter: FilterType = {
+        ...mockFilter,
+        property: '500',
+      };
+
+      const error = await getFilterRoom(errorMockFilter).catch((e) => e);
+
+      expect(error).toBeInstanceOf(CustomError);
+    });
+
     test('서버에서 500 에러 발생 시 에러를 던진다', async () => {
       const errorMockFilter: FilterType = {
         ...mockFilter,

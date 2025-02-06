@@ -1,7 +1,6 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import NotFound from '@/app/not-found';
 import { ActionResponse } from '@/types/action';
 import { RegisterResponse } from '@/types/room';
 import httpClient from '@/apis/core/httpClient';
@@ -160,17 +159,12 @@ export async function createImageUrl(
     });
 
     if (!response.success) {
-      switch (response.status) {
-        case 404:
-          NotFound();
-        default: // 403, 500
-          return {
-            success: false,
-            message:
-              response.message || '이미지 업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.',
-            status: response.status,
-          };
-      }
+      // 403, 404, 500
+      return {
+        success: false,
+        message: response.message || '이미지 업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+        status: response.status,
+      };
     }
 
     // 성공 시 응답
@@ -214,24 +208,19 @@ export const sendS3Url = async (
     });
 
     if (!response.success) {
-      switch (response.status) {
-        case 404:
-          NotFound();
-        default: // 403, 500
-          return {
-            success: false,
-            message:
-              response.message || '이미지 업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.',
-            status: response.status,
-          };
-      }
+      // 403, 404, 500
+      return {
+        success: false,
+        message: response.message || '이미지 업데이트에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+        status: response.status,
+      };
     }
 
     // 데이터가 없을 경우 500 에러로 간주
     if (!response.data) {
       return {
         success: false,
-        message: response.message || '이미지 업로드에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+        message: '이미지 업데이트에 실패했습니다. 잠시 후 다시 시도해 주세요.',
         status: 500,
       };
     }
@@ -246,7 +235,7 @@ export const sendS3Url = async (
     return {
       success: false,
       message:
-        '네트워크 문제로 이미지 업로드에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.',
+        '네트워크 문제로 이미지 업데이트에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.',
       status: 500,
     };
   }

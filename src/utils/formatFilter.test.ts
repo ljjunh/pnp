@@ -13,7 +13,7 @@ describe('formatFilter test', () => {
     amenityArray: [],
     option: [],
     language: [],
-    property: 0,
+    property: '',
     location: '',
     checkIn: '',
     checkOut: '',
@@ -41,7 +41,7 @@ describe('formatFilter test', () => {
     expect(params.get('amenities')).toBe('wifi,parking');
     expect(params.get('option')).toBe('selfCheckIn');
     expect(params.get('language')).toBe('1,2');
-    expect(params.get('property')).toBe('1');
+    expect(params.get('propertyType')).toBe('1');
     expect(params.get('location')).toBe('서울');
     expect(params.get('checkIn')).toBe('2024-01-01');
     expect(params.get('checkOut')).toBe('2024-01-05');
