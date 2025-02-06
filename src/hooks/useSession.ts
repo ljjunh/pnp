@@ -13,11 +13,9 @@ export function useSession() {
   useEffect(() => {
     const cookieToken = getCookie('accessToken');
 
-    if (cookieToken || accessToken) {
+    if (cookieToken) {
       setAuthenticated(true);
-      if (cookieToken) {
-        setAccessToken(cookieToken);
-      }
+      setAccessToken(cookieToken);
     } else {
       setAuthenticated(false);
     }
