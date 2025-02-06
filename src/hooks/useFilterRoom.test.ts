@@ -56,6 +56,7 @@ describe('useFilterRoom test', () => {
       await result.current.fetchNextPage();
     });
 
+    expect(result.current).toBe(null);
     expect(result.current.rooms).toEqual([...mockProps.initialRooms, ...mockNextData]);
     expect(result.current.hasNextPage).toBe(false);
   });

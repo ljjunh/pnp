@@ -1,4 +1,3 @@
-import { updateRoomRegister } from '@/mocks/handlers/rooms/updateRoomRegister';
 import { createScrapHandler } from '@/mocks/handlers/rooms/createScrap';
 import { deleteScrapHandler } from '@/mocks/handlers/rooms/deleteScrap';
 import { getFilterRoomHandler } from '@/mocks/handlers/rooms/getFilterRoom';
@@ -17,5 +16,4 @@ export const roomHandlers = [
   createScrapHandler,
   deleteScrapHandler,
   getRoomAvailableHandler,
-  updateRoomRegister,
 ];

@@ -59,6 +59,10 @@ export type CreateRoomResponse = {
   roomId: number;
 };
 
+export interface RegisterResponse extends Room {
+  isScrapped: boolean;
+}
+
 export type FilterRoomResponse = {
   content: FilterRoom[];
   page: {

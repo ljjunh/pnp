@@ -189,23 +189,27 @@ httpClient.addRequestInterceptor({
   onRequest: async (config) => {
     if (typeof window !== 'undefined') {
       // client 컴포넌트일 때 세션에서 accessToken 추가
-      const { useStore } = await import('@/store');
-      const accessToken = useStore.getState().accessToken;
+      const { useAuthStore } = await import('@/store/useAuthStore');
+      const accessToken = useAuthStore.getState().accessToken;
 
-      config.headers = {
-        ...config.headers,
-        Authorization: `Bearer ${accessToken}`,
-      };
+      if (accessToken) {
+        config.headers = {
+          ...config.headers,
+          Authorization: `Bearer ${accessToken}`,
+        };
+      }
     } else {
       // server 컴포넌트일 때 쿠키에서 accessToken 추가
       const { getToken } = await import('@/app/lib/server/cookies');
 
       const { accessToken } = await getToken();
 
-      config.headers = {
-        ...config.headers,
-        Authorization: `Bearer ${accessToken}`,
-      };
+      if (accessToken) {
+        config.headers = {
+          ...config.headers,
+          Authorization: `Bearer ${accessToken}`,
+        };
+      }
     }
 
     return config;
@@ -257,7 +261,6 @@ httpClient.addResponseInterceptor({
 
       return await originalResponse.json();
     } catch (error) {
-      console.error(error);
       // refresh 실패했을 때는 401 에러로 리턴
       return {
         success: false,

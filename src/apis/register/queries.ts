@@ -13,7 +13,7 @@ export async function getProgressRoomId(): Promise<number> {
     }
 
     // data가 없으면 에러로 간주
-    if (!response.data) {
+    if (response.data === null) {
       throw new CustomError('등록 중인 숙소 조회에 실패하였습니다.', 400);
     }
 

@@ -14,7 +14,7 @@ import { formatFilter } from '@/utils/formatFilter';
 export async function getFilterRoom(
   filter: FilterType,
   page?: number,
-  limit?: number,
+  size?: number,
   sort?: string,
 ): Promise<FilterRoomResponse> {
   try {
@@ -22,23 +22,29 @@ export async function getFilterRoom(
 
     // * params는 객체기 때문에 params 자체를 바꿀 수 없지만, 내부에 존재하는 실제 파라미터 값은 추가 가능함.
     params.append('page', (page ?? 1).toString());
-    params.append('limit', (limit ?? 10).toString());
+    params.append('size', (size ?? 10).toString());
     params.append('sort', sort ?? 'recent');
 
     const url = `/rooms?${params.toString()}`;
 
     const response = await httpClient.get<FilterRoomResponse>(url);
 
-    response.data.page.hasNextPage =
-      response.data.page.totalElements > response.data.page.size * response.data.page.number;
-    response.data.page.hasPrevPage = response.data.page.number >= 0;
-
     if (!response.success) {
       throw new CustomError(response.message, response.status);
     }
 
+    // 데이터가 없으면 500 에러로 간주
+    if (!response.data) {
+      throw new CustomError('방 정보를 불러오는데 실패했습니다.', 500);
+    }
+
+    response.data.page.hasNextPage =
+      response.data.page.totalElements > response.data.page.size * response.data.page.number;
+    response.data.page.hasPrevPage = response.data.page.number >= 0;
+
     return response.data;
   } catch (error) {
+    console.log('error', error);
     if (error instanceof CustomError) {
       throw error;
     }

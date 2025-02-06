@@ -27,7 +27,7 @@ export const ROUTES = {
     INFO: `/host/${roomId}/info`,
     SECOND_STEP: `/host/${roomId}/second-step`,
     AMENITIES: `/host/${roomId}/amenities`,
-    PHOTOS: `/host/${roomId}/photos`, // 나중에
+    PHOTOS: `/host/${roomId}/photos`,
     TITLE: `/host/${roomId}/title`,
     DESCRIPTION: `/host/${roomId}/description`,
     THIRD_STEP: `/host/${roomId}/third-step`,

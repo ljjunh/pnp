@@ -64,7 +64,7 @@ export const formatFilter = (filter: FilterType) => {
   }
 
   if (property) {
-    params.append('property', property.toString());
+    params.append('propertyType', property.toString());
   }
 
   if (location) {

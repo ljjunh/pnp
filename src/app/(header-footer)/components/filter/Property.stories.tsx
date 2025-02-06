@@ -22,7 +22,7 @@ type Story = StoryObj<typeof Property>;
 
 export const Default: Story = {
   args: {
-    propertyId: '0',
+    propertyType: '0',
     params: new URLSearchParams(),
   },
 };
