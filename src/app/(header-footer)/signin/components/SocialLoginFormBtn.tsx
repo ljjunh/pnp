@@ -23,7 +23,7 @@ export function SocialLoginFormBtn({ text }: { text: SocialLoginType }) {
   return (
     <button
       disabled={pending}
-      className="flex w-full items-center justify-between rounded-md border border-gray-500 px-4 py-2 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-100"
+      className="mb-1 flex w-full items-center justify-between rounded-md border border-gray-500 px-4 py-2 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-100"
     >
       {getIcon()}
       <div>{pending ? MESSAGES.LOGIN_LOADING : text}</div>

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { deleteCookie } from 'cookies-next';
 import { ROUTES } from '@/constants/routeURL';
+import { useAuthStore } from '@/store/useAuthStore';
 
 interface UserMenuItemProps {
   id: string;
@@ -19,6 +20,7 @@ export default function UserMenuItem({
   onToggleOpen,
 }: UserMenuItemProps) {
   const pathname = usePathname();
+  const clearTokens = useAuthStore((state) => state.clearTokens);
 
   // 로그인, 회원가입 메뉴 이동시 url 쿠키에 저장
   const handleLogin = () => {
@@ -29,18 +31,14 @@ export default function UserMenuItem({
   };
 
   // 로그아웃 로직
-  const handleClick = async () => {
+  const handleClick = () => {
     switch (id) {
       case 'logout':
         // 로그아웃 처리
-        try {
-          await deleteCookie('access_token');
-
-          // 로그아웃 후 메인 페이지로 이동
-          window.location.href = '/';
-        } catch (error) {
-          console.error('로그아웃 중 오류가 발생했습니다:', error);
-        }
+        deleteCookie('accessToken');
+        clearTokens();
+        // 로그아웃 후 메인 페이지로 이동
+        window.location.href = '/';
         break;
     }
   };

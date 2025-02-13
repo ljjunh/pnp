@@ -5,7 +5,7 @@ import { MESSAGES } from '@/constants/login';
 
 export default function LoginPage() {
   return (
-    <div className="mt-20 flex items-center justify-center">
+    <div className="mt-40 flex items-center justify-center">
       <main className="w-full max-w-screen-sm rounded-lg border bg-white">
         <LoginHeader />
 

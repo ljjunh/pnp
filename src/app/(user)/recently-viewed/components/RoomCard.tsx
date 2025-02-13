@@ -1,10 +1,15 @@
 import Image from 'next/image';
+import Link from 'next/link';
+import { RecentViewResponse } from '@/types/recent';
+import { ROUTES } from '@/constants/routeURL';
+import { FaRegHeart } from 'react-icons/fa6';
 
 interface RoomCardProps {
   isEdit: boolean;
+  recentView: RecentViewResponse;
 }
 
-export function RoomCard({ isEdit }: RoomCardProps) {
+export function RoomCard({ isEdit, recentView }: RoomCardProps) {
   return (
     <div>
       <div className="relative aspect-square">
@@ -13,16 +18,21 @@ export function RoomCard({ isEdit }: RoomCardProps) {
             <span>&times;</span>
           </div>
         )}
-        <Image
-          src="/images/05.avif"
-          alt="숙소 사진"
-          fill
-          className="rounded-2xl object-cover"
-        />
+        <FaRegHeart className="absolute right-3 top-3 z-10 size-6 cursor-pointer fill-white hover:scale-110 active:scale-90" />
+        <Link href={ROUTES.ROOMS.DETAIL(recentView.id)}>
+          <Image
+            src={recentView.thumbnail!}
+            alt="숙소 사진"
+            fill
+            className="rounded-2xl object-cover"
+          />
+        </Link>
       </div>
       <div className="mt-2">
-        <h3 className="text-base">호스트 이름의 집</h3>
-        <p className="text-sm text-neutral-500">침대 1개 ㆍ 침실 1개</p>
+        <h3 className="text-base">{recentView.location}</h3>
+        <p className="text-overflow-ellipsis overflow-hidden whitespace-nowrap text-sm text-neutral-500">
+          {recentView.title}
+        </p>
       </div>
     </div>
   );

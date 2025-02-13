@@ -1,10 +1,11 @@
 import Image from 'next/image';
 
 interface WishlistsCardProps {
-  image: string;
+  thumbnail: string;
+  scrapListLength: number;
 }
 
-export function WishlistsCard({ image }: WishlistsCardProps) {
+export function WishlistsCard({ thumbnail, scrapListLength }: WishlistsCardProps) {
   return (
     <div
       className="flex w-full flex-col gap-2"
@@ -12,7 +13,7 @@ export function WishlistsCard({ image }: WishlistsCardProps) {
       <div className="aspect-square w-full rounded-2xl p-1 shadow-[0_0_10px_rgba(0,0,0,0.1)]">
         <div className="relative h-full w-full cursor-pointer">
           <Image
-            src={image}
+            src={thumbnail}
             alt="숙소 사진"
             fill
             className="rounded-2xl object-cover"
@@ -20,8 +21,8 @@ export function WishlistsCard({ image }: WishlistsCardProps) {
         </div>
       </div>
       <div>
-        <h3 className="text-base">위시리스트 폴더명</h3>
-        <p className="text-sm text-gray-400">저장된 항목 n개</p>
+        <h3 className="text-base">위시리스트</h3>
+        <p className="text-sm text-gray-400">저장된 항목 {scrapListLength}개</p>
       </div>
     </div>
   );

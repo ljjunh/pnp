@@ -22,4 +22,8 @@ export default meta;
 type Story = StoryObj<typeof RecentlyViewedCard>;
 
 // 기본 스토리
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    thumbnail: '/images/05.avif'
+  },
+};
